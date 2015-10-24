@@ -1,47 +1,32 @@
-﻿$(
+﻿//$(
 
-    function () {
-        'use strict';
+//    function () {
+//        'use strict';
         
 
 
-        var runProcessButton = $('#run-analysis')[0];
+//        var runProcessButton = $('#run-analysis')[0];
 
 
-        $(runProcessButton).bind({
-            click: function(){
+//        $(runProcessButton).bind({
+//            click: function(){
 
-                mielk.db.fetch('Process', 'RunProcess', {}, {
-                    async: true
-                });
+//                mielk.db.fetch('Process', 'RunProcess', {}, {
+//                    async: true
+//                });
 
-            }
-
-
-
-
-
-
-        });
+//            }
 
 
 
 
 
 
+//        });
 
 
 
+//    }
 
 
-
-
-
-
-
-
-
-    }
-
-
-);
+//);

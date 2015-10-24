@@ -1,4 +1,55 @@
-﻿/*
+﻿function CompanyManager() {
+
+    'use strict';
+
+    var items = mielk.hashTable(null);
+
+
+    function loadCompany(id) {
+        var objects = mielk.db.fetch('Company', 'GetCompany', { 'id': id }, {});
+        var company = new Company(objects);
+        items.setItem(company.id, company);
+        return company;
+    }
+
+
+    function getList() {
+        var data = mielk.hashTable(null);
+        mielk.db.fetch('Company', 'FilterCompanies', {
+            q: '',
+            limit: 100
+        }, {
+            async: false,
+            callback: function (r) {
+                data = r.items;
+            }
+        });
+
+        return data;
+
+    }
+
+    function getAll() {
+        return items.values();
+    }
+
+    function getCompany(id) {
+        return items.getItem(id) || loadCompany(id);
+    }
+
+
+    return {
+        getAll: getAll,
+        getCompany: getCompany,
+        getList: getList
+    };
+
+};
+
+
+
+
+/*
  * Company object used in whole application.
  */
 function Company(params) {
@@ -179,43 +230,9 @@ Company.prototype = {
 };
 
 
+
+
+//Add the instance of company manager as an item of STOCK library.
 $(function () {
-
-        'use strict';
-
-        var companies = (function () {
-
-            var items = mielk.hashTable(null);
-
-
-            function loadCompany(id) {
-                var objects = mielk.db.fetch('Company', 'GetCompany', { 'id': id }, {});
-                var company = new Company(objects);
-                items.setItem(company.id, company);
-                return company;
-            }
-
-
-            function getAll() {
-                return items.values();
-            }
-
-
-            function getCompany(id) {
-                return items.getItem(id) || loadCompany(id);
-            }
-
-
-            return {
-                getAll: getAll,
-                getCompany: getCompany
-            };
-
-        })();
-
-        //Add as an item of STOCK library.
-        STOCK.COMPANIES = companies;
-
-    }
-
-);
+    STOCK.COMPANIES = CompanyManager();
+});

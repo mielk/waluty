@@ -24,57 +24,55 @@ function QuotationUI(quotation) {
 
 
 
-$(
-
-    function(){
-        'use strict';
-
-        var quotations = (function () {
-            var drawParams = {};
-
-            function resetDrawParams() {
-                drawParams = {
-
-                };
-            }
-
-            function convertToQuotations(items) {
-                var quotations = [];
-                for (var i = 0; i < items.length; i++) {
-                    var quotation = new Quotation(items[i]);
-                    quotations.push(quotation);
-                }
-
-                return quotations;
-
-            }
-
-            function createUIObjects() {
-
-            }
 
 
-            function initialize() {
-                resetDrawParams();
-            }
+function QuotationManager() {
 
+    'use strict';
 
+    var drawParams = {};
 
-            //Initializing functions.
-            initialize();
+    function resetDrawParams() {
+        drawParams = {
 
+        };
+    }
 
-            return {
-                convertToQuotations: convertToQuotations,
-                createUIObjects: createUIObjects
-            };
+    function convertToQuotations(items) {
+        var quotations = [];
+        for (var i = 0; i < items.length; i++) {
+            var quotation = new Quotation(items[i]);
+            quotations.push(quotation);
+        }
 
-        })();
-
-
-        //Add as an item of STOCK library.
-        STOCK.QUOTATIONS = quotations;
+        return quotations;
 
     }
 
-);
+    function createUIObjects() {
+
+    }
+
+
+    function initialize() {
+        resetDrawParams();
+    }
+
+
+
+    //Initializing functions.
+    initialize();
+
+
+    return {
+        convertToQuotations: convertToQuotations,
+        createUIObjects: createUIObjects
+    };
+
+}
+
+
+//Add the instance of quotation manager as an item of STOCK library.
+$(function () {
+    STOCK.QUOTATIONS = QuotationManager();
+});

@@ -1,34 +1,64 @@
 ﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    @Styles.Render("~/Content/charts")
+    @Styles.Render("~/Content/charts")  
     @Scripts.Render("~/bundles/stock")
     @Scripts.Render("~/bundles/charts")
+    @Scripts.Render("~/bundles/analysis")
 }
 
 
-<div class="main-container">
-    
-    <div id="run-analysis" class="process-button">
-        Uruchom analizę
+<div id="main">
+
+    <div class="margin-panel"></div>
+    <div id="menu-container">
+@*        <div id="logo-container"></div>*@
+        <div id="options-container">
+            <div id="charts-menu" class="menu-option">Wykresy</div>
+            <div id="analysis-menu" class="menu-option">Analizy</div>
+            <div id="other-menu" class="menu-option">...</div>
+        </div>
+        <div id="login-container">
+            <div id="login-menu" class="top-panel-button login-icon"></div>
+            <div id="search-menu" class="top-panel-button search-icon"></div>                    
+        </div>
     </div>
 
-    <!-- przerobić na partial view -->
-    <div id="options-panel">
+    <div id="content-container">
 
-        <div class="dropdown-label">Pair</div>
-        <div class="dropdown-container">
-            <input id="companies-dropdown" tabIndex="-1" class="select2-offscreen" style="width: 300px;" type="hidden"/>
-        </div>
+
+        <div id="charts-panel">
+
+            <div id="options-panel">
+
+                <div id="company-dropdown-label" class="dropdown-label">Pair</div>
+                <select id="company-dropdown" class="dropdown-container"></select>
         
-        <div class="dropdown-label left-border">Timeband</div>
-        <div class="dropdown-container">
-            <input id="timebands-dropdown" tabIndex="-1" class="select2-offscreen" style="width: 300px;" type="hidden"/>
+                <div id="timeband-dropdown-label" class="dropdown-label">Timeband</div>
+                <select id="timeband-dropdown" class="dropdown-container"></select>
+
+                <input id="show-peaks-checkbox" class="charts-options-checkbox" type="checkbox" value="peaks" />
+                <div id="show-peaks-label" class="charts-options-checkbox-label">Show peaks</div>
+
+                <input id="show-trendlines-checkbox" class="charts-options-checkbox" type="checkbox" value="trendlines" />
+                <div id="show-trendlines-label" class="charts-options-checkbox-label">Show trendlines</div>
+
+            </div>
+
         </div>
-        
+
+        <div id="analysis-panel">
+
+            <div id="run-analysis-button" class="button">uruchom analizę</div>
+
+        </div>
 
     </div>
 
-    <div id="charts-container"></div>
 
+
+
+    <div id="footer-container"></div>
+    <div class="margin-panel"></div>
+            
 </div>

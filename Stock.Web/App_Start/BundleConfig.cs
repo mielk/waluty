@@ -28,10 +28,10 @@ namespace Stock.Web
                         "~/Scripts/common/tree.js",
                         "~/Scripts/common/spin.js",
                         "~/Scripts/common/select2.js",
-                        "~/Scripts/common/dropdown.js",
+                        "~/Scripts/common/dropdown.js"));
                         //"~/Scripts/css-element-queries/ElementQueries.js",
                         //"~/Scripts/css-element-queries/ResizeSensor.js",
-                        "~/Scripts/app/global.js"));
+                        
 
             bundles.Add(new ScriptBundle("~/bundles/stock").Include(
                         "~/Scripts/STOCK/StockCommon.js",
@@ -42,14 +42,18 @@ namespace Stock.Web
                         "~/Scripts/STOCK/SvgPathFactory.js",
                         "~/Scripts/STOCK/SvgRenderer.js",
                         "~/Scripts/STOCK/LabelFactory.js",
-                        "~/Scripts/STOCK/ProcessButtons.js"));
+                        "~/Scripts/STOCK/ProcessButtons.js",
+                        "~/Scripts/STOCK/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/charts").Include(
                         "~/Scripts/common/Raphael.js",
                         "~/Scripts/charts/Chart.js",
                         "~/Scripts/charts/ChartsContainer.js",
                         "~/Scripts/charts/OptionPanel.js",
-                        "~/Scripts/charts/ChartsController.js"));
+                        "~/Scripts/charts/ChartController.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/analysis").Include(
+                        "~/Scripts/analysis/AnalysisController.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -57,11 +61,12 @@ namespace Stock.Web
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                        "~/Content/normalize.css",
-                        "~/Content/select2.css",
-                        "~/Content/tree.css",
-                        "~/Content/dropdown.css",
-                        "~/Content/mielk.css",
+                        //"~/Content/normalize.css",
+                        //"~/Content/select2.css",
+                        //"~/Content/tree.css",
+                        //"~/Content/dropdown.css",
+                        //"~/Content/mielk.css",
+                        "~/Content/analysis.css",
                         "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/charts").Include(

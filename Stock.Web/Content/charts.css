@@ -1,16 +1,19 @@
-﻿body{
-    margin: 0;
-    padding: 0;
-}
-
-.main-container {
+﻿/*CHARTS PANEL*/
+#charts-panel {
+    display: block;
+    position: relative;
+    float: left;
+    box-sizing: border-box;
     width: 100%;
     height: auto;
+    min-height: 400px;
+    background-color: white;
+    border: 1px solid #999; 
     padding: 0;
     margin: 0;
 }
 
-.main-container > div {
+#charts-panel > div {
     display: block;
     position: relative;
     float: left;
@@ -22,14 +25,7 @@
 
 
 
-.left-border{
-    border-left: 1px solid #999;
-}
-
-
-
 /* Option panel */
-
 #options-panel {
     width: 100%;
     height: auto;
@@ -38,34 +34,59 @@
     padding: 6px;
 }
 
-#options-panel > div{
+#options-panel > div, select, input{
     display: block;
     position: relative;
     float: left;
 }
 
-.dropdown-container{
+.dropdown-label {
     width: auto;
-    height: 26px;
+    height: 32px;
+    padding: 6px;
+    padding-left: 0;
+    font-family: 'Century Gothic';
+    line-height: 20px;
+    margin-left: 6px;
 }
+
+.dropdown-container {
+    width: 160px;
+    height: 32px;
+    padding: 0;
+    margin-right: 24px;
+    font-family: 'Century Gothic';
+}
+
+
+.charts-options-checkbox {
+    height: 32px;
+    margin: 0 !important;
+    margin-left: 24px !important;
+}
+
+.charts-options-checkbox-label {
+    width: auto;
+    height: 32px;
+    padding: 6px;
+    padding-left: 0;
+    font-family: 'Century Gothic';
+    line-height: 20px;
+    margin-left: 6px;
+}
+
 
 .dropdown-container input{
     width: 300px;
-}
-
-.dropdown-label{
-    width: auto;
-    height: 26px;
-    padding: 6px 18px;
-    line-height: 14px;
-    margin-left: 18px;
 }
 
 #options-panel .dropdown-label:first-child{
     margin-left: 0;
 }
 
-/* inherited from Select2 */
+
+
+/* inherited from Select2 *
 .zebra { 
     background-color: #efefef; 
 }
@@ -216,7 +237,35 @@ img.flag {
 
 .swe{
     background-image: url('images/flags/swe.png');
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.left-border{
+    border-left: 1px solid #999;
 }
+
+
 
 
 
