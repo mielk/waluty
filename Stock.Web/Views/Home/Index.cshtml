@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @Styles.Render("~/Content/charts")
+    @Scripts.Render("~/bundles/stock")
+    @Scripts.Render("~/bundles/charts")
+}
+
+
+<div class="main-container">
+    
+    <div id="run-analysis" class="process-button">
+        Uruchom analizę
+    </div>
+
+    <!-- przerobić na partial view -->
+    <div id="options-panel">
+
+        <div class="dropdown-label">Pair</div>
+        <div class="dropdown-container">
+            <input id="companies-dropdown" tabIndex="-1" class="select2-offscreen" style="width: 300px;" type="hidden"/>
+        </div>
+        
+        <div class="dropdown-label left-border">Timeband</div>
+        <div class="dropdown-container">
+            <input id="timebands-dropdown" tabIndex="-1" class="select2-offscreen" style="width: 300px;" type="hidden"/>
+        </div>
+        
+
+    </div>
+
+    <div id="charts-container"></div>
+
+</div>

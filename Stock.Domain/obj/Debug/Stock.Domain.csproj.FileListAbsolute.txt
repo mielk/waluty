@@ -1,0 +1,72 @@
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\Stock.Domain.dll
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\Stock.Domain.pdb
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\Ninject.dll
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\Stock.DAL.dll
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\EntityFramework.dll
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\Stock.DAL.pdb
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\Ninject.pdb
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\Ninject.xml
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\bin\Debug\EntityFramework.xml
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\obj\Debug\Stock.Domain.dll
+C:\Users\Tomek\documents\visual studio 2012\Projects\Stock\Stock.Domain\obj\Debug\Stock.Domain.pdb
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\Stock.Domain.dll
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\Stock.Domain.pdb
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\Ninject.dll
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\Stock.DAL.dll
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\EntityFramework.dll
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\Stock.DAL.pdb
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\Ninject.pdb
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\Ninject.xml
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\bin\Debug\EntityFramework.xml
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\obj\Debug\Stock.Domain.dll
+C:\Users\txmieln\Documents\Visual Studio 2012\Projects\stock\Stock.Domain\obj\Debug\Stock.Domain.pdb
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\Stock.Domain.dll
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\Stock.Domain.pdb
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\Ninject.dll
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\Stock.DAL.dll
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\EntityFramework.dll
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\Stock.DAL.pdb
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\Ninject.pdb
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\Ninject.xml
+C:\tm\aplikacje\FX\Stock.Domain\bin\Debug\EntityFramework.xml
+C:\tm\aplikacje\FX\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
+C:\tm\aplikacje\FX\Stock.Domain\obj\Debug\Stock.Domain.dll
+C:\tm\aplikacje\FX\Stock.Domain\obj\Debug\Stock.Domain.pdb
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\Stock.Domain.dll
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\Stock.Domain.pdb
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\Ninject.dll
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\Stock.DAL.dll
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\EntityFramework.dll
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\Stock.DAL.pdb
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\Ninject.pdb
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\Ninject.xml
+C:\tm\my\fx\fx\Stock.Domain\bin\Debug\EntityFramework.xml
+C:\tm\my\fx\fx\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
+C:\tm\my\fx\fx\Stock.Domain\obj\Debug\Stock.Domain.dll
+C:\tm\my\fx\fx\Stock.Domain\obj\Debug\Stock.Domain.pdb
+C:\tm\tm\fx\Stock.Domain\bin\Debug\Stock.Domain.dll
+C:\tm\tm\fx\Stock.Domain\bin\Debug\Stock.Domain.pdb
+C:\tm\tm\fx\Stock.Domain\bin\Debug\Ninject.dll
+C:\tm\tm\fx\Stock.Domain\bin\Debug\Stock.DAL.dll
+C:\tm\tm\fx\Stock.Domain\bin\Debug\EntityFramework.dll
+C:\tm\tm\fx\Stock.Domain\bin\Debug\Stock.DAL.pdb
+C:\tm\tm\fx\Stock.Domain\bin\Debug\Ninject.pdb
+C:\tm\tm\fx\Stock.Domain\bin\Debug\Ninject.xml
+C:\tm\tm\fx\Stock.Domain\bin\Debug\EntityFramework.xml
+C:\tm\tm\fx\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
+C:\tm\tm\fx\Stock.Domain\obj\Debug\Stock.Domain.dll
+C:\tm\tm\fx\Stock.Domain\obj\Debug\Stock.Domain.pdb
+C:\tm\aplikacje\FX2\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Stock.Domain.dll
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Stock.Domain.pdb
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Ninject.dll
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Stock.DAL.dll
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\EntityFramework.dll
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Stock.DAL.pdb
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Ninject.pdb
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Ninject.xml
+C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\EntityFramework.xml
+C:\tm\aplikacje\FX2\Stock.Domain\obj\Debug\Stock.Domain.dll
+C:\tm\aplikacje\FX2\Stock.Domain\obj\Debug\Stock.Domain.pdb
