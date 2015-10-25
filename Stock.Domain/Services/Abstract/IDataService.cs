@@ -19,5 +19,6 @@ namespace Stock.Domain.Services
         IEnumerable<DataItem> GetFxQuotations(string tableName, DateTime start);
         IEnumerable<DataItem> GetFxQuotations(string tableName, DateTime start, DateTime end);
 
+        object GetDataSetProperties(string symbol);
     }
 }

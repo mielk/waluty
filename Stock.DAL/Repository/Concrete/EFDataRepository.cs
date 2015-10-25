@@ -380,6 +380,78 @@ namespace Stock.DAL.Repositories
 
         }
 
+
+        public object GetDataSetProperties(string symbol)
+        {
+            //string sql = "SELECT " +
+            //                "COUNT(Id) AS Counter, MIN(PriceDate) AS FirstDate, MAX(PriceDate) AS LastDate, " +
+            //                "MIN(LowPrice) AS MinPrice, MAX(HighPrice) AS MaxPrice " +
+            //             "FROM fx.quotations_" + symbol;
+            string sqlCounter = "SELECT COUNT(Id) FROM fx.quotations_" + symbol;
+            string sqlMinDate = "SELECT MIN(PriceDate) FROM fx.quotations_" + symbol;
+            string sqlMaxDate = "SELECT MAX(PriceDate) FROM fx.quotations_" + symbol;
+            string sqlMinPrice = "SELECT MIN(LowPrice) FROM fx.quotations_" + symbol;
+            string sqlMaxPrice = "SELECT MAX(HighPrice) FROM fx.quotations_" + symbol;
+
+
+
+            using (var context = new EFDbContext())
+            {
+                int counter = 0;
+                DateTime firstDate = new DateTime();
+                DateTime lastDate = new DateTime();
+                double minPrice = 0d;
+                double maxPrice = 0d;
+                
+                //Counter.
+                foreach (var i in context.Database.SqlQuery<String>(sqlCounter))
+                {
+                    counter = int.Parse(i);
+                    break;
+                }
+
+                //Min date.
+                foreach (var i in context.Database.SqlQuery<String>(sqlMinDate))
+                {
+                    firstDate = DateTime.Parse(i);
+                    break;
+                }
+
+                //Max date.
+                foreach (var i in context.Database.SqlQuery<String>(sqlMaxDate))
+                {
+                    lastDate = DateTime.Parse(i);
+                    break;
+                }
+
+                //Min price.
+                foreach (var i in context.Database.SqlQuery<String>(sqlMinPrice))
+                {
+                    minPrice = double.Parse(i);
+                    break;
+                }
+
+                //Max price.
+                foreach (var i in context.Database.SqlQuery<String>(sqlMaxPrice))
+                {
+                    maxPrice = double.Parse(i);
+                    break;
+                }
+
+                return new 
+                {
+                    counter = counter,
+                    firstDate = firstDate,
+                    lastDate = lastDate,
+                    minPrice = minPrice,
+                    maxPrice = maxPrice
+                };
+
+            }
+
+        }
+
+
         public string toDb(double value)
         {
             return Math.Round(value, 5).ToString().Replace(',', '.');

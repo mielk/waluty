@@ -279,7 +279,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\charts\ChartsContainer.js" />
     <Content Include="Scripts\charts\ChartController.js" />
-    <Content Include="Scripts\charts\OptionPanel.js" />
     <Content Include="Scripts\common\ResizableDiv.js" />
     <Content Include="Scripts\charts\Chart.js" />
     <Content Include="Scripts\css-element-queries\ElementQueries.js" />

@@ -27,7 +27,7 @@ namespace Stock.Web
                         "~/Scripts/common/util.js",
                         "~/Scripts/common/tree.js",
                         "~/Scripts/common/spin.js",
-                        "~/Scripts/common/select2.js",
+                        "~/Scripts/common/select2.full.min.js",
                         "~/Scripts/common/dropdown.js"));
                         //"~/Scripts/css-element-queries/ElementQueries.js",
                         //"~/Scripts/css-element-queries/ResizeSensor.js",
@@ -49,7 +49,6 @@ namespace Stock.Web
                         "~/Scripts/common/Raphael.js",
                         "~/Scripts/charts/Chart.js",
                         "~/Scripts/charts/ChartsContainer.js",
-                        "~/Scripts/charts/OptionPanel.js",
                         "~/Scripts/charts/ChartController.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/analysis").Include(
@@ -62,7 +61,7 @@ namespace Stock.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         //"~/Content/normalize.css",
-                        //"~/Content/select2.css",
+                        "~/Content/select2.min.css",
                         //"~/Content/tree.css",
                         //"~/Content/dropdown.css",
                         //"~/Content/mielk.css",

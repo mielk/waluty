@@ -974,13 +974,28 @@
 
     var dates = (function () {
 
-        function toString(date) {
+        function fromCSharpDateTime(date) {
+            var miliseconds = parseInt(mielk.text.substring(date, "(", ")"));
+            return new Date(miliseconds);
+        }
+
+        function toString(date, withTime) {
             var year = date.getFullYear();
             var month = date.getMonth() + 1;
             var day = date.getDate();
+
+            if (withTime) {
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var seconds = date.getSeconds();
+                var time = (hours < 10 ? '0' : '') + hours + ':' +
+                           (minutes < 10 ? '0' : '') + minutes + ':' + 
+                           (seconds < 10 ? '0' : '') + seconds;
+            }
+
             return year + '-' +
                 (month < 10 ? '0' : '') + month + '-' +
-                (day < 10 ? '0' : '') + day;
+                (day < 10 ? '0' : '') + day + (withTime ? ' ' + time : '');
         }
 
         function fromString(s) {
@@ -1002,118 +1017,48 @@
             return (end.getDay() < start.getDay() ? result : result);
         }
 
-        //    return {
-        //        TIMEBAND: $timeband,
 
-        //        /*   Funkcja:    dateDifference
-        //        *    Opis:       Funkcja zwraca różnicę pomiędzy datami [start] i [end],
-        //        *                wyrażoną w jednostkach przypisanych do podanego timebandu.
-        //        */
-        //        dateDifference: function (timeband, start, end) {
-        //            switch (timeband) {
-        //                case $timeband.D:
-        //                    return this.daysDifference(start, end);
-        //                case $timeband.W:
-        //                    return this.weeksDifference(start, end);
-        //                case $timeband.M:
-        //                    return this.monthsDifference(start, end);
-        //                default:
-        //                    return 0;
-        //            }
-        //        },
+        function addMinutes(baseDate, minutes) {
+            var date = baseDate;
+            date.setMinutes(date.getMinutes() + minutes);
+            return date;
+        }
 
+        function addHours(baseDate, hours) {
+            var date = baseDate;
+            date.setHours(date.getHours() + hours);
+            return date;
+        }
 
-        //        /*-------------------------------*/
+        function addDays(baseDate, days) {
+            var date = baseDate;
+            date.setDate(date.getDate() + days);
+            return date;
+        }
 
+        function addWeeks(baseDate, weeks) {
+            var date = baseDate;
+            date.setDate(date.getDate() + 7);
+            return date;
+        }
 
-        //        /*   Funkcja:    daysDifference
-        //        *    Opis:       Funkcja zwraca różnicę pomiędzy datami [start] i [end],
-        //        *                wyrażoną w dniach.
-        //        */
-        //        daysDifference: function (start, end) {
-        //            return daysDifference(start, end);
-        //        },
-
-
-        //        /*-------------------------------*/
-
-
-        //        /*   Funkcja:    weeksDifference
-        //        *    Opis:       Funkcja zwraca różnicę pomiędzy datami [start] i [end],
-        //        *                wyrażoną w tygodniach.
-        //        */
-        //        weeksDifference: function (start, end) {
-        //            return weeksDifference(start, end);
-        //        },
-
-
-        //        /*-------------------------------*/
-
-
-        //        /*   Funkcja:    monthsDifference
-        //        *    Opis:       Funkcja zwraca różnicę pomiędzy datami [start] i [end],
-        //        *                wyrażoną w miesiącach.
-        //        */
-        //        monthsDifference: function (start, end) {
-        //            var yearStart = start.getFullYear();
-        //            var monthStart = start.getMonth();
-        //            var yearEnd = end.getFullYear();
-        //            var monthEnd = end.getMonth();
-
-        //            return (monthEnd - monthStart) + (12 * (yearEnd - yearStart));
-
-        //        },
-
-
-        //        /*-------------------------------*/
-
-
-        //        /*   Funkcja:    workingDays
-        //        *    Opis:       Funkcja zwraca liczbę dni pracujących pomiędzy dwiema datami.
-        //        */
-        //        workingDays: function (start, end) {
-        //            var sDate = (start.getDay() > 5 ? start.getDate() - (start.getDay() - 5) : start);
-        //            var eDate = (end.getDay() > 5 ? end.getDate() - (end.getDay() - 5) : end);
-        //            return (weeksDifference(sDate, eDate) * 5) + (eDate.getDay() - sDate.getDay());
-        //        },
-
-
-        //        /*-------------------------------*/
-
-
-        //        /*-------------------------------*/
-
-
-        //        /*   Funkcja:    getMonth
-        //        *    Opis:       Funkcja zwracająca nazwę podanego miesiąca.
-        //        */
-        //        monthName: function (month, isShort) {
-        //            var months = {
-        //                1: ['styczeń', 'sty'],
-        //                2: ['luty', 'lut'],
-        //                3: ['marzec', 'mar'],
-        //                4: ['kwiecień', 'kwi'],
-        //                5: ['maj', 'maj'],
-        //                6: ['czerwiec', 'cze'],
-        //                7: ['lipiec', 'lip'],
-        //                8: ['sierpień', 'sie'],
-        //                9: ['wrzesień', 'wrz'],
-        //                10: ['październik', 'paź'],
-        //                11: ['listopad', 'lis'],
-        //                12: ['grudzień', 'gru']
-        //            };
-
-        //            return months[month][isShort ? 1 : 0];
-
-        //        }
-        //    };
-
+        function addMonths(baseDate, months) {
+            var date = baseDate;
+            date.setMonth(date.getMonth() + 1);
+            return date;
+        }
 
         return {
             toString: toString,
             fromString: fromString,
             daysDifference: daysDifference,
-            weeksDifference: weeksDifference
+            weeksDifference: weeksDifference,
+            fromCSharpDateTime: fromCSharpDateTime,
+            addMinutes: addMinutes,
+            addHours: addHours,
+            addDays: addDays,
+            addWeeks: addWeeks,
+            addMonths: addMonths
         };
         
     })();
@@ -1151,464 +1096,3 @@
 
 
 })(window);
-
-
-
-
-//WORDTYPE = {
-//    NOUN: { id: 1, name: 'noun', symbol: 'N' },
-//    VERB: { id: 2, name: 'verb', symbol: 'V' },
-//    ADJECTIVE: { id: 3, name: 'adjective', symbol: 'A' },
-//    OTHER: { id: 4, name: 'other', symbol: 'O' },
-//    getItem: function (value) {
-//        for (var key in WORDTYPE) {
-//            if (WORDTYPE.hasOwnProperty(key)) {
-//                var object = WORDTYPE[key];
-//                if (object.id === value) {
-//                    return object;
-//                }
-//            }
-//        }
-//        return null;
-//    },
-//    getValues: function () {
-//        var array = [];
-//        for (var key in this) {
-//            if (this.hasOwnProperty(key)) {
-//                var item = this[key];
-//                if (item && item.id) {
-//                    var object = {
-//                        id: item.id,
-//                        name: item.name,
-//                        object: item
-//                    };
-//                    array.push(object);
-//                }
-//            }
-//        }
-//        return array;
-//    }
-//};
-
-
-
-
-//my.ui = (function () {
-
-//    var topLayer = 0;
-
-//    return {
-//        extraWidth: function (element) {
-//            if (element) {
-//                var $e = $(element);
-//                if ($e) {
-//                    return $e.padding().left + $e.padding().right +
-//                        $e.border().left + $e.border().right +
-//                        $e.margin().left + $e.margin().right;
-//                } else {
-//                    return 0;
-//                }
-//            } else {
-//                return 0;
-//            }
-//        },
-
-//        extraHeight: function (element) {
-//            if (element) {
-//                var $e = $(element);
-//                if ($e) {
-//                    return $e.padding().top + $e.padding().bottom +
-//                        $e.border().top + $e.border().bottom +
-//                        $e.margin().top + $e.margin().bottom;
-//                } else {
-//                    return 0;
-//                }
-//            } else {
-//                return 0;
-//            }
-//        },
-
-//        moveCaret: function (win, charCount) {
-//            var sel, range;
-//            if (win.getSelection) {
-//                sel = win.getSelection();
-//                if (sel.rangeCount > 0) {
-//                    var textNode = sel.focusNode;
-//                    var newOffset = sel.focusOffset + charCount;
-//                    sel.collapse(textNode, Math.min(textNode.length, newOffset));
-//                }
-//            } else if ((sel = win.document.selection)) {
-//                if (sel.type != 'Control') {
-//                    range = sel.createRange();
-//                    range.move('character', charCount);
-//                    range.select();
-//                }
-//            }
-//        },
-
-//        addTopLayer: function () {
-//            return ++topLayer;
-//        },
-
-//        releaseTopLayer: function () {
-//            topLayer--;
-//        },
-
-//        display: function (div, value) {
-//            $(div).css({ 'display': (value ? 'block' : 'none') });
-//        },
-
-//        radio: function (params) {
-//            var name = params.name;
-//            var options = new HashTable(null);
-//            var eventHandler = new EventHandler();
-//            var panel = jQuery('<div/>').css({
-//                'display': 'block',
-//                'position': 'relative',
-//                'float': 'left',
-//                'width': '100%',
-//                'height': '100%'
-//            }).appendTo($(params.container));
-//            var value = params.value || undefined;
-//            var selected;
-
-//            //Create items.
-//            var total = Object.keys(params.options).length;
-//            var option = function ($key, $object) {
-//                var key = $key;
-//                var caption = $object.name || $object.caption || $object.key;
-//                var object = $object;
-//                var container = jQuery('<div/>').css({
-//                    'width': (100 / total) + '%',
-//                    'float': 'left'
-//                }).appendTo(panel);
-
-//                var input = jQuery('<input/>', {
-//                    type: 'radio',
-//                    name: name,
-//                    value: $key,
-//                    checked: $object.checked ? true : false,
-//                    'class': 'radio-option'
-//                }).css({
-//                    'float': 'left',
-//                    'margin-right': '6px',
-//                    'border': 'none'
-//                }).bind({
-//                    'click': function () {
-//                        eventHandler.trigger({
-//                            type: 'click',
-//                            caption: caption,
-//                            object: object,
-//                            value: object.value
-//                        });
-//                    }
-//                });
-
-//                if ($object.checked) {
-//                    value = $object.value;
-//                    selected = $object;
-//                }
-
-//                var label = jQuery('<label>').
-//                    attr('for', input).
-//                    css({ 'height': 'auto', 'width': 'auto' }).
-//                    text(caption);
-//                input.appendTo(label);
-//                label.appendTo(container);
-
-//                return {
-//                    select: function () {
-//                        $(input).prop('checked', true);
-//                        eventHandler.trigger({
-//                            type: 'click',
-//                            caption: caption,
-//                            object: object,
-//                            value: object.value
-//                        });
-//                    },
-//                    unselect: function () {
-//                        $(input).prop('checked', false);
-//                    },
-//                    key: function () {
-//                        return key;
-//                    },
-//                    isClicked: function () {
-//                        return $(input).prop('checked');
-//                    },
-//                    caption: function () {
-//                        return caption;
-//                    }
-//                };
-
-//            };
-
-//            for (var k in params.options) {
-//                if (params.options.hasOwnProperty(k)) {
-//                    var $option = option(k, params.options[k]);
-//                    options.setItem($option.key(), $option);
-//                }
-//            }
-
-//            eventHandler.bind({
-//                click: function (e) {
-//                    value = e.object.value;
-//                    if (selected) selected.
-//                    selected = e.object;
-//                }
-//            });
-
-//            return {
-//                bind: function (e) {
-//                    eventHandler.bind(e);
-//                },
-//                trigger: function (e) {
-//                    eventHandler.trigger(e);
-//                },
-//                value: function () {
-//                    return value;
-//                },
-//                change: function ($value) {
-//                    var $selected = options.getItem($value);
-//                    if ($selected) {
-//                        selected = $selected;
-//                        selected.select();
-//                    }
-//                    //printStates();
-//                }
-//            };
-
-//        },
-
-//        checkbox: function (params) {
-//            var name = params.name;
-//            var caption = params.caption || name;
-//            var checked = params.checked ? true : false;
-//            var eventHandler = new EventHandler();
-//            var panel = jQuery('<div/>').css({
-//                'display': 'block',
-//                'position': 'relative',
-//                'float': 'left',
-//                'width': '100%',
-//                'height': '100%'
-//            }).appendTo($(params.container));
-
-//            var box = jQuery('<input/>', {
-//                type: 'checkbox',
-//                checked: checked
-//            }).css({
-//                'float': 'left',
-//                'margin-right': '6px',
-//                'border': 'none'
-//            }).bind({
-//                'click': function () {
-//                    checked = !checked;
-//                    eventHandler.trigger({
-//                        type: 'click',
-//                        value: checked
-//                    });
-//                }
-//            });
-
-//            eventHandler.bind({
-//                click: function (e) {
-//                    $(box).prop('checked', e.value);
-//                }
-//            });
-
-//            var label = jQuery('<label>').
-//                attr('for', box).
-//                css({ 'height': 'auto' }).
-//                text(caption);
-
-//            $(box).appendTo(label);
-//            $(label).appendTo(panel);
-
-//            function change(value) {
-//                if (checked !== value) {
-//                    checked = value;
-//                    eventHandler.trigger({
-//                        type: 'click',
-//                        value: checked
-//                    });
-//                }
-//            }
-
-//            return {
-//                bind: function (e) {
-//                    eventHandler.bind(e);
-//                },
-//                trigger: function (e) {
-//                    eventHandler.trigger(e);
-//                },
-//                value: function () {
-//                    return checked;
-//                },
-//                change: function (value) {
-//                    if (value) {
-//                        change(true);
-//                    } else {
-//                        change(false);
-//                    }
-//                }
-//            };
-
-//        }
-
-//    };
-
-//})();
-
-
-//})();
-
-///* Funkcje daty i czasu */
-//my.dates = (function () {
-
-
-//})();
-
-//function Language(properties) {
-//    this.Language = true;
-//    this.id = properties.id;
-//    this.name = properties.name;
-//    this.flag = properties.flag;
-//}
-//my.languages = (function () {
-
-//    var used = null;
-
-//    function loadLanguages() {
-
-//        var userId = my.user.id();
-
-//        $.ajax({
-//            url: '/Language/GetUserLanguages',
-//            type: 'GET',
-//            data: {
-//                'userId': userId,
-//            },
-//            datatype: 'json',
-//            async: false,
-//            traditional: false,
-//            success: function (result) {
-//                used = [];
-//                for (var i = 0; i < result.length; i++) {
-//                    var object = result[i];
-//                    var language = new Language({
-//                        id: object.Id,
-//                        name: object.Name,
-//                        flag: object.Flag
-//                    });
-//                    used.push(language);
-//                }
-//            },
-//            error: function () {
-//                my.notify.display('Error when trying to load user languages', false);
-//            }
-//        });
-
-
-
-//    }
-
-//    return {
-//        userLanguages: function () {
-//            if (!used) {
-//                loadLanguages();
-//            }
-//            return used;
-//        },
-//        userLanguagesId: function () {
-//            if (!used) {
-//                loadLanguages();
-//            }
-
-//            var ids = [];
-//            for (var i = 0; i < used.length; i++) {
-//                var language = used[i];
-//                ids.push(language.id);
-//            }
-
-//            return ids;
-//        },
-//        get: function (id) {
-//            if (!used) {
-//                loadLanguages();
-//            }
-
-//            for (var i = 0; i < used.length; i++) {
-//                var language = used[i];
-//                if (language.id === id) {
-//                    return language;
-//                }
-//            }
-
-//            return null;
-
-//        }
-
-
-//    };
-
-//})();
-
-//my.user = (function () {
-//    var currentUserId = 1;
-
-//    return {
-//        id: function () {
-//            return currentUserId;
-//        }
-//    };
-
-//})();
-
-
-
-//my.grammarProperties = (function () {
-
-//    var properties = new HashTable(null);
-
-//    function get(id) {
-//        var object = properties.getItem(id);
-//        if (!object) {
-//            object = fetch(id);
-//            if (object) properties.setItem(id, object);
-//        }
-//        return object;
-//    }
-
-//    function fetch(id) {
-//        var data = my.db.fetch('Words', 'GetProperty', { 'id': id });
-
-//        //Create options collection.
-//        var options = new HashTable(null);
-//        for (var i = 0; i < data.Options.length; i++) {
-//            var object = data.Options[i];
-//            var option = {
-//                id: object.Id,
-//                propertyId: object.PropertyId,
-//                name: object.Name,
-//                value: object.Value,
-//                default: object.Default
-//            };
-//            options.setItem(option.id, option);
-//        }
-
-//        return {
-//            id: data.Id,
-//            languageId: data.LanguageId,
-//            name: data.Name,
-//            type: data.Type,
-//            'default': data.Default,
-//            options: options
-//        };
-
-//    }
-
-//    return {
-//        get: get,
-//        fetch: fetch
-//    };
-
-//})();

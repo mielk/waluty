@@ -28,5 +28,7 @@ namespace Stock.DAL.Repositories
         bool CheckIfTableExists(string tableName);
         bool CreateTable(string tableName, string template);
 
+        object GetDataSetProperties(string symbol);
+
     }
 }

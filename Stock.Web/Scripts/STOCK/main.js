@@ -44,7 +44,9 @@
                 companyDropdownId: 'company-dropdown',
                 timebandDropdownId: 'timeband-dropdown',
                 showPeaksCheckboxId: 'show-peaks-checkbox',
-                showTrendlinesCheckboxId: 'show-trendlines-checkbox'
+                showTrendlinesCheckboxId: 'show-trendlines-checkbox',
+                showMACDCheckboxId: 'show-macd-checkbox',
+                showADXCheckboxId: 'show-adx-checkbox'
             }),
             run: function (e) {
                 e.run();
@@ -117,8 +119,6 @@
 }
 
 $(function () {
-
     window.Main = new Main();
     Main.initialize();
-
 });

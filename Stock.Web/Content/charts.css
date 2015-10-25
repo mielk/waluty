@@ -47,7 +47,7 @@
     padding-left: 0;
     font-family: 'Century Gothic';
     line-height: 20px;
-    margin-left: 6px;
+    margin: 0 6px;
 }
 
 .dropdown-container {
@@ -80,209 +80,29 @@
     width: 300px;
 }
 
-#options-panel .dropdown-label:first-child{
-    margin-left: 0;
-}
 
 
-
-/* inherited from Select2 *
-.zebra { 
-    background-color: #efefef; 
-}
-
-img.flag { 
-    height: 10px; 
-    width: 15px; 
-    padding-right: 10px; 
-}
-
-.company-result td {
-    vertical-align: top 
-}
-
-.company-result{
-    font-size: 13px;    
-}
-
-.company-image { 
-    width: 60px; 
-}
-
-.company-image img { 
-    height: 20px; 
-    width: 40px;  
-}
-
-.company-info { 
-    padding-left: 10px; 
-    vertical-align: top; 
-}
-
-.company-name{
-    width: 160px;
-}
-    
-.company-symbol{
-    width: 60px;
-    text-align: right;
-}
-
-.company-synopsis { 
-    font-size: .8em; 
-    color: #888; 
-}
-
-.select2-highlighted .company-synopsis { 
-    font-size: .8em; 
-    color: #eee; 
-}
-   
-.bigdrop.select2-container .select2-results {
-    max-height: 300px;
-}
-
-.bigdrop .select2-results {
-    max-height: 300px;
-}
-
-.company-flag {
-    width: 25px;
-    height: 17px;
-    border: 1px solid #777;
-    -moz-background-position-x: -1px;
-    -o-background-position-x: -1px;
-    background-position-x: -1px;
-    -moz-background-position-y: -1px;
-    -o-background-position-y: -1px;
-    background-position-y: -1px;
-}
-
-.uk{
-    background-image: url('images/flags/uk.png');
-}
-
-.ita{
-    background-image: url('images/flags/ita.png');
-}
-
-.pol{
-    background-image: url('images/flags/pol.png');
-}
-
-.usa{
-    background-image: url('images/flags/usa.png');
-}
-
-.irl{
-    background-image: url('images/flags/irl.png');
-}
-
-.aus{
-    background-image: url('images/flags/aus.png');
-}
-
-.ger{
-    background-image: url('images/flags/ger.png');
-}
-
-.fra{
-    background-image: url('images/flags/fra.png');
-}
-
-.hkg{
-    background-image: url('images/flags/hkg.png');
-}
-
-.ned{
-    background-image: url('images/flags/ned.png');
-}
-
-.fin{
-    background-image: url('images/flags/fin.png');
-}
-
-.bel{
-    background-image: url('images/flags/bel.png');
-}
-
-.den{
-    background-image: url('images/flags/den.png');
-}
-
-.sui{
-    background-image: url('images/flags/sui.png');
-    width: 17px;
-}
-
-.esp{
-    background-image: url('images/flags/esp.png');
-}
-
-.aut{
-    background-image: url('images/flags/aut.png');
-}
-
-.nor{
-    background-image: url('images/flags/nor.png');
-}
-
-.gre{
-    background-image: url('images/flags/gre.png');
-}
-
-.por{
-    background-image: url('images/flags/por.png');
-}
-
-.swe{
-    background-image: url('images/flags/swe.png');
-}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.left-border{
-    border-left: 1px solid #999;
-}
-
-
-
-
-
-
+/* Charts container */
 #charts-container {
     width: 100%;
     height: auto;
+    min-height: 500px;
     background-color: white;
+    border: 1px solid red;
 }
 
-.chart{
+.chart-container {
+    display: block;
     position: relative;
+    float: left;
+    box-sizing: border-box;
     width: 100%;
-    height: 500px;
-    background-color: white;
+    height: auto;
+    min-height: 500px;
     overflow: hidden;
 }
+
+
 
 .svg-container{
     position: absolute;

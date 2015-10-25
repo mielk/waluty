@@ -109,5 +109,14 @@ namespace Stock.Web.Controllers
         }
 
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetDataSetProperties(string pairSymbol, string timeband)
+        {
+            string symbol = pairSymbol + "_" + timeband;
+            var properties = dataService.GetDataSetProperties(symbol);
+            return Json(properties, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

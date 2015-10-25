@@ -95,5 +95,11 @@ namespace Stock.Domain.Services
             return dtos.Select(DataItem.FromDto).ToList();
         }
 
+        public object GetDataSetProperties(string symbol)
+        {
+            var properties = _repository.GetDataSetProperties(symbol);
+            return properties;
+        }
+
     }
 }
