@@ -145,6 +145,8 @@ function ChartContent(params) {
         loadControls();
         assignEvents();
 
+        alert('Tutaj skończyłem. Teraz robimy asynchroniczne ładowanie danych z DataSet.loadProperties');
+
         //Load data set and its properties.
         loadDataSet();
 

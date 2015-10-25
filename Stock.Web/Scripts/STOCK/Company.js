@@ -122,52 +122,60 @@ function QuotationSet(params) {
     var lastDate;
     var minLevel;
     var maxLevel;
-    var counter;
+    var actualQuotationsCounter;
+    var realQuotationsCounter;
     
 
     function getData() {
 
     }
 
-    function getProperties() {
 
-        if (!propertiesLoaded) {
 
-            //Funkcja pobierająca właściwości dla danego timebandu z bazy danych.
-            mielk.db.fetch(
-                'Company',
-                'GetDataSetProperties',
-                { pairSymbol: company.symbol, timeband: timeband.symbol },
-                {
-                    async: false,
-                    callback: function (res) {
-                        firstDate = mielk.dates.fromCSharpDateTime(res.firstDate);
-                        lastDate = mielk.dates.fromCSharpDateTime(res.lastDate);
-                        minLevel = res.minPrice;
-                        maxLevel = res.maxPrice;
-                        counter = res.counter;
+    //Funkcja pobierająca właściwości dla danego timebandu z bazy danych.
+    function loadProperties(fn) {
+
+        var properties = null;
+
+        mielk.db.fetch(
+            'Company',
+            'GetDataSetProperties',
+            { pairSymbol: company.symbol, timeband: timeband.symbol },
+            {
+                async: true,
+                callback: function (res) {
+                    firstDate = mielk.dates.fromCSharpDateTime(res.firstDate);
+                    lastDate = mielk.dates.fromCSharpDateTime(res.lastDate);
+                    minLevel = res.minPrice;
+                    maxLevel = res.maxPrice;
+                    actualQuotationsCounter = res.counter;
                         
-                        //Create object for quotations (with slot for each date
-                        //between [firstDate] and [lastDate].
-                        createQuotationsObject();
+                    //Create object for quotations (with slot for each date
+                    //between [firstDate] and [lastDate].
+                    createQuotationsObject();
+                    realQuotationsCounter = Object.keys(quotations).length;
 
-                        //Flag this data set as having properties already loaded.
-                        propertiesLoaded = true;
+                    //Flag this data set as having properties already loaded.
+                    propertiesLoaded = true;
 
+                    //Create [properties] object to be returns.
+                    properties = {
+                        firstDate: firstDate,
+                        lastDate: lastDate,
+                        minLevel: minLevel,
+                        maxLevel: maxLevel,
+                        actualQuotationsCounter: actualQuotationsCounter,
+                        realQuotationsCounter: realQuotationsCounter
+                    };
+
+                    //If function has been passed as a parameter, call it.
+                    if (mielk.objects.isFunction(fn)) {
+                        fn(properties);
                     }
+
                 }
-            );
-
-        }
-
-
-        return {
-            firstDate: firstDate,
-            lastDate: lastDate,
-            minLevel: minLevel,
-            maxLevel: maxLevel,
-            counter: counter
-        };
+            }
+        );
 
     }
 
@@ -197,13 +205,13 @@ function QuotationSet(params) {
     }
 
     function countQuotations() {
-        return Object.keys(quotations).length;
+        
     }
 
 
     //Public API.
     self.getData = getData;
-    self.getProperties = getProperties;
+    self.loadProperties = loadProperties;
     self.countQuotations = countQuotations;
 
 }
