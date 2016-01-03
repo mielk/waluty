@@ -146,7 +146,7 @@
 
     function initialize() {
         //Initialize chart object.
-        chart = new ChartFX({
+        chart = new ChartsContainer({
             controller: self,
             chartContainerId: 'charts-container',
             company: company,

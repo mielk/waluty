@@ -273,6 +273,7 @@
     <Content Include="Content\images\xcf\POL.xcf" />
     <Content Include="Content\images\xcf\valid.xcf" />
     <Content Include="Scripts\analysis\AnalysisController.js" />
+    <Content Include="Scripts\charts\SvgContainer.js" />
     <Content Include="Scripts\common\jqResize.js" />
     <Content Include="Scripts\common\Raphael.js" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
@@ -315,7 +316,6 @@
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
-    <Content Include="Scripts\STOCK\SvgRenderer.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -20,7 +20,8 @@ namespace Stock.DAL.Repositories
 
             using (EFDbContext context = new EFDbContext())
             {
-                results = context.Companies.Where(c => c.PairName.ToLower().Contains(lower) || c.Short.ToLower().Contains(lower)).Take(limit).ToList();
+                results = context.Companies.Where(c => c.PairName.ToLower().Contains(lower) || 
+                                                  c.Short.ToLower().Contains(lower)).Take(limit).ToList();
             }
 
             return results;

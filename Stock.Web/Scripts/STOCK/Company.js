@@ -126,8 +126,51 @@ function QuotationSet(params) {
     var realQuotationsCounter;
     
 
-    function getData() {
+    function loadQuotations(fn, counter, force) {
 
+        if (!propertiesLoaded) loadProperties(null);
+
+        if (!quotationsLoaded || force) {
+
+            mielk.db.fetch(
+                'Company',
+                'GetFxQuotations',
+                { pairSymbol: company.symbol, timeband: timeband.symbol, count: $.isNumeric(counter) ? counter : 0 },
+                {
+
+                    async: true,
+                    callback: function (res) {
+
+                        //Populate quotations collection.
+                        assignQuotations(res);
+
+                        //If function has been passed as a parameter, call it.
+                        if (mielk.objects.isFunction(fn)) {
+                            fn(quotations);
+                        }
+
+                    }
+                }
+            );
+
+        }
+
+    }
+
+    function assignQuotations(data) {
+        for (var i = 0; i < data.length; i++) {
+            var date = mielk.dates.fromCSharpDateTime(data[i].Date);
+            var dataItem = quotations[date];
+
+            //There are some quotations in the database with Saturday or Sunday date.
+            //For such quotations the operation above will return null, since there are no
+            //items in [quotations] object with Saturday or SUnday date as a key.
+            if (dataItem) {
+                var quotation = new Quotation(data[i]);
+                dataItem.quotation = quotation;
+            }
+
+        }
     }
 
 
@@ -149,7 +192,7 @@ function QuotationSet(params) {
                     minLevel = res.minPrice;
                     maxLevel = res.maxPrice;
                     actualQuotationsCounter = res.counter;
-                        
+                    
                     //Create object for quotations (with slot for each date
                     //between [firstDate] and [lastDate].
                     createQuotationsObject();
@@ -160,12 +203,12 @@ function QuotationSet(params) {
 
                     //Create [properties] object to be returns.
                     properties = {
-                        firstDate: firstDate,
-                        lastDate: lastDate,
-                        minLevel: minLevel,
-                        maxLevel: maxLevel,
-                        actualQuotationsCounter: actualQuotationsCounter,
-                        realQuotationsCounter: realQuotationsCounter
+                        firstDate: firstDate,       //The date of the first quotation
+                        lastDate: lastDate,         //The date of the last quotation
+                        minLevel: minLevel,         //The minimum level of the price
+                        maxLevel: maxLevel,         //The maximum level of the price
+                        actualQuotationsCounter: actualQuotationsCounter,   //The number of quotations in the database
+                        realQuotationsCounter: realQuotationsCounter        //The expected number of quotations
                     };
 
                     //If function has been passed as a parameter, call it.
@@ -204,15 +247,10 @@ function QuotationSet(params) {
 
     }
 
-    function countQuotations() {
-        
-    }
-
 
     //Public API.
-    self.getData = getData;
+    self.loadQuotations = loadQuotations;
     self.loadProperties = loadProperties;
-    self.countQuotations = countQuotations;
 
 }
 

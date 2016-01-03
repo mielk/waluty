@@ -16,7 +16,7 @@ namespace Stock.DAL.Repositories
 
             using (EFDbContext context = new EFDbContext())
             {
-                results = context.Pairs.Where(p => p.PairName.ToLower().Contains(lower)).Take(limit).ToList();
+                results = context.Pairs.Where(p => p.IsActive && p.PairName.ToLower().Contains(lower)).Take(limit).ToList();
             }
 
             return results;

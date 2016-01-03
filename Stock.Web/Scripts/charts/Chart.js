@@ -1,16 +1,140 @@
-﻿function Chart(params) {
+﻿//Each object of [Chart] class represents a chart (all div's required for a single chart)
+//for a single timeband.
+function Chart(params) {
 
     'use strict';
 
+    //[Meta].
     var self = this;
     self.Chart = true;
+
+    //Properties.
+    var parent = params.parent;
+    var key = params.key || mielk.numbers.generateUuid();
+    var timeband = params.timeband;
+    var company = params.company;
+    var type = params.type;
+    var hasDateScale = params.displayDateScale;
+    var dataSet;
+    var properties;
+
+    //UI.
+    var svg = new SvgPanel(self);
+    var controls = {
+        parentContainer: params.container
+    };
+
+
+
+
+    function initialize() {
+        //Generate GUI and assign events.
+        loadControls();
+        assignEvents();
+
+        //Load data set and its properties.
+        dataSet = company.getDataSet(timeband);
+        dataSet.loadProperties(loadProperties);
+        dataSet.loadQuotations(loadQuotations);
+
+        //Trigger data.
+
+
+        //Draw actual chart.
+
+    }
+
+    function loadControls() {
+        controls.container = $('<div/>', {
+            'class': 'chart-container'
+        }).css({
+            'background-color': 'red'
+        }).appendTo(controls.parentContainer);
+    }
+
+    function assignEvents() {
+
+    }
+
+    function loadProperties($properties) {
+        properties = $properties;
+        var html = '   counter: ' + properties.actualQuotationsCounter + '(' + properties.realQuotationsCounter + ')' +
+            ' | firstDate: ' + mielk.dates.toString(properties.firstDate, true) + ' (' + properties.firstDate.getDay() + ')' +
+            ' | lastDate: ' + mielk.dates.toString(properties.lastDate, true) + ' (' + properties.lastDate.getDay() + ')' +
+            ' | minPrice: ' + properties.minLevel +
+            ' | maxPrice: ' + properties.maxLevel;
+        $(controls.container).html(html);
+
+        //Create SVG Container if it has not been created before...
+        if (!svgContainer) createSvgContainer({
+            parent: self
+        });
+        //... and invoke its method [loadProperties] with the quotations
+        //passed as an input parameter.
+        svgContainer.reset();
+        svgContainer.loadProperties(properties);
+
+    }
+
+    function loadQuotations(quotations) {
+
+        //Create SVG Container if it has not been created before...
+        if (!svgContainer) createSvgContainer({
+            parent: self
+        });
+        //... and invoke its method [loadQuotations] with the quotations
+        //passed as an input parameter.
+        svgContainer.loadQuotations(quotations);
+
+    }
+
+    function createSvgContainer() {
+        svgContainer = new SvgContainer({
+            parent: self
+        });
+    }
+
+    function activate() {
+        $(controls.parentContainer).children().each(function () {
+            $(this).css({
+                'display': 'none'
+            });
+        });
+
+        $(controls.container).css({
+            'display': 'block',
+            'visibility': 'visible'
+        });
+
+    }
+
+
+    initialize();
+
+
+
+
+
+
+    //Public API.
+    self.activate = activate;
+    self.bind = function (e) {
+        $(self).bind(e);
+    }
+    self.trigger = function (e) {
+        $(self).trigger(e);
+    }
+
+}
+
+
+
+
+
+
+function Chart(params) {
     self.key = params.key;
-    self.parent = params.parent;
-    self.company = null;
-    self.timeband = null;
-    self.eventHandler = mielk.eventHandler();
     self.controller = params.controller;
-    self.type = params.type;
     self.div = mielk.resizableDiv({
         parent: params.container,
         id: params.key || 'key',
@@ -109,12 +233,6 @@
 
 }
 Chart.prototype = {
-    bind: function(e){
-        this.eventHandler.bind(e);
-    },
-    trigger: function (e) {
-        this.eventHandler.trigger(e);
-    },
     injectQuotations: function (timeband, quotations, reload) {
         var analyzer = this.type.analyzer();
         var items = analyzer.run(quotations);
@@ -138,6 +256,20 @@ Chart.prototype = {
         }
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function ChartDrawLayer(chart) {
@@ -210,352 +342,6 @@ ChartDrawLayer.prototype = {
     resetPosition: function() {
         this.position = { x: 0, y: 0 };
     }
-};
-
-function SvgPanel(chart) {
-    
-    'use strict';
-
-    var self = this;
-    self.SvgPanel = true;
-    //Parental chart.
-    self.chart = chart;
-    self.hasDateScale = self.chart.displayDateScale;
-
-    self.chartPart = {
-        CHART: 0,
-        DATE: 1,
-        VALUE: 2
-    };
-
-    //UI.
-    self.ui = (function() {
-
-        //Generate unique IDs for panels.
-        var ids = {
-            chart: mielk.numbers.generateUUID(),
-            dates: mielk.numbers.generateUUID(),
-            values: mielk.numbers.generateUUID()
-        };
-
-        //Parental container.
-        var parent = chart.content();
-
-        //Panel to store actual chart.
-        var container = jQuery('<div/>', {
-            'id': ids.chart,
-            'class': 'svg-container'
-        }).css({
-            'bottom': self.chart.displayDateScale ? (STOCK.CONFIG.timeScaleHeight) + 'px' : 0,
-            'right': (STOCK.CONFIG.valuesScaleWidth) + 'px'
-        }).appendTo(parent);
-
-        //DateScale ...
-        var dateScale;
-        if (self.chart.displayDateScale) {
-            dateScale = jQuery('<div/>', {
-                'id': ids.dates,
-                'class': 'svg-date-scale-container'
-            }).css({
-                'right': STOCK.CONFIG.valuesScaleWidth + 'px',    //TODO - powinno się brać z configu - values.width
-                'height': STOCK.CONFIG.timeScaleHeight + 'px'
-            }).appendTo(parent);
-        }
-
-        //... and ValuesScale.
-        var valueScale = jQuery('<div/>', {
-            'id': ids.values,
-            'class': 'svg-values-container'
-        }).css({
-            'bottom': self.hasDateScale ? (STOCK.CONFIG.timeScaleHeight - 1) + 'px' : 0,   //TODO - powinno się brać z configu - dates.height
-            'width': STOCK.CONFIG.valuesScaleWidth + 'px'
-        }).appendTo(parent);
-
-
-        //SVG containers.
-        var svgChart = Raphael(ids.chart);
-        var svgDates = (self.hasDateScale ? Raphael(ids.dates) : null);
-        var svgValues = Raphael(ids.values);
-
-
-
-
-        function drawLabels(labels) {
-            var dates = labels.dates;
-            var values = labels.values;
-            var extrema = labels.extrema;
-            var label;
-            var textfield;
-
-            //Dates.
-            if (self.hasDateScale && svgDates) {
-                for (var i = 0; i < dates.length; i++) {
-                    label = dates[i];
-                    textfield = svgDates.text(label.x, label.y, label.text);
-                    textfield.attr({
-                        'fill': STOCK.CONFIG.dataLabelColor
-                    });
-                }
-            }
-
-            //Values.
-            for (var j = 0; j < values.length; j++) {
-                label = values[j];
-                textfield = svgValues.text(label.x, label.y, label.text);
-                textfield.attr({
-                    'fill': STOCK.CONFIG.valueLabelColor
-                });
-            }
-            
-
-            //Peak & troughs.
-            for (var k = 0; k < extrema.length; k++) {
-                label = extrema[k];
-                var circle = svgChart.circle(label.x, label.y, label.radius);
-                circle.attr({
-                    'stroke': label.stroke,
-                    'stroke-width': 1,
-                    'fill': label.fill
-                });
-            }
-
-        }
-
-        function drawPaths(paths) {
-            for (var i = 0; i < paths.length; i++) {
-                var object = paths[i];
-                //Add to dates svg
-                if (object.dates) {
-                    if (dateScale) {
-                        svgDates.path(object.path).attr(object.attr);
-                    }
-                } else if (object.values) {
-                    //Add to values svg
-                    svgValues.path(object.path).attr(object.attr);
-                } else {
-                    svgChart.path(object.path).attr(object.attr);
-                }
-
-            }
-        }
-
-        function setSize(size) {
-            svgChart.clear();
-            svgChart.setSize(size.width, size.height);
-            svgValues.clear();
-            svgValues.setSize(STOCK.CONFIG.valuesScaleWidth, size.height);
-            if (self.dateScale) {
-                svgDates.clear();
-                svgDates.setSize(size.width, STOCK.CONFIG.timeScaleHeight);
-            }
-
-            self.size = {
-                width: size.width,
-                height: size.height
-            };
-
-        }
-
-        function clear() {
-            svgChart.clear();
-            svgValues.clear();
-            if (svgDates) {
-                svgDates.clear();
-            }
-        }
-        
-        function getVisibleSize() {
-            var width = $(container).width();
-            var height = $(container).height();
-        
-            return {
-                width: width,
-                height: height
-            };
-            
-        }
-
-        function addPath(chartPart, path, attr) {
-            var svg;
-            
-            switch (chartPart) {
-                case self.chartPart.CHART:
-                    svg = svgChart; break;
-                case self.chartPart.DATE:
-                    svg = svgDates; break;
-                case self.chartPart.VALUE:
-                    svg = svgValues; break;
-                default:
-                    svg = svgChart; break;
-            }
-
-            var result = svg.path(path).attr(attr ? attr : {});
-            
-            return result;
-
-        }
-
-
-        return {            
-            chart: svgChart,
-            chartContainer: container,
-            dates: svgDates,
-            datesContainer: (dateScale ? dateScale : null),
-            values: svgValues,
-            valuesContainer: valueScale,
-            drawLabels: drawLabels,
-            drawPaths: drawPaths,
-            setSize: setSize,
-            clear: clear,
-            getVisibleSize: getVisibleSize,
-            addPath: addPath
-        };
-
-
-    })();
-
-    self.position = {
-        startDate: null,
-        startOffset: 0,
-        endDate: null,
-        endOffset: 0
-    };
-
-    //Size of chart.
-    self.size = {
-        width: 0,
-        height: 0
-    };
-
-}
-SvgPanel.prototype = {
-    
-    bind: function(e) {
-        this.eventHandler.bind(e);
-    },
-    
-    trigger: function(e) {
-        this.eventHandler.trigger(e);
-    },
-    
-    reload: function (timeband, items) {
-        var self = this;
-
-        if (!items || !timeband) return;
-
-        //Get proper SVG renderer object.
-        var renderer = self.chart.type.svgRenderer();
-        if (!renderer) return;
-
-        var visibleSize = this.ui.getVisibleSize();
-
-        renderer.calculatePaths(items, {
-            width: visibleSize.width,
-            height: visibleSize.height,
-            startDate: self.position.startDate,
-            startOffset: self.position.startOffset,
-            endDate: self.position.endDate,
-            endOffset: self.position.endOffset,
-            timeband: timeband
-        });
-
-        self.render(renderer, visibleSize);
-
-    },
-    
-    render: function (renderer, visibleSize) {
-        this.cleanSvgs();
-        this.setSize(visibleSize);
-        this.saveParams(renderer.getParams());
-        this.saveVisibleItems(renderer.getVisibleItems());
-        this.drawPaths(renderer);
-        this.drawLabels(renderer);
-    },
-
-    cleanSvgs: function () {
-        this.ui.clear();
-    },
-
-    saveVisibleItems: function(items){
-        this.visibleItems = items;
-    },
-
-    saveParams: function (params) {
-        this.params = params;
-    },
-
-    setSize: function (size) {
-        this.ui.setSize(size);
-    },
-
-    resize: function () {
-        var items = this.chart.currentItemsSet;
-        var timeband = this.chart.controller.timeband;
-
-        //Items cannot be reloaded, if they have not been loaded yet.
-        if (items) {
-            this.reload(timeband, items);
-        }
-
-    },
-
-    calculateOffsetByItem: function (x) {
-        var self = this;
-        var itemsCounter = self.params.endItem - self.params.startItem + 1;
-        var singleItemWidth = self.size.width / itemsCounter;
-        return x / singleItemWidth;
-    },
-
-    move: function(x, y) {
-        var self = this;
-        var timeband = self.chart.timeband;
-        var items = self.chart.currentItemsSet;
-
-        if (!items || !timeband) return;
-
-        //Get proper SVG renderer object.
-        var renderer = self.chart.type.svgRenderer();
-        if (!renderer) return;
-
-        var visibleSize = this.ui.getVisibleSize();
-        var offsetByItem = this.calculateOffsetByItem(x);
-
-
-        renderer.calculatePaths(items, {
-            width: visibleSize.width,
-            height: visibleSize.height,
-            startDate: self.params.startDate,
-            startOffset: self.params.startOffset + offsetByItem,
-            endDate: self.params.endDate,
-            endOffset: self.params.endOffset + offsetByItem,
-            timeband: timeband
-        });
-
-        self.render(renderer, visibleSize);
-
-    },
-
-    drawPaths: function (renderer) {
-        var paths = renderer.getPathObjects();
-        this.ui.drawPaths(paths);
-    },
-
-    drawLabels: function (renderer) {
-        var labels = renderer.getLabels();
-        this.ui.drawLabels(labels);
-    },
-
-    reset: function () {
-
-        this.position = {
-            startDate: null,
-            startOffset: 0,
-            endDate: null,
-            endOffset: 0
-        };
-
-    }
-
 };
 
 

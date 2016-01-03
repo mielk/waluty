@@ -39,8 +39,6 @@ namespace Stock.Web
                         "~/Scripts/STOCK/Market.js",
                         "~/Scripts/STOCK/Company.js",
                         "~/Scripts/STOCK/QuotationsAnalyzer.js",
-                        "~/Scripts/STOCK/SvgPathFactory.js",
-                        "~/Scripts/STOCK/SvgRenderer.js",
                         "~/Scripts/STOCK/LabelFactory.js",
                         "~/Scripts/STOCK/ProcessButtons.js",
                         "~/Scripts/STOCK/main.js"));
@@ -49,7 +47,9 @@ namespace Stock.Web
                         "~/Scripts/common/Raphael.js",
                         "~/Scripts/charts/Chart.js",
                         "~/Scripts/charts/ChartsContainer.js",
-                        "~/Scripts/charts/ChartController.js"));
+                        "~/Scripts/charts/ChartController.js", 
+                        "~/Scripts/charts/SvgPathFactory.js",
+                        "~/Scripts/charts/SvgContainer.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/analysis").Include(
                         "~/Scripts/analysis/AnalysisController.js"));
