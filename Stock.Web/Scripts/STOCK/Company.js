@@ -185,7 +185,7 @@ function QuotationSet(params) {
             'GetDataSetProperties',
             { pairSymbol: company.symbol, timeband: timeband.symbol },
             {
-                async: true,
+                async: false,
                 callback: function (res) {
                     firstDate = mielk.dates.fromCSharpDateTime(res.firstDate);
                     lastDate = mielk.dates.fromCSharpDateTime(res.lastDate);
@@ -216,6 +216,9 @@ function QuotationSet(params) {
                         fn(properties);
                     }
 
+                },
+                err: function (msg) {
+                    alert(msg.status + ' | ' + msg.statusText);
                 }
             }
         );

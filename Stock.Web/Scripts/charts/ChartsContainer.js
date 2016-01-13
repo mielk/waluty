@@ -11,28 +11,24 @@
     var controls = {};
 
     //[Parameters].
-    var company = params.company;
-    var timeband = params.timeband;
+    self.company = params.company;
+    self.timeband = params.timeband;
 
-    //[Quotations].
-    //Collection of quotation sets for various timebands.
-    //If [company] is reloaded, this object is cleared.
-    var charts = {};
+    //[Settings].
+    //jakie wskaźniki mają być widoczne.
+    //zoom
 
-    //[Chart view parameters].
-    var viewReady = false;
-    var displayedQuotations = params.displayedQuotations || 200;
-    var firstVisibleDate = params.firstVisibleDate;
-    var lastVisibleDate = params.lastVisibleDate || mielk.dates.addDays(new Date(), 5);
-    var minLevel = params.minLevel;
-    var maxLevel = params.maxLevel;
 
+    //[Timeband charts].
+    var activeTimebandChartsContainer;
+    var timebandChartsContainersCache = {};
 
 
     //[Initialize functions].
     function initialize() {
         loadControls();
         assignEvents();
+        reset();
     }
 
     function loadControls() {
@@ -51,17 +47,16 @@
     }
 
     function changeCompany(_company) {
-        if (company !== _company) {
-            company = _company;
-            //Reset quotations set.
+        if (self.company !== _company) {
+            self.company = _company;
             reset();
             load();
         }
     }
 
     function changeTimeband(_timeband) {
-        if (timeband !== _timeband) {
-            timeband = _timeband;
+        if (self.timeband !== _timeband) {
+            self.timeband = _timeband;
             load();
         }
     }
@@ -70,30 +65,34 @@
         //Remove all loaded views.
         $(controls.container).empty();
 
-        //Remove all objects.
-        charts = null;
-        charts = {};
+        //Clear data collections.
+        activeTimebandChartsContainer = undefined;
+        timebandChartsContainersCache = {};
+
     }
 
     //[Loading functions].
     function load() {
 
         //Get the chart assigned to the current timeband.
+        var tcc = timebandChartsContainersCache[self.timeband.symbol];
+
         //If there is no such chart yet, create it and add to the collection.
-        var chart = charts[timeband.symbol];
-        if (!chart) {
-            chart = new Chart({
-                parent: self,
-                type: STOCK.INDICATORS.PRICE,
-                timeband: timeband,
-                company: company,
-                container: controls.container,
-                displayDateScale: true
+        if (!tcc) {
+            tcc = new TimebandChartsContainer({
+                  parent: self
+                //some params.
             });
-            charts[timeband.symbol] = chart;
         }
 
-        chart.activate();
+
+        //Hide the previous chart (if there was one established) ...
+        if (activeTimebandChartsContainer)
+            activeTimebandChartsContainer.deactivate();
+
+        //... assign the new chart as the active one and display it.
+        activeTimebandChartsContainer = tcc;
+        activeTimebandChartsContainer.activate();
 
     }
 

@@ -519,6 +519,7 @@
             fetch: function (controller, method, data, params) {
                 var $result;
                 var callback = (params && params.callback && typeof (params.callback) === 'function' ? params.callback : null);
+                var err = (params && params.err && typeof (params.err) === 'function' ? params.err : null);
 
                 $.ajax({
                     url: '/' + controller + '/' + method,
@@ -536,7 +537,11 @@
                         }
                     },
                     error: function (msg) {
-                        alert(msg.status + ' | ' + msg.statusText);
+                        if (err) {
+                            err(msg);
+                        } else {
+                            alert(msg.status + ' | ' + msg.statusText);
+                        }
                     }
                 });
 

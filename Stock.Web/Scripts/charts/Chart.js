@@ -10,16 +10,16 @@ function Chart(params) {
 
     //Properties.
     var parent = params.parent;
-    var key = params.key || mielk.numbers.generateUuid();
+    var key = params.key || mielk.numbers.generateUUID();
     var timeband = params.timeband;
     var company = params.company;
     var type = params.type;
-    var hasDateScale = params.displayDateScale;
+    //var hasDateScale = params.displayDateScale;
     var dataSet;
     var properties;
 
     //UI.
-    var svg = new SvgPanel(self);
+    //var svg = new SvgPanel(self);
     var controls = {
         parentContainer: params.container
     };
@@ -65,14 +65,14 @@ function Chart(params) {
             ' | maxPrice: ' + properties.maxLevel;
         $(controls.container).html(html);
 
-        //Create SVG Container if it has not been created before...
-        if (!svgContainer) createSvgContainer({
-            parent: self
-        });
-        //... and invoke its method [loadProperties] with the quotations
-        //passed as an input parameter.
-        svgContainer.reset();
-        svgContainer.loadProperties(properties);
+        ////Create SVG Container if it has not been created before...
+        //if (!svgContainer) createSvgContainer({
+        //    parent: self
+        //});
+        ////... and invoke its method [loadProperties] with the quotations
+        ////passed as an input parameter.
+        //svgContainer.reset();
+        //svgContainer.loadProperties(properties);
 
     }
 
@@ -95,17 +95,17 @@ function Chart(params) {
     }
 
     function activate() {
-        $(controls.parentContainer).children().each(function () {
-            $(this).css({
-                'display': 'none'
-            });
-        });
-
         $(controls.container).css({
             'display': 'block',
             'visibility': 'visible'
         });
+    }
 
+    function deactivate() {
+        $(controls.container).css({
+            'display': 'none',
+            'visibility': 'hidden'
+        });
     }
 
 
@@ -118,6 +118,7 @@ function Chart(params) {
 
     //Public API.
     self.activate = activate;
+    self.deactivate = deactivate;
     self.bind = function (e) {
         $(self).bind(e);
     }
@@ -132,132 +133,130 @@ function Chart(params) {
 
 
 
-function Chart(params) {
-    self.key = params.key;
-    self.controller = params.controller;
-    self.div = mielk.resizableDiv({
-        parent: params.container,
-        id: params.key || 'key',
-        minHeight: params.minHeight || 200,
-        maxHeight: params.maxHeight || 800,
-        height: params.height || 0,
-        'class': 'chart'
-    });
-    self.items = mielk.hashTable();
-    self.currentItemsSet = null;
-    self.displayDateScale = self.type.displayDateScale;
+//function Chart(params) {
+//    self.key = params.key;
+//    self.controller = params.controller;
+//    self.div = mielk.resizableDiv({
+//        parent: params.container,
+//        id: params.key || 'key',
+//        minHeight: params.minHeight || 200,
+//        maxHeight: params.maxHeight || 800,
+//        height: params.height || 0,
+//        'class': 'chart'
+//    });
+//    self.items = mielk.hashTable();
+//    self.currentItemsSet = null;
+//    self.displayDateScale = self.type.displayDateScale;
 
-    //Create SVG manager.
-    self.svg = new SvgPanel(self);    
+//    //Create SVG manager.
+//    self.svg = new SvgPanel(self);    
 
-    //Cursor.
-    self.hoverService = new ChartHoverService(self);
+//    //Cursor.
+//    self.hoverService = new ChartHoverService(self);
 
-    //Drawing layer.
-    self.drawLayer = new ChartDrawLayer(self);
+//    //Drawing layer.
+//    self.drawLayer = new ChartDrawLayer(self);
     
 
-    //Events listener.
-    (function eventsListener() {
+//    //Events listener.
+//    (function eventsListener() {
 
 
-        //Changing company or timeband.
-        var companyChangeHandler = (function() {
-            self.controller.bind({
-                'changeCompany changeTimeband': function (e) {
-                    self.svg.reset();
-                    self.company = e.company || self.company;
-                    self.timeband = e.timeband || self.timeband;
-                }
-            });
-        })();
+//        //Changing company or timeband.
+//        var companyChangeHandler = (function() {
+//            self.controller.bind({
+//                'changeCompany changeTimeband': function (e) {
+//                    self.svg.reset();
+//                    self.company = e.company || self.company;
+//                    self.timeband = e.timeband || self.timeband;
+//                }
+//            });
+//        })();
 
 
-        //Resizing chart panel.
-        var resizerHandler = (function() {
-            self.div.bind({
-                resize: function (e) {
-                    self.svg.resize();
-                }
-            });
-            $(window).resize(function () {
-                self.svg.resize();
-            });
-        })();
+//        //Resizing chart panel.
+//        var resizerHandler = (function() {
+//            self.div.bind({
+//                resize: function (e) {
+//                    self.svg.resize();
+//                }
+//            });
+//            $(window).resize(function () {
+//                self.svg.resize();
+//            });
+//        })();
 
 
-        //Hovering.
-        var scrollHandler = (function () {
+//        //Hovering.
+//        var scrollHandler = (function () {
 
-            self.parent.bind({
-                moveChart: function(e) {
-                    self.svg.move(e.x, e.y);
-                }
-            });
+//            self.parent.bind({
+//                moveChart: function(e) {
+//                    self.svg.move(e.x, e.y);
+//                }
+//            });
 
-        })();
-
-
-        var scaleHandler = (function() {
-
-        })();
-
-        var hoverHandler = (function () {
-            //$(self.svg.ui.chartContainer).bind({
-            self.drawLayer.bind({
-                mousemove: function (e) {
-                    self.parent.trigger({
-                        type: 'hoverItem',
-                        pageX: e.pageX,
-                        pageY: e.pageY,
-                        x: e.offsetX,
-                        y: e.offsetY,
-                        source: self
-                    });
-                }
-            });
+//        })();
 
 
-            self.parent.bind({
-                hoverItem: function (e) {
-                    self.hoverService.hover(e);
-                }
-            });
+//        var scaleHandler = (function() {
+
+//        })();
+
+//        var hoverHandler = (function () {
+//            //$(self.svg.ui.chartContainer).bind({
+//            self.drawLayer.bind({
+//                mousemove: function (e) {
+//                    self.parent.trigger({
+//                        type: 'hoverItem',
+//                        pageX: e.pageX,
+//                        pageY: e.pageY,
+//                        x: e.offsetX,
+//                        y: e.offsetY,
+//                        source: self
+//                    });
+//                }
+//            });
 
 
-        })();
+//            self.parent.bind({
+//                hoverItem: function (e) {
+//                    self.hoverService.hover(e);
+//                }
+//            });
+
+
+//        })();
 
 
         
-    })();
+//    })();
 
-}
-Chart.prototype = {
-    injectQuotations: function (timeband, quotations, reload) {
-        var analyzer = this.type.analyzer();
-        var items = analyzer.run(quotations);
-        this.items.setItem(timeband.id, items);
-        this.currentItemsSet = items;
-        if (reload) this.reload(timeband);
-    },
-    reload: function (timeband) {
-        var items = this.items.getItem(timeband.id);
-        this.currentItemsSet = items;
-        this.svg.reload(timeband, items);
-    },
-    content: function () {
-        return this.div.content();
-    },
-    getItems: function (timeband) {
-        if (timeband) {
-            return this.items.getItem(timeband.id) || [];
-        } else {
-            return this.currentItemsSet || [];
-        }
-    }
-};
-
-
+//}
+//Chart.prototype = {
+//    injectQuotations: function (timeband, quotations, reload) {
+//        var analyzer = this.type.analyzer();
+//        var items = analyzer.run(quotations);
+//        this.items.setItem(timeband.id, items);
+//        this.currentItemsSet = items;
+//        if (reload) this.reload(timeband);
+//    },
+//    reload: function (timeband) {
+//        var items = this.items.getItem(timeband.id);
+//        this.currentItemsSet = items;
+//        this.svg.reload(timeband, items);
+//    },
+//    content: function () {
+//        return this.div.content();
+//    },
+//    getItems: function (timeband) {
+//        if (timeband) {
+//            return this.items.getItem(timeband.id) || [];
+//        } else {
+//            return this.currentItemsSet || [];
+//        }
+//    }
+//};
 
 
 
@@ -272,246 +271,248 @@ Chart.prototype = {
 
 
 
-function ChartDrawLayer(chart) {
 
-    'use strict';
 
-    var self = this;
-    self.ChartDrawLayer = true;
-    self.chart = chart;
-    self.leftClicked = false;
-    self.rightClicked = false;
-    self.resetPosition();
+//function ChartDrawLayer(chart) {
 
-    self.container = $('<div/>', {        
-        'class': 'draw-layer'
-    }).appendTo(self.chart.content());
+//    'use strict';
 
-    //Event listener.
-    $(self.container).bind({
-        mousedown: function (e) {
-            self.leftClicked = (e.which === 1);
-            self.rightClicked = (e.which === 3);
-            self.position = {
-                x: e.offsetX,
-                y: e.offsetY
-            };
-            mielk.notify.display('clicked | x: ' + self.position.x + '; y: ' + self.position.y);
-        },
-        mouseup: function(e) {
-            self.leftClicked = false;
-            self.rightClicked = false;
-            self.resetPosition();
-            mielk.notify.display('released');
-        },
-        mousemove: function (e) {
-            if (self.leftClicked) {
+//    var self = this;
+//    self.ChartDrawLayer = true;
+//    self.chart = chart;
+//    self.leftClicked = false;
+//    self.rightClicked = false;
+//    self.resetPosition();
+
+//    self.container = $('<div/>', {        
+//        'class': 'draw-layer'
+//    }).appendTo(self.chart.content());
+
+//    //Event listener.
+//    $(self.container).bind({
+//        mousedown: function (e) {
+//            self.leftClicked = (e.which === 1);
+//            self.rightClicked = (e.which === 3);
+//            self.position = {
+//                x: e.offsetX,
+//                y: e.offsetY
+//            };
+//            mielk.notify.display('clicked | x: ' + self.position.x + '; y: ' + self.position.y);
+//        },
+//        mouseup: function(e) {
+//            self.leftClicked = false;
+//            self.rightClicked = false;
+//            self.resetPosition();
+//            mielk.notify.display('released');
+//        },
+//        mousemove: function (e) {
+//            if (self.leftClicked) {
                 
-                //Przesuwanie wykresem.
-                var position = { x: e.offsetX, y: e.offsetY };
-                var offset = {
-                    x: self.position.x - position.x,
-                    y: self.position.y - position.y
-                };
-                self.chart.parent.trigger({
-                    type: 'moveChart',
-                    x: offset.x,
-                    y: offset.y
-                });
+//                //Przesuwanie wykresem.
+//                var position = { x: e.offsetX, y: e.offsetY };
+//                var offset = {
+//                    x: self.position.x - position.x,
+//                    y: self.position.y - position.y
+//                };
+//                self.chart.parent.trigger({
+//                    type: 'moveChart',
+//                    x: offset.x,
+//                    y: offset.y
+//                });
                 
-            } else if (self.rightClicked) {
-                //Skalowanie wykresu.
-            } else {
-                //Rysowanie linii trendu.
-            }
-        },
-        leave: function(e) {
-            mielk.notify.display('leaved');
-        }
-    });
+//            } else if (self.rightClicked) {
+//                //Skalowanie wykresu.
+//            } else {
+//                //Rysowanie linii trendu.
+//            }
+//        },
+//        leave: function(e) {
+//            mielk.notify.display('leaved');
+//        }
+//    });
 
-}
+//}
 
-ChartDrawLayer.prototype = {    
-    trigger: function(e) {
-        this.container.trigger(e);
-    },
-    bind: function(e) {
-        this.container.bind(e);
-    },
-    resetPosition: function() {
-        this.position = { x: 0, y: 0 };
-    }
-};
+//ChartDrawLayer.prototype = {    
+//    trigger: function(e) {
+//        this.container.trigger(e);
+//    },
+//    bind: function(e) {
+//        this.container.bind(e);
+//    },
+//    resetPosition: function() {
+//        this.position = { x: 0, y: 0 };
+//    }
+//};
 
 
-function ChartHoverService(chart) {
+//function ChartHoverService(chart) {
     
-    'use strict';
+//    'use strict';
 
-    var self = this;
-    self.ChartHoverService = true;
-    self.chart = chart;
-    self.currentItem = null;
-    self.detailsPanel = null;
-    self.horizontalLine = null;
-    self.verticalLine = null;
-    self.valueIndicator = null;
-    self.dateIndicator = null;
-    self.crosshairPosition = {
-        x: 0,
-        y: 0
-    };
-    //self.crosshair = null;
+//    var self = this;
+//    self.ChartHoverService = true;
+//    self.chart = chart;
+//    self.currentItem = null;
+//    self.detailsPanel = null;
+//    self.horizontalLine = null;
+//    self.verticalLine = null;
+//    self.valueIndicator = null;
+//    self.dateIndicator = null;
+//    self.crosshairPosition = {
+//        x: 0,
+//        y: 0
+//    };
+//    //self.crosshair = null;
 
 
-    self.prepareUserInterface();
+//    self.prepareUserInterface();
 
-}
-ChartHoverService.prototype = {
+//}
+//ChartHoverService.prototype = {
 
-    prepareUserInterface: function () {
-        var self = this;
+//    prepareUserInterface: function () {
+//        var self = this;
         
-        self.horizontalLine = $('<div/>', {
-            'class': 'crosshair crosshair-horizontal'
-        }).appendTo(self.chart.svg.ui.chartContainer);
+//        self.horizontalLine = $('<div/>', {
+//            'class': 'crosshair crosshair-horizontal'
+//        }).appendTo(self.chart.svg.ui.chartContainer);
 
-        self.valueIndicator = $('<div/>', {
-            'class': 'scale-indicator value-indicator'
-        }).appendTo(self.chart.svg.ui.valuesContainer);
+//        self.valueIndicator = $('<div/>', {
+//            'class': 'scale-indicator value-indicator'
+//        }).appendTo(self.chart.svg.ui.valuesContainer);
 
-        self.verticalLine = $('<div/>', {
-            'class': 'crosshair crosshair-vertical'
-        }).appendTo(self.chart.svg.ui.chartContainer);
+//        self.verticalLine = $('<div/>', {
+//            'class': 'crosshair crosshair-vertical'
+//        }).appendTo(self.chart.svg.ui.chartContainer);
         
-        self.dateIndicator = $('<div/>', {
-            'class': 'scale-indicator date-indicator'
-        }).appendTo(self.chart.svg.ui.datesContainer);
+//        self.dateIndicator = $('<div/>', {
+//            'class': 'scale-indicator date-indicator'
+//        }).appendTo(self.chart.svg.ui.datesContainer);
 
-        self.detailsPanel = $('<div/>', {
-            'class': 'chart-details-panel'
-        }).appendTo(self.chart.svg.ui.chartContainer);
+//        self.detailsPanel = $('<div/>', {
+//            'class': 'chart-details-panel'
+//        }).appendTo(self.chart.svg.ui.chartContainer);
 
-    },
+//    },
     
-    hover: function (e) {
-        var self = this;
+//    hover: function (e) {
+//        var self = this;
 
-        self.locateCrosshair(e.x, e.y, e.source === self.chart);
-        if (e.x > 0) {
-            self.displayItemSummary(e.x);
+//        self.locateCrosshair(e.x, e.y, e.source === self.chart);
+//        if (e.x > 0) {
+//            self.displayItemSummary(e.x);
             
-        }
+//        }
         
 
-        //if (item) {
-        //    self.currentItem = item;
-        //}
+//        //if (item) {
+//        //    self.currentItem = item;
+//        //}
 
-    },
+//    },
     
-    locateCrosshair: function (x, y, horizontal) {
-        var self = this;
+//    locateCrosshair: function (x, y, horizontal) {
+//        var self = this;
 
-        if (horizontal) {
+//        if (horizontal) {
             
-            $(self.horizontalLine).css({
-                'display': 'block'
-            });
+//            $(self.horizontalLine).css({
+//                'display': 'block'
+//            });
 
-            if (y > 0) {
-                $(self.horizontalLine).css({
-                    'top': y + 'px'
-                });
-                self.crosshairPosition.y = y;
-            }
+//            if (y > 0) {
+//                $(self.horizontalLine).css({
+//                    'top': y + 'px'
+//                });
+//                self.crosshairPosition.y = y;
+//            }
 
-            self.displayValueIndicator(y);
-
-
-        } else {
-            $(self.horizontalLine).css({
-                'display': 'none'
-            });
-
-            $(self.valueIndicator).css({
-                'display': 'none'
-            });
-
-        }
+//            self.displayValueIndicator(y);
 
 
-        if (x > 0) {
-            $(self.verticalLine).css({
-                'left': x + 'px'
-            });
-            self.crosshairPosition.x = x;
-        }
+//        } else {
+//            $(self.horizontalLine).css({
+//                'display': 'none'
+//            });
 
-    },
+//            $(self.valueIndicator).css({
+//                'display': 'none'
+//            });
 
-    displayValueIndicator: function (y) {
-        var self = this;
-        var p = self.chart.svg.params;
+//        }
 
-        //If params is null, chart is not loaded yet.
-        if (p && y > 0) {
-            var fromBottom = p.height - y;
-            var value = (p.top - p.bottom) * (fromBottom / p.height) + p.bottom;
 
-            $(self.valueIndicator).css({
-                'display': 'block',
-                'top': y + 'px'
-            });
-            $(self.valueIndicator).html(value.toFixed(2));
+//        if (x > 0) {
+//            $(self.verticalLine).css({
+//                'left': x + 'px'
+//            });
+//            self.crosshairPosition.x = x;
+//        }
 
-        }
-    },
+//    },
+
+//    displayValueIndicator: function (y) {
+//        var self = this;
+//        var p = self.chart.svg.params;
+
+//        //If params is null, chart is not loaded yet.
+//        if (p && y > 0) {
+//            var fromBottom = p.height - y;
+//            var value = (p.top - p.bottom) * (fromBottom / p.height) + p.bottom;
+
+//            $(self.valueIndicator).css({
+//                'display': 'block',
+//                'top': y + 'px'
+//            });
+//            $(self.valueIndicator).html(value.toFixed(2));
+
+//        }
+//    },
     
-    displayDateIndicator: function(x, date) {
-        var self = this;
+//    displayDateIndicator: function(x, date) {
+//        var self = this;
 
-        //If params is null, chart is not loaded yet.
-        if (x > 0) {
-            var value = mielk.dates.toString(date);
+//        //If params is null, chart is not loaded yet.
+//        if (x > 0) {
+//            var value = mielk.dates.toString(date);
 
-            $(self.dateIndicator).html(value);
-            $(self.dateIndicator).css({
-                'display': (value ? 'block' : 'none'),
-                'left': x + 'px'
-            });
+//            $(self.dateIndicator).html(value);
+//            $(self.dateIndicator).css({
+//                'display': (value ? 'block' : 'none'),
+//                'left': x + 'px'
+//            });
 
-        }
-    },
+//        }
+//    },
 
-    displayItemSummary: function(x) {
-        var self = this;
-        var chart = this.chart;
+//    displayItemSummary: function(x) {
+//        var self = this;
+//        var chart = this.chart;
 
-        //var item = mielk.arrays.firstGreater(chart.currentItemsSet, x, function ($i, $x) {
-        var item = mielk.arrays.firstGreater(chart.svg.visibleItems, x, function ($i, $x) {
-            if ($i.left > $x) return 1;
-            if ($i.right < $x) return -1;
-            return true;
-        });
-
-
-        if (item) {
-            var labelFactory = this.chart.type.labelFactory();
-            var labels = labelFactory.produceLabels(item);
-
-            $(self.detailsPanel).empty();
-            for (var i = 0; i < labels.length; i++) {
-                var set = labels[i];
-                set.appendTo(self.detailsPanel);
-            }
-
-            self.displayDateIndicator(x, item.date);
-
-        }
+//        //var item = mielk.arrays.firstGreater(chart.currentItemsSet, x, function ($i, $x) {
+//        var item = mielk.arrays.firstGreater(chart.svg.visibleItems, x, function ($i, $x) {
+//            if ($i.left > $x) return 1;
+//            if ($i.right < $x) return -1;
+//            return true;
+//        });
 
 
-    }
+//        if (item) {
+//            var labelFactory = this.chart.type.labelFactory();
+//            var labels = labelFactory.produceLabels(item);
 
-};
+//            $(self.detailsPanel).empty();
+//            for (var i = 0; i < labels.length; i++) {
+//                var set = labels[i];
+//                set.appendTo(self.detailsPanel);
+//            }
+
+//            self.displayDateIndicator(x, item.date);
+
+//        }
+
+
+//    }
+
+//};
