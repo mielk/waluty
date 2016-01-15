@@ -87,7 +87,6 @@
         self.divId = params.divId;
         self.div = document.getElementById(self.divId);
 
-
         self.hideOtherPanels = function () {
             $(controls.contentContainer).children().each(function () {
                 if (this.id === self.divId) {

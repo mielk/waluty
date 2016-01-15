@@ -10,20 +10,13 @@ function Chart(params) {
 
     //Properties.
     var parent = params.parent;
-    var key = params.key || mielk.numbers.generateUUID();
-    var timeband = params.timeband;
-    var company = params.company;
     var type = params.type;
-    //var hasDateScale = params.displayDateScale;
-    var dataSet;
-    var properties;
+    var index = params.index;
+    var key = params.key + '_' + params.type.name;
 
     //UI.
     //var svg = new SvgPanel(self);
-    var controls = {
-        parentContainer: params.container
-    };
-
+    var controls = { };
 
 
 
@@ -31,14 +24,6 @@ function Chart(params) {
         //Generate GUI and assign events.
         loadControls();
         assignEvents();
-
-        //Load data set and its properties.
-        dataSet = company.getDataSet(timeband);
-        dataSet.loadProperties(loadProperties);
-        dataSet.loadQuotations(loadQuotations);
-
-        //Trigger data.
-
 
         //Draw actual chart.
 
@@ -48,50 +33,17 @@ function Chart(params) {
         controls.container = $('<div/>', {
             'class': 'chart-container'
         }).css({
-            'background-color': 'red'
-        }).appendTo(controls.parentContainer);
+            'background-color': params.type.color,
+            'height': params.settings.height + 'px'
+        }).appendTo(params.container);
+
+        var html = parent.parent.company.displayed + ' | ' + parent.parent.timeband.symbol + ' | ' + params.type.name ;
+        $(controls.container).html(html);
+
     }
 
     function assignEvents() {
 
-    }
-
-    function loadProperties($properties) {
-        properties = $properties;
-        var html = '   counter: ' + properties.actualQuotationsCounter + '(' + properties.realQuotationsCounter + ')' +
-            ' | firstDate: ' + mielk.dates.toString(properties.firstDate, true) + ' (' + properties.firstDate.getDay() + ')' +
-            ' | lastDate: ' + mielk.dates.toString(properties.lastDate, true) + ' (' + properties.lastDate.getDay() + ')' +
-            ' | minPrice: ' + properties.minLevel +
-            ' | maxPrice: ' + properties.maxLevel;
-        $(controls.container).html(html);
-
-        ////Create SVG Container if it has not been created before...
-        //if (!svgContainer) createSvgContainer({
-        //    parent: self
-        //});
-        ////... and invoke its method [loadProperties] with the quotations
-        ////passed as an input parameter.
-        //svgContainer.reset();
-        //svgContainer.loadProperties(properties);
-
-    }
-
-    function loadQuotations(quotations) {
-
-        //Create SVG Container if it has not been created before...
-        if (!svgContainer) createSvgContainer({
-            parent: self
-        });
-        //... and invoke its method [loadQuotations] with the quotations
-        //passed as an input parameter.
-        svgContainer.loadQuotations(quotations);
-
-    }
-
-    function createSvgContainer() {
-        svgContainer = new SvgContainer({
-            parent: self
-        });
     }
 
     function activate() {

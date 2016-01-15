@@ -101,7 +101,8 @@
             displayDateScale: true,
             initialHeight: 600,
             minValue: 0,
-            maxValue: null
+            maxValue: null,
+            color: 'blue'
         },
         MACD: {
             id: 2,
@@ -119,7 +120,8 @@
             initialHeight: 300,
             negativeAllowed: true,
             minValue: null,
-            maxValue: null
+            maxValue: null,
+            color: 'yellow'
         },
         ADX: {
             id: 3,
@@ -137,7 +139,8 @@
             initialHeight: 300,
             negativeAllowed: false,
             minValue: 0,
-            maxValue: 100
+            maxValue: 100,
+            color: 'brown'
         },
         getItem: function (value) {
             for (var key in this) {
@@ -173,39 +176,50 @@
     };
 
     var config = {
-        chartMargin: 0.1,
-        candleSpace: 0.35,
-        ascCandleColor: 'white',
-        descCandleColor: 'black',
-        verticalWeeksLinesColor: '#EEE',
-        verticalMonthsLinesColor: '#CCC',
-        verticalYearsLinesColor: '#18285C',
-        transparent: 'rgba(255, 255, 255, 0)',
-        timeScaleHeight: 50,
-        valuesScaleWidth: 50,
-        dateRangeIndicator: 2,
-        dataLabelColor: '#777',
-        valueLabelColor: '#777',
-        horizontalLinesColor: '#EEE',
-        valueScaleLineWidth: 5,
-        valueScaleIndicatorLength: '#777',
-        valueLabelLeft: 17,
+
+        candle: {
+            initialWidth: 8
+        }
+        , timeScale: {
+            height: 50
+        }
+        , valueScale: {
+            width: 100
+        }
+
+        //chartMargin: 0.1,
+        //candleSpace: 0.35,
+        //ascCandleColor: 'white',
+        //descCandleColor: 'black',
+        //verticalWeeksLinesColor: '#EEE',
+        //verticalMonthsLinesColor: '#CCC',
+        //verticalYearsLinesColor: '#18285C',
+        //transparent: 'rgba(255, 255, 255, 0)',
+        
+        //valuesScaleWidth: 50,
+        //dateRangeIndicator: 2,
+        //dataLabelColor: '#777',
+        //valueLabelColor: '#777',
+        //horizontalLinesColor: '#EEE',
+        //valueScaleLineWidth: 5,
+        //valueScaleIndicatorLength: '#777',
+        //valueLabelLeft: 17,
         
         //MACD
-        histogramSpace: 0.35,
-        histogramLineColor: '#666',
-        macdLineColor: '#222',
-        signalLineColor: '#999',
-        histogramAscFillColor: 'green',
-        histogramDescFillColor: 'red',
+        //histogramSpace: 0.35,
+        //histogramLineColor: '#666',
+        //macdLineColor: '#222',
+        //signalLineColor: '#999',
+        //histogramAscFillColor: 'green',
+        //histogramDescFillColor: 'red',
         
         //ADX
-        diPlusLineColor: 'green',
-        diMinusLineColor: 'red',
-        adxLineColor: 'blue',
+        //diPlusLineColor: 'green',
+        //diMinusLineColor: 'red',
+        //adxLineColor: 'blue',
         
         //Peaks & Troughs
-        extremaCircleStrokeColor: '#CCC'
+        //extremaCircleStrokeColor: '#CCC'
 
     };
 

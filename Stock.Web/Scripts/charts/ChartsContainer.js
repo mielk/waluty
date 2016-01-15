@@ -15,6 +15,30 @@
     self.timeband = params.timeband;
 
     //[Settings].
+    self.settings = {};
+    self.settings[STOCK.INDICATORS.PRICE.name] = {
+        visible: true,
+        height: 500,
+        trendlines: params.showTrendlines,
+        peaks: params.showPeaks
+    };
+    self.settings[STOCK.INDICATORS.MACD.name] = {
+        visible: params.showMACD,
+        height: 150
+    };
+    self.settings[STOCK.INDICATORS.ADX.name] = {
+        visible: params.showADX,
+        height: 150
+    };
+    controller.bind({
+        showMACD: function (e) {
+            self.settings[STOCK.INDICATORS.MACD.name].visible = e.value;
+        },
+        showADX: function (e) {
+            self.settings[STOCK.INDICATORS.ADX.name].visible = e.value;
+        }
+    });
+
     //jakie wskaźniki mają być widoczne.
     //zoom
 
@@ -81,8 +105,10 @@
         if (!tcc) {
             tcc = new TimebandChartsContainer({
                   parent: self
+                , container: controls.container
                 //some params.
             });
+            timebandChartsContainersCache[self.timeband.symbol] = tcc;
         }
 
 
@@ -98,9 +124,6 @@
 
 
 
-    initialize();
-
-
     //Public API.
     self.bind = function (e) {
         $(self).bind(e);
@@ -110,5 +133,11 @@
     }
     self.initialize = initialize;
     self.load = load;
+
+
+
+
+
+    initialize();
 
 }
