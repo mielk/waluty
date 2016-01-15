@@ -118,6 +118,7 @@ function QuotationSet(params) {
 
     //[Properties].
     var quotations = {};
+    var quotationsArray;
     var firstDate;
     var lastDate;
     var minLevel;
@@ -146,7 +147,7 @@ function QuotationSet(params) {
 
                         //If function has been passed as a parameter, call it.
                         if (mielk.objects.isFunction(fn)) {
-                            fn(quotations);
+                            fn({ obj: quotations, arr: quotationsArray });
                         }
 
                     }
@@ -168,6 +169,7 @@ function QuotationSet(params) {
             if (dataItem) {
                 var quotation = new Quotation(data[i]);
                 dataItem.quotation = quotation;
+                quotationsArray[dataItem.index] = quotation;
             }
 
         }
@@ -195,7 +197,7 @@ function QuotationSet(params) {
                     
                     //Create object for quotations (with slot for each date
                     //between [firstDate] and [lastDate].
-                    createQuotationsObject();
+                    createQuotationsSets();
                     realQuotationsCounter = Object.keys(quotations).length;
 
                     //Flag this data set as having properties already loaded.
@@ -225,7 +227,7 @@ function QuotationSet(params) {
 
     }
 
-    function createQuotationsObject() {
+    function createQuotationsSets() {
 
         //Check if properties are already loaded.
         //If not, this function cannot continue.
@@ -247,6 +249,9 @@ function QuotationSet(params) {
             date = timeband.next(date);
 
         }
+
+        //Resize quotations array.
+        quotationsArray = new Array(index);
 
     }
 

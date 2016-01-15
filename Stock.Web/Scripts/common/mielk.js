@@ -732,7 +732,7 @@
             for (var i = $start; i < $end; i++) {
                 var item = array[i];
                 var value = fn(item);
-                if (!result || value > result) result = value;
+                if (value !== undefined && (!result || value > result)) result = value;
             }
 
             return result;
@@ -746,7 +746,7 @@
             for (var i = $start; i < $end; i++) {
                 var item = array[i];
                 var value = fn(item);
-                if (!result || value < result) result = value;
+                if (value !== undefined && (!result || value < result)) result = value;
             }
 
             return result;

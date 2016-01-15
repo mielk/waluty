@@ -15,11 +15,13 @@
     self.timeband = params.timeband;
 
     //[Settings].
-    self.settings = {};
+    self.settings = { };
     self.settings[STOCK.INDICATORS.PRICE.name] = {
         visible: true,
-        trendlines: params.showTrendlines,
-        peaks: params.showPeaks
+        properties: {
+            trendlines: params.showTrendlines,
+            peaks: params.showPeaks
+        }
     };
     self.settings[STOCK.INDICATORS.MACD.name] = {
         visible: params.showMACD
@@ -27,6 +29,9 @@
     self.settings[STOCK.INDICATORS.ADX.name] = {
         visible: params.showADX
     };
+
+
+
 
     //jakie wskaźniki mają być widoczne.
     //zoom

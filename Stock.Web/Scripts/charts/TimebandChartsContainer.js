@@ -11,10 +11,12 @@ function TimebandChartsContainer(params) {
     //Properties.
     var parent = params.parent;
     var key = params.key || mielk.numbers.generateUUID();
+    //self.singleItemWidth = STOCK.CONFIG.candle.width;
 
     //Data sets.
     var dataSet;
     var properties;
+    var quotations;
 
     //UI.
     var controls = { };
@@ -31,11 +33,12 @@ function TimebandChartsContainer(params) {
         //Load data set and its properties.
         dataSet = parent.company.getDataSet(parent.timeband);
         dataSet.loadProperties(loadProperties);
-        dataSet.loadQuotations(loadQuotations);
 
         //Draw actual chart.
         loadCharts();
         loadTimeScale();
+
+        dataSet.loadQuotations(loadQuotations);
 
     }
 
@@ -54,18 +57,17 @@ function TimebandChartsContainer(params) {
 
     function loadProperties($properties) {
         properties = $properties;
-        properties.width = properties.realQuotationsCounter * STOCK.CONFIG.candle.initialWidth;
+        properties.width = properties.realQuotationsCounter * STOCK.CONFIG.candle.width;
     }
 
-    function loadQuotations(quotations) {
+    function loadQuotations($quotations) {
+        quotations = $quotations;
 
-        ////Create SVG Container if it has not been created before...
-        //if (!svgContainer) createSvgContainer({
-        //    parent: self
-        //});
-        ////... and invoke its method [loadQuotations] with the quotations
-        ////passed as an input parameter.
-        //svgContainer.loadQuotations(quotations);
+        //Propagate to charts.
+        var arrCharts = mielk.arrays.fromObject(charts);
+        arrCharts.forEach(function (chart) {
+            chart.loadQuotations(quotations);
+        });
 
     }
 
@@ -83,20 +85,22 @@ function TimebandChartsContainer(params) {
     }
 
     function loadCharts() {
-        addChart(STOCK.INDICATORS.PRICE);
-        addChart(STOCK.INDICATORS.MACD);
-        addChart(STOCK.INDICATORS.ADX);
+        addChart(STOCK.INDICATORS.PRICE, 0);
+        addChart(STOCK.INDICATORS.MACD, 1);
+        addChart(STOCK.INDICATORS.ADX, 2);
     }
 
-    function addChart(type) {
-        charts[type] = new Chart({
+    function addChart(type, index) {
+        charts[type.name] = new Chart({
             parent: self,
             key: key,
+            index: index,
             type: type,
             container: controls.container,
             visible: parent.settings[type.name].visible,
             height: type.initialHeight,
-            width: properties.width
+            width: properties.width,
+            properties: parent.settings[type.name].properties
         });
     }
 

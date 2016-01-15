@@ -176,9 +176,17 @@
     };
 
     var config = {
-
+        chart: {
+            margin: 0.1
+        },
         candle: {
-            initialWidth: 8
+            width: 8,
+            space: 0.35,
+            color: {
+                ascending: 'white',
+                descending: 'black'
+            }
+            
         }
         , timeScale: {
             height: 50
@@ -186,6 +194,10 @@
         , valueScale: {
             width: 100
         }
+        , peaks: {
+            distance: 24
+        }
+
 
         //chartMargin: 0.1,
         //candleSpace: 0.35,

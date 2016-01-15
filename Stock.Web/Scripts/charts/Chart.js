@@ -15,6 +15,9 @@ function Chart(params) {
     var key = params.key + '_' + params.type.name;
     var visible = params.visible;
     var width = params.width;
+    var height = params.height;
+    var properties = params.properties;
+    //self.singleItemWidth = parent.singleItemWidth;
 
     //UI.
     var svg = undefined;
@@ -32,7 +35,9 @@ function Chart(params) {
             parent: self,
             container: controls.visible,
             width: width,
-            key: key
+            height: height,
+            key: key,
+            properties: properties
         });
 
         //Show or hide this chart depending on the [visible] property.
@@ -77,6 +82,12 @@ function Chart(params) {
 
     }
 
+    function loadQuotations(quotations) {
+        if (type.name === STOCK.INDICATORS.PRICE.name) {
+            svg.loadQuotations(quotations);
+        }
+    }
+
     function show() {
         $(controls.container).css({
             'display': 'block',
@@ -100,14 +111,15 @@ function Chart(params) {
 
 
     //Public API.
-    self.show = show;
-    self.hide= hide;
     self.bind = function (e) {
         $(self).bind(e);
     }
     self.trigger = function (e) {
         $(self).trigger(e);
     }
+    self.show = show;
+    self.hide = hide;
+    self.loadQuotations = loadQuotations;
 
 }
 
