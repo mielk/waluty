@@ -49,8 +49,8 @@ namespace Stock.Web
                         "~/Scripts/charts/TimebandChartsContainer.js", 
                         "~/Scripts/charts/ChartsContainer.js",
                         "~/Scripts/charts/ChartController.js",
-                        "~/Scripts/charts/SvgPathFactory.js",
-                        "~/Scripts/charts/SvgContainer.js"));
+                        //"~/Scripts/charts/SvgPathFactory.js",
+                        "~/Scripts/charts/SvgPanel.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/analysis").Include(
                         "~/Scripts/analysis/AnalysisController.js"));

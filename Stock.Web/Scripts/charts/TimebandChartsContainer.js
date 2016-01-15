@@ -41,7 +41,7 @@ function TimebandChartsContainer(params) {
 
     function loadControls() {
         controls.container = $('<div/>', {
-            'class': 'chart-container',
+            'class': 'timeband-charts-container',
             id: 'chart-container-' + key
         }).css({
             'background-color': 'red'
@@ -89,16 +89,15 @@ function TimebandChartsContainer(params) {
     }
 
     function addChart(type) {
-        var settings = parent.settings[type.name];
-        if (settings.visible) {
-            charts[type] = new Chart({
-                parent: self,
-                key: key,
-                type: type,
-                container: controls.container,
-                settings: settings
-            });
-        }
+        charts[type] = new Chart({
+            parent: self,
+            key: key,
+            type: type,
+            container: controls.container,
+            visible: parent.settings[type.name].visible,
+            height: type.initialHeight,
+            width: properties.width
+        });
     }
 
 
@@ -166,20 +165,20 @@ function TimeScale(params) {
 
     function loadControls() {
         controls.container = $('<div/>', {
-            'class': 'chart-container-date-scale-container'
+            'class': 'date-scale-container'
         }).css({
             'height': STOCK.CONFIG.timeScale.height + 'px',
             'padding-right': STOCK.CONFIG.valueScale.width + 'px'
         }).appendTo(params.container);
 
         controls.visible = $('<div/>', {
-            'class': 'chart-container-date-scale-visible'
+            'class': 'date-scale-visible'
         }).css({
             'right': STOCK.CONFIG.valueScale.width + 'px'
         }).appendTo(controls.container);
 
         controls.labels = $('<div/>', {
-            'class': 'chart-container-date-scale-labels'
+            'class': 'date-scale-labels'
         }).css({
             'width': params.width + 'px'
         }).appendTo(controls.visible);

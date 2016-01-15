@@ -99,7 +99,7 @@
                 return new PriceLabelFactory();
             },
             displayDateScale: true,
-            initialHeight: 600,
+            initialHeight: 500,
             minValue: 0,
             maxValue: null,
             color: 'blue'
@@ -117,7 +117,7 @@
                 return new MacdLabelFactory();
             },
             displayDateScale: false,
-            initialHeight: 300,
+            initialHeight: 150,
             negativeAllowed: true,
             minValue: null,
             maxValue: null,
@@ -136,7 +136,7 @@
                 return new AdxLabelFactory();
             },
             displayDateScale: false,
-            initialHeight: 300,
+            initialHeight: 150,
             negativeAllowed: false,
             minValue: 0,
             maxValue: 100,

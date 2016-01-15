@@ -18,26 +18,15 @@
     self.settings = {};
     self.settings[STOCK.INDICATORS.PRICE.name] = {
         visible: true,
-        height: 500,
         trendlines: params.showTrendlines,
         peaks: params.showPeaks
     };
     self.settings[STOCK.INDICATORS.MACD.name] = {
-        visible: params.showMACD,
-        height: 150
+        visible: params.showMACD
     };
     self.settings[STOCK.INDICATORS.ADX.name] = {
-        visible: params.showADX,
-        height: 150
+        visible: params.showADX
     };
-    controller.bind({
-        showMACD: function (e) {
-            self.settings[STOCK.INDICATORS.MACD.name].visible = e.value;
-        },
-        showADX: function (e) {
-            self.settings[STOCK.INDICATORS.ADX.name].visible = e.value;
-        }
-    });
 
     //jakie wskaźniki mają być widoczne.
     //zoom
@@ -66,6 +55,12 @@
             },
             changeTimeband: function (e) {
                 changeTimeband(e.timeband);
+            },
+            showMACD: function (e) {
+                self.settings[STOCK.INDICATORS.MACD.name].visible = e.value;
+            },
+            showADX: function (e) {
+                self.settings[STOCK.INDICATORS.ADX.name].visible = e.value;
             }
         });
     }

@@ -13,9 +13,11 @@ function Chart(params) {
     var type = params.type;
     var index = params.index;
     var key = params.key + '_' + params.type.name;
+    var visible = params.visible;
+    var width = params.width;
 
     //UI.
-    //var svg = new SvgPanel(self);
+    var svg = undefined;
     var controls = { };
 
 
@@ -26,6 +28,18 @@ function Chart(params) {
         assignEvents();
 
         //Draw actual chart.
+        svg = new SvgPanel({
+            parent: self,
+            container: controls.visible,
+            width: width,
+            key: key
+        });
+
+        //Show or hide this chart depending on the [visible] property.
+        if (visible) 
+            show();
+        else
+            hide();
 
     }
 
@@ -34,11 +48,28 @@ function Chart(params) {
             'class': 'chart-container'
         }).css({
             'background-color': params.type.color,
-            'height': params.settings.height + 'px'
+            'height': params.height + 'px'
         }).appendTo(params.container);
 
-        var html = parent.parent.company.displayed + ' | ' + parent.parent.timeband.symbol + ' | ' + params.type.name ;
-        $(controls.container).html(html);
+        controls.values = $('<div/>', {
+            'class': 'chart-container-values'
+        }).css({
+            'width': STOCK.CONFIG.valueScale.width + 'px'
+        }).appendTo(controls.container);
+
+        controls.visible = $('<div/>', {
+            'class': 'chart-container-visible'
+        }).css({
+            'right': STOCK.CONFIG.valueScale.width + 'px'
+        }).appendTo(controls.container);
+
+
+
+        if (visible) {
+            show();
+        } else {
+            hide();
+        }
 
     }
 
@@ -46,14 +77,14 @@ function Chart(params) {
 
     }
 
-    function activate() {
+    function show() {
         $(controls.container).css({
             'display': 'block',
             'visibility': 'visible'
         });
     }
 
-    function deactivate() {
+    function hide() {
         $(controls.container).css({
             'display': 'none',
             'visibility': 'hidden'
@@ -69,8 +100,8 @@ function Chart(params) {
 
 
     //Public API.
-    self.activate = activate;
-    self.deactivate = deactivate;
+    self.show = show;
+    self.hide= hide;
     self.bind = function (e) {
         $(self).bind(e);
     }
