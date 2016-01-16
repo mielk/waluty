@@ -139,7 +139,7 @@ function Chart(params) {
     self.loadQuotations = loadQuotations;
     self.slide = slide;
     self.offset = function () {
-        return parent.offset;
+        return parent.offset.value;
     }
 
 

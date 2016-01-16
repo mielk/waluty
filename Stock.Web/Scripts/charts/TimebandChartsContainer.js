@@ -21,8 +21,12 @@ function TimebandChartsContainer(params) {
     //UI.
     var controls = { };
     var timeScale;
-    var charts = { };
-    self.offset = 12;
+    var charts = {};
+    self.offset = {
+        value: -50,
+        min: -100,
+        max: undefined
+    }
 
 
     function initialize() {
@@ -51,6 +55,7 @@ function TimebandChartsContainer(params) {
         }).css({
             'background-color': 'red'
         }).appendTo(params.container);
+
     }
 
     function assignEvents() {
@@ -64,6 +69,11 @@ function TimebandChartsContainer(params) {
 
     function loadQuotations($quotations) {
         quotations = $quotations;
+
+        //Set max offset.
+        self.offset.max = quotations.arr.length * STOCK.CONFIG.candle.width 
+                            - $(controls.container).width()
+                            + STOCK.CONFIG.valueScale.width;
 
         //Propagate to charts.
         var arrCharts = mielk.arrays.fromObject(charts);
@@ -123,7 +133,9 @@ function TimebandChartsContainer(params) {
     }
 
     self.slide = function (offset) {
-        self.offset += offset;
+        var $offset = self.offset.value + offset;
+        self.offset.value = Math.max(Math.min($offset, self.offset.max), self.offset.min);
+
         mielk.arrays.fromObject(charts).forEach(function (chart) {
             chart.slide(self.offset);
         });
@@ -214,16 +226,27 @@ function TimeScale(params) {
             mouseup: function (e) {
                 if (self.moving.state) {
                     self.moving.state = false;
-                    self.moving.end = e.pageX;
-                    slide(self.moving.start, self.moving.end);
+                    slide(e.pageX);
                 }
+            },
+            mousemove: function (e) {
+                if (self.moving.state) {
+                    slide(e.pageX);
+                }
+            }
+        });
+
+        $(document).bind({
+            mouseup: function (e) {
+                self.moving.state = false;
             }
         });
     }
 
-    function slide(start, end) {
-        var offset = end - start;
-        self.parent.slide(offset);
+    function slide(x) {
+        var start = self.moving.start;
+        self.moving.start = x;
+        self.parent.slide(x - start);
     }
 
 
