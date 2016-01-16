@@ -17,7 +17,6 @@ function Chart(params) {
     var width = params.width;
     var height = params.height;
     var properties = params.properties;
-    //self.singleItemWidth = parent.singleItemWidth;
 
     //UI.
     var svg = undefined;
@@ -105,6 +104,12 @@ function Chart(params) {
         }
     }
 
+    function slide(offset) {
+
+        if (type.name === STOCK.INDICATORS.PRICE.name)
+            svg.render();
+    }
+
     function show() {
         $(controls.container).css({
             'display': 'block',
@@ -132,7 +137,10 @@ function Chart(params) {
     self.show = show;
     self.hide = hide;
     self.loadQuotations = loadQuotations;
-
+    self.slide = slide;
+    self.offset = function () {
+        return parent.offset;
+    }
 
 
     initialize();

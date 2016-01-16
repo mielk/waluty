@@ -13,10 +13,7 @@
     self.svg = self.svg;
     self.renderer = undefined;
     var controls = { };
-    var size = {
-        width: params.width,
-        height: params.height
-    };
+    var size = {};
     var position = { };
 
 
@@ -30,6 +27,10 @@
     function loadControls() {
 
         controls.parentContainer = params.container;
+        size = {
+            width: $(controls.parentContainer).width(),
+            height: $(controls.parentContainer).height()
+        };
 
         controls.container = $('<div/>', {
             'class': 'chart-svg-container',
@@ -42,10 +43,6 @@
     }
 
     function assignEvents() {
-
-        self.parent.bind({
-            autoscale: autoscale
-        });
 
     }
 
@@ -64,12 +61,15 @@
             quotations: quotations.arr
         });
 
+        render();
 
-        var drawObjects = self.renderer.getDrawObjects(quotations.arr);
+    }
+
+    function render() {
+        var drawObjects = self.renderer.getDrawObjects(self.quotations.arr);
+        self.svg.clear();
         drawPaths(drawObjects.paths);
         drawCircles(drawObjects.circles);
-
-        var x = 1;
     }
 
     function drawPaths(paths) {
@@ -89,59 +89,6 @@
         });
     }
 
-    function autoscale() {
-        var indexRange = findVisibleRange();
-        var valuesRange = addRangeMargin(
-                            self.renderer.findVerticalRange(self.quotations.arr, indexRange.first, indexRange.last),
-                            0.05);
-        var ratio = self.renderer.getRatio(valuesRange);
-        var z = 1;
-    }
-
-    function addRangeMargin(range, margin) {
-        var diff = range.max - range.min;
-
-        return {
-            min: range.min - diff * margin,
-            max: range.max + diff * margin
-        };
-
-    }
-
-
-
-    //Funkcja zwraca indeks pierwszego i ostatniego notowania widocznego aktualnie na wykresie.
-    function findVisibleRange() {
-        //Get coordinates of containers.
-        var parentContainerWidth = $(controls.parentContainer).width();
-        var svgContainerPosition = $(controls.container).position();
-        var left = -svgContainerPosition.left;
-        var right = left + parentContainerWidth;
-
-        var range = { };
-
-        //Find first and last visible candle.
-        for (var i = self.quotations.arr.length - 1; i >= 0; i--) {
-            var item = self.quotations.arr[i];
-
-            if (item) {
-                if (!range.last) {
-                    if (item.coordinates.left < right) range.last = i;
-                } else {
-                    if (item.coordinates.right < left) {
-                        range.first = i
-                        break;
-                    }
-                }
-            }
-
-        }
-
-        return range;
-
-    }
-
-
 
 
     initialize();
@@ -156,6 +103,7 @@
     }
     self.initialize = initialize;
     self.loadQuotations = loadQuotations;
+    self.render = render;
 
 }
 
@@ -178,19 +126,28 @@ function AbstractSvgRenderer(params) {
     self.size = params.size;
     self.quotations = params.quotations;
     self.paths = {};
-    
+    self.offset = 0;
 
 
     self.interfaceInitialize = function () {
-        calculateVerticalBounds(self.quotations, self.size.height);
+
     }
 
+    function calculateHorizontalBound(items) {
+        var singleWidth = STOCK.CONFIG.candle.width;
+        var totalWidth = items.length * singleWidth;
+
+        self.offset = self.parent.parent.offset();
+        self.params.firstItem = items.length - 1 - Math.floor((self.offset + self.size.width) / singleWidth);
+        self.params.lastItem = items.length - 1 - Math.floor(self.offset / singleWidth);
+
+    }
 
     //Function to calculate vertical limits for the current chart and measures for a single unit.
     function calculateVerticalBounds(items, height) {
 
         //Find [min] and [max] value.
-        var range = self.findVerticalRange(items);
+        var range = self.findVerticalRange(items,self.params.firstItem, self.params.lastItem);
         var min = range.min;
         var max = range.max;
         var difference = max - min;
@@ -233,6 +190,10 @@ function AbstractSvgRenderer(params) {
     //Funkcja zwraca wszystkie obiekty, które mają zostać narysowane na tym wykresie.
     self.getDrawObjects = function (quotations) {
 
+        //Calculate offsets and ranges.
+        calculateHorizontalBound(quotations);
+        calculateVerticalBounds(quotations, self.size.height);
+
         //Params calculated here for performance reasons.
         var params = {
             width: STOCK.CONFIG.candle.width,
@@ -242,9 +203,10 @@ function AbstractSvgRenderer(params) {
 
         //Create SVG path for each single quotation.
         var items = new Array(quotations.length);
-        for (var i = 0; i < quotations.length; i++) {
+        for (var i = self.params.firstItem; i <= self.params.lastItem; i++) {
+            var invertedIndex = quotations.length - i;
             if (quotations[i])
-                items[i] = self.createCandlePath(i, quotations[i], params);
+                items[i] = self.createCandlePath(invertedIndex, quotations[i], params);
         }
 
         //Join all SVG paths together and return them.
@@ -312,7 +274,7 @@ PriceSvgRenderer.prototype = {
         var bodyBottom = this.getY(Math.min(item.open, item.close));
         var shadeTop = this.getY(item.high);
         var shadeBottom = this.getY(item.low);
-        var left = i * params.width + params.space / 2;
+        var left = (self.offset + self.size.width - (i * params.width) + (params.space / 2));
         var right = left + bodyWidth;
         var middle = left + (right - left) / 2;
 

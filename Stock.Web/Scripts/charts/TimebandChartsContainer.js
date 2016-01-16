@@ -22,13 +22,12 @@ function TimebandChartsContainer(params) {
     var controls = { };
     var timeScale;
     var charts = { };
-
+    self.offset = 12;
 
 
     function initialize() {
-        //Generate GUI and assign events.
+        //Generate GUI.
         loadControls();
-        assignEvents();
 
         //Load data set and its properties.
         dataSet = parent.company.getDataSet(parent.timeband);
@@ -37,6 +36,9 @@ function TimebandChartsContainer(params) {
         //Draw actual chart.
         loadCharts();
         loadTimeScale();
+
+        //Assign events. It must be placed here, after charts and time scale is already loaded.
+        assignEvents();
 
         dataSet.loadQuotations(loadQuotations);
 
@@ -120,7 +122,12 @@ function TimebandChartsContainer(params) {
         });
     }
 
-
+    self.slide = function (offset) {
+        self.offset += offset;
+        mielk.arrays.fromObject(charts).forEach(function (chart) {
+            chart.slide(self.offset);
+        });
+    }
 
 
     //Public API.
@@ -136,8 +143,8 @@ function TimebandChartsContainer(params) {
 
 
 
-
     initialize();
+
 
 }
 
@@ -156,7 +163,13 @@ function TimeScale(params) {
     self.firstDate = params.firstDate;
     self.lastDate = params.lastDate;
 
+    //State.
+    self.moving = {
+        state: false,
+        start: 0
+    }
 
+    //UI.
     var controls = {};
 
 
@@ -168,30 +181,61 @@ function TimeScale(params) {
     //określić minimalną szerokość - nie może być niższa niż szerokość całego panelu.
 
     function loadControls() {
+
+        var valueScaleWidth = STOCK.CONFIG.valueScale.width;
+
         controls.container = $('<div/>', {
             'class': 'date-scale-container'
         }).css({
             'height': STOCK.CONFIG.timeScale.height + 'px',
-            'padding-right': STOCK.CONFIG.valueScale.width + 'px'
+            'padding-right': valueScaleWidth + 'px'
         }).appendTo(params.container);
-
-        controls.visible = $('<div/>', {
-            'class': 'date-scale-visible'
-        }).css({
-            'right': STOCK.CONFIG.valueScale.width + 'px'
-        }).appendTo(controls.container);
 
         controls.labels = $('<div/>', {
             'class': 'date-scale-labels'
         }).css({
-            'width': params.width + 'px'
-        }).appendTo(controls.visible);
+            'right': valueScaleWidth + 'px'
+        }).appendTo(controls.container);
+
+        controls.slider = $('<div/>', {
+            'class': 'date-scale-slider'
+        }).css({
+            'right': valueScaleWidth + 'px'
+        }).appendTo(controls.container);
 
     }
     
     function assignEvents() {
-
+        $(controls.slider).bind({
+            mousedown: function (e) {
+                self.moving.state = true;
+                self.moving.start = e.pageX;
+            },
+            mouseup: function (e) {
+                if (self.moving.state) {
+                    self.moving.state = false;
+                    self.moving.end = e.pageX;
+                    slide(self.moving.start, self.moving.end);
+                }
+            }
+        });
     }
+
+    function slide(start, end) {
+        var offset = end - start;
+        self.parent.slide(offset);
+    }
+
+
+
+    //Public API.
+    self.bind = function (e) {
+        $(self).bind(e);
+    }
+    self.trigger = function (e) {
+        $(self).trigger(e);
+    }
+
 
     initialize();
 
