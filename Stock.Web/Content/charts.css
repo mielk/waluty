@@ -88,7 +88,7 @@
     height: auto;
     min-height: 500px;
     background-color: white;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 
 .date-scale-container {

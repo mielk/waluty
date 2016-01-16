@@ -21,24 +21,33 @@ function Chart(params) {
 
     //UI.
     var svg = undefined;
+    var valuesPanel = undefined;
     var controls = { };
 
 
 
     function initialize() {
-        //Generate GUI and assign events.
+        //Generate GUI.
         loadControls();
-        assignEvents();
 
-        //Draw actual chart.
+        //Prepare SVG canvas.
         svg = new SvgPanel({
             parent: self,
             container: controls.visible,
             width: width,
-            height: height,
+            height: $(controls.visible).height(),
             key: key,
             properties: properties
         });
+
+        //Prepare values panel.
+        valuesPanel = new ChartValuesPanel({
+            parent: self,
+            container: controls.values
+        });
+
+        //Assign events.
+        assignEvents();
 
         //Show or hide this chart depending on the [visible] property.
         if (visible) 
@@ -80,6 +89,14 @@ function Chart(params) {
 
     function assignEvents() {
 
+        valuesPanel.bind({
+            autoscale: function (e) {
+                self.trigger({
+                    type: 'autoscale'
+                });
+            }
+        });
+
     }
 
     function loadQuotations(quotations) {
@@ -103,11 +120,6 @@ function Chart(params) {
     }
 
 
-    initialize();
-
-
-
-
 
 
     //Public API.
@@ -121,11 +133,57 @@ function Chart(params) {
     self.hide = hide;
     self.loadQuotations = loadQuotations;
 
+
+
+    initialize();
+
+
 }
 
 
 
+function ChartValuesPanel(params) {
 
+    'use strict';
+
+    var self = this;
+    self.ChartValuesPanel = true;
+    self.parent = params.parent;
+    var controls = {};
+
+
+    function initialize() {
+        loadControls();
+        assignEvents();
+    }
+
+    function loadControls() {
+        controls.container = params.container;
+    }
+
+    function assignEvents() {
+        $(controls.container).bind({
+            dblclick: function (e) {
+                self.trigger({
+                    type: 'autoscale'
+                });
+            }
+        });
+    }
+
+
+    //Public API.
+    self.bind = function (e) {
+        $(self).bind(e);
+    }
+    self.trigger = function (e) {
+        $(self).trigger(e);
+    }
+
+
+    initialize();
+
+}
 
 
 //function Chart(params) {

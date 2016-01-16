@@ -11,6 +11,7 @@
 
     //[UI]
     self.svg = self.svg;
+    self.renderer = undefined;
     var controls = { };
     var size = {
         width: params.width,
@@ -27,16 +28,24 @@
     }
 
     function loadControls() {
+
+        controls.parentContainer = params.container;
+
         controls.container = $('<div/>', {
             'class': 'chart-svg-container',
             id: self.key
         }).css({
             'height': size.height + 'px',
-            'width': size.width + 'px'
+            'width': size.width + 'px',
+            'right': 0
         }).appendTo(params.container);
     }
 
     function assignEvents() {
+
+        self.parent.bind({
+            autoscale: autoscale
+        });
 
     }
 
@@ -45,6 +54,8 @@
     }
 
     function loadQuotations(quotations) {
+
+        self.quotations = quotations;
 
         //Ensure that renderer is loaded.
         self.renderer = self.renderer || new PriceSvgRenderer({
@@ -61,7 +72,6 @@
         var x = 1;
     }
 
-
     function drawPaths(paths) {
         paths.forEach(function (path) {
             self.svg.path(path.path).attr(path.attr);
@@ -77,6 +87,58 @@
                 'fill': obj.fill
             });
         });
+    }
+
+    function autoscale() {
+        var indexRange = findVisibleRange();
+        var valuesRange = addRangeMargin(
+                            self.renderer.findVerticalRange(self.quotations.arr, indexRange.first, indexRange.last),
+                            0.05);
+        var ratio = self.renderer.getRatio(valuesRange);
+        var z = 1;
+    }
+
+    function addRangeMargin(range, margin) {
+        var diff = range.max - range.min;
+
+        return {
+            min: range.min - diff * margin,
+            max: range.max + diff * margin
+        };
+
+    }
+
+
+
+    //Funkcja zwraca indeks pierwszego i ostatniego notowania widocznego aktualnie na wykresie.
+    function findVisibleRange() {
+        //Get coordinates of containers.
+        var parentContainerWidth = $(controls.parentContainer).width();
+        var svgContainerPosition = $(controls.container).position();
+        var left = -svgContainerPosition.left;
+        var right = left + parentContainerWidth;
+
+        var range = { };
+
+        //Find first and last visible candle.
+        for (var i = self.quotations.arr.length - 1; i >= 0; i--) {
+            var item = self.quotations.arr[i];
+
+            if (item) {
+                if (!range.last) {
+                    if (item.coordinates.left < right) range.last = i;
+                } else {
+                    if (item.coordinates.right < left) {
+                        range.first = i
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        return range;
+
     }
 
 
@@ -128,8 +190,9 @@ function AbstractSvgRenderer(params) {
     function calculateVerticalBounds(items, height) {
 
         //Find [min] and [max] value.
-        var min = mielk.arrays.getMin(items, self.fnMinEvaluation);
-        var max = mielk.arrays.getMax(items, self.fnMaxEvaluation);
+        var range = self.findVerticalRange(items);
+        var min = range.min;
+        var max = range.max;
         var difference = max - min;
 
         var bottom = min - STOCK.CONFIG.chart.margin * difference;
@@ -151,6 +214,21 @@ function AbstractSvgRenderer(params) {
 
     }
 
+    //Funkcja zwraca najniższą i najwyższą wartość dla zakresu ograniczonego 
+    //przez indeksy [first] i [last] w zestawie danych [items].
+    self.findVerticalRange = function (items, first, last) {
+        var $first = first || 0;
+        var $last = last || items.length - 1;
+
+        var min = mielk.arrays.getMin(items, self.fnMinEvaluation, $first, $last);
+        var max = mielk.arrays.getMax(items, self.fnMaxEvaluation, $first, $last);
+
+        return {
+            min: min,
+            max: max
+        };
+
+    }
 
     //Funkcja zwraca wszystkie obiekty, które mają zostać narysowane na tym wykresie.
     self.getDrawObjects = function (quotations) {
@@ -177,12 +255,16 @@ function AbstractSvgRenderer(params) {
 
     }
 
-
     //Funkcja obliczająca pozycję pionową dla danej wartości (w zależności od wysokości kontenera).
     self.getY = function (value) {
         return self.size.height * (this.params.top - value) / (this.params.top - this.params.bottom);
     };
 
+    //Funkcja zwraca proporcje pomiędzy podanym zakresem a całym zakresem dla aktualnego zestawu danych.
+    self.getRatio = function (range) {
+        var ratio = (range.max - range.min) / (self.params.top - self.params.bottom);
+        return ratio;
+    }
 
 
 }
@@ -239,6 +321,18 @@ PriceSvgRenderer.prototype = {
                     'M' + middle + ',' + shadeBottom + 'L' + middle + ',' + bodyBottom + 'Z' +
                     'M' + middle + ',' + shadeTop + 'L' + middle + ',' + bodyTop + 'Z';
 
+
+        //Save the coordinates of this item's candle 
+        //(used later to display values on the chart and to scale charts).
+        item.coordinates = {
+            left: left,
+            right: right,
+            middle: middle,
+            shadeBottom: shadeBottom,
+            shadeTop: shadeTop,
+            bodyTop: bodyTop,
+            bodyBottom: bodyBottom
+        };
 
 
         //Add peak/through indicators.
