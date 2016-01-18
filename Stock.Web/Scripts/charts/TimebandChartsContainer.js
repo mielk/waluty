@@ -152,7 +152,9 @@ function TimebandChartsContainer(params) {
     self.activate = activate;
     self.deactivate = deactivate;
     self.parent = parent;
-
+    self.timeband = function () {
+        return parent.timeband;
+    }
 
 
     initialize();

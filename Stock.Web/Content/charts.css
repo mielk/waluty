@@ -175,6 +175,34 @@
     border: none;
 }
 
+.chart-infobox {
+    display: block;
+    position: absolute;
+    box-sizing: border-box;
+    border: none;
+    top: 6px;
+    left: 6px;
+    width: auto;
+    height: 18px;
+    z-index: 2;
+    font-family: 'Century Gothic';
+    line-height: 18px;
+    color: #444;
+}
+
+.chart-events-layer {
+    display: block;
+    position: absolute;
+    float: right;
+    box-sizing: border-box;
+    background-color: transparent;
+    height: 100%;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    border-right: 1px solid transparent;
+    z-index: 1;
+}
 
 
 

@@ -89,6 +89,19 @@
         });
     }
 
+    function findQuotation(x) {
+        if (self.renderer) {
+            return self.renderer.findQuotation(x);
+        } else {
+            return null;
+        }
+    }
+
+    function getInfo(quotation) {
+        if (self.renderer) {
+            return self.renderer.getInfo(quotation);
+        }
+    }
 
 
     initialize();
@@ -104,6 +117,8 @@
     self.initialize = initialize;
     self.loadQuotations = loadQuotations;
     self.render = render;
+    self.findQuotation = findQuotation;
+    self.getInfo = getInfo;
 
 }
 
@@ -140,6 +155,8 @@ function AbstractSvgRenderer(params) {
         self.offset = self.parent.parent.offset();
         self.params.firstItem = items.length - 1 - Math.floor((self.offset + self.size.width) / singleWidth);
         self.params.lastItem = items.length - 1 - Math.floor(self.offset / singleWidth);
+        self.params.singleWidth = singleWidth;
+        self.params.totalWidth = totalWidth;
 
     }
 
@@ -228,6 +245,17 @@ function AbstractSvgRenderer(params) {
         return ratio;
     }
 
+    self.findQuotation = function (x) {
+        var firstItem = self.quotations[self.params.firstItem];
+        if (!firstItem) return null;
+
+        var firstItemOffset = self.quotations[self.params.firstItem].coordinates.left;
+        var itemsOffset = Math.floor(x / self.params.singleWidth);
+        var modItemsOffset = x % self.params.singleWidth;
+        var index = self.params.firstItem + itemsOffset + (-firstItemOffset + modItemsOffset > self.params.singleWidth ? 1 : 0);
+
+        return self.quotations[index];
+    }
 
 }
 
@@ -392,6 +420,16 @@ PriceSvgRenderer.prototype = {
         });
 
         return array;
+
+    },
+
+    getInfo: function (quotation) {
+        var info =  'Open: ' + quotation.open + ' | ' + 
+                    'Low: ' + quotation.low + ' | ' + 
+                    'High: ' + quotation.high + ' | ' + 
+                    'Close: ' + quotation.close
+        
+        return info;
 
     }
 

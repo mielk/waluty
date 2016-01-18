@@ -21,6 +21,7 @@ function Chart(params) {
     //UI.
     var svg = undefined;
     var valuesPanel = undefined;
+    var eventsLayer = undefined;
     var controls = { };
 
 
@@ -32,17 +33,22 @@ function Chart(params) {
         //Prepare SVG canvas.
         svg = new SvgPanel({
             parent: self,
-            container: controls.visible,
+            container: controls.chart,
             width: width,
             height: $(controls.visible).height(),
             key: key,
             properties: properties
         });
 
-        //Prepare values panel.
+        //Prepare additional panels.
         valuesPanel = new ChartValuesPanel({
             parent: self,
             container: controls.values
+        });
+
+        eventsLayer = new ChartEventsLayer({
+            parent: self,
+            container: controls.eventsLayer
         });
 
         //Assign events.
@@ -64,18 +70,31 @@ function Chart(params) {
             'height': params.height + 'px'
         }).appendTo(params.container);
 
+
         controls.values = $('<div/>', {
             'class': 'chart-container-values'
         }).css({
             'width': STOCK.CONFIG.valueScale.width + 'px'
         }).appendTo(controls.container);
 
-        controls.visible = $('<div/>', {
+
+        controls.chart = $('<div/>', {
             'class': 'chart-container-visible'
         }).css({
             'right': STOCK.CONFIG.valueScale.width + 'px'
         }).appendTo(controls.container);
 
+
+        controls.infoBox = $('<div/>', {
+            'class': 'chart-infobox'
+        }).appendTo(controls.chart);
+
+
+        controls.eventsLayer = $('<div/>', {
+            'class': 'chart-events-layer'
+        }).css({
+            'right': STOCK.CONFIG.valueScale.width + 'px'
+        }).appendTo(controls.container);
 
 
         if (visible) {
@@ -88,12 +107,20 @@ function Chart(params) {
 
     function assignEvents() {
 
+        parent.bind({
+            showInfo: function (e) {
+                showInfo(e.quotation, e.date);
+            }
+        });
+
         valuesPanel.bind({
             autoscale: function (e) {
-                self.trigger({
-                    type: 'autoscale'
-                });
+
             }
+        });
+
+        eventsLayer.bind({
+
         });
 
     }
@@ -105,9 +132,27 @@ function Chart(params) {
     }
 
     function slide(offset) {
-
         if (type.name === STOCK.INDICATORS.PRICE.name)
             svg.render();
+    }
+
+    function hover(x) {
+        var quotation = svg.findQuotation(x);
+        if (!quotation) return;
+
+        var timeband = parent.timeband();
+        var atLeastDaily = (timeband.period >= STOCK.TIMEBANDS.D1.period);
+        parent.trigger({
+            type: 'showInfo',
+            quotation: quotation,
+            date: mielk.dates.toString(quotation.date, !atLeastDaily)
+        });
+    }
+
+    function showInfo(quotation, date) {
+        if (quotation) {
+            $(controls.infoBox).html(date + '  |  ' + svg.getInfo(quotation));
+        }
     }
 
     function show() {
@@ -138,10 +183,12 @@ function Chart(params) {
     self.hide = hide;
     self.loadQuotations = loadQuotations;
     self.slide = slide;
+    self.parent = parent;
     self.offset = function () {
         return parent.offset.value;
     }
-
+    self.hover = hover;
+    //self.showInfo = showInfo;
 
     initialize();
 
@@ -193,6 +240,84 @@ function ChartValuesPanel(params) {
 
 }
 
+
+function ChartEventsLayer(params) {
+
+    'use strict';
+
+    var self = this;
+    self.ChartEventsLayer = true;
+    self.parent = params.parent;
+    var controls = {};
+    self.moving = {
+        state: false,
+        start: null
+    };
+
+
+
+    function initialize() {
+        loadControls();
+        assignEvents();
+    }
+
+    function loadControls() {
+        controls.container = params.container;
+    }
+
+    function assignEvents() {
+        $(controls.container).bind({
+            mousedown: function (e) {
+                self.moving.state = true;
+                self.moving.start = e.pageX;
+            },
+            mouseup: function (e) {
+                if (self.moving.state) {
+                    self.moving.state = false;
+                    slide(e.pageX);
+                }
+            },
+            mousemove: function (e) {
+                if (self.moving.state) {
+                    slide(e.pageX);   
+                }
+                showInfo(e.pageX - $(controls.container).offset().left);
+            }
+        });
+
+
+        $(document).bind({
+            mouseup: function (e) {
+                self.moving.state = false;
+            }
+        });
+
+    }
+
+
+    function slide(x) {
+        var start = self.moving.start;
+        self.moving.start = x;
+        self.parent.parent.slide(x - start);
+    }
+
+    function showInfo(x) {
+        self.parent.hover(x);
+    }
+
+    //Public API.
+    self.bind = function (e) {
+        $(self).bind(e);
+    }
+    self.trigger = function (e) {
+        $(self).trigger(e);
+    }
+
+
+    initialize();
+
+
+}
 
 //function Chart(params) {
 //    self.key = params.key;
