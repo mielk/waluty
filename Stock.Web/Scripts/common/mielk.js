@@ -1007,7 +1007,17 @@
             var year = s.substr(0, 4) * 1;
             var month = s.substr(5, 2) * 1 - 1;
             var day = s.substr(8, 2) * 1;
-            return new Date(year, month, day);
+
+            var hour = 0;
+            var minute = 0;
+            var second = 0;
+            if (s.length > 10) {
+                hour = s.substr(11, 2) * 1;
+                minute = s.substr(14, 2) * 1;
+                second = s.substr(17, 2) * 1;
+            }
+
+            return new Date(year, month, day, hour, minute, second);
         }
 
         function daysDifference(start, end) {

@@ -111,6 +111,7 @@ function QuotationSet(params) {
     self.QuotationSet = true;
     var company = params.company;
     var timeband = params.timeband;
+    var size = STOCK.CONFIG.loading.packageSize;
 
     //[Loading status].
     var quotationsLoaded = false;
@@ -119,6 +120,7 @@ function QuotationSet(params) {
     //[Properties].
     var quotations = {};
     var quotationsArray;
+    var quotationsDates = [];
     var firstDate;
     var lastDate;
     var minLevel;
@@ -127,52 +129,76 @@ function QuotationSet(params) {
     var realQuotationsCounter;
     
 
+    function fetchQuotations(fn, params) {
+        var initialized = params.initialized || false;
+        var endIndex = params.endIndex || quotationsDates.length - 1;
+        var startIndex = Math.max(endIndex - size + 1, 0);
+        var endDate = quotationsDates[endIndex];
+        var startDate = quotationsDates[startIndex];
+
+        mielk.db.fetch(
+            'Company',
+            'GetFxQuotationsByDates',
+            {
+                pairSymbol: company.symbol,
+                timeband: timeband.symbol,
+                startDate: startDate,
+                endDate: endDate
+            },
+            {
+
+                async: true,
+                callback: function (res) {
+
+                    //Populate quotations collection.
+                    assignQuotations(res);
+
+                    //If function has been passed as a parameter, call it.
+                    if (mielk.objects.isFunction(fn)) {
+                        fn({ initial: !initialized, obj: quotations, arr: quotationsArray });
+                    }
+
+                    if (startIndex > 0) {
+                        fetchQuotations(fn, { initialized: true, endIndex: startIndex - 1 });
+                    }
+
+                }
+            }
+        );
+    }
+
+
     function loadQuotations(fn, counter, force) {
 
+        //Make sure that metadata about those quotations are already loaded.
         if (!propertiesLoaded) loadProperties(null);
 
         if (!quotationsLoaded || force) {
-
-            mielk.db.fetch(
-                'Company',
-                'GetFxQuotations',
-                { pairSymbol: company.symbol, timeband: timeband.symbol, count: $.isNumeric(counter) ? counter : 0 },
-                {
-
-                    async: true,
-                    callback: function (res) {
-
-                        //Populate quotations collection.
-                        assignQuotations(res);
-
-                        //If function has been passed as a parameter, call it.
-                        if (mielk.objects.isFunction(fn)) {
-                            fn({ obj: quotations, arr: quotationsArray });
-                        }
-
-                    }
-                }
-            );
-
+            fetchQuotations(fn, { });
+        } else {
+            if (mielk.objects.isFunction(fn)) {
+                fn({ obj: quotations, arr: quotationsArray });
+            }
         }
 
     }
 
     function assignQuotations(data) {
-        for (var i = 0; i < data.length; i++) {
-            var date = mielk.dates.fromCSharpDateTime(data[i].Date);
+
+        data.forEach(function (item) {
+            var date = mielk.dates.fromCSharpDateTime(item.Date);
             var dataItem = quotations[date];
 
             //There are some quotations in the database with Saturday or Sunday date.
             //For such quotations the operation above will return null, since there are no
             //items in [quotations] object with Saturday or Sunday date as a key.
             if (dataItem) {
-                var quotation = new Quotation(data[i]);
+                var quotation = new Quotation(item);
                 dataItem.quotation = quotation;
                 quotationsArray[dataItem.index] = quotation;
             }
+        });
 
-        }
     }
 
 
@@ -235,15 +261,23 @@ function QuotationSet(params) {
 
         //Initial values.
         quotations = {};
+        quotationsDates = [];
         var index = 0;
         var date = new Date(firstDate);
 
         while (date <= lastDate) {
+
+            var strDate = mielk.dates.toString(date, true);
+
             quotations[date] = {
-                index: index++,
-                date: mielk.dates.toString(date, true),
+                index: index,
+                date: strDate,
                 quotation: null
             }
+
+            quotationsDates[index] = strDate;
+            index++;
+
 
             //Calculate the next date, using method [next] of Timeband object.
             date = timeband.next(date);

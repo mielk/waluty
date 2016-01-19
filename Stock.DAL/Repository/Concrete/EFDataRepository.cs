@@ -246,8 +246,10 @@ namespace Stock.DAL.Repositories
         public IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start, DateTime end)
         {
 
-            string sql = "SELECT * FROM fx.{0} WHERE PriceDate >= {1} AND PriceDate <= {2} ORDER BY PriceDate DESC";
-            string query = string.Format(sql, symbol, start.ToString(), end.ToString());
+            string query = GetSqlForFxQuotations(symbol, start, end);
+
+            //string sql = "SELECT * FROM fx.{0} WHERE PriceDate >= {1} AND PriceDate <= {2} ORDER BY PriceDate DESC";
+            //string query = string.Format(sql, symbol, start.ToString(), end.ToString());
             IEnumerable<DataItemDto> quotations;
 
             using (var context = new EFDbContext())
@@ -292,6 +294,39 @@ namespace Stock.DAL.Repositories
 
         }
 
+        private string GetSqlForFxQuotations(string symbol, DateTime startDate, DateTime endDate)
+        {
+            var sql = "USE fx; " +
+                            "SELECT " +
+                                "  q.AssetId AS AssetId " +
+                                ", 'X' AS Timeband " +
+                                ", q.PriceDate AS ItemDate" +
+                                ", q.Id AS QuotationId" +
+                                ", q.OpenPrice AS OpenPrice" +
+                                ", q.LowPrice AS LowPrice" +
+                                ", q.HighPrice AS HighPrice" +
+                                ", q.ClosePrice AS ClosePrice" +
+                                ", q.Volume AS Volume" +
+                                ", p.Id AS PriceId" +
+                                ", p.DeltaClosePrice AS DeltaClosePrice" +
+                                ", p.PriceDirection2D AS PriceDirection2D" +
+                                ", p.PriceDirection3D AS PriceDirection3D" +
+                                ", p.PeakByCloseEvaluation AS PeakByCloseEvaluation" +
+                                ", p.PeakByHighEvaluation AS PeakByHighEvaluation" +
+                                ", p.TroughByCloseEvaluation AS TroughByCloseEvaluation" +
+                                ", p.TroughByLowEvaluation AS TroughByLowEvaluation" +
+                            " FROM" +
+                                " quotations_{0} AS q LEFT JOIN" +
+                                " prices_{0} AS p ON q.PriceDate = p.PriceDate" +
+                            " WHERE" +
+                                " q.PriceDate >= '" + startDate + "' AND" +
+                                " q.PriceDate <= '" + endDate + "'" + 
+                            " ORDER BY" +
+                                " q.PriceDate;";
+
+            return string.Format(sql, symbol);
+
+        }
 
         public IEnumerable<PriceDto> GetPrices(string symbol)
         {

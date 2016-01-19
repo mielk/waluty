@@ -81,7 +81,7 @@
             return array;
         },
         defaultValue: function () {
-            return this.D1;
+            return this.M5;
         }
     };
 
@@ -176,6 +176,9 @@
     };
 
     var config = {
+        loading: {
+            packageSize: 1000
+        },
         chart: {
             margin: 0.1
         },

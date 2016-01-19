@@ -4,7 +4,7 @@
 
     //State
     var company = params.initialCompany || STOCK.COMPANIES.getCompany(1);
-    var timeband = params.initialTimeband || STOCK.TIMEBANDS.D1;
+    var timeband = params.initialTimeband || STOCK.TIMEBANDS.defaultValue();
     var showPeaks = params.showPeaks || true;
     var showTrendlines = params.showTrendlines || true;
     var indicators = {

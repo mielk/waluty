@@ -111,6 +111,29 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public ActionResult GetFxQuotationsByDates(string pairSymbol, string timeband, string startDate, string endDate)
+        {
+
+            //Converts date strings to DateTime objects.
+            DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+
+            //findTrendlines(pairSymbol, timeband);
+
+
+
+            string symbol = pairSymbol + "_" + timeband;
+            IEnumerable<DataItem> quotations = dataService.GetFxQuotations(symbol, startDateTime, endDateTime);
+
+            return Json(quotations, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
+
+        [HttpGet]
+        [AllowAnonymous]
         public ActionResult GetDataSetProperties(string pairSymbol, string timeband)
         {
             string symbol = pairSymbol + "_" + timeband;
