@@ -165,7 +165,7 @@ function QuotationSet(params) {
 
             //There are some quotations in the database with Saturday or Sunday date.
             //For such quotations the operation above will return null, since there are no
-            //items in [quotations] object with Saturday or SUnday date as a key.
+            //items in [quotations] object with Saturday or Sunday date as a key.
             if (dataItem) {
                 var quotation = new Quotation(data[i]);
                 dataItem.quotation = quotation;

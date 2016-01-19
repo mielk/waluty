@@ -437,7 +437,6 @@ PriceSvgRenderer.prototype = {
 
 
 
-
 //function AbstractSvgRenderer2() {
 
 //    'use strict';
