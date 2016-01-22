@@ -138,21 +138,18 @@ function Chart(params) {
 
     function hover(x) {
         var quotation = svg.findQuotation(x);
-        if (!quotation) return;
-
         var timeband = parent.timeband();
         var atLeastDaily = (timeband.period >= STOCK.TIMEBANDS.D1.period);
+
         parent.trigger({
             type: 'showInfo',
             quotation: quotation,
-            date: mielk.dates.toString(quotation.date, !atLeastDaily)
+            date: quotation ? mielk.dates.toString(quotation.date, !atLeastDaily) : '-'
         });
     }
 
     function showInfo(quotation, date) {
-        if (quotation) {
-            $(controls.infoBox).html(date + '  |  ' + svg.getInfo(quotation));
-        }
+        $(controls.infoBox).html(date + '  |  ' + svg.getInfo(quotation));
     }
 
     function show() {

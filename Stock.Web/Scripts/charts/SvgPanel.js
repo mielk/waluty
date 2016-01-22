@@ -55,11 +55,16 @@
         self.quotations = quotations;
 
         //Ensure that renderer is loaded.
-        self.renderer = self.renderer || new PriceSvgRenderer({
-            parent: self,
-            size: size,
-            quotations: quotations.arr
-        });
+        if (!self.renderer) {
+            self.renderer = new PriceSvgRenderer({
+                parent: self,
+                size: size,
+                quotations: quotations.arr,
+                complete: quotations.complete
+            });
+        } else {
+            self.renderer.updateQuotations(quotations.arr, quotations.complete);
+        }
 
         render();
 
@@ -136,7 +141,8 @@ function AbstractSvgRenderer(params) {
     self.AbstractSvgRenderer = true;
     self.parent = params.parent;
     self.params = {
-        created: true
+        created: true,
+        complete: params.complete
     };   //Parameters specific for this type of chart.
     self.size = params.size;
     self.quotations = params.quotations;
@@ -160,11 +166,41 @@ function AbstractSvgRenderer(params) {
 
     }
 
+    function findFirstNonEmptyIndex(index, direction) {
+        var step = (direction ? (direction / Math.abs(direction)) : 1);
+        var quotation = null;
+
+        for (var i = index; i >= 0 && i <= self.quotations.length; i += step) {
+            quotation = self.quotations[index];
+            if (quotation) {
+                return i;
+            }
+        }
+
+        return index;
+
+    }
+
     //Function to calculate vertical limits for the current chart and measures for a single unit.
     function calculateVerticalBounds(items, height) {
 
         //Find [min] and [max] value.
-        var range = self.findVerticalRange(items,self.params.firstItem, self.params.lastItem);
+
+        //[Handling gaps in prices]
+        //Function [findFirstNonEmptyIndex] implement for handling gaps in prices.
+        //If user moves to the screen where there are only gaps, range.min and range.max are null
+        //and this function cannot proceed.
+        var range = self.findVerticalRange(items, 
+                            findFirstNonEmptyIndex(self.params.firstItem, 1), 
+                            findFirstNonEmptyIndex(self.params.lastItem, -1));
+
+        //[Handling gaps in prices]
+        //If user moves to the screen where there are only gaps, range.min and range.max are null
+        //and this function cannot proceed.
+        if (range.min === null && range.max === null) {
+            range = self.findVerticalRange(items);
+        }
+
         var min = range.min;
         var max = range.max;
         var difference = max - min;
@@ -245,16 +281,38 @@ function AbstractSvgRenderer(params) {
         return ratio;
     }
 
+    //Funkcja zwraca notowanie, którego świeca jest aktualnie wyświetlona w odległości [x] od lewej
+    //krawędzi ramki z notowaniami.
     self.findQuotation = function (x) {
-        var firstItem = self.quotations[self.params.firstItem];
+        var firstItem = null;
+        var index = self.params.firstItem - 1;
+
+        while (!firstItem) {
+            index++;
+            firstItem = self.quotations[index];
+            if (index >= self.params.lastItem) break;
+        }
+
         if (!firstItem) return null;
 
-        var firstItemOffset = self.quotations[self.params.firstItem].coordinates.left;
+        var firstItemOffset = firstItem.coordinates.left;
         var itemsOffset = Math.floor(x / self.params.singleWidth);
         var modItemsOffset = x % self.params.singleWidth;
-        var index = self.params.firstItem + itemsOffset + (-firstItemOffset + modItemsOffset > self.params.singleWidth ? 1 : 0);
+        var foundItemIndex = index + itemsOffset + (-firstItemOffset + modItemsOffset > self.params.singleWidth ? 1 : 0) - (index - self.params.firstItem);
 
-        return self.quotations[index];
+        return self.quotations[foundItemIndex];
+    }
+
+    //Funkcja odświeża notowania przypisane do tego wykresu. Wywoływana kilka razy podczas pobierania
+    //danych z bazy, ponieważ notowania są pobierane paczkami.
+    self.updateQuotations = function (quotations, complete) {
+        self.quotations = quotations;
+        self.params.complete = complete;
+
+        if (self.params.complete) {
+            alert('completed: ' + self.quotations.length);
+        }
+
     }
 
 }
@@ -424,10 +482,12 @@ PriceSvgRenderer.prototype = {
     },
 
     getInfo: function (quotation) {
-        var info =  'Open: ' + quotation.open + ' | ' + 
-                    'Low: ' + quotation.low + ' | ' + 
-                    'High: ' + quotation.high + ' | ' + 
-                    'Close: ' + quotation.close
+        var info = (quotation ?
+                        'Open: ' + quotation.open + ' | ' +
+                        'Low: ' + quotation.low + ' | ' +
+                        'High: ' + quotation.high + ' | ' +
+                        'Close: ' + quotation.close
+                        : '');
         
         return info;
 

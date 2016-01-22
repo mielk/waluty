@@ -67,18 +67,18 @@ function TimebandChartsContainer(params) {
         properties.width = properties.realQuotationsCounter * STOCK.CONFIG.candle.width;
     }
 
-    function loadQuotations($quotations) {
-        quotations = $quotations;
+    function loadQuotations(result) {
+        quotations = result;
 
         //Set max offset.
-        self.offset.max = quotations.arr.length * STOCK.CONFIG.candle.width 
+        self.offset.max = result.arr.length * STOCK.CONFIG.candle.width
                             - $(controls.container).width()
                             + STOCK.CONFIG.valueScale.width;
 
         //Propagate to charts.
         var arrCharts = mielk.arrays.fromObject(charts);
         arrCharts.forEach(function (chart) {
-            chart.loadQuotations(quotations);
+            chart.loadQuotations(result);
         });
 
     }
@@ -178,7 +178,7 @@ function TimeScale(params) {
     self.lastDate = params.lastDate;
 
     //State.
-    self.moving = {
+    self.scaling = {
         state: false,
         start: 0
     }
@@ -222,17 +222,17 @@ function TimeScale(params) {
     function assignEvents() {
         $(controls.slider).bind({
             mousedown: function (e) {
-                self.moving.state = true;
-                self.moving.start = e.pageX;
+                self.scaling.state = true;
+                self.scaling.start = e.pageX;
             },
             mouseup: function (e) {
-                if (self.moving.state) {
-                    self.moving.state = false;
+                if (self.scaling.state) {
+                    self.scaling.state = false;
                     slide(e.pageX);
                 }
             },
             mousemove: function (e) {
-                if (self.moving.state) {
+                if (self.scaling.state) {
                     slide(e.pageX);
                 }
             }
@@ -240,14 +240,15 @@ function TimeScale(params) {
 
         $(document).bind({
             mouseup: function (e) {
-                self.moving.state = false;
+                self.scaling.state = false;
             }
         });
     }
 
     function slide(x) {
-        var start = self.moving.start;
-        self.moving.start = x;
+        var start = self.scaling.start;
+        self.scaling.start = x;
+        //self.parent.scale
         self.parent.slide(x - start);
     }
 

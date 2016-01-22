@@ -155,7 +155,12 @@ function QuotationSet(params) {
 
                     //If function has been passed as a parameter, call it.
                     if (mielk.objects.isFunction(fn)) {
-                        fn({ initial: !initialized, obj: quotations, arr: quotationsArray });
+                        fn({
+                            initial: !initialized,
+                            obj: quotations,
+                            arr: quotationsArray,
+                            complete: (startIndex === 0)
+                        });
                     }
 
                     if (startIndex > 0) {

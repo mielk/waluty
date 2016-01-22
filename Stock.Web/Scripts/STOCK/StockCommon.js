@@ -184,6 +184,12 @@
         },
         candle: {
             width: 8,
+            maxWidth: 24,
+            minWidth: 1,
+            modifyWidth: function (width) {
+                this.candle.width = Math.min(Math.max(width, this.candle.minWidth), this.candle.maxWidth);
+                var x = this;
+            },
             space: 0.35,
             color: {
                 ascending: 'white',
@@ -199,6 +205,10 @@
         }
         , peaks: {
             distance: 24
+        }
+
+        , modify: function (param, value) {
+
         }
 
 
