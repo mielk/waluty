@@ -187,8 +187,7 @@
             maxWidth: 24,
             minWidth: 1,
             modifyWidth: function (width) {
-                this.candle.width = Math.min(Math.max(width, this.candle.minWidth), this.candle.maxWidth);
-                var x = this;
+                this.width = Math.min(Math.max(width, this.minWidth), this.maxWidth);
             },
             space: 0.35,
             color: {

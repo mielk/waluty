@@ -71,10 +71,12 @@
     }
 
     function render() {
-        var drawObjects = self.renderer.getDrawObjects(self.quotations.arr);
-        self.svg.clear();
-        drawPaths(drawObjects.paths);
-        drawCircles(drawObjects.circles);
+        if (self.renderer) {
+            var drawObjects = self.renderer.getDrawObjects(self.quotations.arr);
+            self.svg.clear();
+            drawPaths(drawObjects.paths);
+            drawCircles(drawObjects.circles);
+        }
     }
 
     function drawPaths(paths) {

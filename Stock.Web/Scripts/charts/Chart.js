@@ -136,6 +136,10 @@ function Chart(params) {
             svg.render();
     }
 
+    function render() {
+        svg.render();
+    }
+
     function hover(x) {
         var quotation = svg.findQuotation(x);
         var timeband = parent.timeband();
@@ -181,6 +185,7 @@ function Chart(params) {
     self.loadQuotations = loadQuotations;
     self.slide = slide;
     self.parent = parent;
+    self.render = render;
     self.offset = function () {
         return parent.offset.value;
     }

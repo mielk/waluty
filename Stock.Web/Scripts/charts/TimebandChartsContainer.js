@@ -141,6 +141,11 @@ function TimebandChartsContainer(params) {
         });
     }
 
+    self.scale = function () {
+        mielk.arrays.fromObject(charts).forEach(function (chart) {
+            chart.render();
+        });
+    }
 
     //Public API.
     self.bind = function (e) {
@@ -248,8 +253,10 @@ function TimeScale(params) {
     function slide(x) {
         var start = self.scaling.start;
         self.scaling.start = x;
-        //self.parent.scale
-        self.parent.slide(x - start);
+        var offset = x - start;
+        var newWidth = STOCK.CONFIG.candle.width - offset / 100;
+        STOCK.CONFIG.candle.modifyWidth(newWidth);
+        self.parent.scale();
     }
 
 
