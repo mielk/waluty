@@ -6,6 +6,7 @@
     var self = this;
     self.SvgPanel = true;
     self.parent = params.parent;
+    self.type = params.type;
     self.key = params.key + '_svg';
     self.properties = params.properties;
 
@@ -56,7 +57,7 @@
 
         //Ensure that renderer is loaded.
         if (!self.renderer) {
-            self.renderer = new PriceSvgRenderer({
+            self.renderer = self.type.svgRenderer({
                 parent: self,
                 size: size,
                 quotations: quotations.arr,
@@ -66,12 +67,14 @@
             self.renderer.updateQuotations(quotations.arr, quotations.complete);
         }
 
-        render();
+        if (!self.renderer.params.runWhenComplete) {
+            render();
+        }
 
     }
 
     function render() {
-        if (self.renderer) {
+        if (self.renderer && self.renderer.ready()) {
             var drawObjects = self.renderer.getDrawObjects(self.quotations.arr);
             self.svg.clear();
             drawPaths(drawObjects.paths);
@@ -86,6 +89,9 @@
     }
 
     function drawCircles(objects) {
+
+        if (!objects || objects.length === 0) return;
+
         objects.forEach(function (obj) {
             var circle = self.svg.circle(obj.x, obj.y, obj.radius);
             circle.attr({
@@ -261,14 +267,11 @@ function AbstractSvgRenderer(params) {
         for (var i = self.params.firstItem; i <= self.params.lastItem; i++) {
             var invertedIndex = quotations.length - i;
             if (quotations[i])
-                items[i] = self.createCandlePath(invertedIndex, quotations[i], params);
+                items[i] = self.createBasePath(invertedIndex, quotations[i], params);
         }
 
         //Join all SVG paths together and return them.
-        return {
-            paths: self.joinPaths(items),
-            circles: self.fetchCircleObjects(items)
-        }
+        return self.totalPaths(items);
 
     }
 
@@ -311,9 +314,28 @@ function AbstractSvgRenderer(params) {
         self.quotations = quotations;
         self.params.complete = complete;
 
-        if (self.params.complete) {
-            alert('completed: ' + self.quotations.length);
+        if (self.params.complete && self.params.runWhenComplete) {
+            self.startAnalysis();
         }
+
+    }
+
+
+    //Funkcja sprawdza czy dany wykres może być odświeżony. Wykresy typu PRICE mogą być odświeżane
+    //przy każdym żądaniu, ale wykresy innych wskaźników mogą być odświeżane tylko wtedy, kiedy są
+    //już całkowicie przeliczone.
+    self.ready = function () {
+        return (!self.params.runWhenComplete || self.params.complete);
+    }
+
+    self.startAnalysis = function () {
+        var analyzer = self.parent.type.analyzer();
+
+        if (analyzer) {
+            analyzer.run(self.quotations);
+        }
+
+        self.parent.render();
 
     }
 
@@ -352,7 +374,7 @@ PriceSvgRenderer.prototype = {
         return item ? item.high : undefined;
     },
 
-    createCandlePath: function (i, item, params) {
+    createBasePath: function (i, item, params) {
         var self = this;
         var isAscending = (item.close > item.open);
         var bodyWidth = params.width - params.space;
@@ -422,6 +444,14 @@ PriceSvgRenderer.prototype = {
         };
 
 
+    },
+
+    totalPaths: function (items) {
+        var self = this;
+        return {
+            paths: self.joinPaths(items),
+            circles: self.fetchCircleObjects(items)
+        }
     },
 
     joinPaths: function (items) {
@@ -497,6 +527,165 @@ PriceSvgRenderer.prototype = {
 
 };
 
+
+
+function MacdSvgRenderer(params) {
+
+    'use strict';
+
+    AbstractSvgRenderer.call(this, params);
+    var self = this;
+    self.MacdSvgRenderer = true;
+    self.type = STOCK.INDICATORS.MACD;
+
+    //Add parameters specific for this type of chart (i.e. for ADX minimum allowed is 0).
+    self.params.minAllowed = null;
+    self.params.maxAllowed = null;
+    self.params.runWhenComplete = self.type.runWhenComplete;
+
+
+    self.interfaceInitialize();
+
+}
+mielk.objects.extend(AbstractSvgRenderer, MacdSvgRenderer);
+MacdSvgRenderer.prototype = {
+
+    //Function used to evaluate the minimum value of this chart.
+    fnMinEvaluation: function (item) {
+        return item ? Math.min(item.MACD.macd, item.MACD.signal, item.MACD.histogram) : undefined;
+    },
+
+    //Function used to evaluate the minimum value of this chart.
+    fnMaxEvaluation: function (item) {
+        return item ? Math.max(item.MACD.macd, item.MACD.signal, item.MACD.histogram) : undefined;
+    },
+
+    createBasePath: function (i, item, params) {
+        var self = this;
+        var space = STOCK.CONFIG.histogramSpace * params.width;
+        var bodyWidth = params.width - params.space;
+
+        //Calculate coordinates.
+        var yMacd = this.getY(item.MACD.macd);
+        var ySignal = this.getY(item.MACD.signal);
+        var left = (self.offset + self.size.width - (i * params.width) + (params.space / 2));
+        //var left = (index - offset) * self.params.unitWidth + space / 2;
+        var right = left + bodyWidth;
+        var middle = left + (right - left) / 2;
+        var yHistogram = this.getY(item.MACD.histogram);
+        var yZero = this.getY(0);
+
+        var histogramPath = 'M' + left + ',' + yZero + 'L' + left + ',' + yHistogram + 'L' +
+                    right + ',' + yHistogram + 'L' + right + ',' + yZero + 'Z';
+
+
+        //Save the coordinates of this item's candle (to display values on the chart).
+        //?Add this analysis coordinates?
+
+
+        //Check if histogram is ascending.
+        var isAscending = (self.params.previousHistogram !== undefined && item.MACD.histogram - self.params.previousHistogram > 0);
+
+        //Remember histogram for further calculations.
+        self.params.previousHistogram = item.MACD.histogram;
+
+        return {
+            macd: middle + ',' + yMacd,
+            signal: middle + ',' + ySignal,
+            histogramAsc: isAscending ? histogramPath : null,
+            histogramDesc: isAscending ? null : histogramPath
+        };
+
+    },
+
+    totalPaths: function (items) {
+
+        var paths = {
+            macd: 'M',
+            signal: 'M',
+            histogramAsc: '',
+            histogramDesc: ''
+        };
+
+        items.forEach(function (item) {
+            if (item.histogramAsc) paths.histogramAsc += item.histogramAsc
+            if (item.histogramDesc) paths.histogramDesc += item.histogramDesc
+            paths.macd += item.macd + 'L';
+            paths.signal += item.signal + 'L';
+        });
+
+        //self.paths.macd = mielk.text.cut(self.paths.macd, 1) + 'Z';
+        //self.paths.signal = mielk.text.cut(self.paths.signal, 1) + 'Z';
+
+
+
+        //Add properties for each path.
+        var array = [];
+
+        //Adding MACD line.
+        array.push({
+            path: paths.macd,
+            attr: {
+                'stroke': STOCK.CONFIG.macd.color.macdLine,
+                'stroke-width': 1
+            }
+        });
+
+        //Adding Signal line.
+        array.push({
+            path: paths.signal,
+            attr: {
+                'stroke': STOCK.CONFIG.macd.color.signalLine,
+                'stroke-width': 1
+            }
+        });
+
+
+        //Adding ascending histogram.
+        array.push({
+            path: paths.histogramAsc,
+            attr: {
+                'stroke': STOCK.CONFIG.macd.color.histogramLine,
+                'stroke-width': 1,
+                'fill': STOCK.CONFIG.macd.color.histogramAscFill
+            }
+        });
+
+        //Adding descending histogram.
+        array.push({
+            path: paths.histogramDesc,
+            attr: {
+                'stroke': STOCK.CONFIG.macd.color.histogramLine,
+                'stroke-width': 1,
+                'fill': STOCK.CONFIG.macd.color.histogramDescFill
+            }
+        });
+
+
+        //Inne ścieżki podejrzeć potem w pliku [SvgPanelOld.js].
+
+
+        return {
+            paths: array
+        }
+
+    },
+
+
+    getInfo: function (quotation) {
+        var info = (quotation ?
+                        'Open: ' + quotation.open + ' | ' +
+                        'Low: ' + quotation.low + ' | ' +
+                        'High: ' + quotation.high + ' | ' +
+                        'Close: ' + quotation.close
+                        : '');
+
+        return info;
+
+    }
+
+
+};
 
 
 //function AbstractSvgRenderer2() {

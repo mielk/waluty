@@ -90,15 +90,15 @@
             id: 1,
             name: 'prices',
             analyzer: function () {
-                return new PriceAnalyzer();
+                return new PriceAnalyzer({ type: this });
             },
-            svgRenderer: function () {
-                return new PriceSvgRenderer();
+            svgRenderer: function (params) {
+                return new PriceSvgRenderer(params);
             },
             labelFactory: function() {
                 return new PriceLabelFactory();
             },
-            displayDateScale: true,
+            runWhenComplete: false,
             initialHeight: 500,
             minValue: 0,
             maxValue: null,
@@ -108,15 +108,15 @@
             id: 2,
             name: 'MACD',
             analyzer: function () {
-                return new MacdAnalyzer();
+                return new MacdAnalyzer({ type: this });
             },
-            svgRenderer: function () {
-                return new MacdSvgRenderer();
+            svgRenderer: function (params) {
+                return new MacdSvgRenderer(params);
             },
             labelFactory: function () {
                 return new MacdLabelFactory();
             },
-            displayDateScale: false,
+            runWhenComplete: true,
             initialHeight: 150,
             negativeAllowed: true,
             minValue: null,
@@ -127,15 +127,15 @@
             id: 3,
             name: 'ADX',
             analyzer: function () {
-                return new AdxAnalyzer();
+                return new AdxAnalyzer({ type: this });
             },
-            svgRenderer: function () {
-                return new AdxSvgRenderer();
+            svgRenderer: function (params) {
+                return new AdxSvgRenderer(params);
             },
             labelFactory: function () {
                 return new AdxLabelFactory();
             },
-            displayDateScale: false,
+            runWhenComplete: true,
             initialHeight: 150,
             negativeAllowed: false,
             minValue: 0,
@@ -195,7 +195,18 @@
                 descending: 'black'
             }
             
+        },
+
+        macd: {
+            color: {
+                histogramLine: '#666',
+                macdLine: '#222',
+                signalLine: '#999',
+                histogramAscFill: '#0F0',
+                histogramDescFill: '#F00'
+            }
         }
+
         , timeScale: {
             height: 50
         }
@@ -229,13 +240,7 @@
         //valueScaleIndicatorLength: '#777',
         //valueLabelLeft: 17,
         
-        //MACD
-        //histogramSpace: 0.35,
-        //histogramLineColor: '#666',
-        //macdLineColor: '#222',
-        //signalLineColor: '#999',
-        //histogramAscFillColor: 'green',
-        //histogramDescFillColor: 'red',
+
         
         //ADX
         //diPlusLineColor: 'green',

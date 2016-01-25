@@ -98,8 +98,8 @@ function TimebandChartsContainer(params) {
 
     function loadCharts() {
         addChart(STOCK.INDICATORS.PRICE, 0);
-        addChart(STOCK.INDICATORS.MACD, 1);
-        addChart(STOCK.INDICATORS.ADX, 2);
+        //addChart(STOCK.INDICATORS.MACD, 1);
+        //addChart(STOCK.INDICATORS.ADX, 2);
     }
 
     function addChart(type, index) {

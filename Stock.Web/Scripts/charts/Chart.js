@@ -37,7 +37,8 @@ function Chart(params) {
             width: width,
             height: $(controls.visible).height(),
             key: key,
-            properties: properties
+            properties: properties,
+            type: type
         });
 
         //Prepare additional panels.
@@ -126,7 +127,7 @@ function Chart(params) {
     }
 
     function loadQuotations(quotations) {
-        if (type.name === STOCK.INDICATORS.PRICE.name) {
+        if (type.name !== STOCK.INDICATORS.ADX.name) {
             svg.loadQuotations(quotations);
         }
     }

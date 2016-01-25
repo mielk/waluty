@@ -1,6 +1,10 @@
-﻿function QuotationsAnalyzer() {
+﻿function QuotationsAnalyzer(params) {
+
+    'use strict';
+
     var self = this;
     self.QuotationsAnalyzer = true;
+    self.type = params.type;
 
     //TODO - przenieść funkcję run do prototypów.
 
@@ -13,21 +17,26 @@
         //}
         
 
-        var items = [];
-        for (var i = 0; i < quotations.length; i++) {
-            var quotation = quotations[i];
-            var item = this.process(quotation);
-            items[i] = item;
-        }
+        quotations.forEach(function (quotation) {
+            quotation[self.type.name] = self.process(quotation);
+        });
 
-        return items;
+        //var items = [];
+        //for (var i = 0; i < quotations.length; i++) {
+        //    var quotation = quotations[i];
+        //    var item = this.process(quotation);
+        //    items[i] = item;
+        //}
+
+        //return items;
+
     };
 
 }
 
 
-function PriceAnalyzer() {
-    QuotationsAnalyzer.call(this);
+function PriceAnalyzer(params) {
+    QuotationsAnalyzer.call(this, params);
     var self = this;
     self.PriceAnalyzer = true;
 }
@@ -54,8 +63,8 @@ PriceAnalyzer.prototype = {
 };
 
 
-function MacdAnalyzer() {
-    QuotationsAnalyzer.call(this);
+function MacdAnalyzer(params) {
+    QuotationsAnalyzer.call(this, params);
     var self = this;
     self.MacdAnalyzer = true;
     self.index = 0;
@@ -147,8 +156,8 @@ MacdAnalyzer.prototype = {
 
 
 
-function AdxAnalyzer() {
-    QuotationsAnalyzer.call(this);
+function AdxAnalyzer(params) {
+    QuotationsAnalyzer.call(this, params);
     var self = this;
     self.AdxAnalyzer = true;
     self.index = 0;
