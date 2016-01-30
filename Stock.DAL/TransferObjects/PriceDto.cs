@@ -13,7 +13,7 @@ namespace Stock.DAL.TransferObjects
         [Key]
         public int Id { get; set; }
         public int AssetId { get; set; }
-        public DateTime ItemDate { get; set; }
+        public DateTime PriceDate { get; set; }
         public double DeltaClosePrice { get; set; }
         public int PriceDirection2D { get; set; }
         public int PriceDirection3D { get; set; }
@@ -27,7 +27,7 @@ namespace Stock.DAL.TransferObjects
 
         public DateTime GetDate()
         {
-            return ItemDate;
+            return PriceDate;
         }
 
     }

@@ -58,6 +58,7 @@
     <Compile Include="Entities\TrendHit.cs" />
     <Compile Include="Entities\Trendline.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Enums\AnalysisType.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\IPriceAnalyzer.cs" />

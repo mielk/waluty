@@ -12,6 +12,22 @@ namespace Stock.Domain.Services
     public static class HelperMethods
     {
 
+
+        public static String TableName(this AnalysisType type)
+        {
+            switch (type)
+            {
+                case AnalysisType.Price:
+                    return "prices";
+                case AnalysisType.MACD:
+                    return "macd";
+                case AnalysisType.ADX:
+                    return "adx";
+                default:
+                    return "";
+            }
+        }
+
         public static void AppendIndexNumbers(this DataItem[] items)
         {
 

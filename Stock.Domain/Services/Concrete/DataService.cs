@@ -30,7 +30,7 @@ namespace Stock.Domain.Services
                 var quotation = new Quotation
                 {
                       Id = item.QuotationId
-                    , Date = item.ItemDate
+                    , Date = item.PriceDate
                     , AssetId = item.AssetId
                     , Open = item.OpenPrice
                     , High = item.HighPrice

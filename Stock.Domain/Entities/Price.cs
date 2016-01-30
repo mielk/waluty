@@ -29,7 +29,7 @@ namespace Stock.Domain.Entities
             var price = new Price();
             price.Id = dto.Id;
             price.AssetId = dto.AssetId;
-            price.Date = dto.ItemDate;
+            price.Date = dto.PriceDate;
             price.CloseDelta = dto.DeltaClosePrice;
             price.Direction2D = dto.PriceDirection2D;
             price.Direction3D = dto.PriceDirection3D;
@@ -49,7 +49,7 @@ namespace Stock.Domain.Entities
                 AssetId = this.AssetId
                 , DeltaClosePrice = this.CloseDelta
                 , Id = this.Id
-                , ItemDate = this.Date
+                , PriceDate = this.Date
                 , PeakByCloseEvaluation = this.PeakByClose
                 , PeakByHighEvaluation = this.PeakByHigh
                 , PriceDirection2D = this.Direction2D

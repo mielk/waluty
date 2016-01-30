@@ -32,9 +32,9 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RunProcess()
+        public ActionResult RunProcess(bool fromScratch)
         {
-            var result = processService.Run();
+            var result = processService.Run(fromScratch);
             var json = new { value = result };
             return Json(json, JsonRequestBehavior.AllowGet);
         }

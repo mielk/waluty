@@ -44,11 +44,11 @@ namespace Stock.DAL.Repositories
 
                 quotations = (from quotation in tempQuotations
                               join price in tempPrices
-                              on quotation.PriceDate equals price.ItemDate
+                              on quotation.PriceDate equals price.PriceDate
 
                               select new DataItemDto
                               {
-                                  ItemDate = quotation.PriceDate,
+                                  PriceDate = quotation.PriceDate,
                                   AssetId = quotation.AssetId
                                   //Price = new PriceDto {
                                       
@@ -56,7 +56,7 @@ namespace Stock.DAL.Repositories
                                   //Quotation = new QuotationDto {
 
                                   //}
-                              }).OrderByDescending(q => q.ItemDate).Take(count).OrderBy(q => q.ItemDate).ToList();
+                              }).OrderByDescending(q => q.PriceDate).Take(count).OrderBy(q => q.PriceDate).ToList();
 
 
             }
@@ -94,13 +94,13 @@ namespace Stock.DAL.Repositories
 
                 quotations = (from quotation in tempQuotations
                               join price in tempPrices
-                              on quotation.PriceDate equals price.ItemDate
+                              on quotation.PriceDate equals price.PriceDate
 
                               select new DataItemDto
                               {
-                                  ItemDate = quotation.PriceDate,
+                                  PriceDate = quotation.PriceDate,
                                   AssetId = quotation.AssetId
-                              }).OrderBy(q => q.ItemDate).ToList();
+                              }).OrderBy(q => q.PriceDate).ToList();
 
             }
 
@@ -137,13 +137,13 @@ namespace Stock.DAL.Repositories
 
                 quotations = (from quotation in tempQuotations
                               join price in tempPrices
-                              on quotation.PriceDate equals price.ItemDate
+                              on quotation.PriceDate equals price.PriceDate
 
                               select new DataItemDto
                               {
-                                  ItemDate = quotation.PriceDate,
+                                  PriceDate = quotation.PriceDate,
                                   AssetId = quotation.AssetId
-                              }).OrderBy(q => q.ItemDate).ToList();
+                              }).OrderBy(q => q.PriceDate).ToList();
 
             }
 
@@ -180,13 +180,13 @@ namespace Stock.DAL.Repositories
 
                 quotations = (from quotation in tempQuotations
                               join price in tempPrices
-                              on quotation.PriceDate equals price.ItemDate
+                              on quotation.PriceDate equals price.PriceDate
 
                               select new DataItemDto
                               {
-                                  ItemDate = quotation.PriceDate,
+                                  PriceDate = quotation.PriceDate,
                                   AssetId = quotation.AssetId
-                              }).OrderBy(q => q.ItemDate).ToList();
+                              }).OrderBy(q => q.PriceDate).ToList();
 
             }
 
@@ -207,10 +207,9 @@ namespace Stock.DAL.Repositories
                 quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
             }
 
-            return quotations.OrderBy(q => q.ItemDate);
+            return quotations.OrderBy(q => q.PriceDate);
 
         }
-
 
         public IEnumerable<DataItemDto> GetFxQuotations(string symbol, int count)
         {
@@ -224,9 +223,8 @@ namespace Stock.DAL.Repositories
                 quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
             }
 
-            return quotations.OrderBy(q => q.ItemDate);
+            return quotations.OrderBy(q => q.PriceDate);
         }
-
 
         public IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start)
         {
@@ -239,9 +237,8 @@ namespace Stock.DAL.Repositories
                 quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
             }
 
-            return quotations.OrderBy(q => q.ItemDate);
+            return quotations.OrderBy(q => q.PriceDate);
         }
-
 
         public IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start, DateTime end)
         {
@@ -257,7 +254,40 @@ namespace Stock.DAL.Repositories
                 quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
             }
 
-            return quotations.OrderBy(q => q.ItemDate);
+            return quotations.OrderBy(q => q.PriceDate);
+
+        }
+
+        public IEnumerable<DataItemDto> GetFxQuotationsForAnalysis(string symbol, string analysisType, DateTime lastAnalysisItem, int counter)
+        {
+
+            string query = GetSqlForFxQuotations(symbol, analysisType, lastAnalysisItem, counter);
+
+            IEnumerable<DataItemDto> quotations;
+
+            using (var context = new EFDbContext())
+            {
+                quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
+            }
+
+            return quotations.OrderBy(q => q.PriceDate);
+
+        }
+
+        public IEnumerable<DataItemDto> GetFxQuotationsForAnalysis(string symbol, string analysisType)
+        {
+
+            string query = GetSqlForFxQuotations(symbol, analysisType);
+           
+
+            IEnumerable<DataItemDto> quotations;
+
+            using (var context = new EFDbContext())
+            {
+                quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
+            }
+
+            return quotations.OrderBy(q => q.PriceDate);
 
         }
 
@@ -265,56 +295,32 @@ namespace Stock.DAL.Repositories
         private string GetSqlForFxQuotations(string symbol)
         {
 
+            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+
             var sql = "USE fx; " + 
                             "SELECT " + 
-                                "  q.AssetId AS AssetId " +
-                                ", 'X' AS Timeband " +
-                                ", q.PriceDate AS ItemDate" + 
-                                ", q.Id AS QuotationId" + 
-                                ", q.OpenPrice AS OpenPrice" + 
-                                ", q.LowPrice AS LowPrice" + 
-                                ", q.HighPrice AS HighPrice" + 
-                                ", q.ClosePrice AS ClosePrice" + 
-                                ", q.Volume AS Volume" + 
-                                ", p.Id AS PriceId" + 
-                                ", p.DeltaClosePrice AS DeltaClosePrice" + 
-                                ", p.PriceDirection2D AS PriceDirection2D" + 
-                                ", p.PriceDirection3D AS PriceDirection3D" + 
-                                ", p.PeakByCloseEvaluation AS PeakByCloseEvaluation" + 
-                                ", p.PeakByHighEvaluation AS PeakByHighEvaluation" + 
-                                ", p.TroughByCloseEvaluation AS TroughByCloseEvaluation" + 
-                                ", p.TroughByLowEvaluation AS TroughByLowEvaluation" + 
+                                " '{1}' AS Timeband " +
+                                ", q.*" + 
+                                ", p.*" + 
                             " FROM" + 
                                 " quotations_{0} AS q LEFT JOIN" + 
                                 " prices_{0} AS p ON q.PriceDate = p.PriceDate" + 
                             " ORDER BY" + 
                                 " q.PriceDate;";
 
-            return string.Format(sql, symbol);
+            return string.Format(sql, symbol, timeband);
 
         }
 
         private string GetSqlForFxQuotations(string symbol, DateTime startDate, DateTime endDate)
         {
+
+            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
             var sql = "USE fx; " +
                             "SELECT " +
-                                "  q.AssetId AS AssetId " +
-                                ", 'X' AS Timeband " +
-                                ", q.PriceDate AS ItemDate" +
-                                ", q.Id AS QuotationId" +
-                                ", q.OpenPrice AS OpenPrice" +
-                                ", q.LowPrice AS LowPrice" +
-                                ", q.HighPrice AS HighPrice" +
-                                ", q.ClosePrice AS ClosePrice" +
-                                ", q.Volume AS Volume" +
-                                ", p.Id AS PriceId" +
-                                ", p.DeltaClosePrice AS DeltaClosePrice" +
-                                ", p.PriceDirection2D AS PriceDirection2D" +
-                                ", p.PriceDirection3D AS PriceDirection3D" +
-                                ", p.PeakByCloseEvaluation AS PeakByCloseEvaluation" +
-                                ", p.PeakByHighEvaluation AS PeakByHighEvaluation" +
-                                ", p.TroughByCloseEvaluation AS TroughByCloseEvaluation" +
-                                ", p.TroughByLowEvaluation AS TroughByLowEvaluation" +
+                                " '{1}' AS Timeband " +
+                                ", q.*" +
+                                ", p.*" + 
                             " FROM" +
                                 " quotations_{0} AS q LEFT JOIN" +
                                 " prices_{0} AS p ON q.PriceDate = p.PriceDate" +
@@ -324,9 +330,71 @@ namespace Stock.DAL.Repositories
                             " ORDER BY" +
                                 " q.PriceDate;";
 
-            return string.Format(sql, symbol);
+            return string.Format(sql, symbol, timeband);
 
         }
+
+
+        private string GetSqlForFxQuotations(string symbol, string analysisType)
+        {
+            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+            var sql = "USE fx; " +
+                            "SELECT " +
+                                "  q.AssetId AS AssetId " +
+                                ", '{2}' AS Timeband " +
+                                ", q.PriceDate AS ItemDate" +
+                                ", q.Id AS QuotationId" +
+                                ", q.OpenPrice AS OpenPrice" +
+                                ", q.LowPrice AS LowPrice" +
+                                ", q.HighPrice AS HighPrice" +
+                                ", q.ClosePrice AS ClosePrice" +
+                                ", q.Volume AS Volume" +
+                                ", p.*" +
+                            " FROM" +
+                                " quotations_{0} AS q LEFT JOIN" +
+                                " {1}_{0} AS p ON q.PriceDate = p.PriceDate" +
+                            " ORDER BY" +
+                                " q.PriceDate;";
+
+            return string.Format(sql, symbol, analysisType, timeband);
+
+        }
+
+        private string GetSqlForFxQuotations(string symbol, string analysisType, DateTime lastAnalysisItem, int counter)
+        {
+            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+            var sql = "USE fx; " +
+                            "(SELECT " +
+                                "'{2}' AS Timeband " +
+                                ", q.* " +
+                                ", p.* " +
+                            " FROM" +
+                                " quotations_{0} AS q LEFT JOIN" +
+                                " prices_{0} AS p ON q.PriceDate = p.PriceDate" +
+                            " WHERE" +
+                                " q.PriceDate <= '" + lastAnalysisItem + "'" +
+                            " ORDER BY q.PriceDate DESC" + 
+                            " LIMIT " + counter + ") " + 
+                            " UNION " + 
+                            "(SELECT " +
+                                "'{2}' AS Timeband " +
+                                ", q.* " +
+                                ", p.* " +
+                            " FROM" +
+                                " quotations_{0} AS q LEFT JOIN" +
+                                " {1}_{0} AS p ON q.PriceDate = p.PriceDate" +
+                            " WHERE" +
+                                " q.PriceDate >= '" + lastAnalysisItem + "'" +
+                            " ORDER BY q.PriceDate)";
+
+            return string.Format(sql, symbol, analysisType, timeband);
+
+        }
+
+
+
+
+
 
         public IEnumerable<PriceDto> GetPrices(string symbol)
         {
@@ -348,11 +416,9 @@ namespace Stock.DAL.Repositories
                 prices = context.Database.SqlQuery<PriceDto>(query).ToList();
             }
 
-            return prices.OrderBy(p => p.ItemDate);
+            return prices.OrderBy(p => p.PriceDate);
 
         }
-
-
 
         public bool CheckIfTableExists(string tableName)
         {
@@ -374,7 +440,6 @@ namespace Stock.DAL.Repositories
             }
 
         }
-
 
         public bool CreateTable(string tableName, string template)
         {
@@ -399,7 +464,6 @@ namespace Stock.DAL.Repositories
      
         }
 
-
         public IEnumerable<String> GetStats()
         {
             string sql = "SELECT symbol FROM fx.last_updates";
@@ -415,14 +479,13 @@ namespace Stock.DAL.Repositories
 
         }
 
-
         public object GetDataSetProperties(string symbol)
         {
             //string sql = "SELECT " +
             //                "COUNT(Id) AS Counter, MIN(PriceDate) AS FirstDate, MAX(PriceDate) AS LastDate, " +
             //                "MIN(LowPrice) AS MinPrice, MAX(HighPrice) AS MaxPrice " +
             //             "FROM fx.quotations_" + symbol;
-            string sqlCounter = "SELECT COUNT(Id) FROM fx.quotations_" + symbol;
+            string sqlCounter = "SELECT COUNT(QuotationId) FROM fx.quotations_" + symbol;
             string sqlMinDate = "SELECT MIN(PriceDate) FROM fx.quotations_" + symbol;
             string sqlMaxDate = "SELECT MAX(PriceDate) FROM fx.quotations_" + symbol;
             string sqlMinPrice = "SELECT MIN(LowPrice) FROM fx.quotations_" + symbol;
@@ -486,7 +549,6 @@ namespace Stock.DAL.Repositories
 
         }
 
-
         public string toDb(double value)
         {
             return Math.Round(value, 5).ToString().Replace(',', '.');
@@ -501,7 +563,7 @@ namespace Stock.DAL.Repositories
                     "TroughByLowEvaluation) " +
                 "VALUES (" +
                        price.AssetId +
-                    ", '" + price.ItemDate + "'" +
+                    ", '" + price.PriceDate + "'" +
                     ", " + toDb(price.DeltaClosePrice) +
                     ", " + price.PriceDirection3D +
                     ", " + price.PriceDirection2D +
@@ -517,14 +579,13 @@ namespace Stock.DAL.Repositories
             }
         }
 
-
         public void UpdatePrice(PriceDto price, string symbol)
         {
             string tableName = PricesTablePrefix + symbol;
             string sql = "UPDATE fx." + tableName +
                 " SET " + 
-                    "  AssetId = " + price.AssetId + 
-                    ", PriceDate = '" + price.ItemDate + "'" + 
+                    "  AssetId = " + price.AssetId +
+                    ", PriceDate = '" + price.PriceDate + "'" + 
                     ", DeltaClosePrice = " + toDb(price.DeltaClosePrice) +
                     ", PriceDirection2D = " + price.PriceDirection2D +
                     ", PriceDirection3D = " + price.PriceDirection3D +
@@ -532,7 +593,7 @@ namespace Stock.DAL.Repositories
                     ", PeakByHighEvaluation = " + toDb(price.PeakByHighEvaluation) +
                     ", TroughByCloseEvaluation = " + toDb(price.TroughByCloseEvaluation) +
                     ", TroughByLowEvaluation = " + toDb(price.TroughByLowEvaluation) + 
-                " WHERE Id = " + price.Id;
+                " WHERE PriceId = " + price.Id;
             
             using (var context = new EFDbContext())
             {
@@ -540,6 +601,38 @@ namespace Stock.DAL.Repositories
                 context.SaveChanges();
             }
 
+        }
+
+        public LastDates GetSymbolLastItems(string symbol, string analysisType)
+        {
+
+            string sqlQuotation = "SELECT MAX(PriceDate) FROM quotations_" + symbol + " WHERE OpenPrice > -1;";
+            string sqlAnalysisItem = "SELECT MAX(PriceDate) FROM " + analysisType + "_" + symbol + ";";
+            DateTime lastQuotation = new DateTime();
+            DateTime lastAnalysisItem = new DateTime();
+
+            using (var context = new EFDbContext())
+            {
+                foreach (var i in context.Database.SqlQuery<String>(sqlQuotation))
+                {
+                    lastQuotation = DateTime.Parse(i);
+                    break;
+                }
+
+                foreach (var i in context.Database.SqlQuery<String>(sqlAnalysisItem))
+                {
+                    lastAnalysisItem = DateTime.Parse(i);
+                    break;
+                }
+
+            }
+
+
+            return new LastDates
+            {
+                LastQuotation = lastQuotation,
+                LastAnalysisItem = lastAnalysisItem
+            };
         }
 
     }

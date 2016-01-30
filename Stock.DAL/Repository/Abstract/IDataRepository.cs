@@ -19,6 +19,9 @@ namespace Stock.DAL.Repositories
         IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start);
         IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start, DateTime end);
 
+        IEnumerable<DataItemDto> GetFxQuotationsForAnalysis(string symbol, string analysisType, DateTime lastAnalysisItem, int counter);
+        IEnumerable<DataItemDto> GetFxQuotationsForAnalysis(string symbol, string analysisType);
+
         IEnumerable<PriceDto> GetPrices(string tableName);
         IEnumerable<String> GetStats();
 
@@ -29,6 +32,7 @@ namespace Stock.DAL.Repositories
         bool CreateTable(string tableName, string template);
 
         object GetDataSetProperties(string symbol);
+        LastDates GetSymbolLastItems(string symbol, string analysisType);
 
     }
 }

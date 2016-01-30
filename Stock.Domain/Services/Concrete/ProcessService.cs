@@ -22,14 +22,14 @@ namespace Stock.Domain.Services
             _priceAnalyzer = new PriceAnalyzer();
         }
 
-        public bool Run()
+        public bool Run(bool fromScratch)
         {
 
             IEnumerable<String> symbols = _dataRepository.GetStats();
 
             foreach (var symbol in symbols)
             {
-                _priceAnalyzer.Analyze(symbol);
+                _priceAnalyzer.Analyze(symbol, fromScratch);
             }
 
             return false;

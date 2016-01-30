@@ -9,6 +9,6 @@ namespace Stock.Domain.Services
 {
     public interface IProcessService
     {
-        bool Run();
+        bool Run(bool fromScratch);
     }
 }

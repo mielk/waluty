@@ -7,12 +7,14 @@ using Stock.Domain.Entities;
 using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
+using Stock.Domain.Enums;
 
 
 namespace Stock.Domain.Services
 {
     public class PriceAnalyzer : IPriceAnalyzer
     {
+        public const AnalysisType Type = AnalysisType.Price;
         public const int DirectionCheckCounter = 10;
         public const int DirectionCheckRequired = 6;
         public const int MinRange = 3;
@@ -28,6 +30,7 @@ namespace Stock.Domain.Services
         public int TimebandId;
         public int StartIndex;
         public int CurrentDirection2D;
+        private bool IsUpToDate;
 
 
 
@@ -58,7 +61,7 @@ namespace Stock.Domain.Services
 
         public void LoadDataSets(string symbol)
         {
-            Items = _dataRepository.GetFxQuotations(symbol).Select(DataItem.FromDto).ToArray();
+            Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName()).Select(DataItem.FromDto).ToArray();
             Items.AppendIndexNumbers();
         }
 
@@ -68,10 +71,19 @@ namespace Stock.Domain.Services
             Items.AppendIndexNumbers();
         }
 
-
+        public void LoadDataSets(string symbol, DateTime lastAnalysisItem, int counter)
+        {
+            Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).Select(DataItem.FromDto).ToArray();
+            Items.AppendIndexNumbers();
+        }
 
 
         public void Analyze(string symbol)
+        {
+            Analyze(symbol, false);
+        }
+
+        public void Analyze(string symbol, bool fromScratch)
         {
 
             /* Prepare instance. */
@@ -79,14 +91,27 @@ namespace Stock.Domain.Services
             {
                 EnsureRepositories();
                 LoadParameters(symbol);
-                LoadDataSets(symbol);
             };
 
 
-            DateTime lastDate = FindLastAnalyzed();
-            //int index = FindIndex(lastDate);
+            /* Fetch the proper data items. 
+             * The range of data to be analyzed depends on the [fromScratch] parameter 
+             * and the dates of last quotation and last analysis item. */
+            FetchDataSet(symbol, fromScratch);
+
+
+            /* Dalsza analiza jest wykonywana tylko jeżeli nie jest aktualna lub 
+             * jeżeli wymuszone jest wykonanie analizy od zera. */
+            if (fromScratch || !IsUpToDate)
+            {
+
+            }
+
+
             int index = 0;
             int start = Math.Max(index - MaxRange, 0);
+
+
 
             for (var i = start; i < Items.Length; i++)
             {
@@ -100,19 +125,33 @@ namespace Stock.Domain.Services
 
         }
 
-        protected DateTime FindLastAnalyzed()
+        protected void FetchDataSet(string symbol, bool fromScratch)
         {
 
-            var itemsWithPrice = Items.Where(i => i.Price != null).ToArray();
-
-            if (itemsWithPrice.Length == 0)
+            if (fromScratch)
             {
-                return DateTime.MinValue;
+                //Jeżeli analiza ma być wykonana od zera, pobierany jest cały zestaw danych.
+                LoadDataSets(symbol);
             }
             else
             {
-                return itemsWithPrice[itemsWithPrice.Length - 1].Date;
+                //W przeciwnym razie, pobierany jest tylko zestaw danych od ostatnio wyliczonego elementu.
+                var lastDates = _dataRepository.GetSymbolLastItems(symbol, Type.TableName());
+
+                if (lastDates.IsUpToDate())
+                {
+                    //Analiza jest wyliczona dla wszystkich aktualnie zapisanych notowań, można przejść do następnej.
+                    IsUpToDate = true;
+                }
+                else
+                {
+                    IsUpToDate = false;
+                    LoadDataSets(symbol, lastDates.LastAnalysisItem, DirectionCheckCounter);
+                }
+
             }
+
+            var z = 1;
 
         }
 
@@ -152,10 +191,10 @@ namespace Stock.Domain.Services
 
         }
 
-        protected int FindIndex()
-        {
-            return FindIndex(FindLastAnalyzed());
-        }
+        //protected int FindIndex()
+        //{
+        //    return FindIndex(FindLastAnalyzed());
+        //}
 
         private string GetFxQuotationsTableName(string symbol)
         {

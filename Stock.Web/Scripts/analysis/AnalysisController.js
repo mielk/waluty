@@ -20,7 +20,7 @@ function AnalysisController(params) {
                     'Process',
                     'RunProcess',
                     {
-
+                        fromScratch: false
                     },
                     {
                         async: true

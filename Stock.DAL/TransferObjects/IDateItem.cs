@@ -8,6 +8,6 @@ namespace Stock.DAL.TransferObjects
 {
     public interface IDateItem
     {
-        DateTime ItemDate { get; set; }
+        DateTime PriceDate { get; set; }
     }
 }

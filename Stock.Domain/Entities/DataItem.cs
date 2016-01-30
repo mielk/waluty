@@ -88,7 +88,7 @@ namespace Stock.Domain.Entities
         {
             var item = new DataItem();
             item.AssetId = dto.AssetId;
-            item.Date = dto.ItemDate;
+            item.Date = dto.PriceDate;
             item.Timeband = Timeband.GetTimebandByShortName(dto.Timeband);
 
             if (dto.QuotationId > 0)
@@ -96,7 +96,7 @@ namespace Stock.Domain.Entities
                 item.Quotation = new Quotation
                 {
                     AssetId = dto.AssetId,
-                    Date = dto.ItemDate,
+                    Date = dto.PriceDate,
                     Open = dto.OpenPrice,
                     Low = dto.LowPrice,
                     High = dto.HighPrice,
@@ -113,7 +113,7 @@ namespace Stock.Domain.Entities
                 {
                     AssetId = dto.AssetId,
                     CloseDelta = (double)dto.DeltaClosePrice,
-                    Date = dto.ItemDate,
+                    Date = dto.PriceDate,
                     Direction2D = (int)dto.PriceDirection2D,
                     Direction3D = (int)dto.PriceDirection3D,
                     Id = (int)dto.PriceId,

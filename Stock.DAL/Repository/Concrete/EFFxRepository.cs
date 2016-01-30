@@ -37,7 +37,6 @@ namespace Stock.DAL.Repositories
 
         }
 
-
         public PairDto GetPair(string symbol)
         {
 
