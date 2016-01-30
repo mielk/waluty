@@ -68,11 +68,13 @@
     <Compile Include="Repository\Concrete\EFMarketRepository.cs" />
     <Compile Include="Repository\Concrete\EFCompanyRepository.cs" />
     <Compile Include="TransferObjects\CompanyDto.cs" />
+    <Compile Include="TransferObjects\AdxDto.cs" />
     <Compile Include="TransferObjects\CurrencyDto.cs" />
     <Compile Include="TransferObjects\DataItemDto.cs" />
     <Compile Include="TransferObjects\IAssetDto.cs" />
     <Compile Include="TransferObjects\IDateItem.cs" />
     <Compile Include="TransferObjects\LastDates.cs" />
+    <Compile Include="TransferObjects\MacdDto.cs" />
     <Compile Include="TransferObjects\PairDto.cs" />
     <Compile Include="TransferObjects\PriceDto.cs" />
     <Compile Include="TransferObjects\MarketDto.cs" />

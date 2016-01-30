@@ -21,6 +21,8 @@ namespace Stock.Domain.Entities
         public double TroughByClose { get; set; }
         public double TroughByLow { get; set; }
         public double PriceGap { get; set; }
+        public bool IsUpdated { get; set; }
+        public bool IsNew { get; set; }
 
 
         public static Price FromDto(PriceDto dto)
@@ -63,6 +65,33 @@ namespace Stock.Domain.Entities
 
         }
 
+        public bool ApplyNewPeakByClose(double value)
+        {
+            if (value == PeakByClose) return false;
+            PeakByClose = value;
+            return true;
+        }
+
+        public bool ApplyNewPeakByHigh(double value)
+        {
+            if (value == PeakByHigh) return false;
+            PeakByHigh = value;
+            return true;
+        }
+
+        public bool ApplyNewTroughByClose(double value)
+        {
+            if (value == TroughByClose) return false;
+            TroughByClose = value;
+            return true;
+        }
+
+        public bool ApplyNewTroughByLow(double value)
+        {
+            if (value == TroughByLow) return false;
+            TroughByLow = value;
+            return true;
+        }
 
         public bool IsExtremum()
         {

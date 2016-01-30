@@ -15,6 +15,7 @@ namespace Stock.Domain.Entities
         public DateTime Date { get; set; }
         public Quotation Quotation { get; set; }
         public Price Price { get; set; }
+
         public int Index { get; set; }
 
 

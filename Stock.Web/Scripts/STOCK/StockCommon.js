@@ -2,48 +2,94 @@
  * Common objects used in whole STOCK project.
  */
 
+Date.prototype.isHoliday = function () {
+    if (this.getMonth() === 11){
+        if (this.getDate() === 25) return true;
+        if (this.getDate() === 24 && this.getHours() >= 21) return true;
+        if (this.getDate() === 31 && this.getHours() >= 21) return true;
+    } else if (this.getMonth() === 0) {
+        return (this.getDate() === 1);
+    } else {
+        return false;
+    }
+};
+
 (function(window){
 
     'use strict';
 
+
+
     var timebands = {
         M5: {
-            id: 1, name: '5 minutes', symbol: 'M5', period: 5, selectable: true, next: function (date) {
-                return mielk.dates.addMinutes(date, date.getDay() === 5 && date.getHours() === 23 && date.getMinutes() === 55 ? 2885 : 5);
+            id: 1, name: '5 minutes', symbol: 'M5', period: 5, selectable: true,
+            next: function (date) {
+                var d = mielk.dates.addMinutes(date, date.getDay() === 5 && date.getHours() === 23 && date.getMinutes() === 55 ? 2885 : 5);
+                if (d.isHoliday()) {
+                    d = this.next(d);
+                }
+                return d;
             }
         },
         M15: {
-            id: 2, name: '15 minutes', symbol: 'M15', period: 15, selectable: true, next: function (date) {
-                return mielk.dates.addMinutes(date, date.getDay() === 5 && date.getHours() === 23 && date.getMinutes() === 45 ? 2895 : 15);
+            id: 2, name: '15 minutes', symbol: 'M15', period: 15, selectable: true,
+            next: function (date) {
+                var d = mielk.dates.addMinutes(date, date.getDay() === 5 && date.getHours() === 23 && date.getMinutes() === 45 ? 2895 : 15);
+                if (d.isHoliday()) {
+                    d = this.next(d);
+                }
+                return d;
             }
         },
         M30: {
-            id: 3, name: '30 minutes', symbol: 'M30', period: 30, selectable: true, next: function (date) {
-                return mielk.dates.addMinutes(date, date.getDay() === 5 && date.getHours() === 23 && date.getMinutes() === 30 ? 2910 : 30);
+            id: 3, name: '30 minutes', symbol: 'M30', period: 30, selectable: true,
+            next: function (date) {
+                var d = mielk.dates.addMinutes(date, date.getDay() === 5 && date.getHours() === 23 && date.getMinutes() === 30 ? 2910 : 30);
+                if (d.isHoliday()) {
+                    d = this.next(d);
+                }
+                return d;
             }
         },
         H1: {
-            id: 4, name: '1 hour', symbol: 'H1', period: 60, selectable: true, next: function (date) {
-                return mielk.dates.addHours(date, date.getDay() === 5 && date.getHours() === 23 ? 49 : 1);
+            id: 4, name: '1 hour', symbol: 'H1', period: 60, selectable: true,
+            next: function (date) {
+                var d = mielk.dates.addHours(date, date.getDay() === 5 && date.getHours() === 23 ? 49 : 1);
+                if (d.isHoliday()) {
+                    d = this.next(d);
+                }
+                return d;
             }
         },
         H4: {
-            id: 5, name: '4 hours', symbol: 'H4', period: 240, selectable: true, next: function (date) {
-                return mielk.dates.addHours(date, date.getDay() === 5 && date.getHours() === 20 ? 52 : 4);
+            id: 5, name: '4 hours', symbol: 'H4', period: 240, selectable: true,
+            next: function (date) {
+                var d = mielk.dates.addHours(date, date.getDay() === 5 && date.getHours() === 20 ? 52 : 4);
+                if (d.isHoliday()) {
+                    d = this.next(d);
+                }
+                return d;
             }
         },
         D1: {
-            id: 6, name: 'daily', symbol: 'D1', period: 1440, selectable: true, next: function (date) {
-                return mielk.dates.addDays(date, date.getDay() === 5 ? 3 : 1);
+            id: 6, name: 'daily', symbol: 'D1', period: 1440, selectable: true,
+            next: function (date) {
+                var d = mielk.dates.addDays(date, date.getDay() === 5 ? 3 : 1);
+                if (d.isHoliday()) {
+                    d = this.next(d);
+                }
+                return d;
             }
         },
         W1: {
-            id: 7, name: 'weekly', symbol: 'W1', period: 7000, selectable: true, next: function (date) {
+            id: 7, name: 'weekly', symbol: 'W1', period: 7000, selectable: true,
+            next: function (date) {
                 return mielk.dates.addWeeks(date, 1);
             }
         },
         MN1: {
-            id: 8, name: 'monthly', symbol: 'MN1', period: 30000, selectable: true, next: function (date) {
+            id: 8, name: 'monthly', symbol: 'MN1', period: 30000, selectable: true,
+            next: function (date) {
                 return mielk.dates.addMonths(date, 1);
             }
         },

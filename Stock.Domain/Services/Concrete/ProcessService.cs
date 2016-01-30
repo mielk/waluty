@@ -29,7 +29,7 @@ namespace Stock.Domain.Services
 
             foreach (var symbol in symbols)
             {
-                _priceAnalyzer.Analyze(symbol, fromScratch);
+                _priceAnalyzer.Analyze(symbol, true);//fromScratch);
             }
 
             return false;

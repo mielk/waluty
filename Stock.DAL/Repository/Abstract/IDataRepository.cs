@@ -27,6 +27,7 @@ namespace Stock.DAL.Repositories
 
         void AddPrice(PriceDto price, string symbol);
         void UpdatePrice(PriceDto price, string symbol);
+        void UpdateQuotation(QuotationDto quotation, string symbol);
 
         bool CheckIfTableExists(string tableName);
         bool CreateTable(string tableName, string template);

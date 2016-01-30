@@ -18,7 +18,7 @@ namespace Stock.Domain.Services
         public const int DirectionCheckCounter = 10;
         public const int DirectionCheckRequired = 6;
         public const int MinRange = 3;
-        public const int MaxRange = 180;
+        public const int MaxRange = 5;
 
         private IDataRepository _dataRepository;
         private IFxRepository _fxRepository;
@@ -28,9 +28,65 @@ namespace Stock.Domain.Services
         public string Symbol;
         public int AssetId;
         public int TimebandId;
-        public int StartIndex;
         public int CurrentDirection2D;
-        private bool IsUpToDate;
+
+
+
+        public void Analyze(string symbol)
+        {
+            Analyze(symbol, false);
+        }
+
+        public void Analyze(string symbol, bool fromScratch)
+        {
+
+            /* Prepare instance. */
+            if (!DebugMode)
+            {
+                EnsureRepositories();
+                LoadParameters(symbol);
+            };
+
+
+            /* Fetch the proper data items and start index.
+             * The range of data to be analyzed depends on the [fromScratch] parameter 
+             * and the dates of last quotation and last analysis item. 
+             * 
+             * wideStartIndex - tylko wierzchołki i dołki są przeliczane od nowa (nic innego nie może się zmienić)
+             * narrowStartIndex - od tego elementu wszystko przeliczane jest od nowa (bo notowanie też mogło zostać 
+             *                      zaktualizowane i mogą się zmienić inne parametry)
+             * 
+             */
+            var wideStartIndex = 0;
+            var narrowStartIndex = 0;
+            if (fromScratch)
+            {
+                LoadDataSets(symbol);
+            }
+            else
+            {
+                var lastDates = _dataRepository.GetSymbolLastItems(symbol, Type.TableName());
+
+                //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
+                if (lastDates.IsUpToDate()) return;
+                LoadDataSets(symbol, lastDates.LastAnalysisItem, MaxRange + DirectionCheckCounter);
+                narrowStartIndex = FindIndex(lastDates.LastAnalysisItem);
+                wideStartIndex = Math.Max(narrowStartIndex - MaxRange, 0);
+            }
+
+
+            
+            for (var i = wideStartIndex; i < Items.Length; i++)
+            {
+                AnalyzePrice(i, i >= narrowStartIndex);
+            }
+
+
+            /* Start looking for trend lines */
+            //ITrendService trendService = new TrendService(Symbol, Items);
+            //trendService.Start();
+
+        }
 
 
 
@@ -78,83 +134,6 @@ namespace Stock.Domain.Services
         }
 
 
-        public void Analyze(string symbol)
-        {
-            Analyze(symbol, false);
-        }
-
-        public void Analyze(string symbol, bool fromScratch)
-        {
-
-            /* Prepare instance. */
-            if (!DebugMode)
-            {
-                EnsureRepositories();
-                LoadParameters(symbol);
-            };
-
-
-            /* Fetch the proper data items. 
-             * The range of data to be analyzed depends on the [fromScratch] parameter 
-             * and the dates of last quotation and last analysis item. */
-            FetchDataSet(symbol, fromScratch);
-
-
-            /* Dalsza analiza jest wykonywana tylko jeżeli nie jest aktualna lub 
-             * jeżeli wymuszone jest wykonanie analizy od zera. */
-            if (fromScratch || !IsUpToDate)
-            {
-
-            }
-
-
-            int index = 0;
-            int start = Math.Max(index - MaxRange, 0);
-
-
-
-            for (var i = start; i < Items.Length; i++)
-            {
-                AnalyzePrice(i);
-            }
-
-
-            /* Start looking for trend lines */
-            //ITrendService trendService = new TrendService(Symbol, Items);
-            //trendService.Start();
-
-        }
-
-        protected void FetchDataSet(string symbol, bool fromScratch)
-        {
-
-            if (fromScratch)
-            {
-                //Jeżeli analiza ma być wykonana od zera, pobierany jest cały zestaw danych.
-                LoadDataSets(symbol);
-            }
-            else
-            {
-                //W przeciwnym razie, pobierany jest tylko zestaw danych od ostatnio wyliczonego elementu.
-                var lastDates = _dataRepository.GetSymbolLastItems(symbol, Type.TableName());
-
-                if (lastDates.IsUpToDate())
-                {
-                    //Analiza jest wyliczona dla wszystkich aktualnie zapisanych notowań, można przejść do następnej.
-                    IsUpToDate = true;
-                }
-                else
-                {
-                    IsUpToDate = false;
-                    LoadDataSets(symbol, lastDates.LastAnalysisItem, DirectionCheckCounter);
-                }
-
-            }
-
-            var z = 1;
-
-        }
-
         protected int FindIndex(DateTime date)
         {
 
@@ -191,52 +170,83 @@ namespace Stock.Domain.Services
 
         }
 
-        //protected int FindIndex()
-        //{
-        //    return FindIndex(FindLastAnalyzed());
-        //}
-
         private string GetFxQuotationsTableName(string symbol)
         {
             return "quotations_" + symbol;
         }
 
-        private void AnalyzePrice(int index)
+        private void AnalyzePrice(int index, bool fromScratch)
         {
 
+            //Check if this item should be analyzed.
             DataItem item = (index < 0 || index >= Items.Length ? null : Items[index]);
-
             if (item == null) return;
+            if (item.Quotation == null) return;
+            //If this item nor any later item has complete quotation, it means the previous one
+            //was the last real quotation and analysis should finish here.
+            if (!item.Quotation.IsComplete() && !LaterQuotationsExists(index)) return;
+
+
+            //Check if quotation is missing (but only in the middle of not-missing quotations, 
+            //because missing quotations at the end of array was excluded one line above).
+            //If it is copy data from the previous quotation.
+            if (!item.Quotation.IsComplete())
+            {
+                var previousQuotation = (index > 0 ? Items[index - 1].Quotation : null);
+                if (previousQuotation != null)
+                {
+                    item.Quotation.CompleteMissing(previousQuotation);
+                    _dataRepository.UpdateQuotation(item.Quotation.ToDto(), Symbol);
+                }
+                
+            }
 
 
             //Ensure that [Price] object is appended to this [DataItem].
-            if (item.Price == null)
+            var isChanged = false;
+            if (item.Price == null || fromScratch)
             {
                 item.Price = new Price();
                 item.Price.Date = item.Date;
+                item.Price.CloseDelta = CalculateDeltaClosePrice(item.Quotation.Close, index);
+                item.Price.Direction2D = CalculateDirection2D(index);
+                item.Price.Direction3D = CalculateDirection3D(index);
+                item.Price.PeakByClose = EvaluateExtremum(item, index, true, true);
+                item.Price.PeakByHigh = EvaluateExtremum(item, index, true, false);
+                item.Price.TroughByClose = EvaluateExtremum(item, index, false, true);
+                item.Price.TroughByLow = EvaluateExtremum(item, index, false, false);
             }
 
-            item.Price.CloseDelta = CalculateDeltaClosePrice(item.Quotation.Close, index);
-            item.Price.Direction2D = CalculateDirection2D(index);
-            item.Price.Direction3D = CalculateDirection3D(index);
-            item.Price.PeakByClose = EvaluateExtremum(item, index, true, true);
-            item.Price.PeakByHigh = EvaluateExtremum(item, index, true, false);
-            item.Price.TroughByClose = EvaluateExtremum(item, index, false, true);
-            item.Price.TroughByLow = EvaluateExtremum(item, index, false, false);
+
+
+            //Calculate new values for peaks and troughs and apply them to the current item price.
+            //If any of this is changed, this price will have flag [IsChange] set to @true.
+            //This is the only thing that can be changed for items being only updated.
+            if (item.Price.ApplyNewPeakByClose(EvaluateExtremum(item, index, true, true))) isChanged = true;
+            if (item.Price.ApplyNewPeakByHigh(EvaluateExtremum(item, index, true, false))) isChanged = true;
+            if (item.Price.ApplyNewTroughByClose(EvaluateExtremum(item, index, false, true))) isChanged = true;
+            if (item.Price.ApplyNewTroughByLow(EvaluateExtremum(item, index, false, false))) isChanged = true;
 
 
             if (item.Price.Id == 0)
             {
                 _dataRepository.AddPrice(item.Price.ToDto(), Symbol);
             }
-            else
+            else if (isChanged)
             {
                 _dataRepository.UpdatePrice(item.Price.ToDto(), Symbol);
             }
 
-
         }
 
+        private bool LaterQuotationsExists(int index)
+        {
+            for (var i = index; i < Items.Length; i++)
+            {
+                if (Items[i].Quotation.IsComplete()) return true;
+            }
+            return false;
+        }
 
 
 
@@ -407,7 +417,6 @@ namespace Stock.Domain.Services
 
 
         }
-
 
 
     }

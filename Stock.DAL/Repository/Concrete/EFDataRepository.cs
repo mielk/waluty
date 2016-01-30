@@ -11,6 +11,7 @@ namespace Stock.DAL.Repositories
 
         private const string PricesTableTemplate = "tm_prices_template";
         private const string PricesTablePrefix = "prices_";
+        private const string QuotationsTablePrefix = "quotations_";
 
 
         //private static readonly EFDbContext Context = EFDbContext.GetInstance();
@@ -340,15 +341,8 @@ namespace Stock.DAL.Repositories
             var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
             var sql = "USE fx; " +
                             "SELECT " +
-                                "  q.AssetId AS AssetId " +
-                                ", '{2}' AS Timeband " +
-                                ", q.PriceDate AS ItemDate" +
-                                ", q.Id AS QuotationId" +
-                                ", q.OpenPrice AS OpenPrice" +
-                                ", q.LowPrice AS LowPrice" +
-                                ", q.HighPrice AS HighPrice" +
-                                ", q.ClosePrice AS ClosePrice" +
-                                ", q.Volume AS Volume" +
+                                "'{2}' AS Timeband " +
+                                ", q.*" +
                                 ", p.*" +
                             " FROM" +
                                 " quotations_{0} AS q LEFT JOIN" +
@@ -557,7 +551,10 @@ namespace Stock.DAL.Repositories
         public void AddPrice(PriceDto price, string symbol)
         {
             string tableName = PricesTablePrefix + symbol;
-            string sql = "INSERT INTO fx." + tableName +
+
+            string sqlRemove = "DELETE FROM fx." + tableName +
+                        " WHERE PriceDate = '" + price.PriceDate + "';";
+            string sqlInsert = "INSERT INTO fx." + tableName +
                 "(AssetId, PriceDate, DeltaClosePrice, PriceDirection3D, PriceDirection2D, " +
                     "PeakByCloseEvaluation, PeakByHighEvaluation, TroughByCloseEvaluation, " +
                     "TroughByLowEvaluation) " +
@@ -574,7 +571,8 @@ namespace Stock.DAL.Repositories
 
             using (var context = new EFDbContext())
             {
-                context.Database.ExecuteSqlCommand(sql);
+                context.Database.ExecuteSqlCommand(sqlRemove);
+                context.Database.ExecuteSqlCommand(sqlInsert);
                 context.SaveChanges();
             }
         }
@@ -595,6 +593,27 @@ namespace Stock.DAL.Repositories
                     ", TroughByLowEvaluation = " + toDb(price.TroughByLowEvaluation) + 
                 " WHERE PriceId = " + price.Id;
             
+            using (var context = new EFDbContext())
+            {
+                context.Database.ExecuteSqlCommand(sql);
+                context.SaveChanges();
+            }
+
+        }
+
+
+        public void UpdateQuotation(QuotationDto quotation, string symbol)
+        {
+            string tableName = QuotationsTablePrefix + symbol;
+            string sql = "UPDATE fx." + tableName +
+                " SET " +
+                    "  OpenPrice = " + toDb(quotation.OpenPrice) +
+                    ", HighPrice = " + toDb(quotation.HighPrice) +
+                    ", LowPrice = " + toDb(quotation.LowPrice) +
+                    ", ClosePrice = " + toDb(quotation.ClosePrice) +
+                    ", Volume = " + toDb(quotation.Volume) +
+                " WHERE PriceId = " + quotation.Id;
+
             using (var context = new EFDbContext())
             {
                 context.Database.ExecuteSqlCommand(sql);
