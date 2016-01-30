@@ -22,7 +22,7 @@ namespace Stock.DAL.TransferObjects
         public double LowPrice { get; set; }
         public double HighPrice { get; set; }
         public double ClosePrice { get; set; }
-        public int Volume { get; set; }
+        public int? Volume { get; set; }
 
         //public PriceDto Price { get; set; }
         public int? PriceId { get; set; }

@@ -36,7 +36,7 @@ namespace Stock.Domain.Services
                     , High = item.HighPrice
                     , Low = item.LowPrice
                     , Close = item.ClosePrice
-                    , Volume = item.Volume
+                    , Volume = item.Volume ?? 0
                 };
                 quotations.Add(quotation);
             }

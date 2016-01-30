@@ -146,7 +146,6 @@ function QuotationSet(params) {
                 endDate: endDate
             },
             {
-
                 async: true,
                 callback: function (res) {
 

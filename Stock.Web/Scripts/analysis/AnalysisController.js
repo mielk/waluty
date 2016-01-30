@@ -15,7 +15,18 @@ function AnalysisController(params) {
     function assignEvents() {
         $(controls.runAnalysisButton).bind({
             click: function (e) {
-                alert('Run analysis');
+
+                mielk.db.fetch(
+                    'Process',
+                    'RunProcess',
+                    {
+
+                    },
+                    {
+                        async: true
+                    }
+                );
+
             }
         });
     }

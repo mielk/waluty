@@ -101,7 +101,7 @@ namespace Stock.Domain.Entities
                     Low = dto.LowPrice,
                     High = dto.HighPrice,
                     Close = dto.ClosePrice,
-                    Volume = dto.Volume,
+                    Volume = dto.Volume ?? 0,
                     Id = dto.QuotationId
                 };
             }
