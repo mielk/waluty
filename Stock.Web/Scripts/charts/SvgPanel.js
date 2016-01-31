@@ -67,14 +67,12 @@
             self.renderer.updateQuotations(quotations.arr, quotations.complete);
         }
 
-        if (!self.renderer.params.runWhenComplete) {
-            render();
-        }
+        render();
 
     }
 
     function render() {
-        if (self.renderer && self.renderer.ready()) {
+        if (self.renderer) {
             var drawObjects = self.renderer.getDrawObjects(self.quotations.arr);
             self.svg.clear();
             drawPaths(drawObjects.paths);
@@ -321,13 +319,6 @@ function AbstractSvgRenderer(params) {
     }
 
 
-    //Funkcja sprawdza czy dany wykres może być odświeżony. Wykresy typu PRICE mogą być odświeżane
-    //przy każdym żądaniu, ale wykresy innych wskaźników mogą być odświeżane tylko wtedy, kiedy są
-    //już całkowicie przeliczone.
-    self.ready = function () {
-        return (!self.params.runWhenComplete || self.params.complete);
-    }
-
     self.startAnalysis = function () {
         var analyzer = self.parent.type.analyzer();
 
@@ -541,7 +532,6 @@ function MacdSvgRenderer(params) {
     //Add parameters specific for this type of chart (i.e. for ADX minimum allowed is 0).
     self.params.minAllowed = null;
     self.params.maxAllowed = null;
-    self.params.runWhenComplete = self.type.runWhenComplete;
 
 
     self.interfaceInitialize();
@@ -552,27 +542,30 @@ MacdSvgRenderer.prototype = {
 
     //Function used to evaluate the minimum value of this chart.
     fnMinEvaluation: function (item) {
-        return item ? Math.min(item.MACD.macd, item.MACD.signal, item.MACD.histogram) : undefined;
+        return item && item.macd ? Math.min(item.macd.macd, item.macd.signal, item.macd.histogram) : undefined;
     },
 
     //Function used to evaluate the minimum value of this chart.
     fnMaxEvaluation: function (item) {
-        return item ? Math.max(item.MACD.macd, item.MACD.signal, item.MACD.histogram) : undefined;
+        return item && item.macd ? Math.max(item.macd.macd, item.macd.signal, item.macd.histogram) : undefined;
     },
 
     createBasePath: function (i, item, params) {
+
+        if (!item.macd) return;
+
         var self = this;
         var space = STOCK.CONFIG.histogramSpace * params.width;
         var bodyWidth = params.width - params.space;
 
         //Calculate coordinates.
-        var yMacd = this.getY(item.MACD.macd);
-        var ySignal = this.getY(item.MACD.signal);
+        var yMacd = this.getY(item.macd.macd);
+        var ySignal = this.getY(item.macd.signal);
         var left = (self.offset + self.size.width - (i * params.width) + (params.space / 2));
         //var left = (index - offset) * self.params.unitWidth + space / 2;
         var right = left + bodyWidth;
         var middle = left + (right - left) / 2;
-        var yHistogram = this.getY(item.MACD.histogram);
+        var yHistogram = this.getY(item.macd.histogram);
         var yZero = this.getY(0);
 
         var histogramPath = 'M' + left + ',' + yZero + 'L' + left + ',' + yHistogram + 'L' +
@@ -584,10 +577,10 @@ MacdSvgRenderer.prototype = {
 
 
         //Check if histogram is ascending.
-        var isAscending = (self.params.previousHistogram !== undefined && item.MACD.histogram - self.params.previousHistogram > 0);
+        var isAscending = (self.params.previousHistogram !== undefined && item.macd.histogram - self.params.previousHistogram > 0);
 
         //Remember histogram for further calculations.
-        self.params.previousHistogram = item.MACD.histogram;
+        self.params.previousHistogram = item.macd.histogram;
 
         return {
             macd: middle + ',' + yMacd,
@@ -608,10 +601,12 @@ MacdSvgRenderer.prototype = {
         };
 
         items.forEach(function (item) {
-            if (item.histogramAsc) paths.histogramAsc += item.histogramAsc
-            if (item.histogramDesc) paths.histogramDesc += item.histogramDesc
-            paths.macd += item.macd + 'L';
-            paths.signal += item.signal + 'L';
+            if (item) {
+                if (item.histogramAsc) paths.histogramAsc += item.histogramAsc
+                if (item.histogramDesc) paths.histogramDesc += item.histogramDesc
+                paths.macd += item.macd + 'L';
+                paths.signal += item.signal + 'L';
+            }
         });
 
         //self.paths.macd = mielk.text.cut(self.paths.macd, 1) + 'Z';

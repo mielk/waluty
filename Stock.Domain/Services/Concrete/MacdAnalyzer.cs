@@ -213,6 +213,8 @@ namespace Stock.Domain.Services
             {
                 item.Macd = new Macd();
                 item.Macd.Date = item.Date;
+
+                //Basic MACD values.
                 item.Macd.Ma13 = calculateMa(index, Fast);
                 item.Macd.Ema13 = calculateEma(index, Fast, (index > 0 ? previousMacd.Ema13 : 0));
                 item.Macd.Ma26 = calculateMa(index, Slow);
@@ -220,8 +222,11 @@ namespace Stock.Domain.Services
                 item.Macd.MacdLine = item.Macd.Ema13 - item.Macd.Ema26;
                 item.Macd.SignalLine = calculateSignalLine(index, item.Macd.MacdLine);
                 item.Macd.Histogram = item.Macd.MacdLine - item.Macd.SignalLine;
-                item.Macd.DeltaHistogram = item.Macd.Histogram - previousMacd.Histogram;
 
+
+                //[TM] Additional indicators.
+                item.Macd.DeltaHistogram = (previousMacd == null ? 0 : item.Macd.Histogram - previousMacd.Histogram);
+                //[???] histogramExtremum
                 //item.Macd.HistogramDirection3D;
                 //item.Macd.HistogramDirection2D;
                 //item.Macd.HistogramDirectionChanged;
@@ -287,13 +292,13 @@ namespace Stock.Domain.Services
         private double calculateEma(int index, int counter, double previousEma)
         {
 
-            if (index < counter)
+            if (index < counter - 1)
             {
                 return calculateMa(index, counter);
             }
             else
             {
-                var k = 2 / (counter + 1);
+                double k = 2 / ((double)counter + 1);
                 return k * (Items[index].Quotation.Close - previousEma) + previousEma;
             }
 
@@ -308,7 +313,7 @@ namespace Stock.Domain.Services
             }
             else
             {
-                var k = 2 / (SignalLine + 1);
+                double k = 2 / ((double)SignalLine + 1);
                 var previousSignalLine = Items[index - 1].Macd.SignalLine;
                 return k * (macdLine - previousSignalLine) + previousSignalLine;
             }

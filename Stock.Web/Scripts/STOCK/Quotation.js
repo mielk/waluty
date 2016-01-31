@@ -12,7 +12,25 @@
     self.peakByHigh = params.Price ? params.Price.PeakByHigh : 0;
     self.troughByClose = params.Price ? params.Price.TroughByClose : 0;
     self.troughByLow = params.Price ? params.Price.TroughByLow : 0;
+    self.macd = (params.Macd ? new Macd(params.Macd) : null);
+    
 }
+
+
+
+function Macd(params){
+
+    'use strict';
+
+    var self = this;
+    self.Macd = true;
+    self.id = params.MacdId;
+    self.histogram = params.Histogram;
+    self.signal = params.SignalLine;
+    self.macd = params.MacdLine;
+
+}
+
 
 
 //function QuotationUI(quotation) {

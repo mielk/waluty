@@ -162,7 +162,6 @@ Date.prototype.isHoliday = function () {
             labelFactory: function () {
                 return new MacdLabelFactory();
             },
-            runWhenComplete: true,
             initialHeight: 150,
             negativeAllowed: true,
             minValue: null,
@@ -181,7 +180,6 @@ Date.prototype.isHoliday = function () {
             labelFactory: function () {
                 return new AdxLabelFactory();
             },
-            runWhenComplete: true,
             initialHeight: 150,
             negativeAllowed: false,
             minValue: 0,
