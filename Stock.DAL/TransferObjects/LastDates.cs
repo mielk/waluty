@@ -10,12 +10,13 @@ namespace Stock.DAL.TransferObjects
     {
 
         public DateTime LastQuotation { get; set; }
-        public DateTime LastAnalysisItem { get; set; }
+        public DateTime? LastAnalysisItem { get; set; }
 
 
         public bool IsUpToDate()
         {
-            return DateTime.Compare(LastAnalysisItem, LastQuotation) >= 0;
+            if (LastAnalysisItem == null) return false;
+            return DateTime.Compare((DateTime) LastAnalysisItem, LastQuotation) >= 0;
         }
 
 

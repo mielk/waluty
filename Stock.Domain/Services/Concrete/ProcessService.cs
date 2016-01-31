@@ -15,11 +15,13 @@ namespace Stock.Domain.Services
 
         private readonly IDataRepository _dataRepository;
         private readonly IPriceAnalyzer _priceAnalyzer;
+        private readonly IMacdAnalyzer _macdAnalyzer;
 
         public ProcessService(IDataRepository dataRepository)
         {
             _dataRepository = dataRepository ?? RepositoryFactory.GetDataRepository();
             _priceAnalyzer = new PriceAnalyzer();
+            _macdAnalyzer = new MacdAnalyzer();
         }
 
         public bool Run(bool fromScratch)
@@ -29,7 +31,8 @@ namespace Stock.Domain.Services
 
             foreach (var symbol in symbols)
             {
-                _priceAnalyzer.Analyze(symbol, true);//fromScratch);
+                _priceAnalyzer.Analyze(symbol, fromScratch);
+                _macdAnalyzer.Analyze(symbol, fromScratch);
             }
 
             return false;

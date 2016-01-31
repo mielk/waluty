@@ -24,7 +24,7 @@ namespace Stock.Domain.Entities
         public double Di14Diff { get; set; }
         public double Di14Sum { get; set; }
         public double Dx { get; set; }
-        public double Adx { get; set; }
+        public double AdxValue { get; set; }
         public int DaysUnder20 { get; set; }
         public int DaysUnder15 { get; set; }
         public double Cross20 { get; set; }
@@ -61,7 +61,7 @@ namespace Stock.Domain.Entities
             adx.Di14Diff = dto.Di14Diff;
             adx.Di14Sum = dto.Di14Sum;
             adx.Dx = dto.Dx;
-            adx.Adx = dto.Adx;
+            adx.AdxValue = dto.Adx;
             adx.DaysUnder20 = dto.DaysUnder20;
             adx.DaysUnder15 = dto.DaysUnder15;
             adx.Cross20 = dto.Cross20;
@@ -102,7 +102,7 @@ namespace Stock.Domain.Entities
                 Di14Diff = this.Di14Diff,
                 Di14Sum = this.Di14Sum,
                 Dx = this.Dx,
-                Adx = this.Adx,
+                Adx = this.AdxValue,
                 DaysUnder20 = this.DaysUnder20,
                 DaysUnder15 = this.DaysUnder15,
                 Cross20 = this.Cross20,

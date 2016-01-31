@@ -15,6 +15,10 @@ namespace Stock.Domain.Services
     public class MacdAnalyzer : IMacdAnalyzer
     {
         public const AnalysisType Type = AnalysisType.MACD;
+        //Calculation params.
+        private const int Fast = 13;
+        private const int Slow = 26;
+        private const int MacdPeriod = 9;
 
         private IDataRepository _dataRepository;
         private IFxRepository _fxRepository;
@@ -24,6 +28,7 @@ namespace Stock.Domain.Services
         public string Symbol;
         public int AssetId;
         public int TimebandId;
+        
 
 
 
@@ -58,8 +63,16 @@ namespace Stock.Domain.Services
 
                 //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
                 if (lastDates.IsUpToDate()) return;
-                LoadDataSets(symbol, lastDates.LastAnalysisItem, 10);
-                startIndex = FindIndex(lastDates.LastAnalysisItem);
+                if (lastDates.LastAnalysisItem == null)
+                {
+                    LoadDataSets(symbol);
+                }
+                else
+                {
+                    LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, 10);
+                    startIndex = FindIndex((DateTime)lastDates.LastAnalysisItem);
+                }
+
             }
 
 
@@ -187,20 +200,29 @@ namespace Stock.Domain.Services
 
             //Ensure that [Price] object is appended to this [DataItem].
             var isChanged = false;
-            if (item.Price == null || fromScratch)
+            if (item.Macd == null || fromScratch)
             {
-                item.Price = new Price();
-                item.Price.Date = item.Date;
+                item.Macd = new Macd();
+                item.Macd.Date = item.Date;
+                item.Macd.Ma13 = calculateAverage(index, Fast);
+
+
+                item.Macd.Ma26 = calculateAverage(index, Slow);
+
+
             }
 
 
-            if (item.Price.Id == 0)
+
+
+
+            if (item.Macd.Id == 0)
             {
-                _dataRepository.AddPrice(item.Price.ToDto(), Symbol);
+                _dataRepository.AddMacd(item.Macd.ToDto(), Symbol);
             }
             else if (isChanged)
             {
-                _dataRepository.UpdatePrice(item.Price.ToDto(), Symbol);
+                _dataRepository.UpdateMacd(item.Macd.ToDto(), Symbol);
             }
 
         }
@@ -214,6 +236,18 @@ namespace Stock.Domain.Services
             return false;
         }
 
+        private double calculateAverage(int index, int counter)
+        {
+            int startIndex = Math.Max(index - counter + 1, 0);
+            double sum = 0d;
+            for (var i = startIndex; i <= index; i++)
+            {
+                sum += Items[i].Quotation.Close;
+            }
+
+            return sum / (index - startIndex + 1);
+
+        }
 
     }
 

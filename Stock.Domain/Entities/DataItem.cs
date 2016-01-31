@@ -188,7 +188,7 @@ namespace Stock.Domain.Entities
                     Di14Diff = (double)dto.Di14Diff,
                     Di14Sum = (double)dto.Di14Sum,
                     Dx = (double)dto.Dx,
-                    Adx = (double)dto.Adx,
+                    AdxValue = (double)dto.Adx,
                     DaysUnder20 = (int)dto.DaysUnder20,
                     DaysUnder15 = (int)dto.DaysUnder15,
                     Cross20 = (double)dto.Cross20,

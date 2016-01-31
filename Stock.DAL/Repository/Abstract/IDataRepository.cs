@@ -25,9 +25,14 @@ namespace Stock.DAL.Repositories
         IEnumerable<PriceDto> GetPrices(string tableName);
         IEnumerable<String> GetStats();
 
+        void UpdateQuotation(QuotationDto quotation, string symbol);
         void AddPrice(PriceDto price, string symbol);
         void UpdatePrice(PriceDto price, string symbol);
-        void UpdateQuotation(QuotationDto quotation, string symbol);
+        void AddMacd(MacdDto macd, string symbol);
+        void UpdateMacd(MacdDto macd, string symbol);
+        void AddAdx(AdxDto adx, string symbol);
+        void UpdateAdx(AdxDto adx, string symbol);
+        
 
         bool CheckIfTableExists(string tableName);
         bool CreateTable(string tableName, string template);

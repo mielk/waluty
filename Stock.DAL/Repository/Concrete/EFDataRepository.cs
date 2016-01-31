@@ -12,6 +12,8 @@ namespace Stock.DAL.Repositories
         private const string PricesTableTemplate = "tm_prices_template";
         private const string PricesTablePrefix = "prices_";
         private const string QuotationsTablePrefix = "quotations_";
+        private const string MacdTablePrefix = "macd_";
+        private const string AdxTablePrefix = "adx_";
 
 
         //private static readonly EFDbContext Context = EFDbContext.GetInstance();
@@ -548,6 +550,28 @@ namespace Stock.DAL.Repositories
             return Math.Round(value, 5).ToString().Replace(',', '.');
         }
 
+
+
+        public void UpdateQuotation(QuotationDto quotation, string symbol)
+        {
+            string tableName = QuotationsTablePrefix + symbol;
+            string sql = "UPDATE fx." + tableName +
+                " SET " +
+                    "  OpenPrice = " + toDb(quotation.OpenPrice) +
+                    ", HighPrice = " + toDb(quotation.HighPrice) +
+                    ", LowPrice = " + toDb(quotation.LowPrice) +
+                    ", ClosePrice = " + toDb(quotation.ClosePrice) +
+                    ", Volume = " + toDb(quotation.Volume) +
+                " WHERE PriceId = " + quotation.Id;
+
+            using (var context = new EFDbContext())
+            {
+                context.Database.ExecuteSqlCommand(sql);
+                context.SaveChanges();
+            }
+
+        }
+
         public void AddPrice(PriceDto price, string symbol)
         {
             string tableName = PricesTablePrefix + symbol;
@@ -601,24 +625,47 @@ namespace Stock.DAL.Repositories
 
         }
 
-
-        public void UpdateQuotation(QuotationDto quotation, string symbol)
+        public void AddMacd(MacdDto macd, string symbol)
         {
-            string tableName = QuotationsTablePrefix + symbol;
-            string sql = "UPDATE fx." + tableName +
-                " SET " +
-                    "  OpenPrice = " + toDb(quotation.OpenPrice) +
-                    ", HighPrice = " + toDb(quotation.HighPrice) +
-                    ", LowPrice = " + toDb(quotation.LowPrice) +
-                    ", ClosePrice = " + toDb(quotation.ClosePrice) +
-                    ", Volume = " + toDb(quotation.Volume) +
-                " WHERE PriceId = " + quotation.Id;
+            string tableName = MacdTablePrefix + symbol;
+
+            string sqlRemove = "DELETE FROM fx." + tableName +
+                        " WHERE PriceDate = '" + macd.PriceDate + "';";
+            string sqlInsert = "INSERT INTO fx." + tableName +
+                "(AssetId, PriceDate, DeltaClosePrice, PriceDirection3D, PriceDirection2D, " +
+                    "PeakByCloseEvaluation, PeakByHighEvaluation, TroughByCloseEvaluation, " +
+                    "TroughByLowEvaluation) " +
+                "VALUES (";// +
+                    //   price.AssetId +
+                    //", '" + price.PriceDate + "'" +
+                    //", " + toDb(price.DeltaClosePrice) +
+                    //", " + price.PriceDirection3D +
+                    //", " + price.PriceDirection2D +
+                    //", " + toDb(price.PeakByCloseEvaluation) +
+                    //", " + toDb(price.PeakByHighEvaluation) +
+                    //", " + toDb(price.TroughByCloseEvaluation) +
+                    //", " + toDb(price.TroughByLowEvaluation) + ");";
 
             using (var context = new EFDbContext())
             {
-                context.Database.ExecuteSqlCommand(sql);
+                context.Database.ExecuteSqlCommand(sqlRemove);
+                context.Database.ExecuteSqlCommand(sqlInsert);
                 context.SaveChanges();
             }
+        }
+
+        public void UpdateMacd(MacdDto macd, string symbol)
+        {
+
+        }
+
+        public void AddAdx(AdxDto adx, string symbol)
+        {
+
+        }
+
+        public void UpdateAdx(AdxDto adx, string symbol)
+        {
 
         }
 
@@ -628,7 +675,7 @@ namespace Stock.DAL.Repositories
             string sqlQuotation = "SELECT MAX(PriceDate) FROM quotations_" + symbol + " WHERE OpenPrice > -1;";
             string sqlAnalysisItem = "SELECT MAX(PriceDate) FROM " + analysisType + "_" + symbol + ";";
             DateTime lastQuotation = new DateTime();
-            DateTime lastAnalysisItem = new DateTime();
+            DateTime? lastAnalysisItem = null;
 
             using (var context = new EFDbContext())
             {
@@ -640,8 +687,18 @@ namespace Stock.DAL.Repositories
 
                 foreach (var i in context.Database.SqlQuery<String>(sqlAnalysisItem))
                 {
-                    lastAnalysisItem = DateTime.Parse(i);
+
+                    try
+                    {
+                        lastAnalysisItem = DateTime.Parse(i);
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        lastAnalysisItem = null;
+                    }
+
                     break;
+
                 }
 
             }

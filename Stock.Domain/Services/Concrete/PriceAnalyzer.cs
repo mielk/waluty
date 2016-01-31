@@ -69,9 +69,19 @@ namespace Stock.Domain.Services
 
                 //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
                 if (lastDates.IsUpToDate()) return;
-                LoadDataSets(symbol, lastDates.LastAnalysisItem, MaxRange + DirectionCheckCounter);
-                narrowStartIndex = FindIndex(lastDates.LastAnalysisItem);
-                wideStartIndex = Math.Max(narrowStartIndex - MaxRange, 0);
+
+                if (lastDates.LastAnalysisItem == null)
+                {
+                    LoadDataSets(symbol);
+                }
+                else
+                {
+                    LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, MaxRange + DirectionCheckCounter);
+                    narrowStartIndex = FindIndex((DateTime)lastDates.LastAnalysisItem);
+                    wideStartIndex = Math.Max(narrowStartIndex - MaxRange, 0);
+                }
+
+
             }
 
 
