@@ -34,14 +34,12 @@ namespace Stock.DAL.TransferObjects
         public int HistogramToOx { get; set; }
         public int HistogramRow { get; set; }
         public double OxCrossing { get; set; }
-        public int DivergenceByAverage { get; set; }
         public int MacdPeak { get; set; }
         public double LastMacdPeak { get; set; }
         public double MacdPeakSlope { get; set; }
         public int MacdTrough { get; set; }
         public double LastMacdTrough { get; set; }
         public double MacdTroughSlope { get; set; }
-        public int divergence { get; set; }
         public bool IsUpdated { get; set; }
         public bool IsNew { get; set; }
 

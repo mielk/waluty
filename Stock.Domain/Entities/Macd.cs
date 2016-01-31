@@ -32,14 +32,12 @@ namespace Stock.Domain.Entities
         public int HistogramToOx { get; set; }
         public int HistogramRow { get; set; }
         public double OxCrossing { get; set; }
-        public int DivergenceByAverage { get; set; }
         public int MacdPeak { get; set; }
         public double LastMacdPeak { get; set; }
         public double MacdPeakSlope { get; set; }
         public int MacdTrough { get; set; }
         public double LastMacdTrough { get; set; }
         public double MacdTroughSlope { get; set; }
-        public int divergence { get; set; }
         public bool IsUpdated { get; set; }
         public bool IsNew { get; set; }
 
@@ -70,14 +68,12 @@ namespace Stock.Domain.Entities
             macd.HistogramToOx = dto.HistogramToOx;
             macd.HistogramRow = dto.HistogramRow;
             macd.OxCrossing = dto.OxCrossing;
-            macd.DivergenceByAverage = dto.DivergenceByAverage;
             macd.MacdPeak = dto.MacdPeak;
             macd.LastMacdPeak = dto.LastMacdPeak;
             macd.MacdPeakSlope = dto.MacdPeakSlope;
             macd.MacdTrough = dto.MacdTrough;
             macd.LastMacdTrough = dto.LastMacdTrough;
             macd.MacdTroughSlope = dto.MacdTroughSlope;
-            macd.divergence = dto.divergence;
 
             return macd;
 
@@ -109,14 +105,12 @@ namespace Stock.Domain.Entities
                 HistogramToOx = this.HistogramToOx,
                 HistogramRow = this.HistogramRow,
                 OxCrossing = this.OxCrossing,
-                DivergenceByAverage = this.DivergenceByAverage,
                 MacdPeak = this.MacdPeak,
                 LastMacdPeak = this.LastMacdPeak,
                 MacdPeakSlope = this.MacdPeakSlope,
                 MacdTrough = this.MacdTrough,
                 LastMacdTrough = this.LastMacdTrough,
                 MacdTroughSlope = this.MacdTroughSlope,
-                divergence = this.divergence, 
                 TimebandId = 1
             };
 

@@ -157,14 +157,12 @@ namespace Stock.Domain.Entities
                     HistogramToOx = (int)dto.HistogramToOx,
                     HistogramRow = (int)dto.HistogramRow,
                     OxCrossing = (double)dto.OxCrossing,
-                    DivergenceByAverage = (int)dto.DivergenceByAverage,
                     MacdPeak = (int)dto.MacdPeak,
                     LastMacdPeak = (double)dto.LastMacdPeak,
                     MacdPeakSlope = (double)dto.MacdPeakSlope,
                     MacdTrough = (int)dto.MacdTrough,
                     LastMacdTrough = (double)dto.LastMacdTrough,
                     MacdTroughSlope = (double)dto.MacdTroughSlope,
-                    divergence = (int)dto.divergence
                 };
             }
 

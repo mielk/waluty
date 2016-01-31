@@ -18,7 +18,7 @@ namespace Stock.Domain.Services
         //Calculation params.
         private const int Fast = 13;
         private const int Slow = 26;
-        private const int MacdPeriod = 9;
+        private const int SignalLine = 9;
 
         private IDataRepository _dataRepository;
         private IFxRepository _fxRepository;
@@ -28,6 +28,10 @@ namespace Stock.Domain.Services
         public string Symbol;
         public int AssetId;
         public int TimebandId;
+
+        //Temporary variables
+        private Macd previousMacd;
+        private int histogramToOx = 0;
         
 
 
@@ -76,9 +80,14 @@ namespace Stock.Domain.Services
             }
 
 
+            //Set previous Macd (it is used to speed up calculation and need to be 
+            //set here to avoid NullException for the first item).
+            if (startIndex > 0) previousMacd = Items[startIndex - 1].Macd;
+
+            //Iterate through all items and calculate Macd;
             for (var i = startIndex; i < Items.Length; i++)
             {
-                AnalyzePrice(i, fromScratch);
+                AnalyzeMacd(i, fromScratch);
             }
 
 
@@ -171,7 +180,7 @@ namespace Stock.Domain.Services
             return "quotations_" + symbol;
         }
 
-        private void AnalyzePrice(int index, bool fromScratch)
+        private void AnalyzeMacd(int index, bool fromScratch)
         {
 
             //Check if this item should be analyzed.
@@ -198,21 +207,47 @@ namespace Stock.Domain.Services
             }
 
 
-            //Ensure that [Price] object is appended to this [DataItem].
+            //Ensure that [Macd] object is appended to this [DataItem].
             var isChanged = false;
             if (item.Macd == null || fromScratch)
             {
                 item.Macd = new Macd();
                 item.Macd.Date = item.Date;
-                item.Macd.Ma13 = calculateAverage(index, Fast);
+                item.Macd.Ma13 = calculateMa(index, Fast);
+                item.Macd.Ema13 = calculateEma(index, Fast, (index > 0 ? previousMacd.Ema13 : 0));
+                item.Macd.Ma26 = calculateMa(index, Slow);
+                item.Macd.Ema26 = calculateEma(index, Slow, (index > 0 ? previousMacd.Ema26 : 0));
+                item.Macd.MacdLine = item.Macd.Ema13 - item.Macd.Ema26;
+                item.Macd.SignalLine = calculateSignalLine(index, item.Macd.MacdLine);
+                item.Macd.Histogram = item.Macd.MacdLine - item.Macd.SignalLine;
+                item.Macd.DeltaHistogram = item.Macd.Histogram - previousMacd.Histogram;
 
+                //item.Macd.HistogramDirection3D;
+                //item.Macd.HistogramDirection2D;
+                //item.Macd.HistogramDirectionChanged;
+                item.Macd.HistogramToOx = Math.Sign(item.Macd.Histogram);
 
-                item.Macd.Ma26 = calculateAverage(index, Slow);
+                if (index >= Fast - 1){
 
+                    if (item.Macd.HistogramToOx == previousMacd.HistogramToOx)
+                    {
+                        item.Macd.HistogramRow = previousMacd.HistogramRow + 1;
+                    }
+                    else
+                    {
+                        item.Macd.HistogramRow = 1;
+                        //obliczyć! item.Macd.OxCrossing = 1;
+                    }
+
+                }
+
+                //Peak and troughs.
 
             }
 
 
+            //Set previousMacd variable to speed up calculations for next items.
+            previousMacd = item.Macd;
 
 
 
@@ -236,7 +271,7 @@ namespace Stock.Domain.Services
             return false;
         }
 
-        private double calculateAverage(int index, int counter)
+        private double calculateMa(int index, int counter)
         {
             int startIndex = Math.Max(index - counter + 1, 0);
             double sum = 0d;
@@ -247,6 +282,37 @@ namespace Stock.Domain.Services
 
             return sum / (index - startIndex + 1);
 
+        }
+
+        private double calculateEma(int index, int counter, double previousEma)
+        {
+
+            if (index < counter)
+            {
+                return calculateMa(index, counter);
+            }
+            else
+            {
+                var k = 2 / (counter + 1);
+                return k * (Items[index].Quotation.Close - previousEma) + previousEma;
+            }
+
+        }
+
+        private double calculateSignalLine(int index, double macdLine)
+        {
+
+            if (index < SignalLine)
+            {
+                return macdLine;
+            }
+            else
+            {
+                var k = 2 / (SignalLine + 1);
+                var previousSignalLine = Items[index - 1].Macd.SignalLine;
+                return k * (macdLine - previousSignalLine) + previousSignalLine;
+            }
+            
         }
 
     }
