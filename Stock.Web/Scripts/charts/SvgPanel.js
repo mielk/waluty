@@ -667,12 +667,11 @@ MacdSvgRenderer.prototype = {
     },
 
 
-    getInfo: function (quotation) {
-        var info = (quotation ?
-                        'Open: ' + quotation.open + ' | ' +
-                        'Low: ' + quotation.low + ' | ' +
-                        'High: ' + quotation.high + ' | ' +
-                        'Close: ' + quotation.close
+    getInfo: function (item) {
+        var info = (item && item.macd ?
+                        '<span class="info" style="color:red;">' + item.macd.strHistogram() + '</span>' +
+                        '<span class="info" style="color:' + STOCK.CONFIG.macd.color.signalLine + '">' + item.macd.strSignal() + '</span>' +
+                        '<span class="info" style="color:' + STOCK.CONFIG.macd.color.macdLine + '">' + item.macd.strMacd() + '</span>'
                         : '');
 
         return info;

@@ -133,8 +133,7 @@ function Chart(params) {
     }
 
     function slide(offset) {
-        if (type.name === STOCK.INDICATORS.PRICE.name)
-            svg.render();
+        svg.render();
     }
 
     function render() {
