@@ -15,6 +15,8 @@ namespace Stock.Domain.Entities
         public DateTime Date { get; set; }
         public Quotation Quotation { get; set; }
         public Price Price { get; set; }
+        public Macd Macd { get; set; }
+        public Adx Adx { get; set; }
 
         public int Index { get; set; }
 
@@ -108,6 +110,7 @@ namespace Stock.Domain.Entities
             }
 
 
+            //Create Price stats for this data item.
             if (dto.PriceId != null && dto.PriceId > 0)
             {
                 item.Price = new Price
@@ -125,6 +128,87 @@ namespace Stock.Domain.Entities
                 };
 
             }
+
+
+            //Create Macd stats for this data item.
+            if (dto.MacdId != null && dto.MacdId > 0)
+            {
+                item.Macd = new Macd
+                {
+                    Id = (int)dto.MacdId,
+                    AssetId = dto.AssetId,
+                    Date = dto.PriceDate,
+                    Ma13 = (double)dto.Ma13,
+                    Ema13 = (double)dto.Ema13,
+                    Ma26 = (double)dto.Ma26,
+                    Ema26 = (double)dto.Ema26,
+                    MacdLine = (double)dto.MacdLine,
+                    SignalLine = (double)dto.SignalLine,
+                    Histogram = (double)dto.Histogram,
+                    HistogramAvg = (double)dto.HistogramAvg,
+                    HistogramExtremum = (double)dto.HistogramExtremum,
+                    DeltaHistogram = (double)dto.DeltaHistogram,
+                    DeltaHistogramPositive = (int)dto.DeltaHistogramPositive,
+                    DeltaHistogramNegative = (int)dto.DeltaHistogramNegative,
+                    DeltaHistogramZero = (int)dto.DeltaHistogramZero,
+                    HistogramDirection2D = (int)dto.HistogramDirection2D,
+                    HistogramDirection3D = (int)dto.HistogramDirection3D,
+                    HistogramDirectionChanged = (int)dto.HistogramDirectionChanged,
+                    HistogramToOx = (int)dto.HistogramToOx,
+                    HistogramRow = (int)dto.HistogramRow,
+                    OxCrossing = (double)dto.OxCrossing,
+                    DivergenceByAverage = (int)dto.DivergenceByAverage,
+                    MacdPeak = (int)dto.MacdPeak,
+                    LastMacdPeak = (double)dto.LastMacdPeak,
+                    MacdPeakSlope = (double)dto.MacdPeakSlope,
+                    MacdTrough = (int)dto.MacdTrough,
+                    LastMacdTrough = (double)dto.LastMacdTrough,
+                    MacdTroughSlope = (double)dto.MacdTroughSlope,
+                    divergence = (int)dto.divergence
+                };
+            }
+
+
+            //Create Adx stats for this data item.
+            if (dto.AdxId != null && dto.AdxId > 0)
+            {
+                item.Adx = new Adx
+                {
+                    Id = (int)dto.AdxId,
+                    AssetId = dto.AssetId,
+                    Date = dto.PriceDate,
+                    Tr = (double)dto.Tr,
+                    Dm1Pos = (double)dto.Dm1Pos,
+                    Dm1Neg = (double)dto.Dm1Neg,
+                    Tr14 = (double)dto.Tr14,
+                    Dm14Pos = (double)dto.Dm14Pos,
+                    Dm14Neg = (double)dto.Dm14Neg,
+                    Di14Pos = (double)dto.Di14Pos,
+                    Di14Neg = (double)dto.Di14Neg,
+                    Di14Diff = (double)dto.Di14Diff,
+                    Di14Sum = (double)dto.Di14Sum,
+                    Dx = (double)dto.Dx,
+                    Adx = (double)dto.Adx,
+                    DaysUnder20 = (int)dto.DaysUnder20,
+                    DaysUnder15 = (int)dto.DaysUnder15,
+                    Cross20 = (double)dto.Cross20,
+                    DeltaDiPos = (double)dto.DeltaDiPos,
+                    DeltaDiNeg = (double)dto.DeltaDiNeg,
+                    DeltaAdx = (double)dto.DeltaAdx,
+                    DiPosDirection3D = (int)dto.DiPosDirection3D,
+                    DiPosDirection2D = (int)dto.DiPosDirection2D,
+                    DiNegDirection3D = (int)dto.DiNegDirection3D,
+                    DiNegDirection2D = (int)dto.DiNegDirection2D,
+                    AdxDirection3D = (int)dto.AdxDirection3D,
+                    AdxDirection2D = (int)dto.AdxDirection2D,
+                    DiPosDirectionChanged = (int)dto.DiPosDirectionChanged,
+                    DiNegDirectionChanged = (int)dto.DiNegDirectionChanged,
+                    AdxDirectionChanged = (int)dto.AdxDirectionChanged,
+                    DiDifference = (double)dto.DiDifference,
+                    DiLinesCrossing = (int)dto.DiLinesCrossing
+                };
+            }
+
 
             return item;
 
