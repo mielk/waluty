@@ -21,6 +21,10 @@ namespace Stock.Domain.Entities
         public double TroughByClose { get; set; }
         public double TroughByLow { get; set; }
         public double PriceGap { get; set; }
+        public ExtremumCalculator PeakByCloseExtremum { get; set; }
+        public ExtremumCalculator PeakByHighExtremum { get; set; }
+        public ExtremumCalculator TroughByCloseExtremum { get; set; }
+        public ExtremumCalculator TroughByLowExtremum { get; set; }
         public bool IsUpdated { get; set; }
         public bool IsNew { get; set; }
 
@@ -93,6 +97,35 @@ namespace Stock.Domain.Entities
             return true;
         }
 
+        public ExtremumCalculator GetExtremumObject(ExtremumType type)
+        {
+            switch (type)
+            {
+                case ExtremumType.PeakByClose:
+                    return PeakByCloseExtremum;
+                case ExtremumType.PeakByHigh:
+                    return PeakByHighExtremum;
+                case ExtremumType.TroughByClose:
+                    return TroughByCloseExtremum;
+                case ExtremumType.TroughByLow:
+                    return TroughByLowExtremum;
+                default:
+                    return null;
+            }
+        }
+
+        public ExtremumCalculator GetExtremumObject(bool isPeak, bool byClose)
+        {
+            if (isPeak)
+            {
+                return GetExtremumObject(byClose ? ExtremumType.PeakByClose : ExtremumType.PeakByHigh);
+            }
+            else
+            {
+                return GetExtremumObject(byClose ? ExtremumType.TroughByClose : ExtremumType.TroughByLow);
+            }
+        }
+
         public bool IsExtremum()
         {
             return (PeakByClose > 0 || PeakByHigh > 0 || TroughByClose > 0 || TroughByLow > 0 || PriceGap > 0);
@@ -102,6 +135,8 @@ namespace Stock.Domain.Entities
         {
             return type == TrendlineType.Resistance ? IsPeak() : IsTrough();
         }
+
+        
 
         public bool IsPeak()
         {

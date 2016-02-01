@@ -51,6 +51,7 @@
     <Compile Include="Entities\Adx.cs" />
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\DataItem.cs" />
+    <Compile Include="Entities\ExtremumCalculator.cs" />
     <Compile Include="Entities\Macd.cs" />
     <Compile Include="Entities\Pair.cs" />
     <Compile Include="Entities\Price.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Entities\Trendline.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Enums\AnalysisType.cs" />
+    <Compile Include="Enums\ExtremumType.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\IMacdAnalyzer.cs" />

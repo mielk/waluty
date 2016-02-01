@@ -244,6 +244,7 @@ namespace Stock.Domain.Services
             }
 
 
+            CheckForExtremum(item, true, true, fromScratch);
 
 
 
@@ -404,6 +405,17 @@ namespace Stock.Domain.Services
         }
 
         //protected double FindPriceAmplitude(int index
+
+
+        protected void CheckForExtremum(DataItem item, bool isPeak, bool byClose, bool fromScratch)
+        {
+            if (!fromScratch)
+            {
+
+            }
+
+            var x = 1;
+        }
 
         protected double EvaluateExtremum(DataItem item, int index, bool isPeak, bool byClose)
         {
