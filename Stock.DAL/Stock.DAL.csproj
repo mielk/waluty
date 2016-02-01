@@ -67,6 +67,7 @@
     <Compile Include="Repository\Concrete\EFDataRepository.cs" />
     <Compile Include="Repository\Concrete\EFMarketRepository.cs" />
     <Compile Include="Repository\Concrete\EFCompanyRepository.cs" />
+    <Compile Include="TransferObjects\AnalysisDto.cs" />
     <Compile Include="TransferObjects\CompanyDto.cs" />
     <Compile Include="TransferObjects\AdxDto.cs" />
     <Compile Include="TransferObjects\CurrencyDto.cs" />

@@ -32,6 +32,7 @@ namespace Stock.DAL.Repositories
         void UpdateMacd(MacdDto macd, string symbol);
         void AddAdx(AdxDto adx, string symbol);
         void UpdateAdx(AdxDto adx, string symbol);
+        void AddAnalysisInfo(AnalysisDto analysis);
         
 
         bool CheckIfTableExists(string tableName);

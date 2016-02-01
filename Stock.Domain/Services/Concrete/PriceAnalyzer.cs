@@ -18,11 +18,12 @@ namespace Stock.Domain.Services
         public const int DirectionCheckCounter = 10;
         public const int DirectionCheckRequired = 6;
         public const int MinRange = 3;
-        public const int MaxRange = 5;
+        public const int MaxRange = 360;
 
         private IDataRepository _dataRepository;
         private IFxRepository _fxRepository;
 
+        private Analysis analysis;
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
         public string Symbol;
@@ -39,6 +40,8 @@ namespace Stock.Domain.Services
 
         public void Analyze(string symbol, bool fromScratch)
         {
+
+            analysis = new Analysis(symbol, Type);
 
             /* Prepare instance. */
             if (!DebugMode)
@@ -85,6 +88,11 @@ namespace Stock.Domain.Services
             }
 
 
+            //Save info about this analysis.
+            analysis.FirstItemDate = Items[wideStartIndex].Date;
+            analysis.LastItemDate = Items[Items.Length - 1].Date;
+            analysis.AnalyzedItems = Items.Length - wideStartIndex + 1;
+
             
             for (var i = wideStartIndex; i < Items.Length; i++)
             {
@@ -95,6 +103,12 @@ namespace Stock.Domain.Services
             /* Start looking for trend lines */
             //ITrendService trendService = new TrendService(Symbol, Items);
             //trendService.Start();
+
+
+            //Insert info about this analysis to the database.
+            analysis.AnalysisEnd = DateTime.Now;
+            _dataRepository.AddAnalysisInfo(analysis.ToDto());
+
 
         }
 
@@ -339,7 +353,7 @@ namespace Stock.Domain.Services
 
             //Calculate startIndex and endIndex.
             startIndex = index + (left ? -1 : 1);
-            endIndex = left ? Math.Max(index - 360, 0) : Math.Min(index + 360, Items.Length - 1);
+            endIndex = left ? Math.Max(index - MaxRange, 0) : Math.Min(index + MaxRange, Items.Length - 1);
 
 
             //If the number of items to be checked is less than MinRange, there is no point to check it - 

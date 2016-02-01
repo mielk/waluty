@@ -14,6 +14,7 @@ namespace Stock.DAL.Repositories
         private const string QuotationsTablePrefix = "quotations_";
         private const string MacdTablePrefix = "macd_";
         private const string AdxTablePrefix = "adx_";
+        private const string AnalysisInfoTable = "_log_analysis";
 
 
         //private static readonly EFDbContext Context = EFDbContext.GetInstance();
@@ -370,7 +371,7 @@ namespace Stock.DAL.Repositories
                                 ", p.* " +
                             " FROM" +
                                 " quotations_{0} AS q LEFT JOIN" +
-                                " prices_{0} AS p ON q.PriceDate = p.PriceDate" +
+                                " {1}_{0} AS p ON q.PriceDate = p.PriceDate" +
                             " WHERE" +
                                 " q.PriceDate <= '" + lastAnalysisItem + "'" +
                             " ORDER BY q.PriceDate DESC" + 
@@ -767,6 +768,30 @@ namespace Stock.DAL.Repositories
                 LastQuotation = lastQuotation,
                 LastAnalysisItem = lastAnalysisItem
             };
+        }
+
+
+
+        public void AddAnalysisInfo(AnalysisDto analysis)
+        {
+
+            string sqlInsert = "INSERT INTO fx." + AnalysisInfoTable +
+                "(AnalysisName, Symbol, FirstAnalysedItemDate, LastAnalysedItemDate, AnalysedUnits, " +
+                    "AnalysisStart, AnalysisEnd, AnalysisTotalTime) " +
+                "VALUES ('" + analysis.Type + "'" +
+                    ", '" + analysis.Symbol + "'" +
+                    ", '" + analysis.FirstItemDate + "'" +
+                    ", '" + analysis.LastItemDate + "'" +
+                    ", " + analysis.AnalyzedItems +
+                    ", '" + analysis.AnalysisStart + "'" +
+                    ", '" + analysis.AnalysisEnd + "'" +
+                    ", " + toDb(analysis.AnalysisTotalTime) + ");";
+
+            using (var context = new EFDbContext())
+            {
+                context.Database.ExecuteSqlCommand(sqlInsert);
+                context.SaveChanges();
+            }
         }
 
     }

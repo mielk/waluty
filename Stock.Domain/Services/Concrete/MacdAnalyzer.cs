@@ -23,6 +23,7 @@ namespace Stock.Domain.Services
         private IDataRepository _dataRepository;
         private IFxRepository _fxRepository;
 
+        private Analysis analysis;
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
         public string Symbol;
@@ -43,6 +44,8 @@ namespace Stock.Domain.Services
 
         public void Analyze(string symbol, bool fromScratch)
         {
+
+            analysis = new Analysis(symbol, Type);
 
             /* Prepare instance. */
             if (!DebugMode)
@@ -84,11 +87,24 @@ namespace Stock.Domain.Services
             //set here to avoid NullException for the first item).
             if (startIndex > 0) previousMacd = Items[startIndex - 1].Macd;
 
+
+            //Save info about this analysis.
+            analysis.FirstItemDate = Items[startIndex].Date;
+            analysis.LastItemDate = Items[Items.Length - 1].Date;
+            analysis.AnalyzedItems = Items.Length - startIndex + 1;
+
+
             //Iterate through all items and calculate Macd;
+            
             for (var i = startIndex; i < Items.Length; i++)
             {
                 AnalyzeMacd(i, fromScratch);
             }
+
+
+            //Insert info about this analysis to the database.
+            analysis.AnalysisEnd = DateTime.Now;
+            _dataRepository.AddAnalysisInfo(analysis.ToDto());
 
 
         }

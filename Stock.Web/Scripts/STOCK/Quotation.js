@@ -30,13 +30,13 @@ function Macd(params){
     self.macd = params.MacdLine;
 
     self.strMacd = function () {
-        return Math.round(self.macd * 10000) / 10000;
+        return self.macd.toFixed(4);
     };
     self.strSignal = function () {
-        return Math.round(self.signal * 10000) / 10000;
+        return self.signal.toFixed(4);
     };
     self.strHistogram = function () {
-        return Math.round(self.histogram * 10000) / 10000;
+        return self.histogram.toFixed(4);
     };
 
 }
