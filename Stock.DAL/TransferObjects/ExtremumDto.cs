@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Stock.Domain.Enums;
 
-namespace Stock.Domain.Entities
+namespace Stock.DAL.TransferObjects
 {
-    public class ExtremumCalculator
+    public class ExtremumDto
     {
 
+        [Key]
         public int ExtremumId { get; set; }
         public string Symbol { get; set; }
-        public ExtremumType Type { get; set; }
+        public int Type { get; set; }
         public DateTime PriceDate { get; set; }
         public int EarlierCounter { get; set; }
         public int LaterCounter { get; set; }
@@ -32,23 +34,10 @@ namespace Stock.Domain.Entities
         public bool Prospective { get; set; }
         public bool Cancelled { get; set; }
 
-        public ExtremumCalculator(string symbol, bool isPeak, bool byClose)
+
+        public DateTime GetDate()
         {
-            this.Symbol = symbol;
-            this.Type = Extrema.GetExtremumType(isPeak, byClose);
-
-        }
-
-
-        public double Evaluate()
-        {
-            var maxRange = (double)Extrema.MaxRange;
-            var leftSerie = (double)EarlierCounter / maxRange;
-            var rightSerie = (double)LaterCounter / maxRange;
-            var rangePoints = Math.Sqrt(leftSerie * rightSerie);
-
-            return rangePoints * 100;
-
+            return PriceDate;
         }
 
     }

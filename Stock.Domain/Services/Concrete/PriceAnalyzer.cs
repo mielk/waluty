@@ -33,10 +33,6 @@ namespace Stock.Domain.Services
 
         //Current peaks & troughs - for better performance.
         private Dictionary<ExtremumType, DataItem> currentExtrema;
-        //private DataItem currentPeakByClose;
-        //private DataItem currentPeakByHigh;
-        //private DataItem currentTroughByClose;
-        //private DataItem currentTroughByLow;
 
 
 
@@ -48,11 +44,12 @@ namespace Stock.Domain.Services
         public void Analyze(string symbol, bool fromScratch)
         {
 
-            analysis = new Analysis(symbol, Type);
 
             /* Prepare instance. */
             if (!DebugMode)
             {
+                analysis = new Analysis(symbol, Type);
+                currentExtrema = new Dictionary<ExtremumType, DataItem>();
                 EnsureRepositories();
                 LoadParameters(symbol);
             };
@@ -414,7 +411,7 @@ namespace Stock.Domain.Services
         protected void CheckForExtremum(DataItem item, ExtremumType type, bool fromScratch)
         {
 
-            ExtremumCalculator extremum;
+            Extremum extremum;
 
             if (!fromScratch)
             {
@@ -447,7 +444,7 @@ namespace Stock.Domain.Services
                 if (earlierCounter < MinRange) return;
                 if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index)) return;
 
-                extremum = new ExtremumCalculator(Symbol, type.IsPeak(), type.ByClose());
+                extremum = new Extremum(Symbol, type.IsPeak(), type.ByClose());
                 extremum.EarlierCounter = earlierCounter;
                 extremum.LaterCounter = laterCounter;
                 extremum.EarlierAmplitude = 1d;

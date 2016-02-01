@@ -21,10 +21,10 @@ namespace Stock.Domain.Entities
         public double TroughByClose { get; set; }
         public double TroughByLow { get; set; }
         public double PriceGap { get; set; }
-        public ExtremumCalculator PeakByCloseExtremum { get; set; }
-        public ExtremumCalculator PeakByHighExtremum { get; set; }
-        public ExtremumCalculator TroughByCloseExtremum { get; set; }
-        public ExtremumCalculator TroughByLowExtremum { get; set; }
+        public Extremum PeakByCloseExtremum { get; set; }
+        public Extremum PeakByHighExtremum { get; set; }
+        public Extremum TroughByCloseExtremum { get; set; }
+        public Extremum TroughByLowExtremum { get; set; }
         public bool IsUpdated { get; set; }
         public bool IsNew { get; set; }
 
@@ -69,7 +69,7 @@ namespace Stock.Domain.Entities
 
         }
 
-        public void ApplyExtremumValue(ExtremumType type, ExtremumCalculator extremum)
+        public void ApplyExtremumValue(ExtremumType type, Extremum extremum)
         {
             switch (type)
             {
@@ -92,7 +92,7 @@ namespace Stock.Domain.Entities
             }
         }
 
-        public ExtremumCalculator GetExtremumObject(ExtremumType type)
+        public Extremum GetExtremumObject(ExtremumType type)
         {
             switch (type)
             {
@@ -109,7 +109,7 @@ namespace Stock.Domain.Entities
             }
         }
 
-        public ExtremumCalculator GetExtremumObject(bool isPeak, bool byClose)
+        public Extremum GetExtremumObject(bool isPeak, bool byClose)
         {
             return GetExtremumObject(Extrema.GetExtremumType(isPeak, byClose));
         }
