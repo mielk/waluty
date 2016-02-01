@@ -31,6 +31,12 @@ namespace Stock.Domain.Services
         public int TimebandId;
         public int CurrentDirection2D;
 
+        //Current peaks & troughs - for better performance.
+        private DataItem currentPeakByClose;
+        private DataItem currentPeakByHigh;
+        private DataItem currentTroughByClose;
+        private DataItem currentTroughByLow;
+
 
 
         public void Analyze(string symbol)
@@ -235,11 +241,9 @@ namespace Stock.Domain.Services
                 item.Price.CloseDelta = CalculateDeltaClosePrice(item.Quotation.Close, index);
                 item.Price.Direction2D = CalculateDirection2D(index);
                 item.Price.Direction3D = CalculateDirection3D(index);
-                item.Price.PeakByClose = EvaluateExtremum(item, index, true, true);
-                item.Price.PeakByHigh = EvaluateExtremum(item, index, true, false);
-                item.Price.TroughByClose = EvaluateExtremum(item, index, false, true);
-                item.Price.TroughByLow = EvaluateExtremum(item, index, false, false);
             }
+
+
 
 
 
@@ -398,6 +402,8 @@ namespace Stock.Domain.Services
 
 
         }
+
+        //protected double FindPriceAmplitude(int index
 
         protected double EvaluateExtremum(DataItem item, int index, bool isPeak, bool byClose)
         {
