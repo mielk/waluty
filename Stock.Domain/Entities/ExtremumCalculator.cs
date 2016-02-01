@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
-using Stock.Domain.Services.Concrete;
 
 namespace Stock.Domain.Entities
 {
@@ -36,7 +35,19 @@ namespace Stock.Domain.Entities
         public ExtremumCalculator(string symbol, bool isPeak, bool byClose)
         {
             this.Symbol = symbol;
-            this.Type = ExtremaUtils.GetExtremumType(isPeak, byClose);
+            this.Type = Extrema.GetExtremumType(isPeak, byClose);
+
+        }
+
+
+        public double Evaluate()
+        {
+            var maxRange = (double)Extrema.MaxRange;
+            var leftSerie = (double)EarlierCounter / maxRange;
+            var rightSerie = (double)LaterCounter / maxRange;
+            var rangePoints = Math.Sqrt(leftSerie * rightSerie);
+
+            return rangePoints * 100;
 
         }
 

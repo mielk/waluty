@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
 
-namespace Stock.Domain.Services.Concrete
+namespace Stock.Domain.Entities
 {
-    public class ExtremaUtils
+    public class Extrema
     {
-
+        public const int MinRange = 3;
+        public const int MaxRange = 360;
         public static ExtremumType GetExtremumType(bool isPeak, bool byClose)
         {
             if (isPeak)

@@ -246,16 +246,19 @@ namespace Stock.Domain.Services
 
 
             CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch);
+            CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch);
+            CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch);
+            CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch);
 
 
 
             //Calculate new values for peaks and troughs and apply them to the current item price.
             //If any of this is changed, this price will have flag [IsChange] set to @true.
             //This is the only thing that can be changed for items being only updated.
-            if (item.Price.ApplyNewPeakByClose(EvaluateExtremum(item, index, true, true))) isChanged = true;
-            if (item.Price.ApplyNewPeakByHigh(EvaluateExtremum(item, index, true, false))) isChanged = true;
-            if (item.Price.ApplyNewTroughByClose(EvaluateExtremum(item, index, false, true))) isChanged = true;
-            if (item.Price.ApplyNewTroughByLow(EvaluateExtremum(item, index, false, false))) isChanged = true;
+            //if (item.Price.ApplyNewPeakByClose(EvaluateExtremum(item, index, true, true))) isChanged = true;
+            //if (item.Price.ApplyNewPeakByHigh(EvaluateExtremum(item, index, true, false))) isChanged = true;
+            //if (item.Price.ApplyNewTroughByClose(EvaluateExtremum(item, index, false, true))) isChanged = true;
+            //if (item.Price.ApplyNewTroughByLow(EvaluateExtremum(item, index, false, false))) isChanged = true;
 
 
             if (item.Price.Id == 0)
@@ -468,26 +471,11 @@ namespace Stock.Domain.Services
                 extremum.LaterChange5 = 1d;
                 extremum.LaterChange10 = 1d;
                 setCurrentExtremum(type, item);
+                item.Price.ApplyExtremumValue(type, extremum);
             }
 
         }
 
-        protected double EvaluateExtremum(DataItem item, int index, bool isPeak, bool byClose)
-        {
-
-            var leftSerie = (double)CountSerie(index, isPeak, byClose, true) / (double) MaxRange;
-            var rightSerie = (double)CountSerie(index, isPeak, byClose, false) / (double) MaxRange;
-            var rangePoints = Math.Sqrt(leftSerie * rightSerie);
-
-
-            if (rangePoints > 0)
-            {
-                var volumeFactor = VolumeFactor(item.Quotation.Volume, index);
-            }
-
-            return rangePoints * 100;
-
-        }
 
         protected double VolumeFactor(double volume, int index)
         {

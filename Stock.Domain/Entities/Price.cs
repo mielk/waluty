@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
-using Stock.Domain.Services.Concrete;
 
 namespace Stock.Domain.Entities
 {
@@ -70,32 +69,27 @@ namespace Stock.Domain.Entities
 
         }
 
-        public bool ApplyNewPeakByClose(double value)
+        public void ApplyExtremumValue(ExtremumType type, ExtremumCalculator extremum)
         {
-            if (value == PeakByClose) return false;
-            PeakByClose = value;
-            return true;
-        }
-
-        public bool ApplyNewPeakByHigh(double value)
-        {
-            if (value == PeakByHigh) return false;
-            PeakByHigh = value;
-            return true;
-        }
-
-        public bool ApplyNewTroughByClose(double value)
-        {
-            if (value == TroughByClose) return false;
-            TroughByClose = value;
-            return true;
-        }
-
-        public bool ApplyNewTroughByLow(double value)
-        {
-            if (value == TroughByLow) return false;
-            TroughByLow = value;
-            return true;
+            switch (type)
+            {
+                case ExtremumType.PeakByClose:
+                    PeakByCloseExtremum = extremum;
+                    PeakByClose = extremum.Evaluate();
+                    break;
+                case ExtremumType.PeakByHigh:
+                    PeakByHighExtremum= extremum;
+                    PeakByHigh = extremum.Evaluate();
+                    break;
+                case ExtremumType.TroughByClose:
+                    TroughByCloseExtremum = extremum;
+                    TroughByClose = extremum.Evaluate();
+                    break;
+                case ExtremumType.TroughByLow:
+                    TroughByLowExtremum = extremum;
+                    TroughByLow = extremum.Evaluate();
+                    break;
+            }
         }
 
         public ExtremumCalculator GetExtremumObject(ExtremumType type)
@@ -117,7 +111,7 @@ namespace Stock.Domain.Entities
 
         public ExtremumCalculator GetExtremumObject(bool isPeak, bool byClose)
         {
-            return GetExtremumObject(ExtremaUtils.GetExtremumType(isPeak, byClose));
+            return GetExtremumObject(Extrema.GetExtremumType(isPeak, byClose));
         }
 
         public bool IsExtremum()
