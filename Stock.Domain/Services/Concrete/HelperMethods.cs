@@ -13,7 +13,7 @@ namespace Stock.Domain.Services
     {
 
 
-        public static String TableName(this AnalysisType type)
+        public static string TableName(this AnalysisType type)
         {
             switch (type)
             {
@@ -26,6 +26,24 @@ namespace Stock.Domain.Services
                 default:
                     return "";
             }
+        }
+
+        public static bool IsPeak(this ExtremumType type)
+        {
+            if (type == ExtremumType.PeakByClose || type == ExtremumType.PeakByHigh)
+                return true;
+
+            return false;
+
+        }
+
+        public static bool ByClose(this ExtremumType type)
+        {
+            if (type == ExtremumType.PeakByClose || type == ExtremumType.TroughByClose)
+                return true;
+
+            return false;
+
         }
 
         public static void AppendIndexNumbers(this DataItem[] items)

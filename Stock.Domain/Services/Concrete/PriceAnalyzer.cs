@@ -32,10 +32,11 @@ namespace Stock.Domain.Services
         public int CurrentDirection2D;
 
         //Current peaks & troughs - for better performance.
-        private DataItem currentPeakByClose;
-        private DataItem currentPeakByHigh;
-        private DataItem currentTroughByClose;
-        private DataItem currentTroughByLow;
+        private Dictionary<ExtremumType, DataItem> currentExtrema;
+        //private DataItem currentPeakByClose;
+        //private DataItem currentPeakByHigh;
+        //private DataItem currentTroughByClose;
+        //private DataItem currentTroughByLow;
 
 
 
@@ -244,7 +245,7 @@ namespace Stock.Domain.Services
             }
 
 
-            CheckForExtremum(item, true, true, fromScratch);
+            CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch);
 
 
 
@@ -407,14 +408,68 @@ namespace Stock.Domain.Services
         //protected double FindPriceAmplitude(int index
 
 
-        protected void CheckForExtremum(DataItem item, bool isPeak, bool byClose, bool fromScratch)
+        protected void CheckForExtremum(DataItem item, ExtremumType type, bool fromScratch)
         {
+
+            ExtremumCalculator extremum;
+
             if (!fromScratch)
             {
+                //Jeżeli analiza nie jest przeprowadzana od początku, sprawdzane jest czy dla tego DataItemu
+                //przypisany jest obieket ExtremumCalculator danego typu. Jeżeli nie, oznacza to, że już
+                //wcześniej został zdyskwalifikowany i nie ma sensu go sprawdzać.
+                extremum = item.Price.GetExtremumObject(type);
+                if (extremum == null) return;
 
+                //Sprawdź czy notowania późniejsze względem tego pozwalają uznać je za ekstremum.
+                var laterCounter = CountSerie(item.Index, type.IsPeak(), type.ByClose(), false);
+                if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index))
+                {
+                    extremum.Cancelled = true;
+                    return;
+                }
+                else
+                {
+                    extremum.LaterCounter = laterCounter;
+                }
+                
+
+            } else {
+                //Wartości oparte na wcześniejszych notowaniach obliczane są tylko, jeżeli analiza wykonywana jest od zera.
+                var earlierCounter = CountSerie(item.Index, type.IsPeak(), type.ByClose(), true);
+                var laterCounter = CountSerie(item.Index, type.IsPeak(), type.ByClose(), false);
+
+                //Jeżeli liczba wcześniejszych lub późniejszych notowań gorszych od tego notowania nie osiągnęła 
+                //minimalnego poziomu, to notowanie jest dyskwalifikowane jako ekstremum i nie ma sensu go dalej sprawdzać.
+                if (earlierCounter < MinRange) return;
+                if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index)) return;
+
+                extremum = new ExtremumCalculator(Symbol, type.IsPeak(), type.ByClose());
+                extremum.EarlierCounter = earlierCounter;
+                extremum.LaterCounter = laterCounter;
+                extremum.EarlierAmplitude = 1d;
+                extremum.EarlierChange1 = 1d;
+                extremum.EarlierChange2 = 1d;
+                extremum.EarlierChange3 = 1d;
+                extremum.EarlierChange5 = 1d;
+                extremum.EarlierChange10 = 1d;
+                extremum.Volatility = 1d;
             }
 
-            var x = 1;
+
+            //Właściwie, to już wcześniej zostało zapewnione, że do tego miejsca wykonanie programu dotrze
+            //tylko, jeżeli extremum nie jest puste, ale mimo to kompilator nie przepuszcza bez takiego warunku tutaj.
+            if (extremum != null)
+            {
+                extremum.LaterAmplitude = 1d;
+                extremum.LaterChange1= 1d;
+                extremum.LaterChange2 = 1d;
+                extremum.LaterChange3 = 1d;
+                extremum.LaterChange5 = 1d;
+                extremum.LaterChange10 = 1d;
+                setCurrentExtremum(type, item);
+            }
+
         }
 
         protected double EvaluateExtremum(DataItem item, int index, bool isPeak, bool byClose)
@@ -460,6 +515,20 @@ namespace Stock.Domain.Services
 
         }
 
+        private DataItem getCurrentExtremum(ExtremumType type)
+        {
+            DataItem item;
+            if (currentExtrema.TryGetValue(type, out item))
+            {
+                return item;
+            }
+            return null;
+        }
+
+        private void setCurrentExtremum(ExtremumType type, DataItem item)
+        {
+            currentExtrema[type] = item;
+        }
 
     }
 

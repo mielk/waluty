@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
+using Stock.Domain.Services.Concrete;
 
 namespace Stock.Domain.Entities
 {
@@ -29,6 +30,15 @@ namespace Stock.Domain.Entities
         public double LaterChange3 { get; set; }
         public double LaterChange5 { get; set; }
         public double LaterChange10 { get; set; }
+        public bool Prospective { get; set; }
+        public bool Cancelled { get; set; }
+
+        public ExtremumCalculator(string symbol, bool isPeak, bool byClose)
+        {
+            this.Symbol = symbol;
+            this.Type = ExtremaUtils.GetExtremumType(isPeak, byClose);
+
+        }
 
     }
 }

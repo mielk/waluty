@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
+using Stock.Domain.Services.Concrete;
 
 namespace Stock.Domain.Entities
 {
@@ -116,14 +117,7 @@ namespace Stock.Domain.Entities
 
         public ExtremumCalculator GetExtremumObject(bool isPeak, bool byClose)
         {
-            if (isPeak)
-            {
-                return GetExtremumObject(byClose ? ExtremumType.PeakByClose : ExtremumType.PeakByHigh);
-            }
-            else
-            {
-                return GetExtremumObject(byClose ? ExtremumType.TroughByClose : ExtremumType.TroughByLow);
-            }
+            return GetExtremumObject(ExtremaUtils.GetExtremumType(isPeak, byClose));
         }
 
         public bool IsExtremum()
