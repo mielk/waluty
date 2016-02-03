@@ -35,8 +35,9 @@ namespace Stock.Domain.Entities
 
         private Extremum(){}
 
-        public Extremum(string symbol, bool isPeak, bool byClose)
+        public Extremum(DateTime date, string symbol, bool isPeak, bool byClose)
         {
+            this.PriceDate = date;
             this.Symbol = symbol;
             this.Type = Extrema.GetExtremumType(isPeak, byClose);
 

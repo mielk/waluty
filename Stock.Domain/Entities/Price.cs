@@ -63,6 +63,10 @@ namespace Stock.Domain.Entities
                 , TroughByCloseEvaluation = this.TroughByClose
                 , TroughByLowEvaluation = this.TroughByLow
                 , TimebandId = 1
+                , PeakByClose = (PeakByCloseExtremum != null ? PeakByCloseExtremum.ToDto() : null)
+                , PeakByHigh = (PeakByHighExtremum != null ? PeakByHighExtremum.ToDto() : null)
+                , TroughByClose = (TroughByCloseExtremum != null ? TroughByCloseExtremum.ToDto() : null)
+                , TroughByLow = (TroughByLowExtremum != null ? TroughByLowExtremum.ToDto() : null)
             };
 
             return dto;
@@ -90,6 +94,12 @@ namespace Stock.Domain.Entities
                     TroughByLow = extremum.Evaluate();
                     break;
             }
+        }
+
+        public void ApplyExtremumValue(Extremum extremum)
+        {
+            ExtremumType type = extremum.Type;
+            ApplyExtremumValue(type, extremum);
         }
 
         public Extremum GetExtremumObject(ExtremumType type)

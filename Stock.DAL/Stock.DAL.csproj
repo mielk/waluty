@@ -72,6 +72,7 @@
     <Compile Include="TransferObjects\AdxDto.cs" />
     <Compile Include="TransferObjects\CurrencyDto.cs" />
     <Compile Include="TransferObjects\DataItemDto.cs" />
+    <Compile Include="TransferObjects\ExtremumDto.cs" />
     <Compile Include="TransferObjects\IAssetDto.cs" />
     <Compile Include="TransferObjects\IDateItem.cs" />
     <Compile Include="TransferObjects\LastDates.cs" />

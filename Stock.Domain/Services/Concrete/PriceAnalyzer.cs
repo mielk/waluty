@@ -147,18 +147,39 @@ namespace Stock.Domain.Services
         {
             Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName()).Select(DataItem.FromDto).ToArray();
             Items.AppendIndexNumbers();
+            LoadExtrema();
         }
 
         public void LoadDataSets(DataItem[] items)
         {
             Items = items;
             Items.AppendIndexNumbers();
+            LoadExtrema();
         }
 
         public void LoadDataSets(string symbol, DateTime lastAnalysisItem, int counter)
         {
             Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).Select(DataItem.FromDto).ToArray();
             Items.AppendIndexNumbers();
+            LoadExtrema();
+        }
+
+        public void LoadExtrema()
+        {
+
+            var firstQuotationDate = Items.Min(q => q.Date);
+            var lastQuotationDate = Items.Max(q => q.Date);
+            var extrema = _dataRepository.GetExtrema(Symbol, firstQuotationDate, lastQuotationDate);
+
+            foreach (var extremumDto in extrema)
+            {
+                var item = Items.SingleOrDefault(q => q.Date.Equals(extremumDto.PriceDate));
+                if (item != null && item.Price != null)
+                {
+                    item.Price.ApplyExtremumValue(Extremum.FromDto(extremumDto));
+                }
+            }
+
         }
 
 
@@ -444,7 +465,7 @@ namespace Stock.Domain.Services
                 if (earlierCounter < MinRange) return;
                 if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index)) return;
 
-                extremum = new Extremum(Symbol, type.IsPeak(), type.ByClose());
+                extremum = new Extremum(item.Date, Symbol, type.IsPeak(), type.ByClose());
                 extremum.EarlierCounter = earlierCounter;
                 extremum.LaterCounter = laterCounter;
                 extremum.EarlierAmplitude = 1d;

@@ -24,6 +24,7 @@ namespace Stock.DAL.Repositories
 
         IEnumerable<PriceDto> GetPrices(string tableName);
         IEnumerable<String> GetStats();
+        IEnumerable<ExtremumDto> GetExtrema(string symbol, DateTime startDate, DateTime endDate);
 
         void UpdateQuotation(QuotationDto quotation, string symbol);
         void AddPrice(PriceDto price, string symbol);

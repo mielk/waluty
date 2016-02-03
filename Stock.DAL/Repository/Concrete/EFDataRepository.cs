@@ -15,6 +15,7 @@ namespace Stock.DAL.Repositories
         private const string MacdTablePrefix = "macd_";
         private const string AdxTablePrefix = "adx_";
         private const string AnalysisInfoTable = "_log_analysis";
+        private const string ExtremaEvaluationTable = "_extrema_evaluation";
 
 
         //private static readonly EFDbContext Context = EFDbContext.GetInstance();
@@ -294,6 +295,24 @@ namespace Stock.DAL.Repositories
             return quotations.OrderBy(q => q.PriceDate);
 
         }
+
+        public IEnumerable<ExtremumDto> GetExtrema(string symbol, DateTime startDate, DateTime endDate)
+        {
+
+            IEnumerable<ExtremumDto> extrema;
+
+            string query = "SELECT * FROM fx._extrema_evaluation WHERE symbol = '{0}' AND pricedate BETWEEN '{1}' AND '{2}';";
+            query = string.Format(query, symbol, startDate, endDate);
+
+            using (var context = new EFDbContext())
+            {
+                extrema = context.Database.SqlQuery<ExtremumDto>(query).ToList();
+            }
+
+            return extrema;
+
+        }
+
 
 
         private string GetSqlForFxQuotations(string symbol)
@@ -598,12 +617,21 @@ namespace Stock.DAL.Repositories
                     ", " + toDb(price.TroughByCloseEvaluation) +
                     ", " + toDb(price.TroughByLowEvaluation) + ");";
 
+
+            //Add info about extrema.
+            AddExtremum(price.PeakByClose);
+            AddExtremum(price.PeakByHigh);
+            AddExtremum(price.TroughByClose);
+            AddExtremum(price.TroughByLow);
+
+
             using (var context = new EFDbContext())
             {
                 context.Database.ExecuteSqlCommand(sqlRemove);
                 context.Database.ExecuteSqlCommand(sqlInsert);
                 context.SaveChanges();
             }
+
         }
 
         public void UpdatePrice(PriceDto price, string symbol)
@@ -625,6 +653,49 @@ namespace Stock.DAL.Repositories
             using (var context = new EFDbContext())
             {
                 context.Database.ExecuteSqlCommand(sql);
+                context.SaveChanges();
+            }
+
+        }
+
+        private void AddExtremum(ExtremumDto extremum)
+        {
+
+            if (extremum == null) return;
+
+            string sqlRemove = "DELETE FROM fx." + ExtremaEvaluationTable +
+                        " WHERE " +
+                            " Type = " + extremum.Type + " AND " +
+                            " Symbol = '" + extremum.Symbol + "' AND " +
+                            " PriceDate = '" + extremum.PriceDate + "';";
+            string sqlInsert = "INSERT INTO fx." + ExtremaEvaluationTable +
+                "(Symbol, Type, PriceDate, EarlierCounter, LaterCounter, EarlierAmplitude, " + 
+                    "LaterAmplitude, Volatility, EarlierChange1, EarlierChange2, EarlierChange3, " + 
+                    "EarlierChange5, EarlierChange10, LaterChange1, LaterChange2, LaterChange3, " +
+                    "LaterChange5, LaterChange10) " +
+                "VALUES ('" + extremum.Symbol + "'" +
+                    ", " + extremum.Type + 
+                    ", '" + extremum.PriceDate + "'" +
+                    ", " + extremum.EarlierCounter +
+                    ", " + extremum.LaterCounter +
+                    ", " + toDb(extremum.EarlierAmplitude) +
+                    ", " + toDb(extremum.LaterAmplitude) +
+                    ", " + toDb(extremum.Volatility) +
+                    ", " + toDb(extremum.EarlierChange1) +
+                    ", " + toDb(extremum.EarlierChange2) +
+                    ", " + toDb(extremum.EarlierChange3) +
+                    ", " + toDb(extremum.EarlierChange5) +
+                    ", " + toDb(extremum.EarlierChange10) +
+                    ", " + toDb(extremum.LaterChange1) +
+                    ", " + toDb(extremum.LaterChange2) +
+                    ", " + toDb(extremum.LaterChange3) +
+                    ", " + toDb(extremum.LaterChange5) +
+                    ", " + toDb(extremum.LaterChange10) + ");";
+
+            using (var context = new EFDbContext())
+            {
+                context.Database.ExecuteSqlCommand(sqlRemove);
+                context.Database.ExecuteSqlCommand(sqlInsert);
                 context.SaveChanges();
             }
 
@@ -770,6 +841,7 @@ namespace Stock.DAL.Repositories
             };
         }
 
+        
 
 
         public void AddAnalysisInfo(AnalysisDto analysis)

@@ -21,6 +21,10 @@ namespace Stock.DAL.TransferObjects
         public double PeakByHighEvaluation { get; set; }
         public double TroughByCloseEvaluation { get; set; }
         public double TroughByLowEvaluation { get; set; }
+        public ExtremumDto PeakByClose { get; set; }
+        public ExtremumDto PeakByHigh { get; set; }
+        public ExtremumDto TroughByClose { get; set; }
+        public ExtremumDto TroughByLow { get; set; }
 
         [NotMapped]
         public int TimebandId { get; set; }

@@ -51,7 +51,7 @@
     <Compile Include="Entities\Adx.cs" />
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\DataItem.cs" />
-    <Compile Include="Entities\ExtremumCalculator.cs" />
+    <Compile Include="Entities\Extremum.cs" />
     <Compile Include="Entities\Macd.cs" />
     <Compile Include="Entities\Pair.cs" />
     <Compile Include="Entities\Price.cs" />

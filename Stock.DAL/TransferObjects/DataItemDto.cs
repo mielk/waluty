@@ -33,6 +33,92 @@ namespace Stock.DAL.TransferObjects
         public double? PeakByHighEvaluation { get; set; }
         public double? TroughByCloseEvaluation { get; set; }
         public double? TroughByLowEvaluation { get; set; }
+        //Extrema evaluation values.
+        //public int? PeakByCloseExtremumId { get; set; }
+        //public string? PeakByCloseSymbol { get; set; }
+        //public int? PeakByCloseType { get; set; }
+        //public DateTime? PeakByClosePriceDate { get; set; }
+        //public int? PeakByCloseEarlierCounter { get; set; }
+        //public int? PeakByCloseLaterCounter { get; set; }
+        //public double? PeakByCloseEarlierAmplitude { get; set; }
+        //public double? PeakByCloseLaterAmplitude { get; set; }
+        //public double? PeakByCloseVolatility { get; set; }
+        //public double? PeakByCloseEarlierChange1 { get; set; }
+        //public double? PeakByCloseEarlierChange2 { get; set; }
+        //public double? PeakByCloseEarlierChange3 { get; set; }
+        //public double? PeakByCloseEarlierChange5 { get; set; }
+        //public double? PeakByCloseEarlierChange10 { get; set; }
+        //public double? PeakByCloseLaterChange1 { get; set; }
+        //public double? PeakByCloseLaterChange2 { get; set; }
+        //public double? PeakByCloseLaterChange3 { get; set; }
+        //public double? PeakByCloseLaterChange5 { get; set; }
+        //public double? PeakByCloseLaterChange10 { get; set; }
+        //public bool? PeakByCloseProspective { get; set; }
+        //public bool? PeakByCloseCancelled { get; set; }
+        //public int? PeakByHighExtremumId { get; set; }
+        //public string? PeakByHighSymbol { get; set; }
+        //public int? PeakByHighType { get; set; }
+        //public DateTime? PeakByHighPriceDate { get; set; }
+        //public int? PeakByHighEarlierCounter { get; set; }
+        //public int? PeakByHighLaterCounter { get; set; }
+        //public double? PeakByHighEarlierAmplitude { get; set; }
+        //public double? PeakByHighLaterAmplitude { get; set; }
+        //public double? PeakByHighVolatility { get; set; }
+        //public double? PeakByHighEarlierChange1 { get; set; }
+        //public double? PeakByHighEarlierChange2 { get; set; }
+        //public double? PeakByHighEarlierChange3 { get; set; }
+        //public double? PeakByHighEarlierChange5 { get; set; }
+        //public double? PeakByHighEarlierChange10 { get; set; }
+        //public double? PeakByHighLaterChange1 { get; set; }
+        //public double? PeakByHighLaterChange2 { get; set; }
+        //public double? PeakByHighLaterChange3 { get; set; }
+        //public double? PeakByHighLaterChange5 { get; set; }
+        //public double? PeakByHighLaterChange10 { get; set; }
+        //public bool? PeakByHighProspective { get; set; }
+        //public bool? PeakByHighCancelled { get; set; }
+        //public int? TroughByCloseExtremumId { get; set; }
+        //public string? TroughByCloseSymbol { get; set; }
+        //public int? TroughByCloseType { get; set; }
+        //public DateTime? TroughByClosePriceDate { get; set; }
+        //public int? TroughByCloseEarlierCounter { get; set; }
+        //public int? TroughByCloseLaterCounter { get; set; }
+        //public double? TroughByCloseEarlierAmplitude { get; set; }
+        //public double? TroughByCloseLaterAmplitude { get; set; }
+        //public double? TroughByCloseVolatility { get; set; }
+        //public double? TroughByCloseEarlierChange1 { get; set; }
+        //public double? TroughByCloseEarlierChange2 { get; set; }
+        //public double? TroughByCloseEarlierChange3 { get; set; }
+        //public double? TroughByCloseEarlierChange5 { get; set; }
+        //public double? TroughByCloseEarlierChange10 { get; set; }
+        //public double? TroughByCloseLaterChange1 { get; set; }
+        //public double? TroughByCloseLaterChange2 { get; set; }
+        //public double? TroughByCloseLaterChange3 { get; set; }
+        //public double? TroughByCloseLaterChange5 { get; set; }
+        //public double? TroughByCloseLaterChange10 { get; set; }
+        //public bool? TroughByCloseProspective { get; set; }
+        //public bool? TroughByCloseCancelled { get; set; }
+        //public int? TroughByLowExtremumId { get; set; }
+        //public string? TroughByLowSymbol { get; set; }
+        //public int? TroughByLowType { get; set; }
+        //public DateTime? TroughByLowPriceDate { get; set; }
+        //public int? TroughByLowEarlierCounter { get; set; }
+        //public int? TroughByLowLaterCounter { get; set; }
+        //public double? TroughByLowEarlierAmplitude { get; set; }
+        //public double? TroughByLowLaterAmplitude { get; set; }
+        //public double? TroughByLowVolatility { get; set; }
+        //public double? TroughByLowEarlierChange1 { get; set; }
+        //public double? TroughByLowEarlierChange2 { get; set; }
+        //public double? TroughByLowEarlierChange3 { get; set; }
+        //public double? TroughByLowEarlierChange5 { get; set; }
+        //public double? TroughByLowEarlierChange10 { get; set; }
+        //public double? TroughByLowLaterChange1 { get; set; }
+        //public double? TroughByLowLaterChange2 { get; set; }
+        //public double? TroughByLowLaterChange3 { get; set; }
+        //public double? TroughByLowLaterChange5 { get; set; }
+        //public double? TroughByLowLaterChange10 { get; set; }
+        //public bool? TroughByLowProspective { get; set; }
+        //public bool? TroughByLowCancelled { get; set; }
+
 
         //Macd
         public int? MacdId { get; set; }
