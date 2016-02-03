@@ -30,7 +30,7 @@ namespace Stock.Domain.Entities
         public double LaterChange5 { get; set; }
         public double LaterChange10 { get; set; }
         public double Volatility { get; set; }
-        public bool Prospective { get; set; }
+        public bool IsOpen { get; set; }
         public bool Cancelled { get; set; }
 
         private Extremum(){}
@@ -77,7 +77,7 @@ namespace Stock.Domain.Entities
             extremum.LaterChange5 = dto.LaterChange5;
             extremum.LaterChange10 = dto.LaterChange10;
             extremum.Volatility = dto.Volatility;
-            extremum.Prospective = dto.Prospective;
+            extremum.IsOpen = dto.IsOpen;
             extremum.Cancelled = dto.Cancelled;
 
             return extremum;
@@ -108,7 +108,7 @@ namespace Stock.Domain.Entities
                 LaterChange5 = this.LaterChange5,
                 LaterChange10 = this.LaterChange10,
                 Volatility = this.Volatility,
-                Prospective = this.Prospective,
+                IsOpen = this.IsOpen,
                 Cancelled = this.Cancelled
 
             };

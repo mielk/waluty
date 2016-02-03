@@ -32,7 +32,7 @@ namespace Stock.DAL.TransferObjects
         public double LaterChange3 { get; set; }
         public double LaterChange5 { get; set; }
         public double LaterChange10 { get; set; }
-        public bool Prospective { get; set; }
+        public bool IsOpen { get; set; }
         public bool Cancelled { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace Stock.DAL.TransferObjects
                 "(Symbol, Type, PriceDate, EarlierCounter, LaterCounter, EarlierAmplitude, " +
                     "LaterAmplitude, Volatility, EarlierChange1, EarlierChange2, EarlierChange3, " +
                     "EarlierChange5, EarlierChange10, LaterChange1, LaterChange2, LaterChange3, " +
-                    "LaterChange5, LaterChange10, Timestamp) " +
+                    "LaterChange5, LaterChange10, IsOpen, Timestamp) " +
                 "VALUES ('" + Symbol + "'" +
                     ", " + Type +
                     ", '" + PriceDate + "'" +
@@ -75,6 +75,7 @@ namespace Stock.DAL.TransferObjects
                     ", " + LaterChange3.ToDbString() +
                     ", " + LaterChange5.ToDbString() +
                     ", " + LaterChange10.ToDbString() +
+                    ", " + (IsOpen ? 1 : 0) +
                     ", NOW());";
 
             return sqlInsert;
@@ -101,6 +102,7 @@ namespace Stock.DAL.TransferObjects
                             ", LaterChange3 = " + LaterChange3.ToDbString() +
                             ", LaterChange5 = " + LaterChange5.ToDbString() +
                             ", LaterChange10 = " + LaterChange10.ToDbString() +
+                            ", IsOpen = " + (IsOpen ? 1 : 0) + 
                             ", Timestamp = NOW()" +
                       " WHERE" +
                             " ExtremumId = " + ExtremumId + ";";

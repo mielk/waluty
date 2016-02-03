@@ -618,6 +618,7 @@ namespace Stock.DAL.Repositories
 
 
             //Add info about extrema.
+            RemoveExtrema(symbol, price.PriceDate);
             AddExtremum(price.PeakByClose);
             AddExtremum(price.PeakByHigh);
             AddExtremum(price.TroughByClose);
@@ -651,7 +652,6 @@ namespace Stock.DAL.Repositories
 
 
             //Update info about extrema.
-            RemoveExtrema(symbol, price.PriceDate);
             UpdateExtremum(price.PeakByClose);
             UpdateExtremum(price.PeakByHigh);
             UpdateExtremum(price.TroughByClose);
@@ -668,10 +668,10 @@ namespace Stock.DAL.Repositories
 
         private void RemoveExtrema(string symbol, DateTime date)
         {
-            string sqlDelete = "DELETE FROM fx.{0} " +
+            string sqlDelete = string.Format("DELETE FROM fx.{0} " +
                                 " WHERE " +
                                     " Symbol = '" + symbol + "' AND " +
-                                    " PriceDate = '" + date + "';";
+                                    " PriceDate = '" + date + "';", ExtremaEvaluationTable);
 
             using (var context = new EFDbContext())
             {
@@ -700,6 +700,8 @@ namespace Stock.DAL.Repositories
         public void UpdateExtremum(ExtremumDto extremum)
         {
 
+            if (extremum == null) return;
+
             string sql = string.Format(extremum.Cancelled ? extremum.RemoveSql() : extremum.UpdateSql(), ExtremaEvaluationTable);
 
             using (var context = new EFDbContext())
@@ -708,7 +710,6 @@ namespace Stock.DAL.Repositories
                 context.SaveChanges();
             }
 
-            var x = 1;
         }
 
 

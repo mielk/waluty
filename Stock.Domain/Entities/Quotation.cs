@@ -1,4 +1,5 @@
 ﻿using Stock.DAL.TransferObjects;
+using Stock.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,27 @@ namespace Stock.Domain.Entities
             Close = price;
             Volume = -1;
             IsUpdated = true;
+        }
+
+        public double ProperValue(ExtremumType extremumType)
+        {
+            switch (extremumType)
+            {
+                case ExtremumType.PeakByClose: 
+                case ExtremumType.TroughByClose:
+                    return Close;
+                case ExtremumType.PeakByHigh:
+                    return High;
+                case ExtremumType.TroughByLow:
+                    return Low;
+                default:
+                    return Close;
+            }
+        }
+
+        public double Volatility()
+        {
+            return (High - Low) / Open;
         }
 
         public static Quotation FromDto(QuotationDto dto)

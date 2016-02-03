@@ -418,8 +418,43 @@ namespace Stock.Domain.Services
 
         }
 
-        //protected double FindPriceAmplitude(int index
+        protected double FindPriceAmplitude(DataItem item, Extremum extremum, bool earlier)
+        {
 
+            var prevExtremum = getCurrentExtremum(extremum.Type);
+            DateTime startDate;
+            DateTime endDate;
+
+            if (earlier)
+            {
+                startDate = Items[Math.Max(0, item.Index - extremum.EarlierCounter)].Date;
+                endDate = Items[Math.Max(0, item.Index - 1)].Date;
+            }
+            else
+            {
+                startDate = Items[Math.Min(item.Index + 1, Items.Length - 1)].Date;
+                endDate = Items[Math.Min(item.Index + extremum.LaterCounter, Items.Length - 1)].Date;
+            }
+            var itemsRange = Items.Where(i => i.Date >= startDate && i.Date <= endDate);
+            double oppositeValue = (extremum.Type.IsPeak() ? 
+                                        itemsRange.Min(i => i.Quotation.Low) : 
+                                        itemsRange.Max(i => i.Quotation.High));
+
+            return Math.Abs(oppositeValue - item.Quotation.ProperValue(extremum.Type));
+
+        }
+
+        protected double GetPriceChange(DataItem item, Extremum extremum, bool earlier, int counter)
+        {
+
+            var index = earlier ?
+                Math.Max(0, item.Index - counter) :
+                Math.Min(item.Index + counter, Items.Length - 1);
+
+            var value = Items[index].Quotation.ProperValue(extremum.Type);
+            var difference = item.Quotation.ProperValue(extremum.Type) - value;
+            return difference * (extremum.Type.IsPeak() ? 1 : -1);
+        }
 
         protected bool CheckForExtremum(DataItem item, ExtremumType type, bool fromScratch)
         {
@@ -460,13 +495,13 @@ namespace Stock.Domain.Services
                 extremum = new Extremum(item.Date, Symbol, type.IsPeak(), type.ByClose());
                 extremum.EarlierCounter = earlierCounter;
                 extremum.LaterCounter = laterCounter;
-                extremum.EarlierAmplitude = 1d;
-                extremum.EarlierChange1 = 1d;
-                extremum.EarlierChange2 = 1d;
-                extremum.EarlierChange3 = 1d;
-                extremum.EarlierChange5 = 1d;
-                extremum.EarlierChange10 = 1d;
-                extremum.Volatility = 1d;
+                extremum.EarlierAmplitude = FindPriceAmplitude(item, extremum, true);
+                extremum.EarlierChange1 = GetPriceChange(item, extremum, true, 1);
+                extremum.EarlierChange2 = GetPriceChange(item, extremum, true, 2);
+                extremum.EarlierChange3 = GetPriceChange(item, extremum, true, 3);
+                extremum.EarlierChange5 = GetPriceChange(item, extremum, true, 5);
+                extremum.EarlierChange10 = GetPriceChange(item, extremum, true, 10);
+                extremum.Volatility = item.Quotation.Volatility();
             }
 
 
@@ -474,12 +509,12 @@ namespace Stock.Domain.Services
             //tylko, jeżeli extremum nie jest puste, ale mimo to kompilator nie przepuszcza bez takiego warunku tutaj.
             if (extremum != null)
             {
-                extremum.LaterAmplitude = 1d;
-                extremum.LaterChange1= 1d;
-                extremum.LaterChange2 = 1d;
-                extremum.LaterChange3 = 1d;
-                extremum.LaterChange5 = 1d;
-                extremum.LaterChange10 = 1d;
+                extremum.LaterAmplitude = FindPriceAmplitude(item, extremum, false);
+                extremum.LaterChange1 = GetPriceChange(item, extremum, false, 1);
+                extremum.LaterChange2 = GetPriceChange(item, extremum, false, 2);
+                extremum.LaterChange3 = GetPriceChange(item, extremum, false, 3);
+                extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
+                extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
                 setCurrentExtremum(type, item);
                 item.Price.ApplyExtremumValue(type, extremum);
             }
