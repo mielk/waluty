@@ -369,10 +369,8 @@ namespace Stock.DAL.Repositories
                             "SELECT " +
                                 "'{2}' AS Timeband " +
                                 ", q.*" +
-                                ", p.*" +
                             " FROM" +
-                                " quotations_{0} AS q LEFT JOIN" +
-                                " {1}_{0} AS p ON q.PriceDate = p.PriceDate" +
+                                " quotations_{0} AS q" +
                             " ORDER BY" +
                                 " q.PriceDate;";
 
@@ -569,10 +567,11 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public string toDb(double value)
-        {
-            return Math.Round(value, 5).ToString().Replace(',', '.');
-        }
+
+        //public string toDb(double value)
+        //{
+        //    return Math.Round(value, 5).ToString().Replace(',', '.');
+        //}
 
 
 
@@ -581,11 +580,11 @@ namespace Stock.DAL.Repositories
             string tableName = QuotationsTablePrefix + symbol;
             string sql = "UPDATE fx." + tableName +
                 " SET " +
-                    "  OpenPrice = " + toDb(quotation.OpenPrice) +
-                    ", HighPrice = " + toDb(quotation.HighPrice) +
-                    ", LowPrice = " + toDb(quotation.LowPrice) +
-                    ", ClosePrice = " + toDb(quotation.ClosePrice) +
-                    ", Volume = " + toDb(quotation.Volume) +
+                    "  OpenPrice = " + quotation.OpenPrice.ToDbString() +
+                    ", HighPrice = " + quotation.HighPrice.ToDbString() +
+                    ", LowPrice = " + quotation.LowPrice.ToDbString() +
+                    ", ClosePrice = " + quotation.ClosePrice.ToDbString() +
+                    ", Volume = " + quotation.Volume.ToDbString() +
                 " WHERE QuotationId = " + quotation.Id;
 
             using (var context = new EFDbContext())
@@ -609,13 +608,13 @@ namespace Stock.DAL.Repositories
                 "VALUES (" +
                        price.AssetId +
                     ", '" + price.PriceDate + "'" +
-                    ", " + toDb(price.DeltaClosePrice) +
+                    ", " + price.DeltaClosePrice.ToDbString() +
                     ", " + price.PriceDirection3D +
                     ", " + price.PriceDirection2D +
-                    ", " + toDb(price.PeakByCloseEvaluation) +
-                    ", " + toDb(price.PeakByHighEvaluation) +
-                    ", " + toDb(price.TroughByCloseEvaluation) +
-                    ", " + toDb(price.TroughByLowEvaluation) + ");";
+                    ", " + price.PeakByCloseEvaluation.ToDbString() +
+                    ", " + price.PeakByHighEvaluation.ToDbString() +
+                    ", " + price.TroughByCloseEvaluation.ToDbString() +
+                    ", " + price.TroughByLowEvaluation.ToDbString() + ");";
 
 
             //Add info about extrema.
@@ -641,18 +640,42 @@ namespace Stock.DAL.Repositories
                 " SET " + 
                     "  AssetId = " + price.AssetId +
                     ", PriceDate = '" + price.PriceDate + "'" + 
-                    ", DeltaClosePrice = " + toDb(price.DeltaClosePrice) +
+                    ", DeltaClosePrice = " + price.DeltaClosePrice.ToDbString() +
                     ", PriceDirection2D = " + price.PriceDirection2D +
                     ", PriceDirection3D = " + price.PriceDirection3D +
-                    ", PeakByCloseEvaluation = " + toDb(price.PeakByCloseEvaluation) +
-                    ", PeakByHighEvaluation = " + toDb(price.PeakByHighEvaluation) +
-                    ", TroughByCloseEvaluation = " + toDb(price.TroughByCloseEvaluation) +
-                    ", TroughByLowEvaluation = " + toDb(price.TroughByLowEvaluation) + 
+                    ", PeakByCloseEvaluation = " + price.PeakByCloseEvaluation.ToDbString() +
+                    ", PeakByHighEvaluation = " + price.PeakByHighEvaluation.ToDbString() +
+                    ", TroughByCloseEvaluation = " + price.TroughByCloseEvaluation.ToDbString() +
+                    ", TroughByLowEvaluation = " + price.TroughByLowEvaluation.ToDbString() + 
                 " WHERE PriceId = " + price.Id;
-            
+
+
+            //Update info about extrema.
+            RemoveExtrema(symbol, price.PriceDate);
+            UpdateExtremum(price.PeakByClose);
+            UpdateExtremum(price.PeakByHigh);
+            UpdateExtremum(price.TroughByClose);
+            UpdateExtremum(price.TroughByLow);
+
+
             using (var context = new EFDbContext())
             {
                 context.Database.ExecuteSqlCommand(sql);
+                context.SaveChanges();
+            }
+
+        }
+
+        private void RemoveExtrema(string symbol, DateTime date)
+        {
+            string sqlDelete = "DELETE FROM fx.{0} " +
+                                " WHERE " +
+                                    " Symbol = '" + symbol + "' AND " +
+                                    " PriceDate = '" + date + "';";
+
+            using (var context = new EFDbContext())
+            {
+                context.Database.ExecuteSqlCommand(sqlDelete);
                 context.SaveChanges();
             }
 
@@ -663,43 +686,31 @@ namespace Stock.DAL.Repositories
 
             if (extremum == null) return;
 
-            string sqlRemove = "DELETE FROM fx." + ExtremaEvaluationTable +
-                        " WHERE " +
-                            " Type = " + extremum.Type + " AND " +
-                            " Symbol = '" + extremum.Symbol + "' AND " +
-                            " PriceDate = '" + extremum.PriceDate + "';";
-            string sqlInsert = "INSERT INTO fx." + ExtremaEvaluationTable +
-                "(Symbol, Type, PriceDate, EarlierCounter, LaterCounter, EarlierAmplitude, " + 
-                    "LaterAmplitude, Volatility, EarlierChange1, EarlierChange2, EarlierChange3, " + 
-                    "EarlierChange5, EarlierChange10, LaterChange1, LaterChange2, LaterChange3, " +
-                    "LaterChange5, LaterChange10) " +
-                "VALUES ('" + extremum.Symbol + "'" +
-                    ", " + extremum.Type + 
-                    ", '" + extremum.PriceDate + "'" +
-                    ", " + extremum.EarlierCounter +
-                    ", " + extremum.LaterCounter +
-                    ", " + toDb(extremum.EarlierAmplitude) +
-                    ", " + toDb(extremum.LaterAmplitude) +
-                    ", " + toDb(extremum.Volatility) +
-                    ", " + toDb(extremum.EarlierChange1) +
-                    ", " + toDb(extremum.EarlierChange2) +
-                    ", " + toDb(extremum.EarlierChange3) +
-                    ", " + toDb(extremum.EarlierChange5) +
-                    ", " + toDb(extremum.EarlierChange10) +
-                    ", " + toDb(extremum.LaterChange1) +
-                    ", " + toDb(extremum.LaterChange2) +
-                    ", " + toDb(extremum.LaterChange3) +
-                    ", " + toDb(extremum.LaterChange5) +
-                    ", " + toDb(extremum.LaterChange10) + ");";
+            string sqlInsert = string.Format(extremum.InsertSql(), ExtremaEvaluationTable);
 
             using (var context = new EFDbContext())
             {
-                context.Database.ExecuteSqlCommand(sqlRemove);
                 context.Database.ExecuteSqlCommand(sqlInsert);
                 context.SaveChanges();
             }
 
         }
+
+
+        public void UpdateExtremum(ExtremumDto extremum)
+        {
+
+            string sql = string.Format(extremum.Cancelled ? extremum.RemoveSql() : extremum.UpdateSql(), ExtremaEvaluationTable);
+
+            using (var context = new EFDbContext())
+            {
+                context.Database.ExecuteSqlCommand(sql);
+                context.SaveChanges();
+            }
+
+            var x = 1;
+        }
+
 
         public void AddMacd(MacdDto macd, string symbol)
         {
@@ -715,16 +726,16 @@ namespace Stock.DAL.Repositories
                 "VALUES (" +
                     macd.AssetId +
                  ", '" + macd.PriceDate + "'" +
-                 ", " + toDb(macd.Ma13) +
-                 ", " + toDb(macd.Ema13) +
-                 ", " + toDb(macd.Ma26) +
-                 ", " + toDb(macd.Ema26) +
-                 ", " + toDb(macd.MacdLine) +
-                 ", " + toDb(macd.SignalLine) +
-                 ", " + toDb(macd.Histogram) +
-                 ", " + toDb(macd.HistogramAvg) +
-                 ", " + toDb(macd.HistogramExtremum) +
-                 ", " + toDb(macd.DeltaHistogram) +
+                 ", " + macd.Ma13.ToDbString() +
+                 ", " + macd.Ema13.ToDbString() +
+                 ", " + macd.Ma26.ToDbString() +
+                 ", " + macd.Ema26.ToDbString() +
+                 ", " + macd.MacdLine.ToDbString() +
+                 ", " + macd.SignalLine.ToDbString() +
+                 ", " + macd.Histogram.ToDbString() +
+                 ", " + macd.HistogramAvg.ToDbString() +
+                 ", " + macd.HistogramExtremum.ToDbString() +
+                 ", " + macd.DeltaHistogram.ToDbString() +
                  ", " + macd.DeltaHistogramPositive +
                  ", " + macd.DeltaHistogramNegative +
                  ", " + macd.DeltaHistogramZero +
@@ -733,13 +744,13 @@ namespace Stock.DAL.Repositories
                  ", " + macd.HistogramDirectionChanged +
                  ", " + macd.HistogramToOx +
                  ", " + macd.HistogramRow +
-                 ", " + toDb(macd.OxCrossing) +
+                 ", " + macd.OxCrossing.ToDbString() +
                  ", " + macd.MacdPeak +
-                 ", " + toDb(macd.LastMacdPeak) +
-                 ", " + toDb(macd.MacdPeakSlope) +
+                 ", " + macd.LastMacdPeak.ToDbString() +
+                 ", " + macd.MacdPeakSlope.ToDbString() +
                  ", " + macd.MacdTrough +
-                 ", " + toDb(macd.LastMacdTrough) +
-                 ", " + toDb(macd.MacdTroughSlope) +");";
+                 ", " + macd.LastMacdTrough.ToDbString() +
+                 ", " + macd.MacdTroughSlope.ToDbString() +");";
 
             using (var context = new EFDbContext())
             {
@@ -755,16 +766,16 @@ namespace Stock.DAL.Repositories
 
             string sqlUpdate = "UPDATE fx." + tableName +
                 " SET " +
-                    "MA13 = " + toDb(macd.Ma13) +
-                    ", EMA13 = " + toDb(macd.Ema13) +
-                    ", MA26 = " + toDb(macd.Ma26) +
-                    ", EMA26 = " + toDb(macd.Ema26) +
-                    ", MACDLine = " + toDb(macd.MacdLine) +
-                    ", SignalLine = " + toDb(macd.SignalLine) +
-                    ", Histogram = " + toDb(macd.Histogram) +
-                    ", HistogramAvg = " + toDb(macd.HistogramAvg) +
-                    ", HistogramExtremum = " + toDb(macd.HistogramExtremum) +
-                    ", DeltaHistogram = " + toDb(macd.DeltaHistogram) +
+                    "MA13 = " + macd.Ma13.ToDbString() +
+                    ", EMA13 = " + macd.Ema13.ToDbString() +
+                    ", MA26 = " + macd.Ma26.ToDbString() +
+                    ", EMA26 = " + macd.Ema26.ToDbString() +
+                    ", MACDLine = " + macd.MacdLine.ToDbString() +
+                    ", SignalLine = " + macd.SignalLine.ToDbString() +
+                    ", Histogram = " + macd.Histogram.ToDbString() +
+                    ", HistogramAvg = " + macd.HistogramAvg.ToDbString() +
+                    ", HistogramExtremum = " + macd.HistogramExtremum.ToDbString() +
+                    ", DeltaHistogram = " + macd.DeltaHistogram.ToDbString() +
                     ", DeltaHistogramPositive = " + macd.DeltaHistogramPositive +
                     ", DeltaHistogramNegative = " + macd.DeltaHistogramNegative +
                     ", DeltaHistogramZero = " + macd.DeltaHistogramZero +
@@ -773,13 +784,13 @@ namespace Stock.DAL.Repositories
                     ", HistogramDirectionChanged = " + macd.HistogramDirectionChanged +
                     ", HistogramToOX = " + macd.HistogramToOx +
                     ", HistogramRow = " + macd.HistogramRow +
-                    ", OxCrossing = " + toDb(macd.OxCrossing) +
+                    ", OxCrossing = " + macd.OxCrossing.ToDbString() +
                     ", MacdPeak = " + macd.MacdPeak +
-                    ", LastMACDPeak = " + toDb(macd.LastMacdPeak) +
-                    ", MACDPeakSlope = " + toDb(macd.MacdPeakSlope) +
+                    ", LastMACDPeak = " + macd.LastMacdPeak.ToDbString() +
+                    ", MACDPeakSlope = " + macd.MacdPeakSlope.ToDbString() +
                     ", MACDTrough = " + macd.MacdTrough +
-                    ", LastMACDTrough = " + toDb(macd.LastMacdTrough) +
-                    ", MACDTroughSlope = " + toDb(macd.MacdTroughSlope) + 
+                    ", LastMACDTrough = " + macd.LastMacdTrough.ToDbString() +
+                    ", MACDTroughSlope = " + macd.MacdTroughSlope.ToDbString() + 
                  " WHERE PriceDate = '" + macd.PriceDate + "';";
 
             using (var context = new EFDbContext())
@@ -857,7 +868,7 @@ namespace Stock.DAL.Repositories
                     ", " + analysis.AnalyzedItems +
                     ", '" + analysis.AnalysisStart + "'" +
                     ", '" + analysis.AnalysisEnd + "'" +
-                    ", " + toDb(analysis.AnalysisTotalTime) + ");";
+                    ", " + analysis.AnalysisTotalTime.ToDbString() + ");";
 
             using (var context = new EFDbContext())
             {

@@ -147,14 +147,12 @@ namespace Stock.Domain.Services
         {
             Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName()).Select(DataItem.FromDto).ToArray();
             Items.AppendIndexNumbers();
-            LoadExtrema();
         }
 
         public void LoadDataSets(DataItem[] items)
         {
             Items = items;
             Items.AppendIndexNumbers();
-            LoadExtrema();
         }
 
         public void LoadDataSets(string symbol, DateTime lastAnalysisItem, int counter)
@@ -263,20 +261,14 @@ namespace Stock.Domain.Services
             }
 
 
-            CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch);
-            CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch);
-            CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch);
-            CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch);
-
-
-
             //Calculate new values for peaks and troughs and apply them to the current item price.
             //If any of this is changed, this price will have flag [IsChange] set to @true.
             //This is the only thing that can be changed for items being only updated.
-            //if (item.Price.ApplyNewPeakByClose(EvaluateExtremum(item, index, true, true))) isChanged = true;
-            //if (item.Price.ApplyNewPeakByHigh(EvaluateExtremum(item, index, true, false))) isChanged = true;
-            //if (item.Price.ApplyNewTroughByClose(EvaluateExtremum(item, index, false, true))) isChanged = true;
-            //if (item.Price.ApplyNewTroughByLow(EvaluateExtremum(item, index, false, false))) isChanged = true;
+            if (CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch)) isChanged = true;
+            if (CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch)) isChanged = true;
+            if (CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch)) isChanged = true;
+            if (CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch)) isChanged = true;
+
 
 
             if (item.Price.Id == 0)
@@ -429,7 +421,7 @@ namespace Stock.Domain.Services
         //protected double FindPriceAmplitude(int index
 
 
-        protected void CheckForExtremum(DataItem item, ExtremumType type, bool fromScratch)
+        protected bool CheckForExtremum(DataItem item, ExtremumType type, bool fromScratch)
         {
 
             Extremum extremum;
@@ -440,14 +432,14 @@ namespace Stock.Domain.Services
                 //przypisany jest obieket ExtremumCalculator danego typu. Jeżeli nie, oznacza to, że już
                 //wcześniej został zdyskwalifikowany i nie ma sensu go sprawdzać.
                 extremum = item.Price.GetExtremumObject(type);
-                if (extremum == null) return;
+                if (extremum == null) return false;
 
                 //Sprawdź czy notowania późniejsze względem tego pozwalają uznać je za ekstremum.
                 var laterCounter = CountSerie(item.Index, type.IsPeak(), type.ByClose(), false);
                 if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index))
                 {
                     extremum.Cancelled = true;
-                    return;
+                    return true;
                 }
                 else
                 {
@@ -462,8 +454,8 @@ namespace Stock.Domain.Services
 
                 //Jeżeli liczba wcześniejszych lub późniejszych notowań gorszych od tego notowania nie osiągnęła 
                 //minimalnego poziomu, to notowanie jest dyskwalifikowane jako ekstremum i nie ma sensu go dalej sprawdzać.
-                if (earlierCounter < MinRange) return;
-                if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index)) return;
+                if (earlierCounter < MinRange) return false;
+                if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index)) return false;
 
                 extremum = new Extremum(item.Date, Symbol, type.IsPeak(), type.ByClose());
                 extremum.EarlierCounter = earlierCounter;
@@ -491,6 +483,8 @@ namespace Stock.Domain.Services
                 setCurrentExtremum(type, item);
                 item.Price.ApplyExtremumValue(type, extremum);
             }
+
+            return true;
 
         }
 

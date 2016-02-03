@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.DAL.Infrastructure;
 
 namespace Stock.DAL.TransferObjects
 {
@@ -38,6 +39,74 @@ namespace Stock.DAL.TransferObjects
         public DateTime GetDate()
         {
             return PriceDate;
+        }
+
+        public string RemoveSql()
+        {
+            return "DELETE FROM fx.{0} " +
+                            " WHERE " +
+                                " Type = " + Type + " AND " +
+                                " Symbol = '" + Symbol + "' AND " +
+                                " PriceDate = '" + PriceDate + "';";
+        }
+
+        public string InsertSql()
+        {
+            var sqlInsert = "INSERT INTO fx.{0}" +
+                "(Symbol, Type, PriceDate, EarlierCounter, LaterCounter, EarlierAmplitude, " +
+                    "LaterAmplitude, Volatility, EarlierChange1, EarlierChange2, EarlierChange3, " +
+                    "EarlierChange5, EarlierChange10, LaterChange1, LaterChange2, LaterChange3, " +
+                    "LaterChange5, LaterChange10, Timestamp) " +
+                "VALUES ('" + Symbol + "'" +
+                    ", " + Type +
+                    ", '" + PriceDate + "'" +
+                    ", " + EarlierCounter +
+                    ", " + LaterCounter +
+                    ", " + EarlierAmplitude.ToDbString() +
+                    ", " + LaterAmplitude.ToDbString() +
+                    ", " + Volatility.ToDbString() +
+                    ", " + EarlierChange1.ToDbString() +
+                    ", " + EarlierChange2.ToDbString() +
+                    ", " + EarlierChange3.ToDbString() +
+                    ", " + EarlierChange5.ToDbString() +
+                    ", " + EarlierChange10.ToDbString() +
+                    ", " + LaterChange1.ToDbString() +
+                    ", " + LaterChange2.ToDbString() +
+                    ", " + LaterChange3.ToDbString() +
+                    ", " + LaterChange5.ToDbString() +
+                    ", " + LaterChange10.ToDbString() +
+                    ", NOW());";
+
+            return sqlInsert;
+
+        }
+
+        public string UpdateSql()
+        {
+
+            var sql = " UPDATE fx.{0}" +
+                      " SET" +
+                            "  EarlierCounter = " + EarlierCounter +
+                            ", LaterCounter = " + LaterCounter +
+                            ", EarlierAmplitude = " + EarlierAmplitude.ToDbString() +
+                            ", LaterAmplitude = " + LaterAmplitude.ToDbString() +
+                            ", Volatility = " + Volatility.ToDbString() +
+                            ", EarlierChange1 = " + EarlierChange1.ToDbString() +
+                            ", EarlierChange2 = " + EarlierChange2.ToDbString() +
+                            ", EarlierChange3 = " + EarlierChange3.ToDbString() +
+                            ", EarlierChange5 = " + EarlierChange5.ToDbString() +
+                            ", EarlierChange10 = " + EarlierChange10.ToDbString() +
+                            ", LaterChange1 = " + LaterChange1.ToDbString() +
+                            ", LaterChange2 = " + LaterChange2.ToDbString() +
+                            ", LaterChange3 = " + LaterChange3.ToDbString() +
+                            ", LaterChange5 = " + LaterChange5.ToDbString() +
+                            ", LaterChange10 = " + LaterChange10.ToDbString() +
+                            ", Timestamp = NOW()" +
+                      " WHERE" +
+                            " ExtremumId = " + ExtremumId + ";";
+
+            return sql;
+
         }
 
     }
