@@ -377,8 +377,8 @@ namespace Stock.Domain.Services
 
             //If the number of items to be checked is less than MinRange, there is no point to check it - 
             //even if all items are better, the function will return 0 anyway.
-            if ((Math.Abs(startIndex - endIndex) + 1) < MinRange) return 0;
-
+            //if ((Math.Abs(startIndex - endIndex) + 1) < MinRange) return 0;
+            if (startIndex < 0 || startIndex >= Items.Length || endIndex < 0 || endIndex >= Items.Length) return 0;
 
 
             //var i = startIndex;
@@ -468,6 +468,7 @@ namespace Stock.Domain.Services
                 //wcześniej został zdyskwalifikowany i nie ma sensu go sprawdzać.
                 extremum = item.Price.GetExtremumObject(type);
                 if (extremum == null) return false;
+                if (!extremum.IsOpen) return false;
 
                 //Sprawdź czy notowania późniejsze względem tego pozwalają uznać je za ekstremum.
                 var laterCounter = CountSerie(item.Index, type.IsPeak(), type.ByClose(), false);
@@ -502,6 +503,7 @@ namespace Stock.Domain.Services
                 extremum.EarlierChange5 = GetPriceChange(item, extremum, true, 5);
                 extremum.EarlierChange10 = GetPriceChange(item, extremum, true, 10);
                 extremum.Volatility = item.Quotation.Volatility();
+
             }
 
 
@@ -515,6 +517,7 @@ namespace Stock.Domain.Services
                 extremum.LaterChange3 = GetPriceChange(item, extremum, false, 3);
                 extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
                 extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
+                extremum.IsOpen = (item.Index + extremum.LaterCounter == Items.Length - 1);
                 setCurrentExtremum(type, item);
                 item.Price.ApplyExtremumValue(type, extremum);
             }
