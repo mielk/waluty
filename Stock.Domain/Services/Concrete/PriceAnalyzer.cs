@@ -451,8 +451,9 @@ namespace Stock.Domain.Services
                 Math.Max(0, item.Index - counter) :
                 Math.Min(item.Index + counter, Items.Length - 1);
 
-            var value = Items[index].Quotation.ProperValue(extremum.Type);
-            var difference = item.Quotation.ProperValue(extremum.Type) - value;
+            double comparedValue = Items[index].Quotation.ProperValue(extremum.Type);
+            double baseValue = item.Quotation.ProperValue(extremum.Type);
+            double difference = (baseValue - comparedValue) / baseValue;
             return difference * (extremum.Type.IsPeak() ? 1 : -1);
         }
 
