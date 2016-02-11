@@ -1,0 +1,23 @@
+SELECT
+	a.Symbol,
+	a.PriceDate,
+	SUM(a.PeakByClose) AS PeakByClose,
+	SUM(a.PeakByHigh) AS PeakByHigh,
+	SUM(a.TroughByClose) AS TroughByClose,
+	SUM(a.TroughByLow) AS TroughByLow
+
+FROM
+	(SELECT 
+		Symbol, 
+		Type, 
+		PriceDate, 
+		IF(Type = 1, Sqrt((EarlierCounter/360) * (LaterCounter/360)), 0) AS PeakByClose,
+		IF(Type = 2, Sqrt((EarlierCounter/360) * (LaterCounter/360)), 0) AS PeakByHigh,
+		IF(Type = 3, Sqrt((EarlierCounter/360) * (LaterCounter/360)), 0) AS TroughByClose,
+		IF(Type = 4, Sqrt((EarlierCounter/360) * (LaterCounter/360)), 0) AS TroughByLow
+	FROM 
+		fx._extrema_evaluation 
+	WHERE symbol = 'usdjpy_m15') AS a
+
+GROUP BY
+	a.Symbol, a.PriceDate

@@ -628,6 +628,7 @@ namespace Stock.DAL.Repositories
             using (var context = new EFDbContext())
             {
                 context.Database.ExecuteSqlCommand(sqlRemove);
+                context.SaveChanges();
                 context.Database.ExecuteSqlCommand(sqlInsert);
                 context.SaveChanges();
             }

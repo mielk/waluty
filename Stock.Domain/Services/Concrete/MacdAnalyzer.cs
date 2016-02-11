@@ -76,7 +76,7 @@ namespace Stock.Domain.Services
                 }
                 else
                 {
-                    LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, 10);
+                    LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, Slow + 1);
                     startIndex = FindIndex((DateTime)lastDates.LastAnalysisItem);
                 }
 

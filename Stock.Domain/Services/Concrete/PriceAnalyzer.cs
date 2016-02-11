@@ -439,8 +439,9 @@ namespace Stock.Domain.Services
             double oppositeValue = (extremum.Type.IsPeak() ? 
                                         itemsRange.Min(i => i.Quotation.Low) : 
                                         itemsRange.Max(i => i.Quotation.High));
+            double baseValue = item.Quotation.ProperValue(extremum.Type);
 
-            return Math.Abs(oppositeValue - item.Quotation.ProperValue(extremum.Type));
+            return Math.Abs(oppositeValue - baseValue) / Math.Max(oppositeValue, baseValue) ;
 
         }
 
@@ -453,7 +454,7 @@ namespace Stock.Domain.Services
 
             double comparedValue = Items[index].Quotation.ProperValue(extremum.Type);
             double baseValue = item.Quotation.ProperValue(extremum.Type);
-            double difference = (baseValue - comparedValue) / baseValue;
+            double difference = (baseValue - comparedValue) / Math.Max(comparedValue, baseValue);
             return difference * (extremum.Type.IsPeak() ? 1 : -1);
         }
 
