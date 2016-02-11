@@ -103,6 +103,8 @@ namespace Stock.Domain.Services
                 AnalyzePrice(i, i >= narrowStartIndex);
             }
 
+            SaveChanges();
+
 
             /* Start looking for trend lines */
             //ITrendService trendService = new TrendService(Symbol, Items);
@@ -250,7 +252,6 @@ namespace Stock.Domain.Services
 
 
             //Ensure that [Price] object is appended to this [DataItem].
-            var isChanged = false;
             if (item.Price == null || fromScratch)
             {
                 item.Price = new Price();
@@ -264,20 +265,40 @@ namespace Stock.Domain.Services
             //Calculate new values for peaks and troughs and apply them to the current item price.
             //If any of this is changed, this price will have flag [IsChange] set to @true.
             //This is the only thing that can be changed for items being only updated.
-            if (CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch)) isChanged = true;
-            if (CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch)) isChanged = true;
-            if (CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch)) isChanged = true;
-            if (CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch)) isChanged = true;
+            if (CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch)) item.Price.IsUpdated = true;
+            if (CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch)) item.Price.IsUpdated = true;
+            if (CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch)) item.Price.IsUpdated = true;
+            if (CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch)) item.Price.IsUpdated = true;
 
 
 
-            if (item.Price.Id == 0)
+            //if (item.Price.Id == 0)
+            //{
+            //    _dataRepository.AddPrice(item.Price.ToDto(), Symbol);
+            //}
+            //else if (isChanged)
+            //{
+            //    _dataRepository.UpdatePrice(item.Price.ToDto(), Symbol);
+            //}
+
+        }
+
+        private void SaveChanges()
+        {
+
+            for (var i = 0; i < Items.Length; i++)
             {
-                _dataRepository.AddPrice(item.Price.ToDto(), Symbol);
-            }
-            else if (isChanged)
-            {
-                _dataRepository.UpdatePrice(item.Price.ToDto(), Symbol);
+                var item = Items[i];
+
+                if (item.Price.Id == 0)
+                {
+                    _dataRepository.AddPrice(item.Price.ToDto(), Symbol);
+                }
+                else if (item.Price.IsUpdated)
+                {
+                    _dataRepository.UpdatePrice(item.Price.ToDto(), Symbol);
+                }
+
             }
 
         }
@@ -418,35 +439,43 @@ namespace Stock.Domain.Services
 
         }
 
-        protected double FindPriceAmplitude(DataItem item, Extremum extremum, bool earlier)
+
+        protected double FindLaterPriceAmplitude(ExtremumType type, DataItem item, DataItem nextExtremum)
+        {
+            int startIndex = item.Index + 1;
+            int endIndex = nextExtremum.Index - 1;
+            var itemsRange = Items.Where(i => i.Index >= startIndex && i.Index <= endIndex);
+            double oppositeValue = (type.IsPeak() ?
+                                        itemsRange.Min(i => i.Quotation.Low) :
+                                        itemsRange.Max(i => i.Quotation.High));
+            double baseValue = item.Quotation.ProperValue(type);
+
+            return Math.Abs(oppositeValue - baseValue) / Math.Max(oppositeValue, baseValue);
+
+        }
+
+        protected double FindEarlierPriceAmplitude(ExtremumType type, DataItem item, DataItem prevExtremum)
         {
 
-            var prevExtremum = getCurrentExtremum(extremum.Type);
-            DateTime startDate;
-            DateTime endDate;
+            int startIndex;
+            int endIndex;
 
-            if (earlier)
-            {
-                startDate = Items[Math.Max(0, item.Index - extremum.EarlierCounter)].Date;
-                endDate = Items[Math.Max(0, item.Index - 1)].Date;
-            }
-            else
-            {
-                startDate = Items[Math.Min(item.Index + 1, Items.Length - 1)].Date;
-                endDate = Items[Math.Min(item.Index + extremum.LaterCounter, Items.Length - 1)].Date;
-            }
-            var itemsRange = Items.Where(i => i.Date >= startDate && i.Date <= endDate);
-            double oppositeValue = (extremum.Type.IsPeak() ? 
+            startIndex = (prevExtremum == null ? 0 : prevExtremum.Index);
+            endIndex = item.Index - 1;
+            var itemsRange = Items.Where(i => i.Index >= startIndex && i.Index <= endIndex);
+            double oppositeValue = (type.IsPeak() ? 
                                         itemsRange.Min(i => i.Quotation.Low) : 
                                         itemsRange.Max(i => i.Quotation.High));
-            double baseValue = item.Quotation.ProperValue(extremum.Type);
+            double baseValue = item.Quotation.ProperValue(type);
 
             return Math.Abs(oppositeValue - baseValue) / Math.Max(oppositeValue, baseValue) ;
 
         }
 
-        protected double GetPriceChange(DataItem item, Extremum extremum, bool earlier, int counter)
+        protected double? GetPriceChange(DataItem item, Extremum extremum, bool earlier, int counter)
         {
+
+            if (!earlier && quotationsLeft(item) < counter) return null;
 
             var index = earlier ?
                 Math.Max(0, item.Index - counter) :
@@ -498,13 +527,25 @@ namespace Stock.Domain.Services
                 extremum = new Extremum(item.Date, Symbol, type.IsPeak(), type.ByClose());
                 extremum.EarlierCounter = earlierCounter;
                 extremum.LaterCounter = laterCounter;
-                extremum.EarlierAmplitude = FindPriceAmplitude(item, extremum, true);
+                extremum.EarlierAmplitude = FindEarlierPriceAmplitude(type, item, getCurrentExtremum(type));
                 extremum.EarlierChange1 = GetPriceChange(item, extremum, true, 1);
                 extremum.EarlierChange2 = GetPriceChange(item, extremum, true, 2);
                 extremum.EarlierChange3 = GetPriceChange(item, extremum, true, 3);
                 extremum.EarlierChange5 = GetPriceChange(item, extremum, true, 5);
                 extremum.EarlierChange10 = GetPriceChange(item, extremum, true, 10);
                 extremum.Volatility = item.Quotation.Volatility();
+
+                //Calculate [LaterAmplitude] for previous extremum.
+                var prevExtremumDataItem = getCurrentExtremum(type);
+                if (prevExtremumDataItem != null)
+                {
+                    var prevExtremum = prevExtremumDataItem.Extremum(type);
+                    if (prevExtremum != null){
+                        var laterAmplitude = FindLaterPriceAmplitude(type, prevExtremumDataItem, item);
+                        prevExtremum.LaterAmplitude = laterAmplitude;
+                        prevExtremumDataItem.Price.IsUpdated = true;
+                    }
+                }
 
             }
 
@@ -513,13 +554,13 @@ namespace Stock.Domain.Services
             //tylko, jeżeli extremum nie jest puste, ale mimo to kompilator nie przepuszcza bez takiego warunku tutaj.
             if (extremum != null)
             {
-                extremum.LaterAmplitude = FindPriceAmplitude(item, extremum, false);
-                extremum.LaterChange1 = GetPriceChange(item, extremum, false, 1);
-                extremum.LaterChange2 = GetPriceChange(item, extremum, false, 2);
-                extremum.LaterChange3 = GetPriceChange(item, extremum, false, 3);
-                extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
-                extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
-                extremum.IsOpen = (item.Index + extremum.LaterCounter == Items.Length - 1);
+                //extremum.LaterAmplitude = FindPriceAmplitude(item, extremum, false);
+                if (extremum.LaterChange1 == null) extremum.LaterChange1 =  GetPriceChange(item, extremum, false, 1);
+                if (extremum.LaterChange2 == null) extremum.LaterChange2 = GetPriceChange(item, extremum, false, 2);
+                if (extremum.LaterChange3 == null) extremum.LaterChange3 = GetPriceChange(item, extremum, false, 3);
+                if (extremum.LaterChange5 == null) extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
+                if (extremum.LaterChange10 == null) extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
+                extremum.IsOpen = (item.Index + extremum.LaterCounter == Items.Length - 1) || quotationsLeft(item) < 10;
                 setCurrentExtremum(type, item);
                 item.Price.ApplyExtremumValue(type, extremum);
             }
@@ -528,6 +569,14 @@ namespace Stock.Domain.Services
 
         }
 
+
+        /*
+         * Funkcja zwraca liczbę notować, które zostały do końca zestawu.
+         */
+        private int quotationsLeft(DataItem item)
+        {
+            return Items.Length - item.Index - 1;
+        }
 
         protected double VolumeFactor(double volume, int index)
         {

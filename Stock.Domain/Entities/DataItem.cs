@@ -61,7 +61,10 @@ namespace Stock.Domain.Entities
             return sign * (Quotation.High - Quotation.Close) / 10d;
         }
 
-
+        public Extremum Extremum(ExtremumType type)
+        {
+            return (Price == null ? null : Price.GetExtremumObject(type));
+        }
 
         /* Covered with unit tests. */
         public double GetOpenOrClosePrice(TrendlineType type)
