@@ -406,14 +406,14 @@ PriceSvgRenderer.prototype = {
                 Math.max(item.peakByClose, item.peakByHigh);
             if (!extremum) return;
 
-            var scale = Math.min(1, extremum / 10);
+            var scale = Math.min(1, extremum / 50);
             var greyscale = 255 * (1 - scale);
 
             extrema.push({
                 item: item,
                 x: middle,
                 y: isMin ? shadeBottom + dist : shadeTop - dist,
-                radius: Math.min(extremum, 10),
+                radius: Math.min(extremum / 5, 10),
                 stroke: 'rgb(' + greyscale + ',' + greyscale + ',' + greyscale + ')',
                 fill: 'rgba(' + (isMin ? '255, 0' : '0, 255') + ', 0, ' + scale + ')'
             });

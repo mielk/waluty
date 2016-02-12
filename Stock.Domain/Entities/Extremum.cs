@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
 using Stock.DAL.TransferObjects;
+using Stock.Domain.Services;
 
 namespace Stock.Domain.Entities
 {
@@ -45,12 +46,29 @@ namespace Stock.Domain.Entities
 
         public double Evaluate()
         {
+
+            //Timeband
+            var timeframeSymbol = Symbol.GetTimebandSymbol();
+            var timeframeFactor = timeframeSymbol.GetExtremumEvaluationFactor();
+
+            //Range
             var maxRange = (double)Extrema.MaxRange;
             var leftSerie = (double)EarlierCounter / maxRange;
             var rightSerie = (double)LaterCounter / maxRange;
             var rangePoints = Math.Sqrt(leftSerie * rightSerie);
 
-            return rangePoints * 100;
+            //Amplitude
+            var lowerAmplitude = Math.Min( EarlierAmplitude == null ? 0d : (double) EarlierAmplitude, 
+                                           LaterAmplitude == null ? 0d : (double) LaterAmplitude) * timeframeFactor;
+            var lowerAmplitudePower = Math.Pow(lowerAmplitude, 0.25d);
+            var piAmplitude = Math.PI * (lowerAmplitudePower - 0.5);
+            var sinPiAmp = Math.Sin(piAmplitude);
+            var amplitudePoints = 2 * Math.Pow(sinPiAmp / 2 + 0.5, 2);
+
+            //Average
+            var avg = (rangePoints + amplitudePoints) / 2;
+
+            return avg * 100;
 
         }
 

@@ -11,6 +11,7 @@ namespace Stock.Domain.Entities
     public class Price
     {
         public int Id { get; set; }
+        public Timeband Timeband { get; set; }
         public int AssetId { get; set; }
         public DateTime Date { get; set; }
         public double CloseDelta { get; set; }

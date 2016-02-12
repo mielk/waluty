@@ -29,6 +29,7 @@ namespace Stock.Domain.Services
         public string Symbol;
         public int AssetId;
         public int TimebandId;
+        public Timeband Timeband;
         public int CurrentDirection2D;
 
         //Current peaks & troughs - for better performance.
@@ -140,6 +141,7 @@ namespace Stock.Domain.Services
         public void LoadParameters(string symbol)
         {
             Symbol = symbol;
+            Timeband = Timeband.GetTimeband(symbol.GetTimebandSymbol());
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
             var pair = _fxRepository.GetPair(pairSymbol);
             AssetId = pair.Id;
