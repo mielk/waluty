@@ -164,6 +164,7 @@
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\charts.css" />
     <Content Include="Content\analysis.css" />
+    <Content Include="Content\simulation.css" />
     <Content Include="Content\dropdown.css" />
     <Content Include="Content\images\close-image-24.png" />
     <Content Include="Content\images\close-image-36.png" />

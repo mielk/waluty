@@ -30,10 +30,13 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RunProcess()
+        public ActionResult RunProcess(string pair, string timeband)
         {
-            //var result = simulationService.Run(fromScratch);
-            var json = new { value = "działa" };
+            string symbol = pair + "_" + timeband;
+            //IEnumerable<DataItem> quotations = dataService.GetFxQuotations(symbol, startDateTime, endDateTime);
+            //return Json(quotations, JsonRequestBehavior.AllowGet);
+
+            var json = new { pair = pair, timeband = timeband, value = "działa" };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 

@@ -81,7 +81,10 @@
         modules.simulation = modules.simulation || new Module({
             name: 'simulation',
             controller: new SimulationController({
-                
+                optionsPanelId: 'simulation-options-panel',
+                companyDropdownId: 'simulation-company-dropdown',
+                timebandDropdownId: 'simulation-timeband-dropdown',
+                runSimulationButtonId: 'run-simulation-button'
             }),
             run: function (e) {
                 e.run();

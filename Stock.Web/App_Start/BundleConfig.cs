@@ -70,6 +70,7 @@ namespace Stock.Web
                         //"~/Content/dropdown.css",
                         //"~/Content/mielk.css",
                         "~/Content/analysis.css",
+                        "~/Content/simulation.css",
                         "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/charts").Include(
