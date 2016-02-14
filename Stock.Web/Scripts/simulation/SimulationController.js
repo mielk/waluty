@@ -78,12 +78,13 @@ function SimulationController(params) {
                         'RunProcess',
                         {
                             pair: company.symbol,
-                            timeband: timeband.symbol
+                            timeband: timeband.symbol,
+                            value: 1
                         },
                         {
                             async: true,
                             callback: function (r) {
-                                alert(r);
+                                alert(r.value);
                             }
                         }
                     );

@@ -12,11 +12,12 @@ namespace Stock.Web.Controllers
     public class SimulationController : Controller
     {
 
-        private readonly ISimulationService simulationService;
+        private readonly ISimulationServiceFactory ssf;
+        //private readonly ISimulationService simulationService;
 
-        public SimulationController(ISimulationService simulationService)
+        public SimulationController(ISimulationServiceFactory serviceFactory)
         {
-            this.simulationService = simulationService;
+            this.ssf = serviceFactory;
         }
 
         //
@@ -30,13 +31,16 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RunProcess(string pair, string timeband)
+        public ActionResult RunProcess(string pair, string timeband, int value)
         {
+
+            this.ssf.GetService().Increment();
+
             string symbol = pair + "_" + timeband;
             //IEnumerable<DataItem> quotations = dataService.GetFxQuotations(symbol, startDateTime, endDateTime);
             //return Json(quotations, JsonRequestBehavior.AllowGet);
 
-            var json = new { pair = pair, timeband = timeband, value = "działa" };
+            var json = new { pair = pair, timeband = timeband, value = this.ssf.GetService().GetValue() };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 

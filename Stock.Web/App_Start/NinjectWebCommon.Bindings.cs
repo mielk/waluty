@@ -3,6 +3,7 @@ using Ninject.Syntax;
 using Stock.DAL.Repositories;
 //using Stock.DAL.Repository.Fake;
 using Stock.Domain.Services;
+using Stock.Domain.Services.Factories;
 
 // ReSharper disable once CheckNamespace
 namespace Stock.Web
@@ -22,6 +23,7 @@ namespace Stock.Web
             kernel.Bind<IDataService>().To<DataService>();
             kernel.Bind<IFxService>().To<FxService>();
             kernel.Bind<ISimulationService>().To<SimulationService>();
+            kernel.Bind<ISimulationServiceFactory>().To<SimulationServiceFactory>();
             kernel.Bind<IProcessService>().To<ProcessService>();
             kernel.Bind<ITrendlineAnalyzer>().To<TrendlineAnalyzer>();
             kernel.Bind<ITrendService>().To<TrendService>();
