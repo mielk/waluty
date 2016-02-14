@@ -17,6 +17,7 @@
     function loadControls() {
         controls.chartButton = document.getElementById('charts-menu');
         controls.analysisButton = document.getElementById('analysis-menu');
+        controls.simulationButton = document.getElementById('simulation-menu');
         controls.contentContainer = document.getElementById('content-container');
     }
 
@@ -30,6 +31,12 @@
         $(controls.analysisButton).bind({
             click: function (e) {
                 runAnalysisModule();
+            }
+        });
+
+        $(controls.simulationButton).bind({
+            click: function (e) {
+                runSimulationModule();
             }
         });
 
@@ -68,6 +75,20 @@
             divId: 'analysis-panel'
         });
         modules.analysis.run();
+    }
+
+    function runSimulationModule() {
+        modules.simulation = modules.simulation || new Module({
+            name: 'simulation',
+            controller: new SimulationController({
+                
+            }),
+            run: function (e) {
+                e.run();
+            },
+            divId: 'simulation-panel'
+        });
+        modules.simulation.run();
     }
 
     function initialize() {

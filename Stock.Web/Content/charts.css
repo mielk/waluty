@@ -1,5 +1,5 @@
 ﻿/*CHARTS PANEL*/
-#charts-panel {
+.charts-panel {
     display: block;
     position: relative;
     float: left;
@@ -13,7 +13,7 @@
     margin: 0;
 }
 
-#charts-panel > div {
+.charts-panel > div {
     display: block;
     position: relative;
     float: left;
@@ -26,7 +26,7 @@
 
 
 /* Option panel */
-#options-panel {
+.options-panel {
     width: 100%;
     height: auto;
     border-bottom: 1px solid #999;
@@ -34,7 +34,7 @@
     padding: 6px;
 }
 
-#options-panel > div, select, input{
+.options-panel > div, select, input{
     display: block;
     position: relative;
     float: left;
@@ -83,7 +83,7 @@
 
 
 /* Charts container */
-#charts-container {
+.charts-container {
     width: 100%;
     height: auto;
     min-height: 500px;

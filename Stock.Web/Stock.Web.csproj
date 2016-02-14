@@ -151,6 +151,7 @@
     <Compile Include="Controllers\ProcessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarketController.cs" />
+    <Compile Include="Controllers\SimulationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -286,6 +287,7 @@
     <Content Include="Scripts\charts\Chart.js" />
     <Content Include="Scripts\css-element-queries\ElementQueries.js" />
     <Content Include="Scripts\css-element-queries\ResizeSensor.js" />
+    <Content Include="Scripts\simulation\SimulationController.js" />
     <Content Include="Scripts\STOCK\Company.js" />
     <Content Include="Scripts\STOCK\main.js" />
     <Content Include="Scripts\STOCK\ProcessButtons.js" />
