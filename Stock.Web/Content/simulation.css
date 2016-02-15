@@ -10,3 +10,15 @@
     color: #DDD;
     margin: 0;
 }
+
+.simulation-navigation-panel {
+    background-color: transparent;
+    width: auto;
+}
+
+.simulation-navigation-button {
+    height: 30px;
+    width: 30px;
+    float: left;
+    margin-right: 6px;
+}

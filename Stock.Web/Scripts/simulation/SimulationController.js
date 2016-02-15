@@ -25,6 +25,8 @@ function SimulationController(params) {
             controls.companyDropdown = document.getElementById(params.companyDropdownId);
             controls.timebandDropdown = document.getElementById(params.timebandDropdownId);
             controls.runSimulationButton = document.getElementById(params.runSimulationButtonId);
+            controls.simulationPrevButton = document.getElementById(params.simulationPrevButtonId);
+            controls.simulationNextButton = document.getElementById(params.simulationNextButtonId);
         }
 
         function loadCompanyOptions() {
@@ -72,25 +74,26 @@ function SimulationController(params) {
             //[Run simulation].
             $(controls.runSimulationButton).bind({
                 click: function (e) {
-
-                    mielk.db.fetch(
-                        'Simulation',
-                        'RunProcess',
-                        {
-                            pair: company.symbol,
-                            timeband: timeband.symbol,
-                            value: 1
-                        },
-                        {
-                            async: true,
-                            callback: function (r) {
-                                alert(r.value);
-                            }
-                        }
-                    );
-
+                    runSimulation();
                 }
             });
+
+
+            //[Simulation previous step].
+            $(controls.simulationPrevButton).bind({
+                click: function (e) {
+                    simulationPrevStep();
+                }
+            });
+
+
+            //[Simulation next step].
+            $(controls.simulationNextButton).bind({
+                click: function (e) {
+                    simulationNextStep();
+                }
+            });
+
 
             //[Change company].
             $(controls.companyDropdown).bind({
@@ -139,6 +142,37 @@ function SimulationController(params) {
             company: company
         });
     }
+
+
+
+    function runSimulation() {
+        mielk.db.fetch(
+            'Simulation',
+            'RunProcess',
+            {
+                pair: company.symbol,
+                timeband: timeband.symbol,
+                value: 1
+            },
+            {
+                async: true,
+                callback: function (r) {
+                    alert(r.value);
+                }
+            }
+        );
+    }
+
+    function simulationNextStep() {
+        alert('next step');
+    }
+
+    function simulationPrevStep() {
+        alert('prev step');
+    }
+
+    
+
 
 
     function initialize() {

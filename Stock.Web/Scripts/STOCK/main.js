@@ -84,7 +84,9 @@
                 optionsPanelId: 'simulation-options-panel',
                 companyDropdownId: 'simulation-company-dropdown',
                 timebandDropdownId: 'simulation-timeband-dropdown',
-                runSimulationButtonId: 'run-simulation-button'
+                runSimulationButtonId: 'run-simulation-button',
+                simulationPrevButtonId: 'simulation-prev',
+                simulationNextButtonId: 'simulation-next'
             }),
             run: function (e) {
                 e.run();
