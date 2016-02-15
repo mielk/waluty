@@ -53,7 +53,8 @@
                 showPeaksCheckboxId: 'show-peaks-checkbox',
                 showTrendlinesCheckboxId: 'show-trendlines-checkbox',
                 showMACDCheckboxId: 'show-macd-checkbox',
-                showADXCheckboxId: 'show-adx-checkbox'
+                showADXCheckboxId: 'show-adx-checkbox',
+                chartsContainerId: 'charts-container'
             }),
             run: function (e) {
                 e.run();
@@ -86,7 +87,8 @@
                 timebandDropdownId: 'simulation-timeband-dropdown',
                 runSimulationButtonId: 'run-simulation-button',
                 simulationPrevButtonId: 'simulation-prev',
-                simulationNextButtonId: 'simulation-next'
+                simulationNextButtonId: 'simulation-next',
+                chartsContainerId: 'simulation-charts-container'
             }),
             run: function (e) {
                 e.run();

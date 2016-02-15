@@ -148,7 +148,7 @@
         //Initialize chart object.
         chart = new ChartsContainer({
             controller: self,
-            chartContainerId: 'charts-container',
+            chartContainerId: params.chartsContainerId,
             company: company,
             timeband: timeband,
             showPeaks: showPeaks,

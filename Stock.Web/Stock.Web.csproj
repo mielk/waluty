@@ -288,6 +288,7 @@
     <Content Include="Scripts\charts\Chart.js" />
     <Content Include="Scripts\css-element-queries\ElementQueries.js" />
     <Content Include="Scripts\css-element-queries\ResizeSensor.js" />
+    <Content Include="Scripts\simulation\SimulationChartsContainer.js" />
     <Content Include="Scripts\simulation\SimulationController.js" />
     <Content Include="Scripts\STOCK\Company.js" />
     <Content Include="Scripts\STOCK\main.js" />

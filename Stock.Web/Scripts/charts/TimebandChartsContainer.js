@@ -86,7 +86,7 @@ function TimebandChartsContainer(params) {
     function loadTimeScale() {
         //Load date scale. This is the first moment, when this is possible, because 
         //earlier it was not known how many quotations this chart will contain.
-        timeScale = new TimeScale({
+        timeScale = new ChartTimeScale({
             parent: self
             , container: controls.container
             , counter: properties.realQuotationsCounter
@@ -169,12 +169,12 @@ function TimebandChartsContainer(params) {
 
 
 
-function TimeScale(params) {
+function ChartTimeScale(params) {
 
     'use strict';
 
     var self = this;
-    self.TimeScale = true;
+    self.ChartTimeScale = true;
     self.parent = params.parent;
 
     //Properties.

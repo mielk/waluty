@@ -56,6 +56,7 @@ namespace Stock.Web
                         "~/Scripts/analysis/AnalysisController.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/simulation").Include(
+                        "~/Scripts/simulation/SimulationChartsContainer.js",
                         "~/Scripts/simulation/SimulationController.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

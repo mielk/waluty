@@ -121,7 +121,7 @@ function SimulationController(params) {
         };
 
     })(params);
-
+    var chart = null;
 
 
 
@@ -146,48 +146,40 @@ function SimulationController(params) {
 
 
     function runSimulation() {
-        mielk.db.fetch(
-            'Simulation',
-            'RunProcess',
-            {
-                pair: company.symbol,
-                timeband: timeband.symbol,
-                value: 1
-            },
-            {
-                async: true,
-                callback: function (r) {
-                    alert(r.value);
-                }
-            }
-        );
+        self.trigger({
+            type: 'runSimulation',
+            company: company,
+            timeband: timeband
+        });
     }
 
     function simulationNextStep() {
-        alert('next step');
+        self.trigger({
+            type: 'nextSimulationStep'
+        });
     }
 
     function simulationPrevStep() {
-        alert('prev step');
+        self.trigger({
+            type: 'previousSimulationStep'
+        });
     }
 
     
 
-
-
     function initialize() {
-        ////Initialize chart object.
-        //chart = new ChartsContainer({
-        //    controller: self,
-        //    chartContainerId: 'charts-container',
-        //    company: company,
-        //    timeband: timeband,
-        //    showPeaks: showPeaks,
-        //    showTrendlines: showTrendlines,
-        //    showADX: indicators.ADX,
-        //    showMACD: indicators.MACD
-        //});
-        //chart.load();
+        //Initialize chart object.
+        chart = new SimulationChartsContainer({
+            controller: self,
+            chartContainerId: params.chartsContainerId,
+            company: company,
+            timeband: timeband,
+            showPeaks: true,
+            showTrendlines: true,
+            showADX: false,
+            showMACD: true
+        });
+        chart.load();
     }
 
 
