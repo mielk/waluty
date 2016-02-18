@@ -31,17 +31,16 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RunProcess(string pair, string timeband, int value)
+        public ActionResult InitializeSimulation(string pair, string timeband)
         {
 
-            this.ssf.GetService().Increment();
+            //Restart simulation object.
+            var service = this.ssf.GetService();
+            var result = service.Start(pair, timeband);
 
-            string symbol = pair + "_" + timeband;
-            //IEnumerable<DataItem> quotations = dataService.GetFxQuotations(symbol, startDateTime, endDateTime);
-            //return Json(quotations, JsonRequestBehavior.AllowGet);
-
-            var json = new { pair = pair, timeband = timeband, value = this.ssf.GetService().GetValue() };
+            var json = new { pair = pair, timeband = timeband, result = result };
             return Json(json, JsonRequestBehavior.AllowGet);
+
         }
 
 

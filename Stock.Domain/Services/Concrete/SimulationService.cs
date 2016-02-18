@@ -16,7 +16,6 @@ namespace Stock.Domain.Services
         private readonly IDataRepository _dataRepository;
         private readonly IPriceAnalyzer _priceAnalyzer;
         private readonly IMacdAnalyzer _macdAnalyzer;
-        public int Value { get; set; }
 
         public SimulationService(IDataRepository dataRepository)
         {
@@ -25,14 +24,9 @@ namespace Stock.Domain.Services
             _macdAnalyzer = new MacdAnalyzer();
         }
 
-        public void Increment()
+        public bool Start(string pair, string timeband)
         {
-            Value++;
-        }
-
-        public int GetValue()
-        {
-            return Value;
+            return true;
         }
 
     }

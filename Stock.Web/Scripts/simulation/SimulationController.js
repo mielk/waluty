@@ -179,12 +179,10 @@ function SimulationController(params) {
             showADX: false,
             showMACD: true
         });
-        chart.load();
     }
 
 
     function run() {
-
     }
 
 

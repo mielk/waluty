@@ -41,6 +41,7 @@
             'width': size.width + 'px',
             'right': 0
         }).appendTo(params.container);
+
     }
 
     function assignEvents() {

@@ -8,15 +8,18 @@
     var controller = params.controller;
 
     //[Properties]
-    var parent = params.parent;
     var key = params.key || mielk.numbers.generateUUID();
 
     //[Parameters]
-    self.company = params.company;
-    self.timeband = params.timeband;
+    self.company = function () {
+        return params.company;
+    }
+    self.timeband = function () {
+        return params.timeband;
+    }
 
     //[Settings]
-    self.settings = { };
+    self.settings = {};
     self.settings[STOCK.INDICATORS.PRICE.name] = {
         visible: true,
         properties: {
@@ -50,20 +53,20 @@
 
 
 
-
     function runSimulation() {
         mielk.db.fetch(
             'Simulation',
-            'RunProcess',
+            'InitializeSimulation',
             {
-                pair: company.symbol,
-                timeband: timeband.symbol,
-                value: 1
+                pair: self.company().symbol,
+                timeband: self.timeband().symbol
             },
             {
                 async: true,
                 callback: function (r) {
-                    alert(r.value);
+                    if (r.result) {
+                        alert('Simulation object has been successfully loaded');
+                    }
                 }
             }
         );
@@ -75,9 +78,19 @@
     function initialize() {
         //Generate GUI.
         loadControls();
+        assignEvents();
+    }
+
+
+
+    function loadControls() {
+        controls.container = document.getElementById(params.chartContainerId);
+    }
+
+    function loadData() {
 
         //Load data set and its properties.
-        dataSet = parent.company.getDataSet(parent.timeband);
+        dataSet = self.company().getDataSet(self.timeband());
         dataSet.loadProperties(loadProperties);
 
         //Draw actual chart.
@@ -91,17 +104,9 @@
 
     }
 
-    
-
-    function loadControls() {
-        controls.container = document.getElementById(params.chartContainerId);
-    }
-
     function assignEvents() {
         controller.bind({
             runSimulation: function (e) {
-                self.company = e.company;
-                self.timeband = e.timeband;
                 runSimulation();
             },
             nextSimulationStep: function (e) {
@@ -115,7 +120,7 @@
 
     function loadCharts() {
         addChart(STOCK.INDICATORS.PRICE, 0);
-        addChart(STOCK.INDICATORS.MACD, 1);
+        //addChart(STOCK.INDICATORS.MACD, 1);
         //addChart(STOCK.INDICATORS.ADX, 2);
     }
 
@@ -126,10 +131,10 @@
             index: index,
             type: type,
             container: controls.container,
-            visible: parent.settings[type.name].visible,
+            visible: self.settings[type.name].visible,
             height: type.initialHeight,
             width: properties.width,
-            properties: parent.settings[type.name].properties
+            properties: self.settings[type.name].properties
         });
     }
 
@@ -171,12 +176,12 @@
 
 
     function reset() {
-    //    //Remove all loaded views.
-    //    $(controls.container).empty();
+        //    //Remove all loaded views.
+        //    $(controls.container).empty();
 
-    //    //Clear data collections.
-    //    activeTimebandChartsContainer = undefined;
-    //    timebandChartsContainersCache = {};
+        //    //Clear data collections.
+        //    activeTimebandChartsContainer = undefined;
+        //    timebandChartsContainersCache = {};
 
     }
 
@@ -210,12 +215,8 @@
         $(self).trigger(e);
     }
     self.initialize = initialize;
-    self.parent = parent;
-    self.timeband = function () {
-        return parent.timeband;
-    }
+    self.parent = controller;
 
 
     initialize();
-
 }

@@ -9,8 +9,6 @@ namespace Stock.Domain.Services
 {
     public interface ISimulationService
     {
-        void Increment();
-        int GetValue();
-        //bool Run(bool fromScratch);
+        bool Start(string pair, string timeband);
     }
 }
