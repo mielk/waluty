@@ -66,6 +66,8 @@
                 callback: function (r) {
                     if (r.result) {
                         alert('Simulation object has been successfully loaded');
+                    } else {
+                        alert('Error when trying to load data to simulation object');
                     }
                 }
             }

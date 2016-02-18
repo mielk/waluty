@@ -18,6 +18,7 @@ namespace Stock.DAL.Repositories
         IEnumerable<DataItemDto> GetFxQuotations(string symbol, int count);
         IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start);
         IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start, DateTime end);
+        IEnumerable<DataItemDto> GetFxQuotations(string symbol, bool isSimulation);
 
         IEnumerable<DataItemDto> GetFxQuotationsForAnalysis(string symbol, string analysisType, DateTime lastAnalysisItem, int counter);
         IEnumerable<DataItemDto> GetFxQuotationsForAnalysis(string symbol, string analysisType);

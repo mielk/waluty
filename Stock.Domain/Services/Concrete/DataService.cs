@@ -95,6 +95,12 @@ namespace Stock.Domain.Services
             return dtos.Select(DataItem.FromDto).ToList();
         }
 
+        public IEnumerable<DataItem> GetFxQuotations(string symbol, bool isSimulation)
+        {
+            var dtos = _repository.GetFxQuotations(symbol, true);
+            return dtos.Select(DataItem.FromDto).ToList();
+        }
+
         public object GetDataSetProperties(string symbol)
         {
             var properties = _repository.GetDataSetProperties(symbol);

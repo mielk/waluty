@@ -7,27 +7,42 @@ using Stock.Domain.Entities;
 using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
+using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Services
 {
     public class SimulationService : ISimulationService
     {
 
-        private readonly IDataRepository _dataRepository;
+        private readonly IDataService _dataService;
         private readonly IPriceAnalyzer _priceAnalyzer;
         private readonly IMacdAnalyzer _macdAnalyzer;
+        public IEnumerable<DataItem> Data { get; set; }
 
-        public SimulationService(IDataRepository dataRepository)
+        public SimulationService(IDataService dataService)
         {
-            _dataRepository = dataRepository ?? RepositoryFactory.GetDataRepository();
+            _dataService = dataService ?? DataServiceFactory.Instance().GetService();
             _priceAnalyzer = new PriceAnalyzer();
             _macdAnalyzer = new MacdAnalyzer();
         }
 
         public bool Start(string pair, string timeband)
         {
-            return true;
+            var symbol = pair + '_' + timeband;
+            try
+            {
+                Data = _dataService.GetFxQuotations(symbol, true);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
+
+
+        
+       
 
     }
 }

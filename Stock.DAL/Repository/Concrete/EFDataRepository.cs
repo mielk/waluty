@@ -263,6 +263,24 @@ namespace Stock.DAL.Repositories
 
         }
 
+        public IEnumerable<DataItemDto> GetFxQuotations(string symbol, bool isSimulation)
+        {
+
+            //If this is not for simulation return normal set of quotations for a given symbol.
+            if (!isSimulation) return GetFxQuotations(symbol);
+
+            string query = GetSqlForPlainFxQuotations(symbol);
+            IEnumerable<DataItemDto> quotations;
+
+            using (var context = new EFDbContext())
+            {
+                quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
+            }
+
+            return quotations.OrderBy(q => q.PriceDate);
+
+        }
+
         public IEnumerable<DataItemDto> GetFxQuotationsForAnalysis(string symbol, string analysisType, DateTime lastAnalysisItem, int counter)
         {
 
@@ -314,6 +332,22 @@ namespace Stock.DAL.Repositories
         }
 
 
+        private string GetSqlForPlainFxQuotations(string symbol)
+        {
+            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+
+            var sql = "USE fx; " +
+                            "SELECT " +
+                                " '{1}' AS Timeband " +
+                                ", q.*" +
+                            " FROM" +
+                                " quotations_{0} AS q" +
+                            " ORDER BY" +
+                                " q.PriceDate;";
+
+            return string.Format(sql, symbol, timeband);
+
+        }
 
         private string GetSqlForFxQuotations(string symbol)
         {
