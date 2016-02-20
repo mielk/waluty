@@ -17,7 +17,9 @@ namespace Stock.Domain.Services
         private readonly IDataService _dataService;
         private readonly IPriceAnalyzer _priceAnalyzer;
         private readonly IMacdAnalyzer _macdAnalyzer;
-        public IEnumerable<DataItem> Data { get; set; }
+        public DataItem[] Data { get; set; }
+        public DataItem[] CurrentDataSet { get; set; }
+        public int LastAnalyzed { get; set; }
 
         public SimulationService(IDataService dataService)
         {
@@ -31,7 +33,8 @@ namespace Stock.Domain.Services
             var symbol = pair + '_' + timeband;
             try
             {
-                Data = _dataService.GetFxQuotations(symbol, true);
+                Data = _dataService.GetFxQuotations(symbol, true).ToArray();
+                Data.AppendIndexNumbers();
                 return true;
             }
             catch (Exception)
@@ -41,8 +44,33 @@ namespace Stock.Domain.Services
         }
 
 
-        
-       
+        public int NextStep(int incrementation)
+        {
+            LastAnalyzed++;
+            CurrentDataSet = Data.Where(d => d.Index < LastAnalyzed).ToArray();
+            return LastAnalyzed;
+        }
+
+
+        public object GetDataSetProperties()
+        {
+            return new 
+            {
+                counter = CurrentDataSet.Length,
+                firstDate = CurrentDataSet.Min(d => d.Date),
+                lastDate = CurrentDataSet.Max(d => d.Date),
+                minPrice = CurrentDataSet.Min(d => d.Quotation.Low),
+                maxPrice = CurrentDataSet.Max(d => d.Quotation.High),
+            };
+        }
+
+
+        public IEnumerable<DataItem> GetQuotations(DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<DataItem> items = CurrentDataSet.Where(di => di.Date >= startDate && di.Date <= endDate).OrderBy(di => di.Index);
+            return items;
+        }
+
 
     }
 }

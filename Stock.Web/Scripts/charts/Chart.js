@@ -170,6 +170,9 @@ function Chart(params) {
         });
     }
 
+    function destroy() {
+        $(controls.container).remove();
+    }
 
 
 
@@ -190,6 +193,7 @@ function Chart(params) {
         return parent.offset.value;
     }
     self.hover = hover;
+    self.destroy = destroy;
     //self.showInfo = showInfo;
 
     initialize();

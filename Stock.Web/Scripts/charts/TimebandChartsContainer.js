@@ -264,10 +264,13 @@ function ChartTimeScale(params) {
     //Public API.
     self.bind = function (e) {
         $(self).bind(e);
-    }
+    };
     self.trigger = function (e) {
         $(self).trigger(e);
-    }
+    };
+    self.destroy = function () {
+        $(controls.container).remove();
+    };
 
 
     initialize();

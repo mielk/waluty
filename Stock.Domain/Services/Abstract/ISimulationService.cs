@@ -10,5 +10,8 @@ namespace Stock.Domain.Services
     public interface ISimulationService
     {
         bool Start(string pair, string timeband);
+        int NextStep(int incrementation);
+        object GetDataSetProperties();
+        IEnumerable<DataItem> GetQuotations(DateTime startDateTime, DateTime endDateTime);
     }
 }

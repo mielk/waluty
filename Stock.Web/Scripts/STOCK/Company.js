@@ -113,6 +113,11 @@ function QuotationSet(params) {
     var timeband = params.timeband;
     var size = STOCK.CONFIG.loading.packageSize;
 
+    //[QuotationSet] objects are user for two purposes - showing current charts and simulation charts.
+    //Simulation charts works different and [company] and [timeband] can be empty in this object.
+    var simulation = params.simulation || false;
+
+
     //[Loading status].
     var quotationsLoaded = false;
     var propertiesLoaded = false;
@@ -137,14 +142,11 @@ function QuotationSet(params) {
         var startDate = quotationsDates[startIndex];
 
         mielk.db.fetch(
-            'Company',
+            simulation ? 'Simulation' : 'Company',
             'GetFxQuotationsByDates',
-            {
-                pairSymbol: company.symbol,
-                timeband: timeband.symbol,
-                startDate: startDate,
-                endDate: endDate
-            },
+            simulation ?
+                { startDate: startDate, endDate: endDate } :
+                { pairSymbol: company.symbol, timeband: timeband.symbol, startDate: startDate, endDate: endDate },
             {
                 async: true,
                 callback: function (res) {
@@ -177,7 +179,7 @@ function QuotationSet(params) {
         //Make sure that metadata about those quotations are already loaded.
         if (!propertiesLoaded) loadProperties(null);
 
-        if (!quotationsLoaded || force) {
+        if (!quotationsLoaded || force || simulation) {
             fetchQuotations(fn, { });
         } else {
             if (mielk.objects.isFunction(fn)) {
@@ -213,9 +215,9 @@ function QuotationSet(params) {
         var properties = null;
 
         mielk.db.fetch(
-            'Company',
+            simulation ? 'Simulation' : 'Company',
             'GetDataSetProperties',
-            { pairSymbol: company.symbol, timeband: timeband.symbol },
+            simulation ? { } : { pairSymbol: company.symbol, timeband: timeband.symbol },
             {
                 async: false,
                 callback: function (res) {

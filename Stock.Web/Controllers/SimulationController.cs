@@ -43,6 +43,52 @@ namespace Stock.Web.Controllers
 
         }
 
+        
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult NextStep(int incrementation)
+        {
+
+            var service = this.ssf.GetService();
+            var index = service.NextStep(incrementation);            
+            var json = new { index = index };
+            return Json(json, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetDataSetProperties()
+        {
+            var service = this.ssf.GetService();
+            var properties = service.GetDataSetProperties();
+            return Json(properties, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetFxQuotationsByDates(string startDate, string endDate)
+        {
+
+            //Converts date strings to DateTime objects.
+            DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+
+            //findTrendlines(pairSymbol, timeband);
+
+            var service = this.ssf.GetService();
+            IEnumerable<DataItem> quotations = service.GetQuotations(startDateTime, endDateTime);
+
+            return Json(quotations, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
 
     }
 }

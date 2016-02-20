@@ -52,35 +52,11 @@
 
 
 
-
-    function runSimulation() {
-        mielk.db.fetch(
-            'Simulation',
-            'InitializeSimulation',
-            {
-                pair: self.company().symbol,
-                timeband: self.timeband().symbol
-            },
-            {
-                async: true,
-                callback: function (r) {
-                    if (r.result) {
-                        alert('Simulation object has been successfully loaded');
-                    } else {
-                        alert('Error when trying to load data to simulation object');
-                    }
-                }
-            }
-        );
-    }
-
-
-
     //[Initialize functions].
     function initialize() {
         //Generate GUI.
         loadControls();
-        assignEvents();
+        assignControllerEvents();
     }
 
 
@@ -89,10 +65,30 @@
         controls.container = document.getElementById(params.chartContainerId);
     }
 
-    function loadData() {
+    function assignControllerEvents() {
+        controller.bind({
+            runSimulation: function (e) {
+                runSimulation();
+            },
+            nextSimulationStep: function (e) {
+                nextStep();
+            },
+            previousSimulationStep: function (e) {
+                alert('prev step');
+            }
+        });
+    }
+
+
+
+
+    function reloadData() {
+
+        //Reset previous charts.
+        reset();
 
         //Load data set and its properties.
-        dataSet = self.company().getDataSet(self.timeband());
+        dataSet = new QuotationSet({ company: self.company(), timeband: self.timeband(), simulation: true });
         dataSet.loadProperties(loadProperties);
 
         //Draw actual chart.
@@ -104,20 +100,6 @@
 
         dataSet.loadQuotations(loadQuotations);
 
-    }
-
-    function assignEvents() {
-        controller.bind({
-            runSimulation: function (e) {
-                runSimulation();
-            },
-            nextSimulationStep: function (e) {
-                alert('next step');
-            },
-            previousSimulationStep: function (e) {
-                alert('prev step');
-            }
-        });
     }
 
     function loadCharts() {
@@ -174,16 +156,71 @@
 
     }
 
+    function assignEvents() {
+    }
+
+
+
+
+    function runSimulation() {
+        mielk.db.fetch(
+            'Simulation',
+            'InitializeSimulation',
+            {
+                pair: self.company().symbol,
+                timeband: self.timeband().symbol
+            },
+            {
+                async: true,
+                callback: function (r) {
+                    if (r.result) {
+                        alert('Simulation object has been successfully loaded');
+                    } else {
+                        alert('Error when trying to load data to simulation object');
+                    }
+                }
+            }
+        );
+    }
+
+    function nextStep() {
+
+        mielk.db.fetch(
+            'Simulation',
+            'NextStep',
+            {
+                incrementation: controller.incrementation
+            },
+            {
+                async: true,
+                callback: function (result) {
+                    if (result.index) {
+                        reloadData();
+                    }
+                }
+            }
+        );
+
+    }
+
 
 
 
     function reset() {
-        //    //Remove all loaded views.
-        //    $(controls.container).empty();
 
-        //    //Clear data collections.
-        //    activeTimebandChartsContainer = undefined;
-        //    timebandChartsContainersCache = {};
+        //Remove charts UI.
+        mielk.arrays.fromObject(charts).forEach(function (chart) {
+            chart.destroy();
+        });
+        charts = {};
+
+        //Remove timescale UI.
+        if (timeScale) timeScale.destroy();
+
+        //Reset data collections.
+        dataSet = null;
+        properties = null;
+        quotations = null;
 
     }
 

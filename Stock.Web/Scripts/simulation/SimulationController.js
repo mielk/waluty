@@ -8,6 +8,7 @@ function SimulationController(params) {
     var company = params.initialCompany || STOCK.COMPANIES.getCompany(1);
     var timeband = params.initialTimeband || STOCK.TIMEBANDS.defaultValue();
     var controls = {}
+    var incrementation = params.incrementation || 1;
 
     var optionPanel = (function (params) {
 
@@ -188,6 +189,7 @@ function SimulationController(params) {
 
     //Public API.
     self.initialize = initialize;
+    self.incrementation = incrementation;
 
 }
 
