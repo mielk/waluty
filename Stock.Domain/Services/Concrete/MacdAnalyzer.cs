@@ -8,6 +8,7 @@ using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Enums;
+using Stock.Domain.Services.Factories;
 
 
 namespace Stock.Domain.Services
@@ -20,7 +21,7 @@ namespace Stock.Domain.Services
         private const int Slow = 26;
         private const int SignalLine = 9;
 
-        private IDataRepository _dataRepository;
+        private IAnalysisDataService _dataService;
         private IFxRepository _fxRepository;
 
         private Analysis analysis;
@@ -66,7 +67,7 @@ namespace Stock.Domain.Services
             }
             else
             {
-                var lastDates = _dataRepository.GetSymbolLastItems(symbol, Type.TableName());
+                var lastDates = _dataService.GetSymbolLastItems(symbol, Type.TableName());
 
                 //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
                 if (lastDates.IsUpToDate()) return;
@@ -104,7 +105,7 @@ namespace Stock.Domain.Services
 
             //Insert info about this analysis to the database.
             analysis.AnalysisEnd = DateTime.Now;
-            _dataRepository.AddAnalysisInfo(analysis.ToDto());
+            _dataService.AddAnalysisInfo(analysis);
 
 
         }
@@ -115,9 +116,9 @@ namespace Stock.Domain.Services
         public void EnsureRepositories()
         {
             //Check if DateRepository is appended.
-            if (_dataRepository == null)
+            if (_dataService == null)
             {
-                _dataRepository = RepositoryFactory.GetDataRepository();
+                _dataService = AnalysisDataServiceFactory.Instance().GetService();
             }
 
             //Check if FXRepository is appended.
@@ -138,7 +139,7 @@ namespace Stock.Domain.Services
 
         public void LoadDataSets(string symbol)
         {
-            Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName()).Select(DataItem.FromDto).ToArray();
+            Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName()).ToArray();
             Items.AppendIndexNumbers();
         }
 
@@ -150,7 +151,7 @@ namespace Stock.Domain.Services
 
         public void LoadDataSets(string symbol, DateTime lastAnalysisItem, int counter)
         {
-            Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).Select(DataItem.FromDto).ToArray();
+            Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).ToArray();
             Items.AppendIndexNumbers();
         }
 
@@ -217,7 +218,7 @@ namespace Stock.Domain.Services
                 if (previousQuotation != null)
                 {
                     item.Quotation.CompleteMissing(previousQuotation);
-                    _dataRepository.UpdateQuotation(item.Quotation.ToDto(), Symbol);
+                    _dataService.UpdateQuotation(item.Quotation, Symbol);
                 }
                 
             }
@@ -274,11 +275,11 @@ namespace Stock.Domain.Services
 
             if (item.Macd.Id == 0)
             {
-                _dataRepository.AddMacd(item.Macd.ToDto(), Symbol);
+                _dataService.AddMacd(item.Macd, Symbol);
             }
             else if (isChanged)
             {
-                _dataRepository.UpdateMacd(item.Macd.ToDto(), Symbol);
+                _dataService.UpdateMacd(item.Macd, Symbol);
             }
 
         }

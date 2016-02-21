@@ -1,4 +1,5 @@
-﻿using Stock.Domain.Entities;
+﻿using Stock.DAL.TransferObjects;
+using Stock.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,6 @@ namespace Stock.Domain.Services
         IEnumerable<DataItem> GetFxQuotations(string tableName, DateTime start, DateTime end);
 
         object GetDataSetProperties(string symbol);
+        LastDates GetSymbolLastItems(string symbol, string analysisType);
     }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Enums\ExtremumType.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
     <Compile Include="Services\Abstract\ISimulationServiceFactory.cs" />
     <Compile Include="Services\Abstract\ISimulationService.cs" />
     <Compile Include="Services\Abstract\IMacdAnalyzer.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Services\Concrete\FxService.cs" />
     <Compile Include="Services\Concrete\MarketService.cs" />
     <Compile Include="Services\Factories\CompanyServiceFactory.cs" />
+    <Compile Include="Services\Factories\AnalysisDataServiceFactory.cs" />
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
     <Compile Include="Services\Factories\ProcessServiceFactory.cs" />
     <Compile Include="Services\Factories\DataServiceFactory.cs" />

@@ -10,7 +10,7 @@ using Stock.DAL.TransferObjects;
 
 namespace Stock.Domain.Services
 {
-    public class DataService : IDataService
+    public class DataService : IDataService, IAnalysisDataService
     {
 
         private readonly IDataRepository _repository;
@@ -105,6 +105,84 @@ namespace Stock.Domain.Services
         {
             var properties = _repository.GetDataSetProperties(symbol);
             return properties;
+        }
+
+        public void AddAnalysisInfo(Analysis analysis){
+            _repository.AddAnalysisInfo(analysis.ToDto());
+        }
+
+        public LastDates GetSymbolLastItems(string symbol, string analysisType)
+        {
+            return _repository.GetSymbolLastItems(symbol, analysisType);
+        }
+
+        public IEnumerable<DataItem> GetFxQuotationsForAnalysis(string symbol, string tableName)
+        {
+            return _repository.GetFxQuotationsForAnalysis(symbol, tableName).Select(DataItem.FromDto);
+        }
+
+        public IEnumerable<DataItem> GetFxQuotationsForAnalysis(string symbol, string tableName, DateTime lastDate, int counter)
+        {
+            var items = _repository.GetFxQuotationsForAnalysis(symbol, tableName, lastDate, counter).Select(DataItem.FromDto);
+            LoadExtrema(items, symbol);
+            return items;
+        }
+
+
+        private void LoadExtrema(IEnumerable<DataItem> items, string symbol)
+        {
+
+            var firstQuotationDate = items.Min(q => q.Date);
+            var lastQuotationDate = items.Max(q => q.Date);
+            var extrema = _repository.GetExtrema(symbol, firstQuotationDate, lastQuotationDate);
+
+            foreach (var extremumDto in extrema)
+            {
+                var item = items.SingleOrDefault(q => q.Date.Equals(extremumDto.PriceDate));
+                if (item != null && item.Price != null)
+                {
+                    item.Price.ApplyExtremumValue(Extremum.FromDto(extremumDto));
+                }
+            }
+
+        }
+
+        public void AddPrice(Price price, string symbol)
+        {
+            _repository.AddPrice(price.ToDto(), symbol);
+        }
+
+        public void UpdatePrice(Price price, string symbol)
+        {
+            _repository.UpdatePrice(price.ToDto(), symbol);
+        }
+
+
+        public void AddMacd(Macd macd, string symbol)
+        {
+            _repository.AddMacd(macd.ToDto(), symbol);
+        }
+
+        public void UpdateMacd(Macd macd, string symbol)
+        {
+            _repository.UpdateMacd(macd.ToDto(), symbol);
+        }
+
+
+        public void AddAdx(Adx adx, string symbol)
+        {
+            _repository.AddAdx(adx.ToDto(), symbol);
+        }
+
+        public void UpdateAdx(Adx adx, string symbol)
+        {
+            _repository.UpdateAdx(adx.ToDto(), symbol);
+        }
+
+
+        public void UpdateQuotation(Quotation quotation, string symbol)
+        {
+            _repository.UpdateQuotation(quotation.ToDto(), symbol);
         }
 
     }

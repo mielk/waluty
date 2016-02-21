@@ -8,6 +8,7 @@ using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Enums;
+using Stock.Domain.Services.Factories;
 
 
 namespace Stock.Domain.Services
@@ -20,9 +21,10 @@ namespace Stock.Domain.Services
         public const int MinRange = 3;
         public const int MaxRange = 360;
 
-        private IDataRepository _dataRepository;
+        private IAnalysisDataService _dataService;
         private IFxRepository _fxRepository;
 
+        public bool IsSimulation { get; set; }
         private Analysis analysis;
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
@@ -73,7 +75,7 @@ namespace Stock.Domain.Services
             }
             else
             {
-                var lastDates = _dataRepository.GetSymbolLastItems(symbol, Type.TableName());
+                var lastDates = _dataService.GetSymbolLastItems(symbol, Type.TableName());
 
                 //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
                 if (lastDates.IsUpToDate()) return;
@@ -114,7 +116,7 @@ namespace Stock.Domain.Services
 
             //Insert info about this analysis to the database.
             analysis.AnalysisEnd = DateTime.Now;
-            _dataRepository.AddAnalysisInfo(analysis.ToDto());
+            _dataService.AddAnalysisInfo(analysis);
 
 
         }
@@ -125,9 +127,9 @@ namespace Stock.Domain.Services
         public void EnsureRepositories()
         {
             //Check if DateRepository is appended.
-            if (_dataRepository == null)
+            if (_dataService == null)
             {
-                _dataRepository = RepositoryFactory.GetDataRepository();
+                _dataService = AnalysisDataServiceFactory.Instance().GetService();
             }
 
             //Check if FXRepository is appended.
@@ -149,7 +151,7 @@ namespace Stock.Domain.Services
 
         public void LoadDataSets(string symbol)
         {
-            Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName()).Select(DataItem.FromDto).ToArray();
+            Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName()).ToArray();
             Items.AppendIndexNumbers();
         }
 
@@ -161,28 +163,10 @@ namespace Stock.Domain.Services
 
         public void LoadDataSets(string symbol, DateTime lastAnalysisItem, int counter)
         {
-            Items = _dataRepository.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).Select(DataItem.FromDto).ToArray();
+            Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).ToArray();
             Items.AppendIndexNumbers();
-            LoadExtrema();
         }
 
-        public void LoadExtrema()
-        {
-
-            var firstQuotationDate = Items.Min(q => q.Date);
-            var lastQuotationDate = Items.Max(q => q.Date);
-            var extrema = _dataRepository.GetExtrema(Symbol, firstQuotationDate, lastQuotationDate);
-
-            foreach (var extremumDto in extrema)
-            {
-                var item = Items.SingleOrDefault(q => q.Date.Equals(extremumDto.PriceDate));
-                if (item != null && item.Price != null)
-                {
-                    item.Price.ApplyExtremumValue(Extremum.FromDto(extremumDto));
-                }
-            }
-
-        }
 
 
         protected int FindIndex(DateTime date)
@@ -247,7 +231,7 @@ namespace Stock.Domain.Services
                 if (previousQuotation != null)
                 {
                     item.Quotation.CompleteMissing(previousQuotation);
-                    _dataRepository.UpdateQuotation(item.Quotation.ToDto(), Symbol);
+                    _dataService.UpdateQuotation(item.Quotation, Symbol);
                 }
                 
             }
@@ -273,16 +257,6 @@ namespace Stock.Domain.Services
             if (CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch)) item.Price.IsUpdated = true;
 
 
-
-            //if (item.Price.Id == 0)
-            //{
-            //    _dataRepository.AddPrice(item.Price.ToDto(), Symbol);
-            //}
-            //else if (isChanged)
-            //{
-            //    _dataRepository.UpdatePrice(item.Price.ToDto(), Symbol);
-            //}
-
         }
 
         private void SaveChanges()
@@ -294,11 +268,11 @@ namespace Stock.Domain.Services
 
                 if (item.Price.Id == 0)
                 {
-                    _dataRepository.AddPrice(item.Price.ToDto(), Symbol);
+                    _dataService.AddPrice(item.Price, Symbol);
                 }
                 else if (item.Price.IsUpdated)
                 {
-                    _dataRepository.UpdatePrice(item.Price.ToDto(), Symbol);
+                    _dataService.UpdatePrice(item.Price, Symbol);
                 }
 
             }
