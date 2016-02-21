@@ -124,10 +124,10 @@ namespace Stock.Domain.Entities
                     Direction2D = (int)dto.PriceDirection2D,
                     Direction3D = (int)dto.PriceDirection3D,
                     Id = (int)dto.PriceId,
-                    PeakByClose = (double)dto.PeakByCloseEvaluation,
-                    PeakByHigh = (double)dto.PeakByHighEvaluation,
-                    TroughByClose = (double)dto.TroughByCloseEvaluation,
-                    TroughByLow = (double)dto.TroughByLowEvaluation
+                    PeakByClose = (double)(dto.PeakByCloseEvaluation ?? 0),
+                    PeakByHigh = (double)(dto.PeakByHighEvaluation ?? 0),
+                    TroughByClose = (double)(dto.TroughByCloseEvaluation ?? 0),
+                    TroughByLow = (double)(dto.TroughByLowEvaluation ?? 0)
                 };
 
             }

@@ -65,8 +65,15 @@ namespace Stock.Domain.Entities
             var sinPiAmp = Math.Sin(piAmplitude);
             var amplitudePoints = 2 * Math.Pow(sinPiAmp / 2 + 0.5, 2);
 
+            //Volatility
+            var volatilityPower = Math.Pow(Volatility, 0.25d);
+            var piVolatility = Math.PI * (volatilityPower - 0.5);
+            var sinPiVolatility = Math.Sin(piVolatility);
+            var volatilityPoints = 2 * Math.Pow(sinPiVolatility / 2 + 0.5, 2);
+
+
             //Average
-            var avg = (rangePoints + amplitudePoints) / 2;
+            var avg = (rangePoints + amplitudePoints + volatilityPoints) / 3;
 
             return avg * 100;
 
@@ -135,4 +142,5 @@ namespace Stock.Domain.Entities
         }
 
     }
+
 }

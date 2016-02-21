@@ -38,6 +38,15 @@ namespace Stock.Domain.Services
         private Dictionary<ExtremumType, DataItem> currentExtrema;
 
 
+        public PriceAnalyzer()
+        {
+        }
+
+        public PriceAnalyzer(IAnalysisDataService dataService)
+        {
+            _dataService = dataService;
+        }
+
 
         public void Analyze(string symbol)
         {
