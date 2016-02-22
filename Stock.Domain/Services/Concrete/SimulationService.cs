@@ -20,20 +20,27 @@ namespace Stock.Domain.Services
         public DataItem[] Data { get; set; }
         public DataItem[] CurrentDataSet { get; set; }
         public int LastAnalyzed { get; set; }
+        public string Symbol { get; set; }
+        public string Pair { get; set; }
+        public string Timeband { get; set; }
+
 
         public SimulationService(IDataService dataService)
         {
             _dataService = dataService ?? DataServiceFactory.Instance().GetService();
             _priceAnalyzer = new PriceAnalyzer(this);
-            _macdAnalyzer = new MacdAnalyzer();
+            _macdAnalyzer = new MacdAnalyzer(this);
         }
 
         public bool Start(string pair, string timeband)
         {
-            var symbol = pair + '_' + timeband;
+            this.Pair = pair;
+            this.Timeband = timeband;
+            this.Symbol = pair + '_' + timeband;
+
             try
             {
-                Data = _dataService.GetFxQuotations(symbol, true).ToArray();
+                Data = _dataService.GetFxQuotations(this.Symbol, true).ToArray();
                 Data.AppendIndexNumbers();
                 return true;
             }
@@ -48,7 +55,15 @@ namespace Stock.Domain.Services
         {
             LastAnalyzed++;
             CurrentDataSet = Data.Where(d => d.Index < LastAnalyzed).ToArray();
+
+            //Napraw numerację (mogła zostać zepsuta przez obiekt PriceAnalyzer).
+            Data.AppendIndexNumbers();
+
+            _priceAnalyzer.Analyze(this.Symbol, false);
+            _macdAnalyzer.Analyze(this.Symbol, false);
+
             return LastAnalyzed;
+
         }
 
 
@@ -75,17 +90,25 @@ namespace Stock.Domain.Services
         //Implementation of [IAnalysisDataService]//
         public IEnumerable<DataItem> GetFxQuotationsForAnalysis(string symbol, string tableName)
         {
-            return null;
+            return CurrentDataSet;
         }
 
         public IEnumerable<DataItem> GetFxQuotationsForAnalysis(string symbol, string tableName, DateTime lastDate, int counter)
         {
-            return null;
+            return CurrentDataSet;
         }
 
         public LastDates GetSymbolLastItems(string symbol, string tableName)
         {
-            return null;
+            DateTime lastQuotation = CurrentDataSet[CurrentDataSet.Length - 1].Date;
+            DateTime lastAnalyzed = CurrentDataSet.Length < 2 ? new DateTime(1900, 1, 1) : CurrentDataSet[CurrentDataSet.Length - 2].Date;
+
+            return new LastDates
+            {
+                LastQuotation = lastQuotation,
+                LastAnalysisItem = lastAnalyzed
+            };
+
         }
 
         

@@ -38,6 +38,18 @@ namespace Stock.Domain.Services
 
 
 
+        public MacdAnalyzer()
+        {
+        }
+
+        public MacdAnalyzer(IAnalysisDataService dataService)
+        {
+            _dataService = dataService;
+        }
+
+
+
+
         public void Analyze(string symbol)
         {
             Analyze(symbol, false);
