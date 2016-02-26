@@ -58,8 +58,8 @@ namespace Stock.Domain.Entities
             var rangePoints = Math.Sqrt(leftSerie * rightSerie);
 
             //Amplitude
-            var lowerAmplitude = Math.Min( EarlierAmplitude == null ? 0d : (double) EarlierAmplitude, 
-                                           LaterAmplitude == null ? 0d : (double) LaterAmplitude) * timeframeFactor;
+            var lowerAmplitude = Math.Min( EarlierAmplitude == null ? 0d : (double) EarlierAmplitude,
+                                           LaterAmplitude == null ? (double)EarlierAmplitude : (double)LaterAmplitude) * timeframeFactor;
             var lowerAmplitudePower = Math.Pow(lowerAmplitude, 0.25d);
             var piAmplitude = Math.PI * (lowerAmplitudePower - 0.5);
             var sinPiAmp = Math.Sin(piAmplitude);

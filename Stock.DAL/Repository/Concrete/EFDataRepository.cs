@@ -638,7 +638,7 @@ namespace Stock.DAL.Repositories
             string sqlInsert = "INSERT INTO fx." + tableName +
                 "(AssetId, PriceDate, DeltaClosePrice, PriceDirection3D, PriceDirection2D, " +
                     "PeakByCloseEvaluation, PeakByHighEvaluation, TroughByCloseEvaluation, " +
-                    "TroughByLowEvaluation) " +
+                    "TroughByLowEvaluation, PriceGap) " +
                 "VALUES (" +
                        price.AssetId +
                     ", '" + price.PriceDate + "'" +
@@ -648,7 +648,8 @@ namespace Stock.DAL.Repositories
                     ", " + price.PeakByCloseEvaluation.ToDbString() +
                     ", " + price.PeakByHighEvaluation.ToDbString() +
                     ", " + price.TroughByCloseEvaluation.ToDbString() +
-                    ", " + price.TroughByLowEvaluation.ToDbString() + ");";
+                    ", " + price.TroughByLowEvaluation.ToDbString() +
+                    ", " + price.PriceGap.ToDbString() + ");";
 
 
             //Add info about extrema.
@@ -682,7 +683,8 @@ namespace Stock.DAL.Repositories
                     ", PeakByCloseEvaluation = " + price.PeakByCloseEvaluation.ToDbString() +
                     ", PeakByHighEvaluation = " + price.PeakByHighEvaluation.ToDbString() +
                     ", TroughByCloseEvaluation = " + price.TroughByCloseEvaluation.ToDbString() +
-                    ", TroughByLowEvaluation = " + price.TroughByLowEvaluation.ToDbString() + 
+                    ", TroughByLowEvaluation = " + price.TroughByLowEvaluation.ToDbString() +
+                    ", PriceGap = " + price.PriceGap.ToDbString() + 
                 " WHERE PriceId = " + price.Id;
 
 

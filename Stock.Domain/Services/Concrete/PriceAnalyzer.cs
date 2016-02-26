@@ -260,11 +260,11 @@ namespace Stock.Domain.Services
             //Calculate new values for peaks and troughs and apply them to the current item price.
             //If any of this is changed, this price will have flag [IsChange] set to @true.
             //This is the only thing that can be changed for items being only updated.
-            if (CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch)) item.Price.IsUpdated = true;
-            if (CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch)) item.Price.IsUpdated = true;
-            if (CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch)) item.Price.IsUpdated = true;
-            if (CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch)) item.Price.IsUpdated = true;
-
+            CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch);
+            CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch);
+            CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch);
+            CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch);
+            CheckPriceGap(item);
 
         }
 
@@ -298,6 +298,31 @@ namespace Stock.Domain.Services
         }
 
 
+        private void CheckPriceGap(DataItem item)
+        {
+            
+            //If [PriceGap] is already calculated, no need to do it again.
+            if (item.Price.PriceGap != 0) return;
+
+            //It is impossible to calculate price gap for the first and last item.
+            if (item.Index == 0) return;
+            if (item.Index == Items.Length - 1) return;
+
+            var previousItem = Items[item.Index - 1];
+            var nextItem = Items[item.Index + 1];
+
+            if (previousItem.Quotation.High < nextItem.Quotation.Low)
+            {
+                item.Price.PriceGap = 100 * ((nextItem.Quotation.Low - previousItem.Quotation.High) / item.Quotation.Close);
+                item.Price.IsUpdated = true;
+            }
+            else if (previousItem.Quotation.Low > nextItem.Quotation.High)
+            {
+                item.Price.PriceGap = 100 * ((nextItem.Quotation.High - previousItem.Quotation.Low) / item.Quotation.Close);
+                item.Price.IsUpdated = true;
+            }
+
+        }
 
         private double CalculateDeltaClosePrice(double close, int index)
         {
@@ -491,6 +516,7 @@ namespace Stock.Domain.Services
                 if (laterCounter < MinRange && laterCounter < (Items.Length - 1 - item.Index))
                 {
                     extremum.Cancelled = true;
+                    item.Price.IsUpdated = true;
                     return true;
                 }
                 else
@@ -548,6 +574,7 @@ namespace Stock.Domain.Services
                 extremum.IsOpen = (item.Index + extremum.LaterCounter == Items.Length - 1) || quotationsLeft(item) < 10;
                 setCurrentExtremum(type, item);
                 item.Price.ApplyExtremumValue(type, extremum);
+                item.Price.IsUpdated = true;
             }
 
             return true;

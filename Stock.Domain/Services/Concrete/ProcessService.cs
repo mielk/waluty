@@ -31,7 +31,7 @@ namespace Stock.Domain.Services
 
             foreach (var symbol in symbols)
             {
-                _priceAnalyzer.Analyze(symbol, false);
+                _priceAnalyzer.Analyze(symbol, true);
                 _macdAnalyzer.Analyze(symbol, false);
             }
 

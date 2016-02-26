@@ -40,6 +40,7 @@ namespace Stock.Domain.Entities
             price.CloseDelta = dto.DeltaClosePrice;
             price.Direction2D = dto.PriceDirection2D;
             price.Direction3D = dto.PriceDirection3D;
+            price.PriceGap = dto.PriceGap;
             price.PeakByClose = dto.PeakByCloseEvaluation;
             price.PeakByHigh = dto.PeakByHighEvaluation;
             price.TroughByClose = dto.TroughByCloseEvaluation;
@@ -57,6 +58,7 @@ namespace Stock.Domain.Entities
                 , DeltaClosePrice = this.CloseDelta
                 , Id = this.Id
                 , PriceDate = this.Date
+                , PriceGap = this.PriceGap
                 , PeakByCloseEvaluation = this.PeakByClose
                 , PeakByHighEvaluation = this.PeakByHigh
                 , PriceDirection2D = this.Direction2D

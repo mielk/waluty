@@ -8,6 +8,7 @@
     self.low = params.Quotation.Low;
     self.close = params.Quotation.Close;
     self.volume = params.Quotation.Volume;
+    self.priceGap = params.Price ? params.Price.PriceGap : 0;
     self.peakByClose = params.Price ? params.Price.PeakByClose : 0;
     self.peakByHigh = params.Price ? params.Price.PeakByHigh : 0;
     self.troughByClose = params.Price ? params.Price.TroughByClose : 0;

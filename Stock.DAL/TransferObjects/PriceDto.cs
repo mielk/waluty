@@ -17,6 +17,7 @@ namespace Stock.DAL.TransferObjects
         public double DeltaClosePrice { get; set; }
         public int PriceDirection2D { get; set; }
         public int PriceDirection3D { get; set; }
+        public double PriceGap { get; set; }
         public double PeakByCloseEvaluation { get; set; }
         public double PeakByHighEvaluation { get; set; }
         public double TroughByCloseEvaluation { get; set; }
