@@ -20,7 +20,7 @@ namespace Stock.Domain.Services
 
         /* Process properties */
         private Asset Asset;
-        private Timeband Timeband;
+        private Timeframe Timeframe;
         private string Symbol;
 
         /* Data collections */
@@ -35,9 +35,9 @@ namespace Stock.Domain.Services
 
 
         #region CONSTRUCTORS
-        public TrendService(Asset asset, Timeband timeband)
+        public TrendService(Asset asset, Timeframe timeframe)
         {
-            LoadProperties(asset, timeband);
+            LoadProperties(asset, timeframe);
         }
 
         public TrendService(string symbol)
@@ -45,9 +45,9 @@ namespace Stock.Domain.Services
             LoadProperties(symbol);
         }
 
-        public TrendService(Asset asset, Timeband timeband, DataItem[] items)
+        public TrendService(Asset asset, Timeframe timeframe, DataItem[] items)
         {
-            LoadProperties(asset, timeband);
+            LoadProperties(asset, timeframe);
             LoadItems(items);
         }
 
@@ -84,18 +84,18 @@ namespace Stock.Domain.Services
 
             var names = symbol.Split('_');
             this.Asset = FxServiceFactory.Instance().GetService().GetPair(names[0]);
-            this.Timeband = Timeband.GetTimebandByShortName(names[1]);
-            this.analyzer = new TrendlineAnalyzer(Asset, Timeband);
+            this.Timeframe = Timeframe.GetTimeframeByShortName(names[1]);
+            this.analyzer = new TrendlineAnalyzer(Asset, Timeframe);
 
         }
 
-        private void LoadProperties(Asset asset, Timeband timeband)
+        private void LoadProperties(Asset asset, Timeframe timeframe)
         {
 
             this.Asset = asset;
-            this.Timeband = timeband;
-            this.Symbol = asset.Name + "_" + timeband.Name;
-            this.analyzer = new TrendlineAnalyzer(Asset, Timeband);
+            this.Timeframe = timeframe;
+            this.Symbol = asset.Name + "_" + timeframe.Name;
+            this.analyzer = new TrendlineAnalyzer(Asset, Timeframe);
 
         }
 

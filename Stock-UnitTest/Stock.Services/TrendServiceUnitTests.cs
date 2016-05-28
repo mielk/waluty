@@ -15,9 +15,9 @@ namespace Stock_UnitTest.Stock.Services
     {
 
         private static Asset asset = new Asset { Id = 9, Name = "AUDJPY" };
-        private static Timeband timeband = Timeband.GetTimeband(TimebandSymbol.D1);
+        private static Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.D1);
         private static DataItem[] data = UnitTestInitializer.GetData();
-        private TrendService service = new TrendService(asset, timeband, data);
+        private TrendService service = new TrendService(asset, timeframe, data);
 
 
         [TestMethod]

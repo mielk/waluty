@@ -50,7 +50,7 @@ namespace Stock.Domain.Services
 
         /* Process properties */
         public Asset Asset { get; set; }
-        public Timeband Timeband { get; set; }
+        public Timeframe Timeframe { get; set; }
 
         /* Data collections */
         public DataItem[] Items { get; set; }
@@ -60,10 +60,10 @@ namespace Stock.Domain.Services
 
 
 
-        public TrendlineAnalyzer(Asset asset, Timeband timeband)
+        public TrendlineAnalyzer(Asset asset, Timeframe timeframe)
         {
             this.Asset = asset;
-            this.Timeband = timeband;
+            this.Timeframe = timeframe;
         }
 
         public void LoadItems(DataItem[] items)
@@ -74,7 +74,7 @@ namespace Stock.Domain.Services
         public void Initialize(DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
         {
 
-            this.Trendline = new Trendline(Asset, Timeband, initialItem, initialLevel, boundItem, boundLevel);
+            this.Trendline = new Trendline(Asset, Timeframe, initialItem, initialLevel, boundItem, boundLevel);
 
         }
 

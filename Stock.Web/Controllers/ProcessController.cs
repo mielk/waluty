@@ -5,18 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
 using Stock.Domain.Entities;
+using Stock.Domain.Services.Factories;
 
 namespace Stock.Web.Controllers
 {
     public class ProcessController : Controller
     {
-        private readonly IProcessService processService;
+        //private readonly IProcessService processService;
 
 
-        public ProcessController(IProcessService processService)
-        {
-            this.processService = processService;
-        }
+        //public ProcessController(IProcessService processService)
+        //{
+        //    this.processService = processService;
+        //}
 
 
         //
@@ -32,9 +33,11 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RunProcess(bool fromScratch)
+        public ActionResult RunProcess(string asset, string timeframe, bool fromScratch)
         {
-            var result = processService.Run(fromScratch);
+            IProcessService service = new ProcessService(null);
+            service.LoadParams(asset, timeframe);
+            var result = service.Run(fromScratch);
             var json = new { value = result };
             return Json(json, JsonRequestBehavior.AllowGet);
         }

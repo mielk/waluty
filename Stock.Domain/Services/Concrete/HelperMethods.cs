@@ -13,64 +13,64 @@ namespace Stock.Domain.Services
     {
 
 
-        public static double GetExtremumEvaluationFactor(this TimebandSymbol value)
+        public static double GetExtremumEvaluationFactor(this TimeframeSymbol value)
         {
             switch (value)
             {
-                case TimebandSymbol.M5: return 30d;
-                case TimebandSymbol.M15: return 24d;
-                case TimebandSymbol.M30: return 12d;
-                case TimebandSymbol.H1: return 12d;
-                case TimebandSymbol.H4: return 6d;
-                case TimebandSymbol.D1: return 2d;
-                case TimebandSymbol.W1: return 1d;
-                case TimebandSymbol.MN1: return 0.5d;
+                case TimeframeSymbol.M5: return 30d;
+                case TimeframeSymbol.M15: return 24d;
+                case TimeframeSymbol.M30: return 12d;
+                case TimeframeSymbol.H1: return 12d;
+                case TimeframeSymbol.H4: return 6d;
+                case TimeframeSymbol.D1: return 2d;
+                case TimeframeSymbol.W1: return 1d;
+                case TimeframeSymbol.MN1: return 0.5d;
             }
 
             return 1d;
 
         }
 
-        public static TimebandSymbol GetTimebandSymbol(this string value)
+        public static TimeframeSymbol GetTimeframeSymbol(this string value)
         {
 
-            var timebandSymbol = value.Substring(value.IndexOf('_') + 1);
+            var timeframeSymbol = value.Substring(value.IndexOf('_') + 1);
 
-            if (timebandSymbol.Equals("M5"))
+            if (timeframeSymbol.Equals("M5"))
             {
-                return TimebandSymbol.M5;
+                return TimeframeSymbol.M5;
             }
-            else if (timebandSymbol.Equals("M15"))
+            else if (timeframeSymbol.Equals("M15"))
             {
-                return TimebandSymbol.M15;
+                return TimeframeSymbol.M15;
             }
-            else if (timebandSymbol.Equals("M30"))
+            else if (timeframeSymbol.Equals("M30"))
             {
-                return TimebandSymbol.M30;
+                return TimeframeSymbol.M30;
             }
-            else if (timebandSymbol.Equals("H1"))
+            else if (timeframeSymbol.Equals("H1"))
             {
-                return TimebandSymbol.H1;
+                return TimeframeSymbol.H1;
             }
-            else if (timebandSymbol.Equals("H4"))
+            else if (timeframeSymbol.Equals("H4"))
             {
-                return TimebandSymbol.H4;
+                return TimeframeSymbol.H4;
             }
-            else if (timebandSymbol.Equals("D1"))
+            else if (timeframeSymbol.Equals("D1"))
             {
-                return TimebandSymbol.D1;
+                return TimeframeSymbol.D1;
             }
-            else if (timebandSymbol.Equals("W1"))
+            else if (timeframeSymbol.Equals("W1"))
             {
-                return TimebandSymbol.W1;
+                return TimeframeSymbol.W1;
             }
-            else if (timebandSymbol.Equals("MN1"))
+            else if (timeframeSymbol.Equals("MN1"))
             {
-                return TimebandSymbol.MN1;
+                return TimeframeSymbol.MN1;
             } 
             else 
             {
-                return TimebandSymbol.MN1;
+                return TimeframeSymbol.MN1;
             }
 
         }

@@ -158,7 +158,7 @@ namespace Stock_UnitTest.Stock.Domain
                 AssetId = 1,
                 Date = DateTime.Now,
                 Index = 1,
-                Timeband = Timeband.GetTimeband(TimebandSymbol.D1),
+                Timeframe = Timeframe.GetTimeframe(TimeframeSymbol.D1),
                 Quotation = new Quotation { Open = open, Low = low, High = high, Close = close}
             };
         }

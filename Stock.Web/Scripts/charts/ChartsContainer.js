@@ -12,7 +12,7 @@
 
     //[Parameters].
     self.company = params.company;
-    self.timeband = params.timeband;
+    self.timeframe = params.timeframe;
 
     //[Settings].
     self.settings = { };
@@ -37,9 +37,9 @@
     //zoom
 
 
-    //[Timeband charts].
-    var activeTimebandChartsContainer;
-    var timebandChartsContainersCache = {};
+    //[Timeframe charts].
+    var activeTimeframeChartsContainer;
+    var timeframeChartsContainersCache = {};
 
 
     //[Initialize functions].
@@ -58,8 +58,8 @@
             changeCompany: function (e) {
                 changeCompany(e.company);
             },
-            changeTimeband: function (e) {
-                changeTimeband(e.timeband);
+            changeTimeframe: function (e) {
+                changeTimeframe(e.timeframe);
             },
             showMACD: function (e) {
                 self.settings[STOCK.INDICATORS.MACD.name].visible = e.value;
@@ -78,9 +78,9 @@
         }
     }
 
-    function changeTimeband(_timeband) {
-        if (self.timeband !== _timeband) {
-            self.timeband = _timeband;
+    function changeTimeframe(_timeframe) {
+        if (self.timeframe !== _timeframe) {
+            self.timeframe = _timeframe;
             load();
         }
     }
@@ -90,35 +90,35 @@
         $(controls.container).empty();
 
         //Clear data collections.
-        activeTimebandChartsContainer = undefined;
-        timebandChartsContainersCache = {};
+        activeTimeframeChartsContainer = undefined;
+        timeframeChartsContainersCache = {};
 
     }
 
     //[Loading functions].
     function load() {
 
-        //Get the chart assigned to the current timeband.
-        var tcc = timebandChartsContainersCache[self.timeband.symbol];
+        //Get the chart assigned to the current timeframe.
+        var tcc = timeframeChartsContainersCache[self.timeframe.symbol];
 
         //If there is no such chart yet, create it and add to the collection.
         if (!tcc) {
-            tcc = new TimebandChartsContainer({
+            tcc = new TimeframeChartsContainer({
                   parent: self
                 , container: controls.container
                 //some params.
             });
-            timebandChartsContainersCache[self.timeband.symbol] = tcc;
+            timeframeChartsContainersCache[self.timeframe.symbol] = tcc;
         }
 
 
         //Hide the previous chart (if there was one established) ...
-        if (activeTimebandChartsContainer)
-            activeTimebandChartsContainer.deactivate();
+        if (activeTimeframeChartsContainer)
+            activeTimeframeChartsContainer.deactivate();
 
         //... assign the new chart as the active one and display it.
-        activeTimebandChartsContainer = tcc;
-        activeTimebandChartsContainer.activate();
+        activeTimeframeChartsContainer = tcc;
+        activeTimeframeChartsContainer.activate();
 
     }
 

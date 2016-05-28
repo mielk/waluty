@@ -111,7 +111,7 @@ namespace Stock.Domain.Entities
                 MacdTrough = this.MacdTrough,
                 LastMacdTrough = this.LastMacdTrough,
                 MacdTroughSlope = this.MacdTroughSlope,
-                TimebandId = 1
+                TimeframeId = 1
             };
 
             return dto;

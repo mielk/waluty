@@ -14,7 +14,7 @@ namespace Stock.DAL.TransferObjects
         public int AssetId { get; set; }
 
         [NotMapped]
-        public string Timeband { get; set; }
+        public string Timeframe { get; set; }
         public DateTime PriceDate { get; set; }
         //public QuotationDto Quotation { get; set; }
         public int QuotationId { get; set; }

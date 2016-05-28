@@ -29,15 +29,17 @@ namespace Stock.Domain.Services
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
         public string Symbol;
+        public Asset Asset { get; set;}
         public int AssetId;
-        public int TimebandId;
-        public Timeband Timeband;
+        public int TimeframeId;
+        public Timeframe Timeframe;
         public int CurrentDirection2D;
 
         //Current peaks & troughs - for better performance.
         private Dictionary<ExtremumType, DataItem> currentExtrema;
 
 
+        /* CONSTRUCTORS */
         public PriceAnalyzer()
         {
         }
@@ -46,6 +48,10 @@ namespace Stock.Domain.Services
         {
             _dataService = dataService;
         }
+
+
+        
+
 
 
         public void Analyze(string symbol)
@@ -152,7 +158,7 @@ namespace Stock.Domain.Services
         public void LoadParameters(string symbol)
         {
             Symbol = symbol;
-            Timeband = Timeband.GetTimeband(symbol.GetTimebandSymbol());
+            Timeframe = Timeframe.GetTimeframe(symbol.GetTimeframeSymbol());
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
             var pair = _fxRepository.GetPair(pairSymbol);
             AssetId = pair.Id;

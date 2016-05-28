@@ -11,7 +11,7 @@ namespace Stock_UnitTest.Stock.Domain
 
 
         private Asset asset = new Asset { Id = 1, Name = "NZDUSD" };
-        private Timeband timeband = Timeband.GetTimeband(TimebandSymbol.D1);
+        private Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.D1);
 
 
 
@@ -24,7 +24,7 @@ namespace Stock_UnitTest.Stock.Domain
             DataItem initialItem = new DataItem
             {
                 AssetId = asset.Id,
-                Timeband = timeband,
+                Timeframe = timeframe,
                 Index = initialIndex,
                 Price = new Price { 
                     AssetId = asset.Id,
@@ -37,7 +37,7 @@ namespace Stock_UnitTest.Stock.Domain
             DataItem boundItem = new DataItem
             {
                 AssetId = asset.Id,
-                Timeband = timeband,
+                Timeframe = timeframe,
                 Index = boundIndex,
                 Price = new Price
                 {
@@ -50,7 +50,7 @@ namespace Stock_UnitTest.Stock.Domain
             };
 
 
-            return new Trendline(asset, timeband, initialItem, initialLevel, boundItem, boundLevel);
+            return new Trendline(asset, timeframe, initialItem, initialLevel, boundItem, boundLevel);
 
         }
 

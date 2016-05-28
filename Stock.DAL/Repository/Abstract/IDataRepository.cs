@@ -9,10 +9,10 @@ namespace Stock.DAL.Repositories
 {
     public interface IDataRepository
     {
-        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeband);
-        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeband, int count);
-        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeband, DateTime start);
-        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeband, DateTime start, DateTime end);
+        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe);
+        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe, int count);
+        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe, DateTime start);
+        IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe, DateTime start, DateTime end);
 
         IEnumerable<DataItemDto> GetFxQuotations(string symbol);
         IEnumerable<DataItemDto> GetFxQuotations(string symbol, int count);

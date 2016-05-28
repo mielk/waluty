@@ -1,5 +1,5 @@
 ﻿//Each object of [Chart] class represents a chart (all div's required for a single chart)
-//for a single timeband.
+//for a single timeframe.
 function Chart(params) {
 
     'use strict';
@@ -142,8 +142,8 @@ function Chart(params) {
 
     function hover(x) {
         var quotation = svg.findQuotation(x);
-        var timeband = parent.timeband();
-        var atLeastDaily = (timeband.period >= STOCK.TIMEBANDS.D1.period);
+        var timeframe = parent.timeframe();
+        var atLeastDaily = (timeframe.period >= STOCK.TIMEFRAMES.D1.period);
 
         parent.trigger({
             type: 'showInfo',
@@ -354,13 +354,13 @@ function ChartEventsLayer(params) {
 //    (function eventsListener() {
 
 
-//        //Changing company or timeband.
+//        //Changing company or timeframe.
 //        var companyChangeHandler = (function() {
 //            self.controller.bind({
-//                'changeCompany changeTimeband': function (e) {
+//                'changeCompany changeTimeframe': function (e) {
 //                    self.svg.reset();
 //                    self.company = e.company || self.company;
-//                    self.timeband = e.timeband || self.timeband;
+//                    self.timeframe = e.timeframe || self.timeframe;
 //                }
 //            });
 //        })();
@@ -426,24 +426,24 @@ function ChartEventsLayer(params) {
 
 //}
 //Chart.prototype = {
-//    injectQuotations: function (timeband, quotations, reload) {
+//    injectQuotations: function (timeframe, quotations, reload) {
 //        var analyzer = this.type.analyzer();
 //        var items = analyzer.run(quotations);
-//        this.items.setItem(timeband.id, items);
+//        this.items.setItem(timeframe.id, items);
 //        this.currentItemsSet = items;
-//        if (reload) this.reload(timeband);
+//        if (reload) this.reload(timeframe);
 //    },
-//    reload: function (timeband) {
-//        var items = this.items.getItem(timeband.id);
+//    reload: function (timeframe) {
+//        var items = this.items.getItem(timeframe.id);
 //        this.currentItemsSet = items;
-//        this.svg.reload(timeband, items);
+//        this.svg.reload(timeframe, items);
 //    },
 //    content: function () {
 //        return this.div.content();
 //    },
-//    getItems: function (timeband) {
-//        if (timeband) {
-//            return this.items.getItem(timeband.id) || [];
+//    getItems: function (timeframe) {
+//        if (timeframe) {
+//            return this.items.getItem(timeframe.id) || [];
 //        } else {
 //            return this.currentItemsSet || [];
 //        }

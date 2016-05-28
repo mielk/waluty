@@ -20,7 +20,7 @@ namespace Stock.DAL.TransferObjects
         public double ClosePrice { get; set; }
         public double Volume { get; set; }
         [NotMapped]
-        public int TimebandId { get; set; }
+        public int TimeframeId { get; set; }
 
 
     }

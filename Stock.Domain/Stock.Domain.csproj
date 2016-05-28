@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Entities\Analysis.cs" />
     <Compile Include="Entities\Asset.cs" />
+    <Compile Include="Entities\AssetTimeframe.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Adx.cs" />
     <Compile Include="Entities\Currency.cs" />

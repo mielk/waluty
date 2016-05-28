@@ -31,14 +31,14 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult InitializeSimulation(string pair, string timeband)
+        public ActionResult InitializeSimulation(string pair, string timeframe)
         {
 
             //Restart simulation object.
             var service = this.ssf.GetService();
-            var result = service.Start(pair, timeband);
+            var result = service.Start(pair, timeframe);
 
-            var json = new { pair = pair, timeband = timeband, result = result };
+            var json = new { pair = pair, timeframe = timeframe, result = result };
             return Json(json, JsonRequestBehavior.AllowGet);
 
         }
@@ -78,7 +78,7 @@ namespace Stock.Web.Controllers
             DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
-            //findTrendlines(pairSymbol, timeband);
+            //findTrendlines(pairSymbol, timeframe);
 
             var service = this.ssf.GetService();
             IEnumerable<DataItem> quotations = service.GetQuotations(startDateTime, endDateTime);

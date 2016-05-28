@@ -9,6 +9,9 @@ namespace Stock.Domain.Services
 {
     public interface IProcessService
     {
+        void LoadParams(Asset asset, Timeframe timeframe);
+        void LoadParams(string asset, string timeframe);
+        void LoadParams(string symbol);
         bool Run(bool fromScratch);
     }
 }

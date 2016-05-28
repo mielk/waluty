@@ -90,7 +90,7 @@ namespace Stock.Domain.Entities
                 LowPrice = this.Low,
                 ClosePrice = this.Close,
                 Volume = this.Volume,
-                TimebandId = 1
+                TimeframeId = 1
             };
 
             return dto;

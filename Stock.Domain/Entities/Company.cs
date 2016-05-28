@@ -19,10 +19,10 @@ namespace Stock.Domain.Entities
             var company = new Company();
             company.Id = dto.Id;
             company.Name = dto.PairName;
-            company.LastPriceUpdate = dto.LastPriceUpdate;
-            company.LastCalculation = dto.LastCalculation;
-            company.PricesChecked = dto.PricesChecked;
-            company.LastTrendlinesReview = dto.LastTrendlinesReview;
+            //company.LastPriceUpdate = dto.LastPriceUpdate;
+            //company.LastCalculation = dto.LastCalculation;
+            //company.PricesChecked = dto.PricesChecked;
+            //company.LastTrendlinesReview = dto.LastTrendlinesReview;
             company.IdMarket = dto.IdMarket;
             company.Short = dto.Short;
 

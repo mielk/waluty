@@ -11,7 +11,7 @@ namespace Stock.Domain.Entities
     public class DataItem
     {
         public int AssetId { get; set; }
-        public Timeband Timeband { get; set; }
+        public Timeframe Timeframe { get; set; }
         public DateTime Date { get; set; }
         public Quotation Quotation { get; set; }
         public Price Price { get; set; }
@@ -95,7 +95,7 @@ namespace Stock.Domain.Entities
             var item = new DataItem();
             item.AssetId = dto.AssetId;
             item.Date = dto.PriceDate;
-            item.Timeband = Timeband.GetTimebandByShortName(dto.Timeband);
+            item.Timeframe = Timeframe.GetTimeframeByShortName(dto.Timeframe);
 
             if (dto.QuotationId > 0)
             {

@@ -4,6 +4,7 @@
 function AnalysisController(params) {
     var self = this;
     self.AnalysisController = true;
+    self.fromScratch = params.fromScratch || false; //Zmienić, żeby odczytywało z check boxa.
 
 
     var controls = {}
@@ -15,20 +16,51 @@ function AnalysisController(params) {
     function assignEvents() {
         $(controls.runAnalysisButton).bind({
             click: function (e) {
+                runAnalysis({
+
+                });
+            }
+        });
+    }
+
+
+    function runAnalysis(params) {
+        var fromScratch = params.fromScratch || false;
+        var assetsList = STOCK.COMPANIES.getList();
+        var timeframes = STOCK.TIMEFRAMES.getValues();
+
+        assetsList.forEach(function (asset) {
+
+            timeframes.forEach(function (timeframe) {
 
                 mielk.db.fetch(
                     'Process',
                     'RunProcess',
                     {
+                        asset: asset.name,
+                        timeframe: timeframe.symbol,
                         fromScratch: false
                     },
                     {
-                        async: true
+                        async: true,
+                        callback: function (result) {
+
+                            if (result) {
+                                mielk.notify.display(asset.name + ' ' + timeframe.symbol + ' successfully loaded', 1);
+                            } else {
+                                mielk.notify.display('Error when processing ' + asset.name + ' ' + timeframe.symbol, 0);
+                            }
+
+                        }
                     }
                 );
 
-            }
+            });
+
         });
+
+
+
     }
 
 

@@ -638,7 +638,7 @@ my.array = (function () {
 /* Funkcje daty i czasu */
 my.dates = (function () {
 
-    var $timeband = {
+    var $timeframe = {
         D: { name: 'day', period: 1 },
         W: { name: 'week', period: 7 },
         M: { name: 'month', period: 30 }
@@ -657,19 +657,19 @@ my.dates = (function () {
     }
 
     return {        
-        TIMEBAND: $timeband,
+        Timeframe: $timeframe,
 
         /*   Funkcja:    dateDifference
         *    Opis:       Funkcja zwraca różnicę pomiędzy datami [start] i [end],
-        *                wyrażoną w jednostkach przypisanych do podanego timebandu.
+        *                wyrażoną w jednostkach przypisanych do podanego timeframeu.
         */
-        dateDifference: function(timeband, start, end) {
-            switch (timeband) {
-                case $timeband.D:
+        dateDifference: function(timeframe, start, end) {
+            switch (timeframe) {
+                case $timeframe.D:
                     return this.daysDifference(start, end);
-                case $timeband.W:
+                case $timeframe.W:
                     return this.weeksDifference(start, end);
-                case $timeband.M:
+                case $timeframe.M:
                     return this.monthsDifference(start, end);
                 default:
                     return 0;

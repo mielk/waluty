@@ -736,7 +736,7 @@ MacdSvgRenderer.prototype = {
 //    self.calculatePaths = function (items, params) {
 
 //        self.saveSize(params.width, params.height);
-//        self.saveParams(params.timeband);
+//        self.saveParams(params.timeframe);
 //        self.calculateDatesRange(items, params.startDate, params.endDate, params.startOffset, params.endOffset);
 //        self.calculateValuesRange(items, params.height);
 
@@ -750,9 +750,9 @@ MacdSvgRenderer.prototype = {
 //        self.size.height = height;
 //    };
 
-//    self.saveParams = function (timeband) {
+//    self.saveParams = function (timeframe) {
 //        mielk.objects.addProperties(self.params, {
-//            timeband: timeband,
+//            timeframe: timeframe,
 //            displayDateScale: self.type.displayDateScale,
 //            minAllowed: self.type.minValue,
 //            maxAllowed: self.type.maxValue
@@ -835,8 +835,8 @@ MacdSvgRenderer.prototype = {
 //    self.isTurn = function (date) {
 //        if (self.temp.lastDate) {
 
-//            switch (self.params.timeband) {
-//                case STOCK.TIMEBANDS.D:
+//            switch (self.params.timeframe) {
+//                case STOCK.TIMEFRAMES.D:
 //                    if (date.getYear() !== self.temp.lastDate.getYear()) {
 //                        return 3;
 //                    } else if (date.getMonth() !== self.temp.lastDate.getMonth()) {
@@ -846,7 +846,7 @@ MacdSvgRenderer.prototype = {
 //                    } else {
 //                        return 0;
 //                    }
-//                case STOCK.TIMEBANDS.W:
+//                case STOCK.TIMEFRAMES.W:
 //                    if (date.getYear() !== self.temp.lastDate.getYear()) {
 //                        return 3;
 //                    } else if (date.getMonth() !== self.temp.lastDate.getMonth()) {
@@ -854,7 +854,7 @@ MacdSvgRenderer.prototype = {
 //                    } else {
 //                        return 0;
 //                    }
-//                case STOCK.TIMEBANDS.M:
+//                case STOCK.TIMEFRAMES.M:
 //                    if (date.getYear() !== self.temp.lastDate.getYear()) {
 //                        return 1;
 //                    } else {
@@ -1049,22 +1049,22 @@ MacdSvgRenderer.prototype = {
 
 //    };
 
-//    self.getDateLineColor = function (timeband) {
-//        var tb = self.params.timeband;
+//    self.getDateLineColor = function (timeframe) {
+//        var tb = self.params.timeframe;
 //        var cfg = STOCK.CONFIG;
 
-//        switch (timeband) {
-//            case STOCK.TIMEBANDS.W:
-//                return (tb === STOCK.TIMEBANDS.D ? cfg.verticalWeeksLinesColor : cfg.transparent);
-//            case STOCK.TIMEBANDS.M:
-//                if (tb === STOCK.TIMEBANDS.D) {
+//        switch (timeframe) {
+//            case STOCK.TIMEFRAMES.W:
+//                return (tb === STOCK.TIMEFRAMES.D ? cfg.verticalWeeksLinesColor : cfg.transparent);
+//            case STOCK.TIMEFRAMES.M:
+//                if (tb === STOCK.TIMEFRAMES.D) {
 //                    return cfg.verticalMonthsLinesColor;
-//                } else if (tb === STOCK.TIMEBANDS.W) {
+//                } else if (tb === STOCK.TIMEFRAMES.W) {
 //                    return cfg.verticalWeeksLinesColor;
 //                } else {
 //                    return cfg.transparent;
 //                }
-//            case STOCK.TIMEBANDS.Y:
+//            case STOCK.TIMEFRAMES.Y:
 //                return cfg.verticalYearsLinesColor;
 //            default:
 //                return cfg.transparent;

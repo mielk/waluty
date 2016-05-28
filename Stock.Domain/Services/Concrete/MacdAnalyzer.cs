@@ -29,7 +29,7 @@ namespace Stock.Domain.Services
         public bool DebugMode { get; set; }
         public string Symbol;
         public int AssetId;
-        public int TimebandId;
+        public int TimeframeId;
 
         //Temporary variables
         private Macd previousMacd;

@@ -17,7 +17,7 @@ namespace Stock.Domain.Entities
 
         public int Id { get; set; }
         public Asset Asset { get; set; }
-        public Timeband Timeband { get; set; }
+        public Timeframe Timeframe { get; set; }
         public DataItem InitialItem { get; set; }
         public double InitialLevel { get; set; }
         public int InitialIndex { get; set; }
@@ -41,17 +41,17 @@ namespace Stock.Domain.Entities
 
 
 
-        public Trendline(int id, Asset asset, Timeband timeband, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        public Trendline(int id, Asset asset, Timeframe timeframe, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
         {
             initialize();
             this.Id = id;
-            assignProperties(asset, timeband, initialItem, initialLevel, boundItem, boundLevel);
+            assignProperties(asset, timeframe, initialItem, initialLevel, boundItem, boundLevel);
         }
 
-        public Trendline(Asset asset, Timeband timeband, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        public Trendline(Asset asset, Timeframe timeframe, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
         {
             initialize();
-            assignProperties(asset, timeband, initialItem, initialLevel, boundItem, boundLevel);
+            assignProperties(asset, timeframe, initialItem, initialLevel, boundItem, boundLevel);
         }
 
         private void initialize()
@@ -63,10 +63,10 @@ namespace Stock.Domain.Entities
         }
 
 
-        private void assignProperties(Asset asset, Timeband timeband, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        private void assignProperties(Asset asset, Timeframe timeframe, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
         {
             this.Asset = asset;
-            this.Timeband = timeband;
+            this.Timeframe = timeframe;
             this.InitialItem = initialItem;
             this.InitialLevel = initialLevel;
             this.InitialIndex = initialItem.Index;

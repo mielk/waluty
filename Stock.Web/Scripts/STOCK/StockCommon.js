@@ -20,7 +20,7 @@ Date.prototype.isHoliday = function () {
 
 
 
-    var timebands = {
+    var timeframes = {
         M5: {
             id: 1, name: '5 minutes', symbol: 'M5', period: 5, selectable: true,
             next: function (date) {
@@ -145,7 +145,7 @@ Date.prototype.isHoliday = function () {
                 return new PriceLabelFactory();
             },
             runWhenComplete: false,
-            initialHeight: 500,
+            initialHeight: 600,
             minValue: 0,
             maxValue: null,
             color: 'blue'
@@ -162,7 +162,7 @@ Date.prototype.isHoliday = function () {
             labelFactory: function () {
                 return new MacdLabelFactory();
             },
-            initialHeight: 150,
+            initialHeight: 200,
             negativeAllowed: true,
             minValue: null,
             maxValue: null,
@@ -180,7 +180,7 @@ Date.prototype.isHoliday = function () {
             labelFactory: function () {
                 return new AdxLabelFactory();
             },
-            initialHeight: 150,
+            initialHeight: 200,
             negativeAllowed: false,
             minValue: 0,
             maxValue: 100,
@@ -297,7 +297,7 @@ Date.prototype.isHoliday = function () {
     };
 
     var stock = {
-        TIMEBANDS: timebands,
+        TIMEFRAMES: timeframes,
         INDICATORS: indicators,
         CONFIG: config
     };

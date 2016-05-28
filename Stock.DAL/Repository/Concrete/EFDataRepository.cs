@@ -20,7 +20,7 @@ namespace Stock.DAL.Repositories
 
         //private static readonly EFDbContext Context = EFDbContext.GetInstance();
 
-        public IEnumerable<DataItemDto> GetQuotations(int assetId, int timeband, int count)
+        public IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe, int count)
         {
 
             IEnumerable<DataItemDto> quotations = null;
@@ -29,7 +29,7 @@ namespace Stock.DAL.Repositories
 
             using (EFDbContext context = new EFDbContext())
             {
-                switch (timeband)
+                switch (timeframe)
                 {
                     case 1:
                         //tempQuotations = context.DailyQuotations.Where(q => q.AssetId == assetId).AsQueryable();
@@ -70,7 +70,7 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public IEnumerable<DataItemDto> GetQuotations(int companyId, int timeband, DateTime start)
+        public IEnumerable<DataItemDto> GetQuotations(int companyId, int timeframe, DateTime start)
         {
 
             IEnumerable<DataItemDto> quotations = null;
@@ -79,7 +79,7 @@ namespace Stock.DAL.Repositories
 
             using (EFDbContext context = new EFDbContext())
             {
-                switch (timeband)
+                switch (timeframe)
                 {
                     case 1:
                         //tempQuotations = context.DailyQuotations.Where(q => q.AssetId == companyId && q.AssetId.CompareTo(start) >= 0).AsQueryable();
@@ -113,7 +113,7 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public IEnumerable<DataItemDto> GetQuotations(int companyId, int timeband, DateTime start, DateTime end)
+        public IEnumerable<DataItemDto> GetQuotations(int companyId, int timeframe, DateTime start, DateTime end)
         {
 
             IEnumerable<DataItemDto> quotations = null;
@@ -122,7 +122,7 @@ namespace Stock.DAL.Repositories
 
             using (EFDbContext context = new EFDbContext())
             {
-                switch (timeband)
+                switch (timeframe)
                 {
                     case 1:
                         //tempQuotations = context.DailyQuotations.Where(q => q.AssetId == companyId && q.AssetId.CompareTo(start) >= 0 && q.AssetId.CompareTo(end) <= 0).AsQueryable();
@@ -156,7 +156,7 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public IEnumerable<DataItemDto> GetQuotations(int companyId, int timeband)
+        public IEnumerable<DataItemDto> GetQuotations(int companyId, int timeframe)
         {
 
             IEnumerable<DataItemDto> quotations = null;
@@ -165,7 +165,7 @@ namespace Stock.DAL.Repositories
 
             using (EFDbContext context = new EFDbContext())
             {
-                switch (timeband)
+                switch (timeframe)
                 {
                     case 1:
                         //tempQuotations = context.DailyQuotations.Where(q => q.AssetId == companyId).AsQueryable();
@@ -334,29 +334,29 @@ namespace Stock.DAL.Repositories
 
         private string GetSqlForPlainFxQuotations(string symbol)
         {
-            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+            var timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
 
             var sql = "USE fx; " +
                             "SELECT " +
-                                " '{1}' AS Timeband " +
+                                " '{1}' AS Timeframe " +
                                 ", q.*" +
                             " FROM" +
                                 " quotations_{0} AS q" +
                             " ORDER BY" +
                                 " q.PriceDate;";
 
-            return string.Format(sql, symbol, timeband);
+            return string.Format(sql, symbol, timeframe);
 
         }
 
         private string GetSqlForFxQuotations(string symbol)
         {
 
-            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+            var timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
 
             var sql = "USE fx; " + 
                             "SELECT " + 
-                                " '{1}' AS Timeband " +
+                                " '{1}' AS Timeframe " +
                                 ", q.*" + 
                                 ", p.*" +
                                 ", m.*" + 
@@ -367,17 +367,17 @@ namespace Stock.DAL.Repositories
                             " ORDER BY" + 
                                 " q.PriceDate;";
 
-            return string.Format(sql, symbol, timeband);
+            return string.Format(sql, symbol, timeframe);
 
         }
 
         private string GetSqlForFxQuotations(string symbol, DateTime startDate, DateTime endDate)
         {
 
-            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+            var timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
             var sql = "USE fx; " +
                             "SELECT " +
-                                " '{1}' AS Timeband " +
+                                " '{1}' AS Timeframe " +
                                 ", q.*" +
                                 ", p.*" +
                                 ", m.*" + 
@@ -391,33 +391,33 @@ namespace Stock.DAL.Repositories
                             " ORDER BY" +
                                 " q.PriceDate;";
 
-            return string.Format(sql, symbol, timeband);
+            return string.Format(sql, symbol, timeframe);
 
         }
 
 
         private string GetSqlForFxQuotations(string symbol, string analysisType)
         {
-            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+            var timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
             var sql = "USE fx; " +
                             "SELECT " +
-                                "'{2}' AS Timeband " +
+                                "'{2}' AS Timeframe " +
                                 ", q.*" +
                             " FROM" +
                                 " quotations_{0} AS q" +
                             " ORDER BY" +
                                 " q.PriceDate;";
 
-            return string.Format(sql, symbol, analysisType, timeband);
+            return string.Format(sql, symbol, analysisType, timeframe);
 
         }
 
         private string GetSqlForFxQuotations(string symbol, string analysisType, DateTime lastAnalysisItem, int counter)
         {
-            var timeband = symbol.Substring(symbol.IndexOf('_') + 1);
+            var timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
             var sql = "USE fx; " +
                             "(SELECT " +
-                                "'{2}' AS Timeband " +
+                                "'{2}' AS Timeframe " +
                                 ", q.* " +
                                 ", p.* " +
                             " FROM" +
@@ -429,7 +429,7 @@ namespace Stock.DAL.Repositories
                             " LIMIT " + counter + ") " + 
                             " UNION " + 
                             "(SELECT " +
-                                "'{2}' AS Timeband " +
+                                "'{2}' AS Timeframe " +
                                 ", q.* " +
                                 ", p.* " +
                             " FROM" +
@@ -439,7 +439,7 @@ namespace Stock.DAL.Repositories
                                 " q.PriceDate >= '" + lastAnalysisItem + "'" +
                             " ORDER BY q.PriceDate)";
 
-            return string.Format(sql, symbol, analysisType, timeband);
+            return string.Format(sql, symbol, analysisType, timeframe);
 
         }
 

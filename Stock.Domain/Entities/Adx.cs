@@ -120,7 +120,7 @@ namespace Stock.Domain.Entities
                 AdxDirectionChanged = this.AdxDirectionChanged,
                 DiDifference = this.DiDifference,
                 DiLinesCrossing = this.DiLinesCrossing, 
-                TimebandId = 1
+                TimeframeId = 1
             };
 
             return dto;

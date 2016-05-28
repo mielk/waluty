@@ -72,17 +72,17 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetQuotations(int companyId, int timeband, int count)
+        public ActionResult GetQuotations(int companyId, int timeframe, int count)
         {
 
             IEnumerable<Quotation> quotations;
             if (count > 0)
             {
-                quotations = dataService.GetQuotations(companyId, timeband, count);
+                quotations = dataService.GetQuotations(companyId, timeframe, count);
             } 
             else 
             {
-                quotations = dataService.GetQuotations(companyId, timeband);
+                quotations = dataService.GetQuotations(companyId, timeframe);
             }
 
             return Json(quotations, JsonRequestBehavior.AllowGet);
@@ -94,12 +94,12 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetFxQuotations(string pairSymbol, string timeband, int count)
+        public ActionResult GetFxQuotations(string pairSymbol, string timeframe, int count)
         {
 
-            //findTrendlines(pairSymbol, timeband);
+            //findTrendlines(pairSymbol, timeframe);
 
-            string symbol = pairSymbol + "_" + timeband;
+            string symbol = pairSymbol + "_" + timeframe;
             IEnumerable<DataItem> quotations = (count > 0 ? 
                                     dataService.GetFxQuotations(symbol, count) : 
                                     dataService.GetFxQuotations(symbol));
@@ -111,18 +111,18 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetFxQuotationsByDates(string pairSymbol, string timeband, string startDate, string endDate)
+        public ActionResult GetFxQuotationsByDates(string pairSymbol, string timeframe, string startDate, string endDate)
         {
 
             //Converts date strings to DateTime objects.
             DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
-            //findTrendlines(pairSymbol, timeband);
+            //findTrendlines(pairSymbol, timeframe);
 
 
 
-            string symbol = pairSymbol + "_" + timeband;
+            string symbol = pairSymbol + "_" + timeframe;
             IEnumerable<DataItem> quotations = dataService.GetFxQuotations(symbol, startDateTime, endDateTime);
 
             return Json(quotations, JsonRequestBehavior.AllowGet);
@@ -134,9 +134,9 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetDataSetProperties(string pairSymbol, string timeband)
+        public ActionResult GetDataSetProperties(string pairSymbol, string timeframe)
         {
-            string symbol = pairSymbol + "_" + timeband;
+            string symbol = pairSymbol + "_" + timeframe;
             var properties = dataService.GetDataSetProperties(symbol);
             return Json(properties, JsonRequestBehavior.AllowGet);
         }

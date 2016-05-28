@@ -14,8 +14,8 @@
     self.company = function () {
         return params.company;
     }
-    self.timeband = function () {
-        return params.timeband;
+    self.timeframe = function () {
+        return params.timeframe;
     }
 
     //[Settings]
@@ -88,7 +88,7 @@
         reset();
 
         //Load data set and its properties.
-        dataSet = new QuotationSet({ company: self.company(), timeband: self.timeband(), simulation: true });
+        dataSet = new QuotationSet({ company: self.company(), timeframe: self.timeframe(), simulation: true });
         dataSet.loadProperties(loadProperties);
 
         //Draw actual chart.
@@ -168,7 +168,7 @@
             'InitializeSimulation',
             {
                 pair: self.company().symbol,
-                timeband: self.timeband().symbol
+                timeframe: self.timeframe().symbol
             },
             {
                 async: true,

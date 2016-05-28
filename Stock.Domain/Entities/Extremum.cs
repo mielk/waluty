@@ -47,8 +47,8 @@ namespace Stock.Domain.Entities
         public double Evaluate()
         {
 
-            //Timeband
-            var timeframeSymbol = Symbol.GetTimebandSymbol();
+            //Timeframe
+            var timeframeSymbol = Symbol.GetTimeframeSymbol();
             var timeframeFactor = timeframeSymbol.GetExtremumEvaluationFactor();
 
             //Range

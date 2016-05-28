@@ -45,27 +45,27 @@ namespace Stock.Domain.Services
         }
 
 
-        public IEnumerable<Quotation> GetQuotations(int assetId, int timeband, int count)
+        public IEnumerable<Quotation> GetQuotations(int assetId, int timeframe, int count)
         {
-            var dtos = _repository.GetQuotations(assetId, timeband, count);
+            var dtos = _repository.GetQuotations(assetId, timeframe, count);
             return DataItemDtosToQuotationList(dtos);
         }
 
-        public IEnumerable<Quotation> GetQuotations(int assetId, int timeband, DateTime start)
+        public IEnumerable<Quotation> GetQuotations(int assetId, int timeframe, DateTime start)
         {
-            var dtos = _repository.GetQuotations(assetId, timeband, start);
+            var dtos = _repository.GetQuotations(assetId, timeframe, start);
             return DataItemDtosToQuotationList(dtos);
         }
 
-        public IEnumerable<Quotation> GetQuotations(int assetId, int timeband, DateTime start, DateTime end)
+        public IEnumerable<Quotation> GetQuotations(int assetId, int timeframe, DateTime start, DateTime end)
         {
-            var dtos = _repository.GetQuotations(assetId, timeband, start, end);
+            var dtos = _repository.GetQuotations(assetId, timeframe, start, end);
             return DataItemDtosToQuotationList(dtos);
         }
 
-        public IEnumerable<Quotation> GetQuotations(int assetId, int timeband)
+        public IEnumerable<Quotation> GetQuotations(int assetId, int timeframe)
         {
-            var dtos = _repository.GetQuotations(assetId, timeband);
+            var dtos = _repository.GetQuotations(assetId, timeframe);
             return DataItemDtosToQuotationList(dtos);
         }
 

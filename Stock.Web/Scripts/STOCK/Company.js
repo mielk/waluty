@@ -85,18 +85,21 @@ Company.prototype = {
     toString: function () {
         return this.name + ' (' + this.id + ')';
     },
-    getDataSet: function (timeband) {
+    getSymbol: function (timeframe) {
+        this.name + '_' + timeframe.symbol;
+    },
+    getDataSet: function (timeframe) {
         //Create reference to this [Company] object.
         var self = this;
 
-        //Check if the sub-object for this timeband already exists.
-        var dataSet = self.dataSets[timeband.symbol];
+        //Check if the sub-object for this timeframe already exists.
+        var dataSet = self.dataSets[timeframe.symbol];
 
-        //If [dataSet] for this timeband doesn't exist, 
+        //If [dataSet] for this timeframe doesn't exist, 
         //create it, add to the collection of data sets...
         if (!dataSet) {
-            dataSet = new QuotationSet({ company: self, timeband: timeband });
-            self.dataSets[timeband.symbol] = dataSet;
+            dataSet = new QuotationSet({ company: self, timeframe: timeframe });
+            self.dataSets[timeframe.symbol] = dataSet;
         }
 
         return dataSet;
@@ -110,11 +113,11 @@ function QuotationSet(params) {
     var self = this;
     self.QuotationSet = true;
     var company = params.company;
-    var timeband = params.timeband;
+    var timeframe = params.timeframe;
     var size = STOCK.CONFIG.loading.packageSize;
 
     //[QuotationSet] objects are user for two purposes - showing current charts and simulation charts.
-    //Simulation charts works different and [company] and [timeband] can be empty in this object.
+    //Simulation charts works different and [company] and [timeframe] can be empty in this object.
     var simulation = params.simulation || false;
 
 
@@ -146,7 +149,7 @@ function QuotationSet(params) {
             'GetFxQuotationsByDates',
             simulation ?
                 { startDate: startDate, endDate: endDate } :
-                { pairSymbol: company.symbol, timeband: timeband.symbol, startDate: startDate, endDate: endDate },
+                { pairSymbol: company.symbol, timeframe: timeframe.symbol, startDate: startDate, endDate: endDate },
             {
                 async: true,
                 callback: function (res) {
@@ -209,7 +212,7 @@ function QuotationSet(params) {
 
 
 
-    //Funkcja pobierająca właściwości dla danego timebandu z bazy danych.
+    //Funkcja pobierająca właściwości dla danego timeframeu z bazy danych.
     function loadProperties(fn) {
 
         var properties = null;
@@ -217,7 +220,7 @@ function QuotationSet(params) {
         mielk.db.fetch(
             simulation ? 'Simulation' : 'Company',
             'GetDataSetProperties',
-            simulation ? { } : { pairSymbol: company.symbol, timeband: timeband.symbol },
+            simulation ? { } : { pairSymbol: company.symbol, timeframe: timeframe.symbol },
             {
                 async: false,
                 callback: function (res) {
@@ -285,8 +288,8 @@ function QuotationSet(params) {
             index++;
 
 
-            //Calculate the next date, using method [next] of Timeband object.
-            date = timeband.next(date);
+            //Calculate the next date, using method [next] of Timeframe object.
+            date = timeframe.next(date);
 
         }
 
@@ -343,7 +346,7 @@ $(function () {
 //    trigger: function (e) {
 //        $(this).trigger(e);
 //    },
-//    load: function (timeband, params) {
+//    load: function (timeframe, params) {
 //        var self = this;
 //        var results;
 //        if (!params) params = {};
@@ -351,8 +354,8 @@ $(function () {
 //        //Check if data are already loaded. If yes, there is no
 //        //point to re-load them. In this case only callback 
 //        //function is called.
-//        if (this.checkData(timeband, params)) {
-//            results = this.getQuotationsSet(timeband).getQuotations();
+//        if (this.checkData(timeframe, params)) {
+//            results = this.getQuotationsSet(timeframe).getQuotations();
 //            if (mielk.objects.isFunction(params.callback)) {
 //                (params.callback)(results);
 //            }
@@ -365,14 +368,14 @@ $(function () {
 //            self.isFx ? 'GetFxQuotations' : 'GetQuotations',
 //            {
 //                pairSymbol: self.isFx ? self.name : self.id,
-//                timeband: self.isFx ? timeband.symbol : timeband.id,
+//                timeframe: self.isFx ? timeframe.symbol : timeframe.id,
 //                count: params.count || 0
 //            },
 //            {
 //                async: true,
 //                callback: function (r) {
 //                    var quotations = STOCK.QUOTATIONS.convertToQuotations(r);
-//                    self.setQuotations(timeband, quotations);
+//                    self.setQuotations(timeframe, quotations);
 
 //                    //Run additional callback functions if they are given.
 //                    if (mielk.objects.isFunction(params.callback)) {
@@ -383,24 +386,24 @@ $(function () {
 //            }
 //        );
 //    },
-//    checkData: function (timeband, params) {
-//        var set = this.getQuotationsSet(timeband);
+//    checkData: function (timeframe, params) {
+//        var set = this.getQuotationsSet(timeframe);
 
 //        if (!set) return false;
 
 //        return set.containsData(params);
 
 //    },
-//    getQuotationsSet: function (timeband) {
-//        if (this.quotations.hasOwnProperty(timeband.id)) {
-//            return this.quotations[timeband.id];
+//    getQuotationsSet: function (timeframe) {
+//        if (this.quotations.hasOwnProperty(timeframe.id)) {
+//            return this.quotations[timeframe.id];
 //        } else {
 //            return null;
 //        }
 //    },
-//    setQuotations: function (timeband, quotations) {
+//    setQuotations: function (timeframe, quotations) {
 //        var self = this;
-//        var set = this.getQuotationsSet(timeband);
+//        var set = this.getQuotationsSet(timeframe);
 
 //        if (set) {
 
@@ -412,7 +415,7 @@ $(function () {
 
 //            //New quotations set is created ...
 //            set = function (tb, q) {
-//                var $timeband = tb;
+//                var $timeframe = tb;
 //                var $quotations = q;
 
 //                function startDate() {
@@ -473,10 +476,10 @@ $(function () {
 //                    appendQuotations: appendQuotations
 //                };
 
-//            }(timeband, quotations);
+//            }(timeframe, quotations);
 
 //            //... and added to the collection of quotations sets.
-//            this.quotations[timeband.id] = set;
+//            this.quotations[timeframe.id] = set;
 
 //            //Trigger an event of data reloading.
 //            self.trigger({ type: 'reloaded' });
@@ -484,8 +487,8 @@ $(function () {
 //        }
 
 //    },
-//    getQuotations: function (timeband) {
-//        var set = this.getQuotationsSet(timeband);
+//    getQuotations: function (timeframe) {
+//        var set = this.getQuotationsSet(timeframe);
 //        return set ? set.getQuotations() : [];
 //    }
 

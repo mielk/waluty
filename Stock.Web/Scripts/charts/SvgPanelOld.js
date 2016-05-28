@@ -286,10 +286,10 @@ function SvgPanel(chart) {
 //        $(this).trigger(e);
 //    },
 
-//    reload: function (timeband, items) {
+//    reload: function (timeframe, items) {
 //        var self = this;
 
-//        if (!items || !timeband) return;
+//        if (!items || !timeframe) return;
 
 //        //Get proper SVG renderer object.
 //        var renderer = self.chart.type.svgRenderer();
@@ -304,7 +304,7 @@ function SvgPanel(chart) {
 //            startOffset: self.position.startOffset,
 //            endDate: self.position.endDate,
 //            endOffset: self.position.endOffset,
-//            timeband: timeband
+//            timeframe: timeframe
 //        });
 
 //        self.render(renderer, visibleSize);
@@ -338,11 +338,11 @@ function SvgPanel(chart) {
 
 //    resize: function () {
 //        var items = this.chart.currentItemsSet;
-//        var timeband = this.chart.controller.timeband;
+//        var timeframe = this.chart.controller.timeframe;
 
 //        //Items cannot be reloaded, if they have not been loaded yet.
 //        if (items) {
-//            this.reload(timeband, items);
+//            this.reload(timeframe, items);
 //        }
 
 //    },
@@ -356,10 +356,10 @@ function SvgPanel(chart) {
 
 //    move: function (x, y) {
 //        var self = this;
-//        var timeband = self.chart.timeband;
+//        var timeframe = self.chart.timeframe;
 //        var items = self.chart.currentItemsSet;
 
-//        if (!items || !timeband) return;
+//        if (!items || !timeframe) return;
 
 //        //Get proper SVG renderer object.
 //        var renderer = self.chart.type.svgRenderer();
@@ -376,7 +376,7 @@ function SvgPanel(chart) {
 //            startOffset: self.params.startOffset + offsetByItem,
 //            endDate: self.params.endDate,
 //            endOffset: self.params.endOffset + offsetByItem,
-//            timeband: timeband
+//            timeframe: timeframe
 //        });
 
 //        self.render(renderer, visibleSize);
@@ -478,7 +478,7 @@ function AbstractSvgRenderer() {
     self.calculatePaths = function (items, params) {
 
         self.saveSize(params.width, params.height);
-        self.saveParams(params.timeband);
+        self.saveParams(params.timeframe);
         self.calculateDatesRange(items, params.startDate, params.endDate, params.startOffset, params.endOffset);
         self.calculateValuesRange(items, params.height);
 
@@ -492,9 +492,9 @@ function AbstractSvgRenderer() {
         self.size.height = height;
     };
 
-    self.saveParams = function (timeband) {
+    self.saveParams = function (timeframe) {
         mielk.objects.addProperties(self.params, {
-            timeband: timeband,
+            timeframe: timeframe,
             displayDateScale: self.type.displayDateScale,
             minAllowed: self.type.minValue,
             maxAllowed: self.type.maxValue
@@ -605,8 +605,8 @@ function AbstractSvgRenderer() {
     self.isTurn = function (date) {
         if (self.temp.lastDate) {
 
-            switch (self.params.timeband) {
-                case STOCK.TIMEBANDS.D:
+            switch (self.params.timeframe) {
+                case STOCK.TIMEFRAMES.D:
                     if (date.getYear() !== self.temp.lastDate.getYear()) {
                         return 3;
                     } else if (date.getMonth() !== self.temp.lastDate.getMonth()) {
@@ -616,7 +616,7 @@ function AbstractSvgRenderer() {
                     } else {
                         return 0;
                     }
-                case STOCK.TIMEBANDS.W:
+                case STOCK.TIMEFRAMES.W:
                     if (date.getYear() !== self.temp.lastDate.getYear()) {
                         return 3;
                     } else if (date.getMonth() !== self.temp.lastDate.getMonth()) {
@@ -624,7 +624,7 @@ function AbstractSvgRenderer() {
                     } else {
                         return 0;
                     }
-                case STOCK.TIMEBANDS.M:
+                case STOCK.TIMEFRAMES.M:
                     if (date.getYear() !== self.temp.lastDate.getYear()) {
                         return 1;
                     } else {
@@ -822,22 +822,22 @@ function AbstractSvgRenderer() {
 
     };
 
-    self.getDateLineColor = function (timeband) {
-        var tb = self.params.timeband;
+    self.getDateLineColor = function (timeframe) {
+        var tb = self.params.timeframe;
         var cfg = STOCK.CONFIG;
 
-        switch (timeband) {
-            case STOCK.TIMEBANDS.W:
-                return (tb === STOCK.TIMEBANDS.D ? cfg.verticalWeeksLinesColor : cfg.transparent);
-            case STOCK.TIMEBANDS.M:
-                if (tb === STOCK.TIMEBANDS.D) {
+        switch (timeframe) {
+            case STOCK.TIMEFRAMES.W:
+                return (tb === STOCK.TIMEFRAMES.D ? cfg.verticalWeeksLinesColor : cfg.transparent);
+            case STOCK.TIMEFRAMES.M:
+                if (tb === STOCK.TIMEFRAMES.D) {
                     return cfg.verticalMonthsLinesColor;
-                } else if (tb === STOCK.TIMEBANDS.W) {
+                } else if (tb === STOCK.TIMEFRAMES.W) {
                     return cfg.verticalWeeksLinesColor;
                 } else {
                     return cfg.transparent;
                 }
-            case STOCK.TIMEBANDS.Y:
+            case STOCK.TIMEFRAMES.Y:
                 return cfg.verticalYearsLinesColor;
             default:
                 return cfg.transparent;
@@ -1011,7 +1011,7 @@ PriceSvgRenderer.prototype = {
         array.push({
             path: paths.verticalWeeks,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.W),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.W),
                 'stroke-width': 1
             }
         });
@@ -1019,7 +1019,7 @@ PriceSvgRenderer.prototype = {
         array.push({
             path: paths.verticalMonths,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.M),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.M),
                 'stroke-width': 1
             }
         });
@@ -1027,7 +1027,7 @@ PriceSvgRenderer.prototype = {
         array.push({
             path: paths.verticalYears,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.Y),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.Y),
                 'stroke-width': 1
             }
         });
@@ -1037,7 +1037,7 @@ PriceSvgRenderer.prototype = {
             path: paths.dateScaleWeeks,
             dates: true,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.W),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.W),
                 'stroke-width': 1
             }
         });
@@ -1046,7 +1046,7 @@ PriceSvgRenderer.prototype = {
             path: paths.dateScaleMonths,
             dates: true,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.M),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.M),
                 'stroke-width': 1
             }
         });
@@ -1055,7 +1055,7 @@ PriceSvgRenderer.prototype = {
             path: paths.dateScaleYears,
             dates: true,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.Y),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.Y),
                 'stroke-width': 1
             }
         });
@@ -1227,7 +1227,7 @@ MacdSvgRenderer.prototype = {
         array.push({
             path: paths.verticalWeeks,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.W),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.W),
                 'stroke-width': 1
             }
         });
@@ -1235,7 +1235,7 @@ MacdSvgRenderer.prototype = {
         array.push({
             path: paths.verticalMonths,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.M),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.M),
                 'stroke-width': 1
             }
         });
@@ -1243,7 +1243,7 @@ MacdSvgRenderer.prototype = {
         array.push({
             path: paths.verticalYears,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.Y),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.Y),
                 'stroke-width': 1
             }
         });
@@ -1413,7 +1413,7 @@ AdxSvgRenderer.prototype = {
         array.push({
             path: paths.verticalWeeks,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.W),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.W),
                 'stroke-width': 1
             }
         });
@@ -1421,7 +1421,7 @@ AdxSvgRenderer.prototype = {
         array.push({
             path: paths.verticalMonths,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.M),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.M),
                 'stroke-width': 1
             }
         });
@@ -1429,7 +1429,7 @@ AdxSvgRenderer.prototype = {
         array.push({
             path: paths.verticalYears,
             attr: {
-                'stroke': self.getDateLineColor(STOCK.TIMEBANDS.Y),
+                'stroke': self.getDateLineColor(STOCK.TIMEFRAMES.Y),
                 'stroke-width': 1
             }
         });

@@ -26,10 +26,10 @@ namespace Stock.Domain.Entities
             var pair = new Pair();
             pair.Id = dto.Id;
             pair.Name = dto.PairName;
-            pair.LastPriceUpdate = dto.LastPriceUpdate;
-            pair.LastCalculation = dto.LastCalculation;
-            pair.PricesChecked = dto.PricesChecked;
-            pair.LastTrendlinesReview = dto.LastTrendlinesReview;
+            //pair.LastPriceUpdate = dto.LastPriceUpdate;
+            //pair.LastCalculation = dto.LastCalculation;
+            //pair.PricesChecked = dto.PricesChecked;
+            //pair.LastTrendlinesReview = dto.LastTrendlinesReview;
             pair.IsFx = true;
             pair.BaseCurrency = dto.BaseCurrency;
             pair.QuoteCurrency = dto.QuoteCurrency;

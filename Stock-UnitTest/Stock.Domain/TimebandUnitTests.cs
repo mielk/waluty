@@ -6,56 +6,56 @@ using Stock.Domain.Enums;
 namespace Stock_UnitTest.Stock.Domain
 {
     [TestClass]
-    public class TimebandUnitTests
+    public class TimeframeUnitTests
     {
 
 
-        #region GetTimebandByPeriod
+        #region GetTimeframeByPeriod
 
         [TestMethod]
-        [TestCategory("GetTimebandByPeriod")]
-        public void GetTimebandByPeriod_returns_1D_for_1()
+        [TestCategory("GetTimeframeByPeriod")]
+        public void GetTimeframeByPeriod_returns_1D_for_1()
         {
 
-            var timeband = Timeband.GetTimebandByPeriod(1d);
+            var timeframe = Timeframe.GetTimeframeByPeriod(1d);
 
-            if (timeband == null)
+            if (timeframe == null)
             {
-                Assert.Fail("[timeband] cannot be null");
+                Assert.Fail("[timeframe] cannot be null");
             }
 
-            Assert.AreEqual("D1", timeband.Name);
+            Assert.AreEqual("D1", timeframe.Name);
 
         }
 
 
         [TestMethod]
-        [TestCategory("GetTimebandByPeriod")]
-        public void GetTimebandByPeriod_returns_null_for_3_minutes()
+        [TestCategory("GetTimeframeByPeriod")]
+        public void GetTimeframeByPeriod_returns_null_for_3_minutes()
         {
 
             var period = 1d / 480d;
-            var timeband = Timeband.GetTimebandByPeriod(period);
+            var timeframe = Timeframe.GetTimeframeByPeriod(period);
 
-            Assert.IsNull(timeband);
+            Assert.IsNull(timeframe);
 
         }
 
 
         [TestMethod]
-        [TestCategory("GetTimebandByPeriod")]
-        public void GetTimebandByPeriod_returns_MN1_for_more_than_28_days()
+        [TestCategory("GetTimeframeByPeriod")]
+        public void GetTimeframeByPeriod_returns_MN1_for_more_than_28_days()
         {
 
             var period = 28d;
-            var timeband = Timeband.GetTimebandByPeriod(period);
+            var timeframe = Timeframe.GetTimeframeByPeriod(period);
 
-            if (timeband == null)
+            if (timeframe == null)
             {
-                Assert.Fail("[timeband] cannot be null");
+                Assert.Fail("[timeframe] cannot be null");
             }
 
-            Assert.AreEqual("MN1", timeband.Name);
+            Assert.AreEqual("MN1", timeframe.Name);
 
         }
 

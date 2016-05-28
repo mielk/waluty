@@ -11,7 +11,7 @@ namespace Stock.Domain.Entities
     public class Price
     {
         public int Id { get; set; }
-        public Timeband Timeband { get; set; }
+        public Timeframe Timeframe { get; set; }
         public int AssetId { get; set; }
         public DateTime Date { get; set; }
         public double CloseDelta { get; set; }
@@ -65,7 +65,7 @@ namespace Stock.Domain.Entities
                 , PriceDirection3D = this.Direction3D
                 , TroughByCloseEvaluation = this.TroughByClose
                 , TroughByLowEvaluation = this.TroughByLow
-                , TimebandId = 1
+                , TimeframeId = 1
                 , PeakByClose = (PeakByCloseExtremum != null ? PeakByCloseExtremum.ToDto() : null)
                 , PeakByHigh = (PeakByHighExtremum != null ? PeakByHighExtremum.ToDto() : null)
                 , TroughByClose = (TroughByCloseExtremum != null ? TroughByCloseExtremum.ToDto() : null)

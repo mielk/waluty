@@ -22,7 +22,7 @@ namespace Stock.Domain.Services
         public int LastAnalyzed { get; set; }
         public string Symbol { get; set; }
         public string Pair { get; set; }
-        public string Timeband { get; set; }
+        public string Timeframe { get; set; }
 
 
         public SimulationService(IDataService dataService)
@@ -32,11 +32,11 @@ namespace Stock.Domain.Services
             _macdAnalyzer = new MacdAnalyzer(this);
         }
 
-        public bool Start(string pair, string timeband)
+        public bool Start(string pair, string timeframe)
         {
             this.Pair = pair;
-            this.Timeband = timeband;
-            this.Symbol = pair + '_' + timeband;
+            this.Timeframe = timeframe;
+            this.Symbol = pair + '_' + timeframe;
 
             try
             {

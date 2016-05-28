@@ -14,7 +14,7 @@ namespace Stock_UnitTest.Stock.Services
     {
 
         private Asset asset = new Asset { Id = 9, Name = "AUDJPY" };
-        private Timeband timeband = Timeband.GetTimeband(TimebandSymbol.D1);
+        private Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.D1);
         private TrendlineAnalyzer analyzer;
         private DataItem[] items;
         private DataItem[] extrema;
@@ -30,7 +30,7 @@ namespace Stock_UnitTest.Stock.Services
                 this.items = UnitTestInitializer.GetData();
                 this.extrema = items.Where(i => i.Price.IsExtremum()).ToArray();
 
-                analyzer = new TrendlineAnalyzer(asset, timeband);
+                analyzer = new TrendlineAnalyzer(asset, timeframe);
                 analyzer.Items = this.items;
                 //analyzer.Extrema = this.extrema;
             }
@@ -227,7 +227,7 @@ namespace Stock_UnitTest.Stock.Services
 
         //[TestMethod]
         //[TestCategory("CalculateSlopeScore")]
-        //public void CalculateSlopeScore_Testy_sprawdzajace_te_funkcje_dla_innych_timebandow()
+        //public void CalculateSlopeScore_Testy_sprawdzajace_te_funkcje_dla_innych_timeframeow()
         //{
         //    PrepareTestEnvironment();
         //    TrendHit[] hits = new TrendHit[2];
@@ -249,24 +249,24 @@ namespace Stock_UnitTest.Stock.Services
 
 
 
-        #region CalculateTimebandPeriod
+        #region CalculateTimeframePeriod
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_1_for_D1_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_1_for_D1_data_item()
         //{
 
         //    PrepareTestEnvironment();
         //    DataItem item = new DataItem{ Date = new DateTime(2010, 1, 1, 0, 0, 0), Index = 0 };
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 1, 2, 0, 0, 0), Index = 1 };
 
-        //    Assert.AreEqual(1d, analyzer.calculateTimebandPeriod(item, subitem));
+        //    Assert.AreEqual(1d, analyzer.calculateTimeframePeriod(item, subitem));
 
         //}
 
 
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_proper_value_for_M5_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_proper_value_for_M5_data_item()
         //{
 
         //    PrepareTestEnvironment();
@@ -274,14 +274,14 @@ namespace Stock_UnitTest.Stock.Services
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 1, 1, 0, 5, 0), Index = 1 };
         //    double fiveMinuteEquivalent = 5d / (60d * 24d);
 
-        //    Assert.AreEqual(fiveMinuteEquivalent, analyzer.calculateTimebandPeriod(item, subitem));
+        //    Assert.AreEqual(fiveMinuteEquivalent, analyzer.calculateTimeframePeriod(item, subitem));
 
         //}
 
 
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_proper_value_for_M15_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_proper_value_for_M15_data_item()
         //{
 
         //    PrepareTestEnvironment();
@@ -289,14 +289,14 @@ namespace Stock_UnitTest.Stock.Services
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 1, 1, 0, 15, 0), Index = 1 };
         //    double fifteenMinuteEquivalent = 1d / 96d;
 
-        //    Assert.AreEqual(fifteenMinuteEquivalent, analyzer.calculateTimebandPeriod(item, subitem));
+        //    Assert.AreEqual(fifteenMinuteEquivalent, analyzer.calculateTimeframePeriod(item, subitem));
 
         //}
 
 
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_proper_value_for_M30_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_proper_value_for_M30_data_item()
         //{
 
         //    PrepareTestEnvironment();
@@ -304,14 +304,14 @@ namespace Stock_UnitTest.Stock.Services
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 1, 1, 0, 30, 0), Index = 1 };
         //    double halfHourEquivalent = 1d / 48d;
 
-        //    Assert.AreEqual(halfHourEquivalent, analyzer.calculateTimebandPeriod(item, subitem));
+        //    Assert.AreEqual(halfHourEquivalent, analyzer.calculateTimeframePeriod(item, subitem));
 
         //}
 
 
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_proper_value_for_H1_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_proper_value_for_H1_data_item()
         //{
 
         //    PrepareTestEnvironment();
@@ -319,14 +319,14 @@ namespace Stock_UnitTest.Stock.Services
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 1, 1, 1, 0, 0), Index = 1 };
         //    double oneHourEquivalent = 1d / 24d;
 
-        //    Assert.AreEqual(oneHourEquivalent, analyzer.calculateTimebandPeriod(item, subitem));
+        //    Assert.AreEqual(oneHourEquivalent, analyzer.calculateTimeframePeriod(item, subitem));
 
         //}
 
 
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_one_sixth_for_H4_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_one_sixth_for_H4_data_item()
         //{
 
         //    PrepareTestEnvironment();
@@ -334,14 +334,14 @@ namespace Stock_UnitTest.Stock.Services
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 1, 1, 4, 0, 0), Index = 1 };
         //    double fourHourEquivalent = 1d / 6d;
 
-        //    Assert.AreEqual(fourHourEquivalent, analyzer.calculateTimebandPeriod(item, subitem));
+        //    Assert.AreEqual(fourHourEquivalent, analyzer.calculateTimeframePeriod(item, subitem));
 
         //}
 
 
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_proper_value_for_W1_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_proper_value_for_W1_data_item()
         //{
 
         //    PrepareTestEnvironment();
@@ -349,14 +349,14 @@ namespace Stock_UnitTest.Stock.Services
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 1, 8, 0, 0, 0), Index = 1 };
         //    double oneWeekEquivalent = 7d;
 
-        //    Assert.AreEqual(oneWeekEquivalent, analyzer.calculateTimebandPeriod(item, subitem));
+        //    Assert.AreEqual(oneWeekEquivalent, analyzer.calculateTimeframePeriod(item, subitem));
 
         //}
 
 
         //[TestMethod]
-        //[TestCategory("CalculateTimebandPeriod")]
-        //public void CalculateTimebandPeriod_returns_proper_value_for_MN1_data_item()
+        //[TestCategory("CalculateTimeframePeriod")]
+        //public void CalculateTimeframePeriod_returns_proper_value_for_MN1_data_item()
         //{
 
         //    PrepareTestEnvironment();
@@ -364,7 +364,7 @@ namespace Stock_UnitTest.Stock.Services
         //    DataItem subitem = new DataItem { Date = new DateTime(2010, 2, 1, 0, 0, 0), Index = 1 };
         //    double oneMonthMinEquivalent = 28d;
         //    double oneMonthMaxEquivalent = 31d;
-        //    double period = analyzer.calculateTimebandPeriod(item, subitem);
+        //    double period = analyzer.calculateTimeframePeriod(item, subitem);
 
         //    Assert.IsTrue(period >= oneMonthMinEquivalent && period <= oneMonthMaxEquivalent);
 

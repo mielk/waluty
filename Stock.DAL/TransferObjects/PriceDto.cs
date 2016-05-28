@@ -28,7 +28,7 @@ namespace Stock.DAL.TransferObjects
         public ExtremumDto TroughByLow { get; set; }
 
         [NotMapped]
-        public int TimebandId { get; set; }
+        public int TimeframeId { get; set; }
 
         public DateTime GetDate()
         {

@@ -10,10 +10,10 @@ namespace Stock.Domain.Services
 {
     public interface IDataService
     {
-        IEnumerable<Quotation> GetQuotations(int companyId, int timeband);
-        IEnumerable<Quotation> GetQuotations(int companyId, int timeband, int count);
-        IEnumerable<Quotation> GetQuotations(int companyId, int timeband, DateTime start);
-        IEnumerable<Quotation> GetQuotations(int companyId, int timeband, DateTime start, DateTime end);
+        IEnumerable<Quotation> GetQuotations(int companyId, int timeframe);
+        IEnumerable<Quotation> GetQuotations(int companyId, int timeframe, int count);
+        IEnumerable<Quotation> GetQuotations(int companyId, int timeframe, DateTime start);
+        IEnumerable<Quotation> GetQuotations(int companyId, int timeframe, DateTime start, DateTime end);
 
         IEnumerable<DataItem> GetFxQuotations(string tableName);
         IEnumerable<DataItem> GetFxQuotations(string tableName, bool isSimulation);

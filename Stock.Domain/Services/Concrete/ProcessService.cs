@@ -13,9 +13,12 @@ namespace Stock.Domain.Services
     public class ProcessService : IProcessService
     {
 
+        private AssetTimeframe assetTimeframe;
         private readonly IDataRepository _dataRepository;
         private readonly IPriceAnalyzer _priceAnalyzer;
         private readonly IMacdAnalyzer _macdAnalyzer;
+
+
 
         public ProcessService(IDataRepository dataRepository)
         {
@@ -24,17 +27,30 @@ namespace Stock.Domain.Services
             _macdAnalyzer = new MacdAnalyzer();
         }
 
+
+        public void LoadParams(Asset asset, Timeframe timeframe)
+        {
+            assetTimeframe = new AssetTimeframe(asset, timeframe);
+        }
+
+        public void LoadParams(string asset, string timeframe)
+        {
+            assetTimeframe = new AssetTimeframe(asset, timeframe);
+        }
+
+        public void LoadParams(string symbol)
+        {
+            assetTimeframe = new AssetTimeframe(symbol);
+        }
+
+        
         public bool Run(bool fromScratch)
         {
 
-            IEnumerable<String> symbols = _dataRepository.GetStats();
+            if (assetTimeframe == null || !assetTimeframe.isValid()) throw new Exception("Asset is required");
 
-            foreach (var symbol in symbols)
-            {
-                _priceAnalyzer.Analyze(symbol, true);
-                _macdAnalyzer.Analyze(symbol, false);
-            }
-
+            //_priceAnalyzer.Analyze(asset.Name, true);
+            //_macdAnalyzer.Analyze(symbol, false);
             return false;
 
         }

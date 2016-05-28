@@ -44,7 +44,7 @@ namespace Stock.DAL.TransferObjects
         public bool IsNew { get; set; }
 
         [NotMapped]
-        public int TimebandId { get; set; }
+        public int TimeframeId { get; set; }
 
         public DateTime GetDate()
         {

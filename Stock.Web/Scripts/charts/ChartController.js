@@ -4,7 +4,7 @@
 
     //State
     var company = params.initialCompany || STOCK.COMPANIES.getCompany(1);
-    var timeband = params.initialTimeband || STOCK.TIMEBANDS.defaultValue();
+    var timeframe = params.initialTimeframe || STOCK.TIMEFRAMES.defaultValue();
     var showPeaks = params.showPeaks || true;
     var showTrendlines = params.showTrendlines || true;
     var indicators = {
@@ -20,14 +20,14 @@
             getControls();
             updateView();
             loadCompanyOptions();
-            loadTimebandOptions();
+            loadTimeframeOptions();
             assignEvents();
         }
 
         function getControls() {
             controls.container = document.getElementById(params.optionPanelId);
             controls.companyDropdown = document.getElementById(params.companyDropdownId);
-            controls.timebandDropdown = document.getElementById(params.timebandDropdownId);
+            controls.timeframeDropdown = document.getElementById(params.timeframeDropdownId);
             controls.showPeaksCheckbox = document.getElementById(params.showPeaksCheckboxId);
             controls.showTrendlinesCheckbox = document.getElementById(params.showTrendlinesCheckboxId);
             controls.showMACDCheckbox = document.getElementById(params.showMACDCheckboxId);
@@ -52,25 +52,25 @@
             }
 
             //Convert it into Select2.
-            //$(controls.timebandDropdown).select2();
+            //$(controls.timeframeDropdown).select2();
 
         }
 
-        function loadTimebandOptions() {
-            var timebands = params.timebands || STOCK.TIMEBANDS.getValues();
+        function loadTimeframeOptions() {
+            var timeframes = params.timeframes || STOCK.TIMEFRAMES.getValues();
 
-            for (var iterator in timebands) {
-                var item = timebands[iterator];
+            for (var iterator in timeframes) {
+                var item = timeframes[iterator];
                 var option = 1;
-                $(controls.timebandDropdown).append($('<option>', {
+                $(controls.timeframeDropdown).append($('<option>', {
                     value: item.id,
                     text: item.name,
-                    selected: (timeband && item.id === timeband.symbol ? true : false)
+                    selected: (timeframe && item.id === timeframe.symbol ? true : false)
                 }));
             }
 
             //Convert it into Select2.
-            //$(controls.timebandDropdown).select2();
+            //$(controls.timeframeDropdown).select2();
 
         }
 
@@ -123,10 +123,10 @@
             });
 
 
-            //[Change timeband].
-            $(controls.timebandDropdown).bind({
+            //[Change timeframe].
+            $(controls.timeframeDropdown).bind({
                 change: function (e) {
-                    changeTimeband(this.value);
+                    changeTimeframe(this.value);
                 }
             });
 
@@ -150,7 +150,7 @@
             controller: self,
             chartContainerId: params.chartsContainerId,
             company: company,
-            timeband: timeband,
+            timeframe: timeframe,
             showPeaks: showPeaks,
             showTrendlines: showTrendlines,
             showADX: indicators.ADX,
@@ -167,16 +167,16 @@
         company = STOCK.COMPANIES.getCompany(id);
         self.trigger({
             type: 'changeCompany',
-            timeband: timeband,
+            timeframe: timeframe,
             company: company
         });
     }
 
-    function changeTimeband(id) {
-        timeband = STOCK.TIMEBANDS.getItem(id);
+    function changeTimeframe(id) {
+        timeframe = STOCK.TIMEFRAMES.getItem(id);
         self.trigger({
-            type: 'changeTimeband',
-            timeband: timeband,
+            type: 'changeTimeframe',
+            timeframe: timeframe,
             company: company
         });
     }
@@ -231,7 +231,7 @@
     };
     self.run = run;
     //self.changeCompany = changeCompany;
-    //self.changeTimeband = changeTimeband;
+    //self.changeTimeframe = changeTimeframe;
 
 
     initialize();
