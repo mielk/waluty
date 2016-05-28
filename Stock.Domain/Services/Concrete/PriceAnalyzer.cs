@@ -119,8 +119,8 @@ namespace Stock.Domain.Services
 
 
             /* Start looking for trend lines */
-            //ITrendService trendService = new TrendService(Symbol, Items);
-            //trendService.Start();
+            ITrendService trendService = new TrendService(Symbol, Items);
+            trendService.Start();
 
 
             //Insert info about this analysis to the database.
