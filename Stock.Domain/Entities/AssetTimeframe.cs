@@ -11,6 +11,9 @@ namespace Stock.Domain.Entities
 
         public Asset asset { get; set; }
         public Timeframe timeframe { get; set; }
+        public DataItem[] Items { get; set; }
+
+
 
 
         public AssetTimeframe(Asset asset, Timeframe timeframe)
@@ -47,6 +50,19 @@ namespace Stock.Domain.Entities
         {
             return asset != null && timeframe != null;
         }
+
+
+        public void LoadRequiredQuotations()
+        {
+
+        }
+
+
+        private DateTime GetEarliestRequiredQuotation()
+        {
+            return new DateTime();
+        }
+
 
     }
 }

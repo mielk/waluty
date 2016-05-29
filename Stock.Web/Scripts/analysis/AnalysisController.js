@@ -39,7 +39,8 @@ function AnalysisController(params) {
                     {
                         asset: asset.name,
                         timeframe: timeframe.symbol,
-                        fromScratch: false
+                        fromScratch: false,
+                        analysisTypes: 'prices,macd'
                     },
                     {
                         async: true,

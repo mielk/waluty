@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
+using Stock.Domain.Enums;
 using Stock.Domain.Entities;
 using Stock.Domain.Services.Factories;
 
@@ -33,10 +34,15 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RunProcess(string asset, string timeframe, bool fromScratch)
+        public ActionResult RunProcess(string asset, string timeframe, bool fromScratch, string analysisTypes)
         {
             IProcessService service = new ProcessService(null);
-            service.LoadParams(asset, timeframe);
+            service.LoadAssetTimeframe(asset, timeframe);
+
+            //Convert the given names of analysis to be processed into enumerations.
+            var types = AnalysisTypeHelper.FromString(analysisTypes, ',');
+            service.LoadAnalysisTypes(types);
+
             var result = service.Run(fromScratch);
             var json = new { value = result };
             return Json(json, JsonRequestBehavior.AllowGet);

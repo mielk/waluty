@@ -7,6 +7,7 @@ using Stock.Domain.Entities;
 using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
+using Stock.Domain.Enums;
 
 namespace Stock.Domain.Services
 {
@@ -14,6 +15,7 @@ namespace Stock.Domain.Services
     {
 
         private AssetTimeframe assetTimeframe;
+        private AnalysisType[] analysisTypes;
         private readonly IDataRepository _dataRepository;
         private readonly IPriceAnalyzer _priceAnalyzer;
         private readonly IMacdAnalyzer _macdAnalyzer;
@@ -23,24 +25,30 @@ namespace Stock.Domain.Services
         public ProcessService(IDataRepository dataRepository)
         {
             _dataRepository = dataRepository ?? RepositoryFactory.GetDataRepository();
-            _priceAnalyzer = new PriceAnalyzer();
-            _macdAnalyzer = new MacdAnalyzer();
+            //_priceAnalyzer = new PriceAnalyzer();
+            //_macdAnalyzer = new MacdAnalyzer();
         }
 
 
-        public void LoadParams(Asset asset, Timeframe timeframe)
+        public void LoadAssetTimeframe(Asset asset, Timeframe timeframe)
         {
             assetTimeframe = new AssetTimeframe(asset, timeframe);
         }
 
-        public void LoadParams(string asset, string timeframe)
+        public void LoadAssetTimeframe(string asset, string timeframe)
         {
             assetTimeframe = new AssetTimeframe(asset, timeframe);
         }
 
-        public void LoadParams(string symbol)
+        public void LoadAssetTimeframe(string symbol)
         {
             assetTimeframe = new AssetTimeframe(symbol);
+        }
+
+
+        public void LoadAnalysisTypes(AnalysisType[] types)
+        {
+            analysisTypes = types;
         }
 
         
@@ -48,6 +56,8 @@ namespace Stock.Domain.Services
         {
 
             if (assetTimeframe == null || !assetTimeframe.isValid()) throw new Exception("Asset is required");
+
+            assetTimeframe.LoadRequiredQuotations();
 
             //_priceAnalyzer.Analyze(asset.Name, true);
             //_macdAnalyzer.Analyze(symbol, false);
