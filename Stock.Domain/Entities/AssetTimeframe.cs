@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stock.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Stock.Domain.Entities
         public Asset asset { get; set; }
         public Timeframe timeframe { get; set; }
         public DataItem[] Items { get; set; }
+        public Dictionary<AnalysisType, DateTime?> LastDates { get; set; }
 
 
 
@@ -51,6 +53,17 @@ namespace Stock.Domain.Entities
             return asset != null && timeframe != null;
         }
 
+        public void AddLastDbEntry(AnalysisType type, DateTime? date)
+        {
+
+            if (LastDates == null)
+            {
+                LastDates = new Dictionary<AnalysisType, DateTime?>();
+            }
+
+            LastDates.Add(type, date);
+
+        }
 
         public void LoadRequiredQuotations()
         {

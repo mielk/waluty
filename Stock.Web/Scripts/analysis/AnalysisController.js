@@ -43,7 +43,7 @@ function AnalysisController(params) {
                         analysisTypes: 'prices,macd'
                     },
                     {
-                        async: true,
+                        async: false,
                         callback: function (result) {
 
                             if (result) {

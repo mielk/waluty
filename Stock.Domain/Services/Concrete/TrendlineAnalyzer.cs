@@ -118,8 +118,14 @@ namespace Stock.Domain.Services
 
             return Trendline.Score >= MinTrendlineScore ? Trendline : null;
 
-
         }
+
+
+
+        public void Analyze(string symbol) { }
+
+        public void Analyze(string symbol, bool fromScratch) { }
+
 
 
     }

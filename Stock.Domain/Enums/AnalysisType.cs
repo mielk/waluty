@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stock.Domain.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,6 +61,16 @@ namespace Stock.Domain.Enums
 
             return list.ToArray();
 
+        }
+
+        public static IAnalyzer GetAnalyzer(AnalysisType type)
+        {
+            switch (type)
+            {
+                case AnalysisType.Price: return new PriceAnalyzer();
+                case AnalysisType.MACD: return new MacdAnalyzer();
+                default: return null;
+            }
         }
 
     }

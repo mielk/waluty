@@ -68,6 +68,7 @@
     <Compile Include="Enums\TrendlineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
+    <Compile Include="Services\Abstract\IAnalyzer.cs" />
     <Compile Include="Services\Abstract\ISimulationServiceFactory.cs" />
     <Compile Include="Services\Abstract\ISimulationService.cs" />
     <Compile Include="Services\Abstract\IMacdAnalyzer.cs" />

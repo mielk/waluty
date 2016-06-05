@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services
 {
-    public interface IMacdAnalyzer
+    public interface IMacdAnalyzer : IAnalyzer
     {
-        void Analyze(string symbol);
-        void Analyze(string symbol, bool fromScratch);
     }
 }

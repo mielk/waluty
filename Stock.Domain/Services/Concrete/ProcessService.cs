@@ -17,16 +17,13 @@ namespace Stock.Domain.Services
         private AssetTimeframe assetTimeframe;
         private AnalysisType[] analysisTypes;
         private readonly IDataRepository _dataRepository;
-        private readonly IPriceAnalyzer _priceAnalyzer;
-        private readonly IMacdAnalyzer _macdAnalyzer;
+        private Dictionary<AnalysisType, IAnalyzer> _analyzers;
 
 
 
         public ProcessService(IDataRepository dataRepository)
         {
             _dataRepository = dataRepository ?? RepositoryFactory.GetDataRepository();
-            //_priceAnalyzer = new PriceAnalyzer();
-            //_macdAnalyzer = new MacdAnalyzer();
         }
 
 
@@ -49,6 +46,55 @@ namespace Stock.Domain.Services
         public void LoadAnalysisTypes(AnalysisType[] types)
         {
             analysisTypes = types;
+            loadAnalyzers();
+        }
+
+
+        private void loadAnalyzers()
+        {
+
+            if (_analyzers == null)
+            {
+                _analyzers = new Dictionary<AnalysisType, IAnalyzer>();
+            }
+
+
+            IAnalyzer analyzer;
+            foreach (var type in analysisTypes)
+            {
+                analyzer = null;
+
+                _analyzers.TryGetValue(type, out analyzer);
+                if (analyzer == null)
+                {
+                    _analyzers.Add(type, AnalysisTypeHelper.GetAnalyzer(type));
+                }
+            }
+
+        }
+
+
+        private void LoadLastEntries(){
+
+            foreach (var type in analysisTypes)
+            {
+                var date = getLastEntry(type);
+                assetTimeframe.AddLastDbEntry(type, date);
+            }
+
+        }
+
+        private DateTime? getLastEntry(AnalysisType type)
+        {
+            return new DateTime();
+        }
+
+        private DateTime findEarliestRequiredQuotation()
+        {
+
+            LoadLastEntries();
+
+            return new DateTime();
         }
 
         
@@ -65,6 +111,6 @@ namespace Stock.Domain.Services
 
         }
 
-
     }
+
 }
