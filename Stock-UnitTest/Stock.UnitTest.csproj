@@ -41,6 +41,9 @@
     <Reference Include="Microsoft.Web.XmlTransform">
       <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
@@ -66,16 +69,16 @@
     <Compile Include="Stock.Domain\Entities\FxPairUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\AnalysisTypeUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\TimeframeUnitTest.cs" />
-    <Compile Include="Stock.Domain\PriceUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\PriceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\ProcessServiceUnitTests.cs" />
-    <Compile Include="Stock.Domain\TimebandUnitTests.cs" />
-    <Compile Include="Stock.Domain\DataItemUnitTests.cs" />
-    <Compile Include="Stock.Domain\TrendlineUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\PriceAnalyzerUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\TrendServiceUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\HelperMethodsUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\UnitTestInitializer.cs" />
-    <Compile Include="Stock.Domain\Services\TrendlineAnalyzerUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\TimebandUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\DataItemUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\TrendlineUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\PriceAnalyzerUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\TrendServiceUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\HelperMethodsUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\UnitTestInitializer.cs" />
+    <Compile Include="Stock.Domain\_TODO\TrendlineAnalyzerUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Stock.DAL\" />

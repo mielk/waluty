@@ -2,12 +2,21 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Stock.Domain.Entities;
 using Stock.Domain.Services;
+using Moq;
 
 namespace Stock_UnitTest.Stock.Domain.Services
 {
     [TestClass]
     public class ProcessServiceUnitTests
     {
+
+
+        public IDataService mockDataService()
+        {
+            //Mock<IDataService> dataService = new Mock<IDataService>();
+            return null;
+        }
+
 
         [TestMethod]
         public void loadAssetTimeframe_asset_from_object_is_properly_loaded_()
