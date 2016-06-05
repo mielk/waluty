@@ -13,7 +13,7 @@ namespace Stock_UnitTest.Stock.Services
     public class TrendlineAnalyzerUnitTests
     {
 
-        private Asset asset = new Asset { Id = 9, Name = "AUDJPY" };
+        private Asset asset = new Asset(9, "AUDJPY");
         private Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.D1);
         private TrendlineAnalyzer analyzer;
         private DataItem[] items;

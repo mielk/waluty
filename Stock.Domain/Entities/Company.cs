@@ -13,16 +13,16 @@ namespace Stock.Domain.Entities
         public string Short { get; set; }
 
 
+        public Company(int id, string name) : base(id, name)
+        {
+
+        }
+
+
         public static Company FromDto(CompanyDto dto)
         {
 
-            var company = new Company();
-            company.Id = dto.Id;
-            company.Name = dto.PairName;
-            //company.LastPriceUpdate = dto.LastPriceUpdate;
-            //company.LastCalculation = dto.LastCalculation;
-            //company.PricesChecked = dto.PricesChecked;
-            //company.LastTrendlinesReview = dto.LastTrendlinesReview;
+            var company = new Company(dto.Id, dto.PairName);
             company.IdMarket = dto.IdMarket;
             company.Short = dto.Short;
 

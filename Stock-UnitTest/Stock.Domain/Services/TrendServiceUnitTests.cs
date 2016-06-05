@@ -14,7 +14,7 @@ namespace Stock_UnitTest.Stock.Services
     public class TrendServiceUnitTests
     {
 
-        private static Asset asset = new Asset { Id = 9, Name = "AUDJPY" };
+        private static Asset asset = new Asset (9, "AUDJPY");
         private static Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.D1);
         private static DataItem[] data = UnitTestInitializer.GetData();
         private TrendService service = new TrendService(asset, timeframe, data);

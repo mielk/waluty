@@ -22,24 +22,24 @@ namespace Stock.Domain.Services
         }
 
 
-        public IEnumerable<Pair> FilterPairs(string q, int limit)
+        public IEnumerable<FxPair> FilterPairs(string q, int limit)
         {
             var dtos = _repository.FilterPairs(q, limit);
-            return dtos.Select(Pair.FromDto).ToList();
+            return dtos.Select(FxPair.FromDto).ToList();
         }
 
 
-        public Pair GetPair(int id)
+        public FxPair GetPair(int id)
         {
             var dto = _repository.GetPair(id);
-            return Pair.FromDto(dto);
+            return FxPair.FromDto(dto);
         }
 
 
-        public Pair GetPair(string symbol)
+        public FxPair GetPair(string symbol)
         {
             var dto = _repository.GetPair(symbol);
-            return Pair.FromDto(dto);
+            return FxPair.FromDto(dto);
         }
 
 

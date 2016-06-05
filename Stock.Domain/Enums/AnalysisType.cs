@@ -10,12 +10,12 @@ namespace Stock.Domain.Enums
 
     public enum AnalysisType
     {
-        Unknown = -1,
-        Price = 0,
-        Trendline = 1,
-        MACD = 2,
-        ADX = 3,
-        Candlestick = 4
+        Unknown = 0,
+        Price = 1,
+        Trendline = 2,
+        MACD = 3,
+        ADX = 4,
+        Candlestick = 5
     }
 
 
@@ -46,7 +46,12 @@ namespace Stock.Domain.Enums
 
         }
 
-        public static AnalysisType[] FromString(string types, char separator)
+        public static AnalysisType[] StringToTypesList(string types)
+        {
+            return StringToTypesList(types, ',');
+        }
+
+        public static AnalysisType[] StringToTypesList(string types, char separator)
         {
             var strTypes = types.Split(separator);
             List<AnalysisType> list = new List<AnalysisType>();

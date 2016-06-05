@@ -37,10 +37,12 @@ namespace Stock.Web.Controllers
         public ActionResult RunProcess(string asset, string timeframe, bool fromScratch, string analysisTypes)
         {
             IProcessService service = new ProcessService(null);
-            service.LoadAssetTimeframe(asset, timeframe);
+            var types = AnalysisTypeHelper.StringToTypesList(analysisTypes, ',');
 
+
+            service.LoadAssetTimeframe(asset, timeframe);
             //Convert the given names of analysis to be processed into enumerations.
-            var types = AnalysisTypeHelper.FromString(analysisTypes, ',');
+
             service.LoadAnalysisTypes(types);
 
             var result = service.Run(fromScratch);

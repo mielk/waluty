@@ -10,9 +10,9 @@ namespace Stock.Domain.Services
     public interface IFxService
     {
 
-        IEnumerable<Pair> FilterPairs(string q, int limit);
-        Pair GetPair(int id);
-        Pair GetPair(string symbol);
+        IEnumerable<FxPair> FilterPairs(string q, int limit);
+        FxPair GetPair(int id);
+        FxPair GetPair(string symbol);
 
     }
 }

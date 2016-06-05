@@ -13,17 +13,19 @@ namespace Stock.Domain.Entities
         public string Name { get; set; }
         public string FullName { get; set; }
 
+        public Currency(int id, string name)
+        {
+            this.Id = id;
+            this.Name = name;
+        }
 
         public static Currency FromDto(CurrencyDto dto)
         {
 
-            var currency = new Currency();
-            currency.Id = dto.Id;
-            currency.Name = dto.Name;
+            var currency = new Currency(dto.Id, dto.Name);
             currency.FullName = dto.FullName;
 
             return currency;
-
 
         }
 

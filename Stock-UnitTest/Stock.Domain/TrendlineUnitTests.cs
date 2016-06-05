@@ -10,7 +10,7 @@ namespace Stock_UnitTest.Stock.Domain
     {
 
 
-        private Asset asset = new Asset { Id = 1, Name = "NZDUSD" };
+        private Asset asset = new Asset(1, "NZDUSD");
         private Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.D1);
 
 
