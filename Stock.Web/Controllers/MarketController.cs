@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
+using Stock.Domain.Services.Factories;
 
 namespace Stock.Web.Controllers
 {
@@ -12,9 +13,9 @@ namespace Stock.Web.Controllers
         private readonly IMarketService _service;
 
 
-        public MarketController(IMarketService service)
+        public MarketController()
         {
-            _service = service;
+            _service = MarketServiceFactory.CreateService();
         }
 
         //

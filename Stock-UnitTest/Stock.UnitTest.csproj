@@ -68,7 +68,8 @@
     <Compile Include="Stock.Domain\Entities\CurrencyUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\FxPairUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\AnalysisTypeUnitTests.cs" />
-    <Compile Include="Stock.Domain\Entities\TimeframeUnitTest.cs" />
+    <Compile Include="Stock.Domain\Entities\TimeframeUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\PriceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\ProcessServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\TimebandUnitTests.cs" />

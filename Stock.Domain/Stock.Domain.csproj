@@ -45,24 +45,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Analysis.cs" />
-    <Compile Include="Entities\Asset.cs" />
-    <Compile Include="Entities\AssetTimeframe.cs" />
-    <Compile Include="Entities\Company.cs" />
-    <Compile Include="Entities\Adx.cs" />
-    <Compile Include="Entities\Currency.cs" />
-    <Compile Include="Entities\DataItem.cs" />
-    <Compile Include="Entities\Extremum.cs" />
-    <Compile Include="Entities\Macd.cs" />
-    <Compile Include="Entities\FxPair.cs" />
-    <Compile Include="Entities\Price.cs" />
-    <Compile Include="Entities\Quotation.cs" />
-    <Compile Include="Entities\Market.cs" />
-    <Compile Include="Entities\Timeframe.cs" />
-    <Compile Include="Entities\TrendBreak.cs" />
-    <Compile Include="Entities\TrendHit.cs" />
-    <Compile Include="Entities\Trendline.cs" />
-    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\Analysis\Analysis.cs" />
+    <Compile Include="Entities\MarketObjects\Asset.cs" />
+    <Compile Include="Entities\MarketObjects\AssetTimeframe.cs" />
+    <Compile Include="Entities\MarketObjects\Company.cs" />
+    <Compile Include="Entities\Analysis\Adx.cs" />
+    <Compile Include="Entities\MarketObjects\Currency.cs" />
+    <Compile Include="Entities\Analysis\DataItem.cs" />
+    <Compile Include="Entities\Analysis\Extremum.cs" />
+    <Compile Include="Entities\Analysis\Macd.cs" />
+    <Compile Include="Entities\MarketObjects\FxPair.cs" />
+    <Compile Include="Entities\Analysis\Price.cs" />
+    <Compile Include="Entities\Analysis\Quotation.cs" />
+    <Compile Include="Entities\MarketObjects\Market.cs" />
+    <Compile Include="Entities\MarketObjects\Timeframe.cs" />
+    <Compile Include="Entities\Analysis\TrendBreak.cs" />
+    <Compile Include="Entities\Analysis\TrendHit.cs" />
+    <Compile Include="Entities\Analysis\Trendline.cs" />
+    <Compile Include="Entities\MarketObjects\User.cs" />
     <Compile Include="Enums\AnalysisType.cs" />
     <Compile Include="Enums\ExtremumType.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
@@ -78,11 +78,9 @@
     <Compile Include="Services\Abstract\IDataService.cs" />
     <Compile Include="Services\Abstract\IFxService.cs" />
     <Compile Include="Services\Abstract\IMarketService.cs" />
-    <Compile Include="Services\Abstract\ICompanyService.cs" />
     <Compile Include="Services\Abstract\ITrendlineAnalyzer.cs" />
     <Compile Include="Services\Abstract\ITrendService.cs" />
-    <Compile Include="Services\Concrete\CompanyService.cs" />
-    <Compile Include="Entities\ExtremaUtils.cs" />
+    <Compile Include="Entities\Analysis\ExtremaUtils.cs" />
     <Compile Include="Services\Concrete\SimulationService.cs" />
     <Compile Include="Services\Concrete\MacdAnalyzer.cs" />
     <Compile Include="Services\Concrete\ExtremumPriceTrendComparer.cs" />
@@ -95,13 +93,12 @@
     <Compile Include="Services\Concrete\DataService.cs" />
     <Compile Include="Services\Concrete\FxService.cs" />
     <Compile Include="Services\Concrete\MarketService.cs" />
-    <Compile Include="Services\Factories\CompanyServiceFactory.cs" />
     <Compile Include="Services\Factories\AnalysisDataServiceFactory.cs" />
+    <Compile Include="Services\Factories\MarketServiceFactory.cs" />
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
     <Compile Include="Services\Factories\ProcessServiceFactory.cs" />
     <Compile Include="Services\Factories\DataServiceFactory.cs" />
     <Compile Include="Services\Factories\FxServiceFactory.cs" />
-    <Compile Include="Services\Factories\MarketServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stock.DAL\Stock.DAL.csproj">

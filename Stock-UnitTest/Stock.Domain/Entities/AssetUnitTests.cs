@@ -12,19 +12,21 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         [TestMethod]
         public void constructor_new_instance_has_proper_id_and_name()
         {
-            var id = 2;
-            var name = "name";
-            var asset = new Asset(id, name);
+            const int ID = 2;
+            const string NAME = "name";
+            var asset = new Asset(ID, NAME);
 
-            Assert.AreEqual(id, asset.Id);
-            Assert.AreEqual(name, asset.Name);
+            Assert.AreEqual(ID, asset.Id);
+            Assert.AreEqual(NAME, asset.Name);
 
         }
 
         [TestMethod]
         public void constructor_new_instance_empty_list_of_assetTimeframes_is_created()
         {
-            var asset = new Asset(1, "x");
+            const int ID = 2;
+            const string NAME = "name";
+            var asset = new Asset(ID, NAME);
             Assert.IsNotNull(asset.AssetTimeframes);
             Assert.IsInstanceOfType(asset.AssetTimeframes, typeof(IEnumerable<AssetTimeframe>));
         }

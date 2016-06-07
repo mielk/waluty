@@ -5,24 +5,24 @@ using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
 using Stock.Domain.Entities;
+using Stock.Domain.Services.Factories;
 
 namespace Stock.Web.Controllers
 {
     public class CompanyController : Controller
     {
-        private readonly ICompanyService companyService;
+        private readonly IMarketService marketService;
         private readonly IFxService fxService;
         private readonly IDataService dataService;
         private readonly ITrendService trendService;
 
 
-        public CompanyController(ICompanyService companyService, IDataService dataService, 
-                                 IFxService fxService, ITrendService trendService)
+        public CompanyController(IDataService dataService, IFxService fxService)
         {
-            this.companyService = companyService;
+            this.marketService = MarketServiceFactory.CreateService();
             this.dataService = dataService;
             this.fxService = fxService;
-            this.trendService = trendService;
+            this.trendService = null;
         }
 
         //

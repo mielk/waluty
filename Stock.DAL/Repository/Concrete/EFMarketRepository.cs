@@ -5,11 +5,12 @@ using System.Linq;
 
 namespace Stock.DAL.Repositories
 {
+
     public class EFMarketRepository : IMarketRepository
     {
 
-        //private static readonly EFDbContext Context = EFDbContext.GetInstance();
 
+                                                                #region markets
         public IEnumerable<MarketDto> GetMarkets()
         {
 
@@ -22,5 +23,40 @@ namespace Stock.DAL.Repositories
 
             return markets;
         }
+                                                                #endregion markets
+
+
+                                                                #region assets
+        public IEnumerable<CompanyDto> FilterCompanies(string q, int limit)
+        {
+            string lower = q.ToLower();
+            IEnumerable<CompanyDto> results = null;
+
+            using (EFDbContext context = new EFDbContext())
+            {
+                results = context.Companies.Where(c => c.PairName.ToLower().Contains(lower) ||
+                                                  c.Short.ToLower().Contains(lower)).Take(limit).ToList();
+            }
+
+            return results;
+
+        }
+
+        public CompanyDto GetCompany(int id)
+        {
+
+            CompanyDto company = null;
+
+            using (EFDbContext context = new EFDbContext())
+            {
+                company = context.Companies.SingleOrDefault(c => c.Id == id);
+            }
+
+            return company;
+
+        }
+                                                                #endregion assets
+
+
     }
 }
