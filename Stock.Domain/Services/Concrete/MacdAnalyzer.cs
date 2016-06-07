@@ -22,7 +22,7 @@ namespace Stock.Domain.Services
         private const int SignalLine = 9;
 
         private IAnalysisDataService _dataService;
-        private IFxRepository _fxRepository;
+        private IMarketRepository _marketRepository;
 
         private Analysis analysis;
         public DataItem[] Items { get; set; }
@@ -134,9 +134,9 @@ namespace Stock.Domain.Services
             }
 
             //Check if FXRepository is appended.
-            if (_fxRepository == null)
+            if (_marketRepository == null)
             {
-                _fxRepository = RepositoryFactory.GetFxRepository();
+                _marketRepository = RepositoryFactory.GetMarketRepository();
             }
 
         }
@@ -145,7 +145,7 @@ namespace Stock.Domain.Services
         {
             Symbol = symbol;
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
-            var pair = _fxRepository.GetPair(pairSymbol);
+            var pair = _marketRepository.GetPair(pairSymbol);
             AssetId = pair.Id;
         }
 

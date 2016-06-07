@@ -83,7 +83,7 @@ namespace Stock.Domain.Services
             this.Symbol = symbol;
 
             var names = symbol.Split('_');
-            this.Asset = FxServiceFactory.Instance().GetService().GetPair(names[0]);
+            this.Asset = MarketService.Instance().GetPair(names[0]);
             this.Timeframe = Timeframe.GetTimeframeByShortName(names[1]);
             this.analyzer = new TrendlineAnalyzer(Asset, Timeframe);
 

@@ -76,7 +76,6 @@
     <Compile Include="Services\Abstract\IPriceTrendComparer.cs" />
     <Compile Include="Services\Abstract\IProcessService.cs" />
     <Compile Include="Services\Abstract\IDataService.cs" />
-    <Compile Include="Services\Abstract\IFxService.cs" />
     <Compile Include="Services\Abstract\IMarketService.cs" />
     <Compile Include="Services\Abstract\ITrendlineAnalyzer.cs" />
     <Compile Include="Services\Abstract\ITrendService.cs" />
@@ -91,14 +90,12 @@
     <Compile Include="Services\Concrete\TrendlineAnalyzer.cs" />
     <Compile Include="Services\Concrete\TrendService.cs" />
     <Compile Include="Services\Concrete\DataService.cs" />
-    <Compile Include="Services\Concrete\FxService.cs" />
     <Compile Include="Services\Concrete\MarketService.cs" />
     <Compile Include="Services\Factories\AnalysisDataServiceFactory.cs" />
     <Compile Include="Services\Factories\MarketServiceFactory.cs" />
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
     <Compile Include="Services\Factories\ProcessServiceFactory.cs" />
     <Compile Include="Services\Factories\DataServiceFactory.cs" />
-    <Compile Include="Services\Factories\FxServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stock.DAL\Stock.DAL.csproj">

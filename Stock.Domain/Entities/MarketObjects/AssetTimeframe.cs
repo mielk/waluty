@@ -37,7 +37,7 @@ namespace Stock.Domain.Entities
 
         private void loadParams(string asset, string timeframe)
         {
-            loadParams(Asset.FromSymbol(asset), Timeframe.GetTimeframeByShortName(timeframe));
+            loadParams(Asset.FxFromSymbol(asset), Timeframe.GetTimeframeByShortName(timeframe));
         }
 
         private void loadParams(Asset asset, Timeframe timeframe)

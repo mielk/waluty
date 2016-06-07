@@ -5,7 +5,6 @@ namespace Stock.DAL.Infrastructure
     public class RepositoryFactory
     {
 
-        private static readonly IFxRepository FxRepository;
         private static readonly IMarketRepository MarketRepository;
         private static readonly IDataRepository DataRepository;
 
@@ -13,7 +12,6 @@ namespace Stock.DAL.Infrastructure
         {
             MarketRepository = new EFMarketRepository();
             DataRepository = new EFDataRepository();
-            FxRepository = new EFFxRepository();
         }
 
 
@@ -25,11 +23,6 @@ namespace Stock.DAL.Infrastructure
         public static IDataRepository GetDataRepository()
         {
             return DataRepository;
-        }
-
-        public static IFxRepository GetFxRepository()
-        {
-            return FxRepository;
         }
 
 

@@ -29,16 +29,17 @@ namespace Stock.Domain.Services
 
 
 
-
+                                                                        #region markets
         public IEnumerable<Market> GetMarkets()
         {
             var dtos = _repository.GetMarkets();
             return dtos.Select(Market.FromDto).ToList();
         }
+                                                                        #endregion markets
 
 
 
-
+                                                                        #region assets
         public IEnumerable<Company> FilterCompanies(string q, int limit)
         {
             var dtos = _repository.FilterCompanies(q, limit);
@@ -50,7 +51,31 @@ namespace Stock.Domain.Services
             var dto = _repository.GetCompany(id);
             return Company.FromDto(dto);
         }
+                                                                        #endregion assets
 
+
+
+                                                                        #region fx
+        public IEnumerable<FxPair> FilterPairs(string q, int limit)
+        {
+            var dtos = _repository.FilterPairs(q, limit);
+            return dtos.Select(FxPair.FromDto).ToList();
+        }
+
+
+        public FxPair GetPair(int id)
+        {
+            var dto = _repository.GetPair(id);
+            return FxPair.FromDto(dto);
+        }
+
+
+        public FxPair GetPair(string symbol)
+        {
+            var dto = _repository.GetPair(symbol);
+            return FxPair.FromDto(dto);
+        }
+                                                                        #endregion fx
 
     }
 }

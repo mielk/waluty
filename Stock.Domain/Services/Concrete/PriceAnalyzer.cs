@@ -22,7 +22,7 @@ namespace Stock.Domain.Services
         public const int MaxRange = 360;
 
         private IAnalysisDataService _dataService;
-        private IFxRepository _fxRepository;
+        private IMarketRepository _marketRepository;
 
         public bool IsSimulation { get; set; }
         private Analysis analysis;
@@ -148,9 +148,9 @@ namespace Stock.Domain.Services
             }
 
             //Check if FXRepository is appended.
-            if (_fxRepository == null)
+            if (_marketRepository == null)
             {
-                _fxRepository = RepositoryFactory.GetFxRepository();
+                _marketRepository = RepositoryFactory.GetMarketRepository();
             }
 
         }
@@ -160,7 +160,7 @@ namespace Stock.Domain.Services
             Symbol = symbol;
             Timeframe = Timeframe.GetTimeframe(symbol.GetTimeframeSymbol());
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
-            var pair = _fxRepository.GetPair(pairSymbol);
+            var pair = _marketRepository.GetPair(pairSymbol);
             AssetId = pair.Id;
         }
 

@@ -12,16 +12,14 @@ namespace Stock.Web.Controllers
     public class CompanyController : Controller
     {
         private readonly IMarketService marketService;
-        private readonly IFxService fxService;
         private readonly IDataService dataService;
         private readonly ITrendService trendService;
 
 
-        public CompanyController(IDataService dataService, IFxService fxService)
+        public CompanyController(IDataService dataService)
         {
             this.marketService = MarketServiceFactory.CreateService();
             this.dataService = dataService;
-            this.fxService = fxService;
             this.trendService = null;
         }
 
@@ -41,7 +39,7 @@ namespace Stock.Web.Controllers
         public ActionResult FilterCompanies(string q, int limit)
         {
             //var companies = companyService.FilterCompanies(q, limit);
-            var assets = fxService.FilterPairs(q, limit);
+            var assets = marketService.FilterPairs(q, limit);
             var items = assets.Select(jsonAsset).ToList();
             var json = new { total = assets.Count(), items = items };
             return Json(json, JsonRequestBehavior.AllowGet);
@@ -54,7 +52,7 @@ namespace Stock.Web.Controllers
         public ActionResult GetCompany(int id)
         {
             //var company = companyService.GetCompany(id);
-            var asset = fxService.GetPair(id);
+            var asset = marketService.GetPair(id);
             return Json(asset, JsonRequestBehavior.AllowGet);
         }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.DAL.TransferObjects;
-using Stock.Domain.Services.Factories;
+using Stock.Domain.Services;
 
 
 namespace Stock.Domain.Entities
@@ -25,16 +25,15 @@ namespace Stock.Domain.Entities
             AssetTimeframes = new List<AssetTimeframe>();
         }
 
-        public static Asset FromSymbol(string symbol)
+
+        public static Asset FxFromSymbol(string symbol)
         {
-            var fxService = FxServiceFactory.Instance().GetService();
-            return fxService.GetPair(symbol);
+            return MarketService.Instance().GetPair(symbol);
         }
 
-        public static Asset FromId(int id)
+        public static Asset FxFromId(int id)
         {
-            var fxService = FxServiceFactory.Instance().GetService();
-            return fxService.GetPair(id);
+            return MarketService.Instance().GetPair(id);
         }
 
         public AssetTimeframe GetAssetTimeframe(Timeframe timeframe)

@@ -20,7 +20,6 @@ namespace Stock.Web
         {
             //kernel.Bind<IMarketService>().To<MarketService>();
             kernel.Bind<IDataService>().To<DataService>();
-            kernel.Bind<IFxService>().To<FxService>();
             kernel.Bind<ISimulationService>().To<SimulationService>();
             kernel.Bind<ISimulationServiceFactory>().To<SimulationServiceFactory>();
             kernel.Bind<IProcessService>().To<ProcessService>();
@@ -29,7 +28,6 @@ namespace Stock.Web
 
             kernel.Bind<IMarketRepository>().To<EFMarketRepository>();
             kernel.Bind<IDataRepository>().To<EFDataRepository>();
-            kernel.Bind<IFxRepository>().To<EFFxRepository>();
 
             //kernel.Bind<ICompanyRepository>().To<FakeCompanyRepository>();
             //kernel.Bind<IMarketRepository>().To<FakeMarketRepository>();
