@@ -27,25 +27,25 @@ namespace Stock.DAL.Repositories
 
 
                                                                 #region assets
-        public IEnumerable<CompanyDto> FilterCompanies(string q, int limit)
+        public IEnumerable<AssetDto> FilterAssets(string q, int limit)
         {
             string lower = q.ToLower();
-            IEnumerable<CompanyDto> results = null;
+            IEnumerable<AssetDto> results = null;
 
             using (EFDbContext context = new EFDbContext())
             {
-                results = context.Companies.Where(c => c.PairName.ToLower().Contains(lower) ||
-                                                  c.Short.ToLower().Contains(lower)).Take(limit).ToList();
+                results = context.Companies.Where(c => c.Name.ToLower().Contains(lower) ||
+                                                  c.ShortName.ToLower().Contains(lower)).Take(limit).ToList();
             }
 
             return results;
 
         }
 
-        public CompanyDto GetCompany(int id)
+        public AssetDto GetAsset(int id)
         {
 
-            CompanyDto company = null;
+            AssetDto company = null;
 
             using (EFDbContext context = new EFDbContext())
             {
@@ -60,24 +60,24 @@ namespace Stock.DAL.Repositories
 
                                                                 #region fx
 
-        public IEnumerable<PairDto> FilterPairs(string q, int limit)
+        public IEnumerable<FxPairDto> FilterPairs(string q, int limit)
         {
             string lower = q.ToLower();
-            IEnumerable<PairDto> results = null;
+            IEnumerable<FxPairDto> results = null;
 
             using (EFDbContext context = new EFDbContext())
             {
-                results = context.Pairs.Where(p => p.IsActive && p.PairName.ToLower().Contains(lower)).Take(limit).ToList();
+                results = context.Pairs.Where(p => p.IsActive && p.Name.ToLower().Contains(lower)).Take(limit).ToList();
             }
 
             return results;
 
         }
 
-        public PairDto GetPair(int id)
+        public FxPairDto GetPair(int id)
         {
 
-            PairDto pair = null;
+            FxPairDto pair = null;
 
             using (EFDbContext context = new EFDbContext())
             {
@@ -88,14 +88,14 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public PairDto GetPair(string symbol)
+        public FxPairDto GetPair(string symbol)
         {
 
-            PairDto pair = null;
+            FxPairDto pair = null;
 
             using (EFDbContext context = new EFDbContext())
             {
-                pair = context.Pairs.SingleOrDefault(p => p.PairName == symbol);
+                pair = context.Pairs.SingleOrDefault(p => p.Name == symbol);
             }
 
             return pair;

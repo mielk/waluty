@@ -34,10 +34,10 @@ namespace Stock.Domain.Entities
 
 
 
-        public static FxPair FromDto(PairDto dto)
+        public static FxPair FromDto(FxPairDto dto)
         {
 
-            var pair = new FxPair(dto.Id, dto.PairName, dto.BaseCurrency, dto.QuoteCurrency);
+            var pair = new FxPair(dto.Id, dto.Name, dto.BaseCurrency, dto.QuoteCurrency);
             pair.IsFx = true;
 
             return pair;

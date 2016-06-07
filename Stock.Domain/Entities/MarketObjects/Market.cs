@@ -15,6 +15,22 @@ namespace Stock.Domain.Entities
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public IEnumerable<Asset> Assets { get; set; }
+        //Static.
+        private static IEnumerable<Market> markets = new List<Market>();
+
+
+        #region static methods
+        public static Market GetMarket(int id)
+        {
+            return null;
+        }
+        public static Market GetMarket(string name)
+        {
+            return null;
+        }
+        #endregion static methods
+
+
 
 
         public Market(int id, string name)
@@ -41,7 +57,7 @@ namespace Stock.Domain.Entities
         {
 
             var market = new Market(dto.Id, dto.Name);
-            market.ShortName = dto.Short;
+            market.ShortName = dto.ShortName;
             market.setTimes(dto.StartTime, dto.EndTime);
             return market;
 

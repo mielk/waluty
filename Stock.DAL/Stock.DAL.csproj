@@ -64,20 +64,19 @@
     <Compile Include="Repository\Abstract\IMarketRepository.cs" />
     <Compile Include="Repository\Concrete\EFDataRepository.cs" />
     <Compile Include="Repository\Concrete\EFMarketRepository.cs" />
-    <Compile Include="TransferObjects\AnalysisDto.cs" />
-    <Compile Include="TransferObjects\CompanyDto.cs" />
-    <Compile Include="TransferObjects\AdxDto.cs" />
-    <Compile Include="TransferObjects\CurrencyDto.cs" />
-    <Compile Include="TransferObjects\DataItemDto.cs" />
-    <Compile Include="TransferObjects\ExtremumDto.cs" />
-    <Compile Include="TransferObjects\IAssetDto.cs" />
-    <Compile Include="TransferObjects\IDateItem.cs" />
-    <Compile Include="TransferObjects\LastDates.cs" />
-    <Compile Include="TransferObjects\MacdDto.cs" />
-    <Compile Include="TransferObjects\PairDto.cs" />
-    <Compile Include="TransferObjects\PriceDto.cs" />
-    <Compile Include="TransferObjects\MarketDto.cs" />
-    <Compile Include="TransferObjects\QuotationDto.cs" />
+    <Compile Include="TransferObjects\DataDto\AnalysisDto.cs" />
+    <Compile Include="TransferObjects\MarketObjectsDto\AssetDto.cs" />
+    <Compile Include="TransferObjects\DataDto\AdxDto.cs" />
+    <Compile Include="TransferObjects\MarketObjectsDto\CurrencyDto.cs" />
+    <Compile Include="TransferObjects\DataDto\DataItemDto.cs" />
+    <Compile Include="TransferObjects\DataDto\ExtremumDto.cs" />
+    <Compile Include="TransferObjects\DataDto\IDateItem.cs" />
+    <Compile Include="TransferObjects\DataDto\LastDates.cs" />
+    <Compile Include="TransferObjects\DataDto\MacdDto.cs" />
+    <Compile Include="TransferObjects\MarketObjectsDto\FxPairDto.cs" />
+    <Compile Include="TransferObjects\DataDto\PriceDto.cs" />
+    <Compile Include="TransferObjects\MarketObjectsDto\MarketDto.cs" />
+    <Compile Include="TransferObjects\DataDto\QuotationDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -36,6 +36,13 @@ namespace Stock.Domain.Entities
             return MarketService.Instance().GetPair(id);
         }
 
+        public static Asset FromDto(AssetDto dto)
+        {
+            Asset asset = new Asset(dto.Id, dto.Name);
+            asset.ShortName = dto.ShortName;
+            return asset;
+        }
+
         public AssetTimeframe GetAssetTimeframe(Timeframe timeframe)
         {
 

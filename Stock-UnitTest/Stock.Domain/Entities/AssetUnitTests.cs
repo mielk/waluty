@@ -31,5 +31,13 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsInstanceOfType(asset.AssetTimeframes, typeof(IEnumerable<AssetTimeframe>));
         }
 
+
+
+        [TestMethod]
+        public void assetFromDto_has_the_same_properties_as_dto()
+        {
+            Assert.Fail("Not implemented");
+        }
+
     }
 }

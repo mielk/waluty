@@ -86,6 +86,10 @@
     <Folder Include="Stock.Web\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Stock.DAL\Stock.DAL.csproj">
+      <Project>{3eb97661-0497-42ef-88ba-67642bdc8175}</Project>
+      <Name>Stock.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stock.Domain\Stock.Domain.csproj">
       <Project>{05409976-6ca8-4c4b-822a-0db445548a05}</Project>
       <Name>Stock.Domain</Name>

@@ -10,15 +10,15 @@ namespace Stock.DAL.Infrastructure
 
         private static EFDbContext _instance;
 
-        public DbSet<CompanyDto> Companies { get; set; }
-        public DbSet<PairDto> Pairs { get; set; }
+        public DbSet<AssetDto> Companies { get; set; }
+        public DbSet<FxPairDto> Pairs { get; set; }
         public DbSet<CurrencyDto> Currencies { get; set; }
         public DbSet<MarketDto> Markets { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CompanyDto>().ToTable("companies");
-            modelBuilder.Entity<PairDto>().ToTable("pairs");
+            modelBuilder.Entity<AssetDto>().ToTable("companies");
+            modelBuilder.Entity<FxPairDto>().ToTable("pairs");
             modelBuilder.Entity<CurrencyDto>().ToTable("currencies");
             modelBuilder.Entity<MarketDto>().ToTable("markets");
         }

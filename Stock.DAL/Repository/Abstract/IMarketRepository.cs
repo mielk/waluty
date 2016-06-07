@@ -16,15 +16,15 @@ namespace Stock.DAL.Repositories
 
 
                                                 #region assets
-        IEnumerable<CompanyDto> FilterCompanies(string q, int limit);
-        CompanyDto GetCompany(int id);
+        IEnumerable<AssetDto> FilterAssets(string q, int limit);
+        AssetDto GetAsset(int id);
                                                 #endregion assets
 
 
                                                 #region fx
-        IEnumerable<PairDto> FilterPairs(string q, int limit);
-        PairDto GetPair(int id);
-        PairDto GetPair(string symbol);
+        IEnumerable<FxPairDto> FilterPairs(string q, int limit);
+        FxPairDto GetPair(int id);
+        FxPairDto GetPair(string symbol);
                                                 #endregion fx
 
     }

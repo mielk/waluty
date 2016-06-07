@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Stock.Domain.Entities;
 using System.Collections.Generic;
+using Moq;
+using Stock.DAL.Repositories;
 
 namespace Stock_UnitTest.Stock.Domain.Entities
 {
@@ -139,7 +141,26 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
         [TestMethod]
-        public void getAllMarkets_returns_existing_instance_for_already_loaded()
+        public void getMarket_returns_existing_instance_by_id()
+        {
+            Assert.Fail("Not implemented");
+        }
+
+
+        [TestMethod]
+        public void getMarket_returns_existing_instance_by_name()
+        {
+
+            //Create mock-up for IMarketRepository.
+            Mock<IMarketRepository> mockRepository = new Mock<IMarketRepository>();
+            //mockRepository.
+
+            Assert.Fail("Not implemented");
+        }
+
+
+        [TestMethod]
+        public void getAllMarkets_returns_existing_instances()
         {
             Assert.Fail("Not implemented");
         }

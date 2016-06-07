@@ -48,7 +48,6 @@
     <Compile Include="Entities\Analysis\Analysis.cs" />
     <Compile Include="Entities\MarketObjects\Asset.cs" />
     <Compile Include="Entities\MarketObjects\AssetTimeframe.cs" />
-    <Compile Include="Entities\MarketObjects\Company.cs" />
     <Compile Include="Entities\Analysis\Adx.cs" />
     <Compile Include="Entities\MarketObjects\Currency.cs" />
     <Compile Include="Entities\Analysis\DataItem.cs" />
@@ -76,7 +75,7 @@
     <Compile Include="Services\Abstract\IPriceTrendComparer.cs" />
     <Compile Include="Services\Abstract\IProcessService.cs" />
     <Compile Include="Services\Abstract\IDataService.cs" />
-    <Compile Include="Services\Abstract\IMarketService.cs" />
+    <Compile Include="Services\Abstract\MarketServices\IMarketService.cs" />
     <Compile Include="Services\Abstract\ITrendlineAnalyzer.cs" />
     <Compile Include="Services\Abstract\ITrendService.cs" />
     <Compile Include="Entities\Analysis\ExtremaUtils.cs" />
@@ -90,7 +89,7 @@
     <Compile Include="Services\Concrete\TrendlineAnalyzer.cs" />
     <Compile Include="Services\Concrete\TrendService.cs" />
     <Compile Include="Services\Concrete\DataService.cs" />
-    <Compile Include="Services\Concrete\MarketService.cs" />
+    <Compile Include="Services\Concrete\MarketServices\MarketService.cs" />
     <Compile Include="Services\Factories\AnalysisDataServiceFactory.cs" />
     <Compile Include="Services\Factories\MarketServiceFactory.cs" />
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
@@ -106,7 +105,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\Abstract\AnalysisServices\" />
+    <Folder Include="Services\Concrete\AnalysisServices\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
