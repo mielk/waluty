@@ -12,6 +12,9 @@ namespace Stock.DAL.Repositories
 
                                                 #region markets
         IEnumerable<MarketDto> GetMarkets();
+        MarketDto GetMarketById(int id);
+        MarketDto GetMarketByName(string name);
+        MarketDto GetMarketBySymbol(string symbol);
                                                 #endregion markets
 
 

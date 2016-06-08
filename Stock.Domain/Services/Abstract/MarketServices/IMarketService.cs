@@ -16,6 +16,9 @@ namespace Stock.Domain.Services
 
                                                                         #region markets
         IEnumerable<Market> GetMarkets();
+        Market GetMarketById(int id);
+        Market GetMarketByName(string name);
+        Market GetMarketBySymbol(string symbol);
                                                                         #endregion markets
 
 

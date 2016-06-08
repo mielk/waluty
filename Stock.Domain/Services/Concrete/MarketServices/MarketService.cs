@@ -39,6 +39,24 @@ namespace Stock.Domain.Services
             var dtos = _repository.GetMarkets();
             return dtos.Select(Market.FromDto).ToList();
         }
+
+        public Market GetMarketById(int id)
+        {
+            var dto = _repository.GetMarketById(id);
+            return Market.FromDto(dto);
+        }
+
+        public Market GetMarketByName(string name)
+        {
+            var dto = _repository.GetMarketByName(name);
+            return Market.FromDto(dto);
+        }
+
+        public Market GetMarketBySymbol(string symbol)
+        {
+            var dto = _repository.GetMarketBySymbol(symbol);
+            return Market.FromDto(dto);
+        }
                                                                         #endregion markets
 
 

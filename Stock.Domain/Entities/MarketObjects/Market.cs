@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.Domain.Services.Factories;
+using Stock.Domain.Services;
 
 namespace Stock.Domain.Entities
 {
@@ -16,18 +18,71 @@ namespace Stock.Domain.Entities
         public DateTime EndTime { get; set; }
         public IEnumerable<Asset> Assets { get; set; }
         //Static.
+        private static IMarketService service = MarketServiceFactory.CreateService();
         private static IEnumerable<Market> markets = new List<Market>();
 
 
         #region static methods
-        public static Market GetMarket(int id)
+
+        public static void injectService(IMarketService _service)
         {
-            return null;
+            service = _service;
         }
-        public static Market GetMarket(string name)
+
+        public static Market GetMarketById(int id)
         {
-            return null;
+
+            var market = markets.SingleOrDefault(m => m.Id == id);
+
+            if (market == null)
+            {
+                market = service.GetMarketById(id);
+                if (market != null)
+                {
+                    markets = markets.Concat(new[] { market });
+                }
+            }
+
+            return market;
+
         }
+
+        public static Market GetMarketByName(string name)
+        {
+            
+            var market = markets.SingleOrDefault(m => m.Name.Equals(name));
+
+            if (market == null)
+            {
+                market = service.GetMarketByName(name);
+                if (market != null)
+                {
+                    markets = markets.Concat(new[] { market });
+                }
+            }
+
+            return market;
+
+        }
+
+        public static Market GetMarketBySymbol(string symbol)
+        {
+
+            var market = markets.SingleOrDefault(m => m.ShortName.Equals(symbol));
+
+            if (market == null)
+            {
+                market = service.GetMarketBySymbol(symbol);
+                if (market != null)
+                {
+                    markets = markets.Concat(new[] { market });
+                }
+            }
+
+            return market;
+
+        }
+
         #endregion static methods
 
 

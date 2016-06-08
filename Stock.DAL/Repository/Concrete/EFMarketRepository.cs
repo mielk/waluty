@@ -23,6 +23,44 @@ namespace Stock.DAL.Repositories
 
             return markets;
         }
+
+
+        public MarketDto GetMarketById(int id)
+        {
+
+            MarketDto market;
+            using (var context = new EFDbContext())
+            {
+                market = context.Markets.SingleOrDefault(m => m.Id == id);
+            }
+
+            return market;
+        }
+
+        public MarketDto GetMarketByName(string name)
+        {
+
+            MarketDto market;
+            using (var context = new EFDbContext())
+            {
+                market = context.Markets.SingleOrDefault(m => m.Name.Equals(name));
+            }
+
+            return market;
+        }
+
+        public MarketDto GetMarketBySymbol(string symbol)
+        {
+
+            MarketDto market;
+            using (var context = new EFDbContext())
+            {
+                market = context.Markets.SingleOrDefault(m => m.ShortName.Equals(symbol));
+            }
+
+            return market;
+        }
+
                                                                 #endregion markets
 
 
