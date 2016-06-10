@@ -14,4 +14,5 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
     }
+
 }

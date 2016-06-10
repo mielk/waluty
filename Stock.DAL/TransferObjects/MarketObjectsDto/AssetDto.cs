@@ -16,6 +16,8 @@ namespace Stock.DAL.TransferObjects
         public int Id { get; set; }
         public string Name { get; set; }
         public int IdMarket { get; set; }
-        public string ShortName { get; set; }
+
+        [Column("ShortName")]
+        public string Symbol { get; set; }
     }
 }

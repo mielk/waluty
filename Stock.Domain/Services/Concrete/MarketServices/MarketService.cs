@@ -68,11 +68,36 @@ namespace Stock.Domain.Services
             return dtos.Select(Asset.FromDto).ToList();
         }
 
+        public IEnumerable<Asset> GetAllAssets()
+        {
+            var dtos = _repository.GetAllAssets();
+            return dtos.Select(Asset.FromDto).ToList();
+        }
+
+        public IEnumerable<Asset> GetAssetsForMarket(int marketId)
+        {
+            var dtos = _repository.GetAssetsForMarket(marketId);
+            return dtos.Select(Asset.FromDto).ToList();
+        }
+
         public Asset GetAsset(int id)
         {
             var dto = _repository.GetAsset(id);
             return Asset.FromDto(dto);
         }
+
+        public Asset GetAssetByName(string name)
+        {
+            var dto = _repository.GetAssetByName(name);
+            return Asset.FromDto(dto);
+        }
+
+        public Asset GetAssetBySymbol(string symbol)
+        {
+            var dto = _repository.GetAssetBySymbol(symbol);
+            return Asset.FromDto(dto);
+        }
+
                                                                         #endregion assets
 
 

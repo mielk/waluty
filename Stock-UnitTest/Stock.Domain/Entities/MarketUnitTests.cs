@@ -18,7 +18,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         private const string DEFAULT_SHORT_NAME = "FX";
         private const string DEFAULT_START_TIME = "00:00";
         private const string DEFAULT_END_TIME = "00:00";
-        
+
+
 
         //Arrange
         private Market defaultMarket()
@@ -41,6 +42,66 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             markets.Add(new Market(3, "United States") { ShortName = "US" });
             return markets;
         }
+
+
+        private Currency getCurrency(int id)
+        {
+            return currenciesCollection().SingleOrDefault(c => c.Id == id);
+        }
+
+        private Currency getCurrencyBySymbol(string symbol)
+        {
+            return currenciesCollection().SingleOrDefault(c => c.Symbol.Equals(symbol));
+        }
+
+        private IEnumerable<Currency> currenciesCollection()
+        {
+            List<Currency> currencies = new List<Currency>();
+            currencies.Add(new Currency(1, "USD", "US Dollar"));
+            currencies.Add(new Currency(2, "EUR", "Euro"));
+            currencies.Add(new Currency(3, "JPY", "Japanese Yen"));
+            currencies.Add(new Currency(4, "GBP", "British Pound"));
+            return currencies;
+        }
+
+        private FxPair getFxPairById(int id)
+        {
+            return pairsCollection().SingleOrDefault(c => c.Id == id);
+        }
+
+        private FxPair getFxPairBySymbol(string symbol)
+        {
+            return pairsCollection().SingleOrDefault(p => p.Name.Equals(symbol));
+        }
+
+        private IEnumerable<FxPair> pairsCollection()
+        {
+            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
+            Currency.injectService(mockService.Object);
+
+            List<FxPair> fxPairs = new List<FxPair>();
+            fxPairs.Add(new FxPair(1, "EURUSD", 2, 1));
+            fxPairs.Add(new FxPair(2, "USDJPY", 1, 3));
+            fxPairs.Add(new FxPair(3, "GBPUSD", 4, 1));
+            fxPairs.Add(new FxPair(4, "EURGBP", 2, 4));
+            fxPairs.Add(new FxPair(5, "EURJPY", 2, 3));
+            return fxPairs;
+        }
+
+        private void arrangeFxMoq()
+        {
+            //Arrange
+            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            mockService.Setup(c => c.GetFxPair(It.IsAny<int>())).Returns((int a) => getFxPairById(a));
+            mockService.Setup(c => c.GetFxPair(It.IsAny<string>())).Returns((string a) => getFxPairBySymbol(a));
+            mockService.Setup(c => c.GetFxPairs()).Returns(pairsCollection());
+            FxPair.injectService(mockService.Object);
+        }
+
+
+
+
 
 
 
@@ -89,6 +150,16 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
+        [TestMethod]
+        public void isFx_returns_true_if_name_fx()
+        {
+            //Arrange.
+            Market market = new Market(1, "fx");
+
+            //Assert.
+            Assert.IsTrue(market.IsFx());
+
+        }
 
         #endregion Constructor
 
@@ -347,34 +418,28 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
-
-
-
         #endregion getting markets
 
 
 
 
-        #region adding assets
+        #region assets
         [TestMethod]
-        public void addAsset_after_adding_number_increased_by_1()
+        public void after_creating_fx_market_all_pairs_are_loaded()
         {
-            Assert.Fail("Not implemented");
+
+            //Arrange.
+            arrangeFxMoq();
+
+            //Act.
+            var market = new Market(1, "fx");
+
+            //Assert.
+            Assert.AreEqual(5, market.Assets.Count());
+
         }
 
-        [TestMethod]
-        public void addAsset_after_adding_already_existing_number_unchanged()
-        {
-            Assert.Fail("Not implemented");
-        }
-
-
-        [TestMethod]
-        public void addAsset_after_adding_company_can_be_fetched()
-        {
-            Assert.Fail("Not implemented");
-        }
-        #endregion adding assets
+        #endregion assets
 
 
 

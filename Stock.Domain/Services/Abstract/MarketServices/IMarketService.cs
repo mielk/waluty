@@ -24,7 +24,11 @@ namespace Stock.Domain.Services
 
                                                                         #region assets
         IEnumerable<Asset> FilterAssets(string q, int limit);
+        IEnumerable<Asset> GetAllAssets();
+        IEnumerable<Asset> GetAssetsForMarket(int marketId);
         Asset GetAsset(int id);
+        Asset GetAssetByName(string name);
+        Asset GetAssetBySymbol(string symbol);
                                                                         #endregion assets
 
 

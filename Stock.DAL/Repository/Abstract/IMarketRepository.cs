@@ -20,7 +20,11 @@ namespace Stock.DAL.Repositories
 
                                                 #region assets
         IEnumerable<AssetDto> FilterAssets(string q, int limit);
+        IEnumerable<AssetDto> GetAllAssets();
+        IEnumerable<AssetDto> GetAssetsForMarket(int marketId);
         AssetDto GetAsset(int id);
+        AssetDto GetAssetByName(string name);
+        AssetDto GetAssetBySymbol(string symbol);
                                                 #endregion assets
 
 

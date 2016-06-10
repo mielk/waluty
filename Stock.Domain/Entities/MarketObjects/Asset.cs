@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Services;
+using Stock.Domain.Services.Factories;
 
 
 namespace Stock.Domain.Entities
@@ -17,6 +18,100 @@ namespace Stock.Domain.Entities
         public Market Market { get; set; }
         public bool IsActive { get; set; }
         public IEnumerable<AssetTimeframe> AssetTimeframes { get; set; }
+        //Static.
+        private static IMarketService service = MarketServiceFactory.CreateService();
+        private static IEnumerable<Asset> assets = new List<Asset>();
+
+
+        #region static methods
+
+        public static void injectService(IMarketService _service)
+        {
+            service = _service;
+        }
+
+        public static IEnumerable<Asset> GetAllAssets()
+        {
+            loadAllAssets();
+            return assets.ToList();
+        }
+
+        private static void loadAllAssets()
+        {
+            var dbAssets = service.GetAllAssets();
+            foreach (var asset in dbAssets)
+            {
+                var match = assets.SingleOrDefault(m => m.Id == asset.Id);
+                if (match == null)
+                {
+                    assets = assets.Concat(new[] { asset });
+                }
+
+            }
+        }
+
+        public static Asset GetAssetById(int id)
+        {
+
+            var asset = assets.SingleOrDefault(m => m.Id == id);
+
+            if (asset == null)
+            {
+                asset = service.GetAsset(id);
+                if (asset != null)
+                {
+                    assets = assets.Concat(new[] { asset });
+                }
+            }
+
+            return asset;
+
+        }
+
+        public static Asset GetAssetByName(string name)
+        {
+
+            var asset = assets.SingleOrDefault(m => m.Name.Equals(name));
+
+            if (asset == null)
+            {
+                asset = service.GetAssetByName(name);
+                if (asset != null)
+                {
+                    assets = assets.Concat(new[] { asset });
+                }
+            }
+
+            return asset;
+
+        }
+
+        public static Asset GetAssetBySymbol(string symbol)
+        {
+
+            var asset = assets.SingleOrDefault(m => m.ShortName.Equals(symbol));
+
+            if (asset == null)
+            {
+                asset = service.GetAssetBySymbol(symbol);
+                if (asset != null)
+                {
+                    assets = assets.Concat(new[] { asset });
+                }
+            }
+
+            return asset;
+
+        }
+
+        public static IEnumerable<Asset> GetAssetsForMarket(int marketId)
+        {
+            loadAllAssets();
+            return assets.Where(a => a.Market.Id == marketId).ToList();
+        }
+
+        #endregion static methods
+
 
 
 
@@ -28,20 +123,10 @@ namespace Stock.Domain.Entities
         }
 
 
-        public static Asset FxFromSymbol(string symbol)
-        {
-            return MarketService.Instance().GetFxPair(symbol);
-        }
-
-        public static Asset FxFromId(int id)
-        {
-            return MarketService.Instance().GetFxPair(id);
-        }
-
         public static Asset FromDto(AssetDto dto)
         {
             Asset asset = new Asset(dto.Id, dto.Name);
-            asset.ShortName = dto.ShortName;
+            asset.ShortName = dto.Symbol;
             asset.setMarket(dto.IdMarket);
             return asset;
         }

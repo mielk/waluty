@@ -62,7 +62,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IMarketService> mockService = new Mock<IMarketService>();
             mockService.Setup(c => c.GetMarketById(It.IsAny<int>())).Returns((int a) => getMarket(a));
             Market.injectService(mockService.Object);
-            AssetDto dto = new AssetDto { Id = 1, IdMarket = 1, Name = "EURUSD", ShortName = "EURUSD" };
+            AssetDto dto = new AssetDto { Id = 1, IdMarket = 1, Name = "EURUSD", Symbol = "EURUSD" };
 
             //Act.
             Asset asset = Asset.FromDto(dto);

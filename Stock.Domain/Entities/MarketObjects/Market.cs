@@ -16,7 +16,7 @@ namespace Stock.Domain.Entities
         public string ShortName { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public IEnumerable<Asset> Assets { get; set; }
+        private IEnumerable<Asset> assets;
         //Static.
         private static IMarketService service = MarketServiceFactory.CreateService();
         private static IEnumerable<Market> markets = new List<Market>();
@@ -108,14 +108,32 @@ namespace Stock.Domain.Entities
 
 
 
-
         public Market(int id, string name)
         {
             this.Id = id;
             this.Name = name;
-            this.Assets = new List<Asset>();
         }
 
+        public IEnumerable<Asset> Assets
+        {
+            get
+            {
+                if (assets == null)
+                {
+                    assets = IsFx() ? FxPair.GetAllFxPairs() : Asset.GetAssetsForMarket(Id);
+                }
+                return assets.ToList();
+            }
+            set
+            {
+                assets = value;
+            }
+        }
+
+        public bool IsFx()
+        {
+            return Name.Equals("fx", StringComparison.CurrentCultureIgnoreCase);
+        }
 
         public void setTimes(string startTime, string endTime)
         {

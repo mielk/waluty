@@ -73,7 +73,34 @@ namespace Stock.DAL.Repositories
             using (EFDbContext context = new EFDbContext())
             {
                 results = context.Companies.Where(c => c.Name.ToLower().Contains(lower) ||
-                                                  c.ShortName.ToLower().Contains(lower)).Take(limit).ToList();
+                                                  c.Symbol.ToLower().Contains(lower)).Take(limit).ToList();
+            }
+
+            return results;
+
+        }
+
+        public IEnumerable<AssetDto> GetAllAssets()
+        {
+            IEnumerable<AssetDto> results = null;
+
+            using (EFDbContext context = new EFDbContext())
+            {
+                results = context.Companies.ToList();
+            }
+
+            return results;
+
+        }
+
+
+        public IEnumerable<AssetDto> GetAssetsForMarket(int marketId)
+        {
+            IEnumerable<AssetDto> results = null;
+
+            using (EFDbContext context = new EFDbContext())
+            {
+                results = context.Companies.Where(c => c.IdMarket == marketId).ToList();
             }
 
             return results;
@@ -93,6 +120,35 @@ namespace Stock.DAL.Repositories
             return company;
 
         }
+
+        public AssetDto GetAssetByName(string name)
+        {
+
+            AssetDto company = null;
+
+            using (EFDbContext context = new EFDbContext())
+            {
+                company = context.Companies.SingleOrDefault(c => c.Name.Equals(name, System.StringComparison.CurrentCultureIgnoreCase));
+            }
+
+            return company;
+
+        }
+
+        public AssetDto GetAssetBySymbol(string symbol)
+        {
+
+            AssetDto company = null;
+
+            using (EFDbContext context = new EFDbContext())
+            {
+                company = context.Companies.SingleOrDefault(c => c.Symbol.Equals(symbol, System.StringComparison.CurrentCultureIgnoreCase));
+            }
+
+            return company;
+
+        }
+
                                                                 #endregion assets
 
 
