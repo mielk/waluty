@@ -112,7 +112,19 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public FxPairDto GetPair(int id)
+        public IEnumerable<FxPairDto> GetFxPairs()
+        {
+            IEnumerable<FxPairDto> results = null;
+            using (EFDbContext context = new EFDbContext())
+            {
+                results = context.Pairs.ToList();
+            }
+
+            return results;
+
+        }
+
+        public FxPairDto GetFxPair(int id)
         {
 
             FxPairDto pair = null;
@@ -126,7 +138,7 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public FxPairDto GetPair(string symbol)
+        public FxPairDto GetFxPair(string symbol)
         {
 
             FxPairDto pair = null;
@@ -142,6 +154,59 @@ namespace Stock.DAL.Repositories
 
                                                                 #endregion fx
 
+
+                                                                #region currencies
+        public IEnumerable<CurrencyDto> GetCurrencies()
+        {
+
+            IEnumerable<CurrencyDto> markets;
+
+            using (var context = new EFDbContext())
+            {
+                markets = context.Currencies.ToList();
+            }
+
+            return markets;
+        }
+
+
+        public CurrencyDto GetCurrencyById(int id)
+        {
+
+            CurrencyDto market;
+            using (var context = new EFDbContext())
+            {
+                market = context.Currencies.SingleOrDefault(m => m.Id == id);
+            }
+
+            return market;
+        }
+
+        public CurrencyDto GetCurrencyByName(string name)
+        {
+
+            CurrencyDto market;
+            using (var context = new EFDbContext())
+            {
+                market = context.Currencies.SingleOrDefault(m => m.Name.Equals(name));
+            }
+
+            return market;
+        }
+
+        public CurrencyDto GetCurrencyBySymbol(string symbol)
+        {
+
+            CurrencyDto market;
+            using (var context = new EFDbContext())
+            {
+                market = context.Currencies.SingleOrDefault(m => m.Symbol.Equals(symbol));
+            }
+
+            return market;
+        }
+
+                                                                #endregion currencies
 
     }
 }

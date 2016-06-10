@@ -52,7 +52,7 @@ namespace Stock.Web.Controllers
         public ActionResult GetCompany(int id)
         {
             //var company = companyService.GetCompany(id);
-            var asset = marketService.GetPair(id);
+            var asset = marketService.GetFxPair(id);
             return Json(asset, JsonRequestBehavior.AllowGet);
         }
 

@@ -26,9 +26,18 @@ namespace Stock.DAL.Repositories
 
                                                 #region fx
         IEnumerable<FxPairDto> FilterPairs(string q, int limit);
-        FxPairDto GetPair(int id);
-        FxPairDto GetPair(string symbol);
+        IEnumerable<FxPairDto> GetFxPairs();
+        FxPairDto GetFxPair(int id);
+        FxPairDto GetFxPair(string symbol);
                                                 #endregion fx
+
+
+                                                #region currencies
+        IEnumerable<CurrencyDto> GetCurrencies();
+        CurrencyDto GetCurrencyById(int id);
+        CurrencyDto GetCurrencyByName(string name);
+        CurrencyDto GetCurrencyBySymbol(string symbol);
+                                                #endregion currencies
 
     }
 }

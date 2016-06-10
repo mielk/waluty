@@ -84,20 +84,54 @@ namespace Stock.Domain.Services
             return dtos.Select(FxPair.FromDto).ToList();
         }
 
-
-        public FxPair GetPair(int id)
+        public IEnumerable<FxPair> GetFxPairs()
         {
-            var dto = _repository.GetPair(id);
+            var dtos = _repository.GetFxPairs();
+            return dtos.Select(FxPair.FromDto).ToList();
+        }
+
+        public FxPair GetFxPair(int id)
+        {
+            var dto = _repository.GetFxPair(id);
             return FxPair.FromDto(dto);
         }
 
 
-        public FxPair GetPair(string symbol)
+        public FxPair GetFxPair(string symbol)
         {
-            var dto = _repository.GetPair(symbol);
+            var dto = _repository.GetFxPair(symbol);
             return FxPair.FromDto(dto);
         }
                                                                         #endregion fx
+
+
+
+                                                                        #region currencies
+        public IEnumerable<Currency> GetCurrencies()
+        {
+            var dtos = _repository.GetCurrencies();
+            return dtos.Select(Currency.FromDto).ToList();
+        }
+
+        public Currency GetCurrencyById(int id)
+        {
+            var dto = _repository.GetCurrencyById(id);
+            return Currency.FromDto(dto);
+        }
+
+        public Currency GetCurrencyByName(string name)
+        {
+            var dto = _repository.GetCurrencyByName(name);
+            return Currency.FromDto(dto);
+        }
+
+        public Currency GetCurrencyBySymbol(string symbol)
+        {
+            var dto = _repository.GetCurrencyBySymbol(symbol);
+            return Currency.FromDto(dto);
+        }
+                                                                        #endregion currencies
+
 
     }
 }

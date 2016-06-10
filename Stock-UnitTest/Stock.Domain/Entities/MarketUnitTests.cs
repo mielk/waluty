@@ -4,6 +4,8 @@ using Stock.Domain.Entities;
 using System.Collections.Generic;
 using Moq;
 using Stock.Domain.Services;
+using Stock.DAL.TransferObjects;
+using System.Linq;
 
 namespace Stock_UnitTest.Stock.Domain.Entities
 {
@@ -21,14 +23,22 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         //Arrange
         private Market defaultMarket()
         {
-            var market = new Market(DEFAULT_ID, DEFAULT_NAME) { ShortName = DEFAULT_SHORT_NAME };
+            return getMarket(DEFAULT_ID);
+        }
+
+        private Market getMarket(int id)
+        {
+            IEnumerable<Market> markets = marketsCollection();
+            Market market = markets.SingleOrDefault(m => m.Id == id);
             return market;
         }
 
-        private IEnumerable<Market> marketsCollection(){
+        private IEnumerable<Market> marketsCollection()
+        {
             List<Market> markets = new List<Market>();
-            markets.Add(defaultMarket());
+            markets.Add(new Market(DEFAULT_ID, DEFAULT_NAME) { ShortName = DEFAULT_SHORT_NAME });
             markets.Add(new Market(2, "United Kingdom") { ShortName = "UK" });
+            markets.Add(new Market(3, "United States") { ShortName = "US" });
             return markets;
         }
 
@@ -58,86 +68,112 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsNotNull(market.Assets);
             Assert.IsInstanceOfType(market.Assets, typeof(IEnumerable<Asset>));
         }
+
+        [TestMethod]
+        public void marketFromDto_has_the_same_properties_as_dto()
+        {
+            MarketDto dto = new MarketDto { 
+                Id = DEFAULT_ID, 
+                Name = DEFAULT_NAME, 
+                ShortName = DEFAULT_SHORT_NAME, 
+                StartTime = DEFAULT_START_TIME, 
+                EndTime = DEFAULT_END_TIME 
+            };
+
+            Market market = Market.FromDto(dto);
+
+            Assert.AreEqual(DEFAULT_ID, market.Id);
+            Assert.AreEqual(DEFAULT_NAME, market.Name);
+            Assert.AreEqual(DEFAULT_SHORT_NAME, market.ShortName);
+            //Assert.Fail("Dodać porównywanie godzin");
+
+        }
+
+
         #endregion Constructor
 
 
 
 
         #region setTimes
-        [TestMethod]
-        public void setTimes_byString_times_are_correctly_set()
-        {
-            Assert.Fail("Not implemented");
-        }
 
-        public void setTimes_byString_throws_exception_if_illegal_strings_gaven()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void setTimes_byString_times_are_correctly_set()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        public void setTimes_byDateTime_times_are_correctly_set()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void setTimes_byString_throws_exception_if_illegal_strings_gaven()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
+
+        //[TestMethod]
+        //public void setTimes_byDateTime_times_are_correctly_set()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
+
         #endregion setTimes
 
 
 
 
         #region isOpen
-        [TestMethod]
-        public void isOpen_returns_false_if_before_open_time()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_false_if_before_open_time()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_false_if_after_close_time()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_false_if_after_close_time()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_true_if_equal_to_open_time()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_true_if_equal_to_open_time()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_true_if_equal_to_close_time()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_true_if_equal_to_close_time()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_true_if_between_open_and_close_time()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_true_if_between_open_and_close_time()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_true_if_midnight_for_247_market()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_true_if_midnight_for_247_market()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_false_if_saturday()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_false_if_saturday()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_false_if_sunday()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_false_if_sunday()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
 
-        [TestMethod]
-        public void isOpen_returns_false_if_newYear()
-        {
-            Assert.Fail("Not implemented");
-        }
+        //[TestMethod]
+        //public void isOpen_returns_false_if_newYear()
+        //{
+        //    Assert.Fail("Not implemented");
+        //}
         #endregion isOpen
 
 
@@ -147,7 +183,27 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         [TestMethod]
         public void getMarket_returns_the_same_instance_each_time()
         {
-            Assert.Fail("Not implemented");
+            //Arrange
+            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            mockService.Setup(c => c.GetMarketById(It.IsAny<int>())).Returns((int a) => getMarket(a));
+            Market.injectService(mockService.Object);
+
+            //Act
+            var fx1 = Market.GetMarketById(1);
+            var uk1 = Market.GetMarketById(2);
+            var us1 = Market.GetMarketById(3);
+            var fx2 = Market.GetMarketByName("Forex");
+            var uk2 = Market.GetMarketBySymbol("UK");
+            var fx3 = Market.GetMarketBySymbol("FX");
+            var us2 = Market.GetMarketBySymbol("US");
+            var fx4 = Market.GetMarketById(1);
+
+            Assert.IsTrue(fx1 == fx2);
+            Assert.IsTrue(fx1 == fx3);
+            Assert.IsTrue(fx1 == fx4);
+            Assert.IsTrue(uk1 == uk2);
+            Assert.IsTrue(us1 == us2);
+
         }
 
         [TestMethod]
@@ -175,7 +231,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             //Arrange
             Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(a => a.GetMarketById(DEFAULT_ID)).Returns(defaultMarket());
+            mockService.Setup(c => c.GetMarketById(It.IsAny<int>())).Returns((int a) => getMarket(a));
             Market.injectService(mockService.Object);
 
             //Act.
@@ -233,30 +289,67 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         public void getMarket_after_adding_new_item_returns_existing_instance()
         {
 
-            const int NEW_MARKET_ID = 2;
-            const string NEW_MARKET_NAME = "market2";
-
             //Arrange
             Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(a => a.GetMarketById(DEFAULT_ID)).Returns(defaultMarket());
-            mockService.Setup(a => a.GetMarketById(NEW_MARKET_ID)).Returns(new Market(NEW_MARKET_ID, NEW_MARKET_NAME));
+            mockService.Setup(c => c.GetMarketById(It.IsAny<int>())).Returns((int a) => getMarket(a));
             Market.injectService(mockService.Object);
 
             //Act.
-            Market baseMarket = Market.GetMarketById(DEFAULT_ID);
-            Market newMarket = Market.GetMarketById(NEW_MARKET_ID);
-            Market baseMarketAgain = Market.GetMarketById(DEFAULT_ID);
+            Market baseMarket = Market.GetMarketById(1);
+            Market newMarket = Market.GetMarketById(2);
+            Market baseMarketAgain = Market.GetMarketById(1);
 
             //Assert.
             Assert.AreSame(baseMarket, baseMarketAgain);
 
         }
 
+
         [TestMethod]
         public void getAllMarkets_returns_existing_instances()
         {
-            Assert.Fail("Not implemented");
+
+            //Arrange
+            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            mockService.Setup(c => c.GetMarkets()).Returns(marketsCollection());
+            mockService.Setup(c => c.GetMarketById(It.IsAny<int>())).Returns((int a) => getMarket(a));
+            Market.injectService(mockService.Object);
+
+            //Act.
+            var fx = Market.GetMarketById(1);
+            var uk = Market.GetMarketById(2);
+            var markets = Market.GetAllMarkets();
+
+            //Assert.
+            Assert.IsTrue(fx == markets.SingleOrDefault(m => m.ShortName.Equals("FX")));
+            Assert.IsTrue(uk == markets.SingleOrDefault(m => m.ShortName.Equals("UK")));
+
         }
+
+
+        [TestMethod]
+        public void getAllMarkets_returns_proper_number_of_markets()
+        {
+
+            //Arrange
+            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            mockService.Setup(c => c.GetMarkets()).Returns(marketsCollection());
+            mockService.Setup(c => c.GetMarketById(It.IsAny<int>())).Returns((int a) => getMarket(a));
+            Market.injectService(mockService.Object);
+
+            //Act.
+            var fx = Market.GetMarketById(1);
+            var uk = Market.GetMarketById(2);
+            var markets = Market.GetAllMarkets();
+
+            //Asssert.
+            Assert.AreEqual(3, markets.Count());
+
+        }
+
+
+
+
         #endregion getting markets
 
 

@@ -30,9 +30,20 @@ namespace Stock.Domain.Services
 
                                                                         #region fx
         IEnumerable<FxPair> FilterPairs(string q, int limit);
-        FxPair GetPair(int id);
-        FxPair GetPair(string symbol);
+        IEnumerable<FxPair> GetFxPairs();
+        FxPair GetFxPair(int id);
+        FxPair GetFxPair(string symbol);
                                                                         #endregion fx
+
+
+                                                                        #region currencies
+        IEnumerable<Currency> GetCurrencies();
+        Currency GetCurrencyById(int id);
+        Currency GetCurrencyByName(string name);
+        Currency GetCurrencyBySymbol(string symbol);
+                                                                        #endregion currencies
+
+
 
     }
 }

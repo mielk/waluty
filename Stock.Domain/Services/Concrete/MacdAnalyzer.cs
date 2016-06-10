@@ -145,7 +145,7 @@ namespace Stock.Domain.Services
         {
             Symbol = symbol;
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
-            var pair = _marketRepository.GetPair(pairSymbol);
+            var pair = _marketRepository.GetFxPair(pairSymbol);
             AssetId = pair.Id;
         }
 

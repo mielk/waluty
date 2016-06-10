@@ -29,6 +29,27 @@ namespace Stock.Domain.Entities
             service = _service;
         }
 
+        public static IEnumerable<Market> GetAllMarkets()
+        {
+            List<Market> result = new List<Market>();
+            var dbMarkets = service.GetMarkets();
+            foreach (var market in dbMarkets)
+            {
+                var match = markets.SingleOrDefault(m => m.Id == market.Id);
+                if (match == null)
+                {
+                    markets = markets.Concat(new[] { market });
+                    match = market;
+                }
+
+                result.Add(match);
+
+            }
+
+            return result;
+
+        }
+
         public static Market GetMarketById(int id)
         {
 
