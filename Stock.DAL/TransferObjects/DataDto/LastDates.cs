@@ -21,4 +21,5 @@ namespace Stock.DAL.TransferObjects
 
 
     }
+
 }

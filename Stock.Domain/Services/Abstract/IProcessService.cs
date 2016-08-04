@@ -10,10 +10,7 @@ namespace Stock.Domain.Services
 {
     public interface IProcessService
     {
-        void LoadAssetTimeframe(Asset asset, Timeframe timeframe);
-        void LoadAssetTimeframe(string asset, string timeframe);
-        void LoadAssetTimeframe(string symbol);
-        void LoadAnalysisTypes(AnalysisType[] type);
+        void Setup(Asset asset, Timeframe timeframe, AnalysisType[] type);
         bool Run(bool fromScratch);
     }
 }

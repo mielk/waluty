@@ -36,15 +36,15 @@ namespace Stock.Web.Controllers
         [AllowAnonymous]
         public ActionResult RunProcess(string asset, string timeframe, bool fromScratch, string analysisTypes)
         {
-            IProcessService service = new ProcessService(null);
+            
+            IProcessService service = new ProcessService();
+
+            //Convert the given names of analysis into enumerations.
+            Asset _asset = Asset.GetAssetByName(asset);
+            Timeframe _timeframe = Timeframe.GetTimeframeByShortName(timeframe);
             var types = AnalysisTypeHelper.StringToTypesList(analysisTypes, ',');
 
-
-            service.LoadAssetTimeframe(asset, timeframe);
-            //Convert the given names of analysis to be processed into enumerations.
-
-            service.LoadAnalysisTypes(types);
-
+            service.Setup(_asset, _timeframe, types);
             var result = service.Run(fromScratch);
             var json = new { value = result };
             return Json(json, JsonRequestBehavior.AllowGet);

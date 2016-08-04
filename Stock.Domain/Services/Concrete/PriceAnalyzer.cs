@@ -23,16 +23,15 @@ namespace Stock.Domain.Services
 
         private IAnalysisDataService _dataService;
         private IMarketRepository _marketRepository;
+        public Asset Asset { get; set; }
+        public Timeframe Timeframe { get; set; }
+
 
         public bool IsSimulation { get; set; }
         private Analysis analysis;
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
         public string Symbol;
-        public Asset Asset { get; set;}
-        public int AssetId;
-        public int TimeframeId;
-        public Timeframe Timeframe;
         public int CurrentDirection2D;
 
         //Current peaks & troughs - for better performance.
@@ -40,17 +39,16 @@ namespace Stock.Domain.Services
 
 
         /* CONSTRUCTORS */
-        public PriceAnalyzer()
+        public PriceAnalyzer(Asset asset, Timeframe timeframe)
         {
+            this.Asset = asset;
+            this.Timeframe = timeframe;
         }
 
         public PriceAnalyzer(IAnalysisDataService dataService)
         {
             _dataService = dataService;
         }
-
-
-        
 
 
 
@@ -161,7 +159,7 @@ namespace Stock.Domain.Services
             Timeframe = Timeframe.GetTimeframe(symbol.GetTimeframeSymbol());
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
             var pair = _marketRepository.GetFxPair(pairSymbol);
-            AssetId = pair.Id;
+            this.Asset = Asset.GetAssetById(pair.Id);
         }
 
         public void LoadDataSets(string symbol)

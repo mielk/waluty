@@ -54,7 +54,9 @@ namespace Stock.Domain.Services
         public int NextStep(int incrementation)
         {
             LastAnalyzed++;
+
             CurrentDataSet = Data.Where(d => d.Index < LastAnalyzed).ToArray();
+            
 
             //Napraw numerację (mogła zostać zepsuta przez obiekt PriceAnalyzer).
             Data.AppendIndexNumbers();

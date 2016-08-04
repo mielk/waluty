@@ -379,3 +379,18 @@ path{
     padding: 0;
     z-index: 999;
 }
+
+
+.info-panel {
+    display: block;
+    visibility: visible;
+    background-color: blue;
+    height: 100px;
+    width: 100%;
+    padding: 6px;
+    padding-left: 0;
+    font-family: 'Century Gothic';
+    color: white;
+    line-height: 20px;
+    margin: 0 6px;
+}

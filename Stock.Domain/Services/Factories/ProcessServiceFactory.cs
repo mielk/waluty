@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Stock.Domain.Services.Abstract;
+using Stock.Domain.Services.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +12,14 @@ namespace Stock.Domain.Services.Factories
 
         private static ProcessServiceFactory _instance;
 
-        private readonly IProcessService _service;
-
+        private static IQuotationService _quotationService;
+        private static IProcessService _processService;
+        
 
         private ProcessServiceFactory()
         {
-            _service = new ProcessService(null);
+            _processService = new ProcessService();
+            _quotationService = new QuotationService();
         }
 
 
@@ -24,10 +28,29 @@ namespace Stock.Domain.Services.Factories
             return _instance ?? (_instance = new ProcessServiceFactory());
         }
 
-
         public IProcessService GetService()
         {
-            return _service;
+            return _processService;
+        }
+
+        public IProcessService GetService(IProcessService inject)
+        {
+            if (inject != null){
+                _processService = inject;
+            }
+            return _processService;
+        }
+
+        public IQuotationService GetQuotationService()
+        {
+            return _quotationService;
+        }
+
+        public IQuotationService GetQuotationService(IQuotationService inject){
+            if (inject != null){
+                _quotationService = inject;
+            }
+            return _quotationService;
         }
 
 

@@ -66,19 +66,25 @@
     <Compile Include="Enums\ExtremumType.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IAdxAnalyzer.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
-    <Compile Include="Services\Abstract\IAnalyzer.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IAnalyzer.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\ICandlestickAnalyzer.cs" />
+    <Compile Include="Services\Abstract\IQuotationService.cs" />
     <Compile Include="Services\Abstract\ISimulationServiceFactory.cs" />
     <Compile Include="Services\Abstract\ISimulationService.cs" />
-    <Compile Include="Services\Abstract\IMacdAnalyzer.cs" />
-    <Compile Include="Services\Abstract\IPriceAnalyzer.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IMacdAnalyzer.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IPriceAnalyzer.cs" />
     <Compile Include="Services\Abstract\IPriceTrendComparer.cs" />
     <Compile Include="Services\Abstract\IProcessService.cs" />
     <Compile Include="Services\Abstract\IDataService.cs" />
     <Compile Include="Services\Abstract\MarketServices\IMarketService.cs" />
-    <Compile Include="Services\Abstract\ITrendlineAnalyzer.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\ITrendlineAnalyzer.cs" />
     <Compile Include="Services\Abstract\ITrendService.cs" />
     <Compile Include="Entities\Analysis\ExtremaUtils.cs" />
+    <Compile Include="Services\Concrete\AdxAnalyzer.cs" />
+    <Compile Include="Services\Concrete\CandlestickAnalyzer.cs" />
+    <Compile Include="Services\Concrete\QuotationService.cs" />
     <Compile Include="Services\Concrete\SimulationService.cs" />
     <Compile Include="Services\Concrete\MacdAnalyzer.cs" />
     <Compile Include="Services\Concrete\ExtremumPriceTrendComparer.cs" />
@@ -86,11 +92,13 @@
     <Compile Include="Services\Concrete\PriceAnalyzer.cs" />
     <Compile Include="Services\Concrete\PriceTrendComparer.cs" />
     <Compile Include="Services\Concrete\ProcessService.cs" />
+    <Compile Include="Services\Concrete\TImeframe.cs" />
     <Compile Include="Services\Concrete\TrendlineAnalyzer.cs" />
     <Compile Include="Services\Concrete\TrendService.cs" />
     <Compile Include="Services\Concrete\DataService.cs" />
     <Compile Include="Services\Concrete\MarketServices\MarketService.cs" />
     <Compile Include="Services\Factories\AnalysisDataServiceFactory.cs" />
+    <Compile Include="Services\Factories\AnalyzerFactory.cs" />
     <Compile Include="Services\Factories\MarketServiceFactory.cs" />
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
     <Compile Include="Services\Factories\ProcessServiceFactory.cs" />
@@ -106,7 +114,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\Abstract\AnalysisServices\" />
     <Folder Include="Services\Concrete\AnalysisServices\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

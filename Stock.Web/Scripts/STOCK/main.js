@@ -49,7 +49,7 @@
             controller: new ChartController({
                 optionsPanelId: 'options-panel',
                 companyDropdownId: 'company-dropdown',
-                timebandDropdownId: 'timeband-dropdown',
+                timeframeDropdownId: 'timeframe-dropdown',
                 showPeaksCheckboxId: 'show-peaks-checkbox',
                 showTrendlinesCheckboxId: 'show-trendlines-checkbox',
                 showMACDCheckboxId: 'show-macd-checkbox',
@@ -68,7 +68,8 @@
         modules.analysis = modules.analysis || new Module({
             name: 'analysis',
             controller: new AnalysisController({
-                runAnalysisButtonId: 'run-analysis-button'
+                runAnalysisButtonId: 'run-analysis-button',
+                infoPanelId: 'info-panel'
             }),
             run: function (e) {
                 e.run();
@@ -84,7 +85,7 @@
             controller: new SimulationController({
                 optionsPanelId: 'simulation-options-panel',
                 companyDropdownId: 'simulation-company-dropdown',
-                timebandDropdownId: 'simulation-timeband-dropdown',
+                timeframeDropdownId: 'simulation-timeframe-dropdown',
                 runSimulationButtonId: 'run-simulation-button',
                 simulationPrevButtonId: 'simulation-prev',
                 simulationNextButtonId: 'simulation-next',

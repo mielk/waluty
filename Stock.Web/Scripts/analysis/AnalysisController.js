@@ -6,11 +6,11 @@ function AnalysisController(params) {
     self.AnalysisController = true;
     self.fromScratch = params.fromScratch || false; //Zmienić, żeby odczytywało z check boxa.
 
-
     var controls = {}
 
     function loadControls() {
         controls.runAnalysisButton = document.getElementById(params.runAnalysisButtonId);
+        controls.infoPanel = document.getElementById(params.infoPanelId);
     }
 
     function assignEvents() {
@@ -24,14 +24,32 @@ function AnalysisController(params) {
     }
 
 
+    function arrayToString(arr, items) {
+        var str = '';
+        var startIndex = Math.max(0, arr.length - items);
+        var endIndex = arr.length - 1;
+        for (var i = startIndex; i <= endIndex; i++) {
+            str += arr[i] + '\n';
+        }
+        return str;
+    }
+    
+
     function runAnalysis(params) {
         var fromScratch = params.fromScratch || false;
         var assetsList = STOCK.COMPANIES.getList();
         var timeframes = STOCK.TIMEFRAMES.getValues();
+        var infos = [];
 
         assetsList.forEach(function (asset) {
 
             timeframes.forEach(function (timeframe) {
+
+                var info = asset.name + ' | ' + timeframe.name;
+                infos.push(info);
+                var text = arrayToString(infos, 5)
+                $(controls.infoPanel).html(text);
+
 
                 mielk.db.fetch(
                     'Process',

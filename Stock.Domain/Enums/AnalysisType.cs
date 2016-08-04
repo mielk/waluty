@@ -1,4 +1,6 @@
-﻿using Stock.Domain.Services;
+﻿using Stock.Domain.Entities;
+using Stock.Domain.Services;
+using Stock.Domain.Services.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,8 @@ using System.Threading.Tasks;
 namespace Stock.Domain.Enums
 {
 
-    public enum AnalysisType
-    {
+    public enum AnalysisType{
+    
         Unknown = 0,
         Price = 1,
         Trendline = 2,
@@ -23,7 +25,8 @@ namespace Stock.Domain.Enums
     {
         private static Dictionary<string, AnalysisType> types;
 
-        public static AnalysisType GetAnalysisType(string symbol)
+        public static AnalysisType 
+            Type(string symbol)
         {
 
             if (types == null) LoadTypes();
@@ -38,13 +41,14 @@ namespace Stock.Domain.Enums
         private static void LoadTypes()
         {
             types = new Dictionary<string, AnalysisType>();
-            types.Add("price", AnalysisType.Price);
+            types.Add("prices", AnalysisType.Price);
             types.Add("trendline", AnalysisType.Trendline);
             types.Add("macd", AnalysisType.MACD);
             types.Add("adx", AnalysisType.ADX);
             types.Add("candlestick", AnalysisType.Candlestick);
 
         }
+
 
         public static AnalysisType[] StringToTypesList(string types)
         {
@@ -57,7 +61,7 @@ namespace Stock.Domain.Enums
             List<AnalysisType> list = new List<AnalysisType>();
             for (var i = 0; i < strTypes.Length; i++)
             {
-                var type = GetAnalysisType(strTypes[i]);
+                var type = Type(strTypes[i]);
                 if (type != AnalysisType.Unknown)
                 {
                     list.Add(type);
@@ -68,14 +72,9 @@ namespace Stock.Domain.Enums
 
         }
 
-        public static IAnalyzer GetAnalyzer(AnalysisType type)
+        public static IAnalyzer GetAnalyzer(Asset asset, Timeframe timeframe, AnalysisType type)
         {
-            switch (type)
-            {
-                case AnalysisType.Price: return new PriceAnalyzer();
-                case AnalysisType.MACD: return new MacdAnalyzer();
-                default: return null;
-            }
+            return AnalyzerFactory.Instance().getAnalyzer(type, asset, timeframe);
         }
 
     }

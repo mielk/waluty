@@ -24,12 +24,13 @@ namespace Stock.Domain.Services
         private IAnalysisDataService _dataService;
         private IMarketRepository _marketRepository;
 
+        public Asset Asset { get; set; }
+        public Timeframe Timeframe { get; set; }
+
         private Analysis analysis;
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
         public string Symbol;
-        public int AssetId;
-        public int TimeframeId;
 
         //Temporary variables
         private Macd previousMacd;
@@ -38,11 +39,19 @@ namespace Stock.Domain.Services
 
 
 
-        public MacdAnalyzer()
+        public MacdAnalyzer(Asset asset, Timeframe timeframe)
         {
+            this.Asset = asset;
+            this.Timeframe = timeframe;
         }
 
+
         public MacdAnalyzer(IAnalysisDataService dataService)
+        {
+            this._dataService = dataService;
+        }
+
+        public void injectDataService(IAnalysisDataService dataService)
         {
             _dataService = dataService;
         }
@@ -146,7 +155,7 @@ namespace Stock.Domain.Services
             Symbol = symbol;
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
             var pair = _marketRepository.GetFxPair(pairSymbol);
-            AssetId = pair.Id;
+            this.Asset = Asset.GetAssetById(pair.Id);
         }
 
         public void LoadDataSets(string symbol)

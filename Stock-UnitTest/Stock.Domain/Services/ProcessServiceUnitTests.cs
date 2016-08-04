@@ -1,99 +1,135 @@
-﻿//using System;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Stock.Domain.Entities;
-//using Stock.Domain.Services;
-//using Moq;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Stock.Domain.Entities;
+using Stock.Domain.Services;
+using Moq;
+using Stock.DAL.Repositories;
+using Stock.Domain.Enums;
+using Stock.Domain.Services.Abstract;
+using Stock.Domain.Services.Concrete;
+using Stock.Domain.Services.Factories;
 
-//namespace Stock_UnitTest.Stock.Domain.Services
-//{
-//    [TestClass]
-//    public class ProcessServiceUnitTests
-//    {
+namespace Stock_UnitTest.Stock.Domain.Services
+{
+    [TestClass]
+    public class ProcessServiceUnitTests
+    {
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException), "Asset is empty")]
+        public void run_if_asset_is_empty_exception_is_thrown()
+        {
+            var service = new ProcessService();
 
-//        public IDataService mockDataService()
-//        {
-//            //Mock<IDataService> dataService = new Mock<IDataService>();
-//            return null;
-//        }
+            Asset asset = null;
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            AnalysisType[] types = new AnalysisType[] { };
+            service.Setup(asset, timeframe, types);
+            service.Run(true);
 
-
-//        [TestMethod]
-//        public void loadAssetTimeframe_asset_from_object_is_properly_loaded_()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
-
-
-//        [TestMethod]
-//        public void loadAssetTimeframe_asset_from_string_is_properly_loaded_()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
-
-
-//        [TestMethod]
-//        public void loadAssetTimeframe_timeframe_from_object_is_properly_loaded_()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
+            Assert.IsTrue(service.getAsset() == asset);
+            
+        }
 
 
-//        [TestMethod]
-//        public void loadAssetTimeframe_timeframe_from_string_is_properly_loaded_()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException), "Timeframe is empty")]
+        public void run_if_timeframe_is_empty_exception_is_thrown()
+        {
+            
+            var service = new ProcessService();
+
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = null;
+            AnalysisType[] types = new AnalysisType[] { };
+            service.Setup(asset, timeframe, types);
+            service.Run(true);
+
+            Assert.IsTrue(service.getTimeframe() == timeframe);
+
+        }
 
 
-//        [TestMethod]
-//        public void loadAssetTimeframe_timeframe_from_enum_is_properly_loaded_()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
 
 
-//        [TestMethod]
-//        public void loadAssetTimeframe_symbol_is_properly_converted_to_asset_and_timeframe()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
+        private Mock<IQuotationService> mockedQuotationService()
+        {
+            Mock<IQuotationService> quotationService = new Mock<IQuotationService>();
+            quotationService.Setup(q => q.Setup(It.IsAny<Asset>(), It.IsAny<Timeframe>(), It.IsAny<AnalysisType[]>()));
+            ProcessServiceFactory.Instance().GetQuotationService(quotationService.Object);
+            return quotationService;
+        }
 
 
-//        [TestMethod]
-//        public void loadAssetTimeframe_if_asset_not_found_throw_exception()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
+        [TestMethod]
+        public void check_if_quotationProcessor_was_called_for_last_required_date()
+        {
+            IProcessService service = new ProcessService();
+            var mockQuotationService = mockedQuotationService();
+
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
+            ProcessServiceFactory.Instance().GetQuotationService(mockQuotationService.Object);
+            service.Setup(asset, timeframe, types);
+            service.Run(true);
+
+            mockQuotationService.Verify(x => x.findEarliestRequiredDate(It.IsAny<bool>()), Times.Exactly(1));
+
+        }
 
 
-//        [TestMethod]
-//        public void loadAssetTimeframe_if_timeframe_not_found_throw_exception()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
+
+        [TestMethod]
+        public void check_if_quotationProcessor_loading_method_was_called_with_proper_parameter()
+        {
+            var service = new ProcessService();
+            var mockQuotationService = mockedQuotationService();
+            DateTime dt = new DateTime();
+            mockQuotationService.Setup(q => q.findEarliestRequiredDate(It.IsAny<bool>())).Returns(dt);
+
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
+            service.Setup(asset, timeframe, types);
+
+            service.Run(true);
+            mockQuotationService.Verify(x => x.loadData(dt), Times.Exactly(1));
+
+            Assert.IsTrue(service.getTimeframe() == timeframe);
+
+        }
 
 
-//        [TestMethod]
-//        public void run_throws_exception_if_asset_is_not_set()
-//        {
-
-//            //dodać mock up do IDataRepository.
-
-//            //IProcessService service = new ProcessService();
-//            //service.LoadAssetTimeframe(null, Timeframe.GetTimeframe(TimeframeSymbol.D1));
-
-//            Assert.Fail("Not implemented yet");
-
-//        }
+        [TestMethod]
+        public void if_quotationService_returns_empty_array_of_data_items_Run_returns_false()
+        {
+            var service = new ProcessService();
+            var mockQuotationService = mockedQuotationService();
+            DateTime dt = new DateTime();
+            DataItem[] items = new DataItem[] { };
+            mockQuotationService.Setup(q => q.loadData(It.IsAny<DateTime>())).Returns(items);
+            mockQuotationService.Setup(q => q.findEarliestRequiredDate(It.IsAny<bool>())).Returns(dt);
 
 
-//        [TestMethod]
-//        public void run_throws_exception_if_timeframe_is_not_set()
-//        {
-//            Assert.Fail("Not implemented yet");
-//        }
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
+            service.Setup(asset, timeframe, types);
+
+            bool result = service.Run(true);
+            //mockQuotationService.Verify(x => x.loadData(dt), Times.Exactly(1));
+
+            Assert.IsFalse(result);
+        }
 
 
-//    }
-//}
+
+
+        //if_strings_are_passed_to_setup_and_asset_doesnt_exist_throw_exception()
+        //if_strings_are_passed_to_setup_and_asset_doesnt_exist_throw_exception()
+
+
+    }
+}

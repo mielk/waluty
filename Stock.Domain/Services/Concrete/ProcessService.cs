@@ -8,6 +8,8 @@ using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Enums;
+using Stock.Domain.Services.Abstract;
+using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Services
 {
@@ -16,38 +18,43 @@ namespace Stock.Domain.Services
 
         private AssetTimeframe assetTimeframe;
         private AnalysisType[] analysisTypes;
-        private readonly IDataRepository _dataRepository;
+        //private static IDataRepository dataRepository;
         private Dictionary<AnalysisType, IAnalyzer> _analyzers;
+        private DataItem[] dataItems;
 
-
-
-        public ProcessService(IDataRepository dataRepository)
+        public Asset getAsset()
         {
-            _dataRepository = dataRepository ?? RepositoryFactory.GetDataRepository();
+            if (assetTimeframe != null)
+            {
+                return assetTimeframe.asset;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public Timeframe getTimeframe()
+        {
+            if (assetTimeframe != null)
+            {
+                return assetTimeframe.timeframe;
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        //public static void injectService(IDataRepository _repository)
+        //{
+        //    dataRepository = _repository;
+        //}
 
-        public void LoadAssetTimeframe(Asset asset, Timeframe timeframe)
-        {
-            assetTimeframe = new AssetTimeframe(asset, timeframe);
-        }
+        //public ProcessService(IDataRepository _dataRepository)
+        //{
+        //    dataRepository = _dataRepository ?? RepositoryFactory.GetDataRepository();
+        //}
 
-        public void LoadAssetTimeframe(string asset, string timeframe)
-        {
-            assetTimeframe = new AssetTimeframe(asset, timeframe);
-        }
-
-        public void LoadAssetTimeframe(string symbol)
-        {
-            assetTimeframe = new AssetTimeframe(symbol);
-        }
-
-
-        public void LoadAnalysisTypes(AnalysisType[] types)
-        {
-            analysisTypes = types;
-            loadAnalyzers();
-        }
 
 
         private void loadAnalyzers()
@@ -67,47 +74,48 @@ namespace Stock.Domain.Services
                 _analyzers.TryGetValue(type, out analyzer);
                 if (analyzer == null)
                 {
-                    _analyzers.Add(type, AnalysisTypeHelper.GetAnalyzer(type));
+                    _analyzers.Add(type, AnalysisTypeHelper.GetAnalyzer(getAsset(), getTimeframe(), type));
                 }
             }
 
         }
 
-
-        private void LoadLastEntries(){
-
-            foreach (var type in analysisTypes)
-            {
-                var date = getLastEntry(type);
-                assetTimeframe.AddLastDbEntry(type, date);
-            }
-
-        }
-
-        private DateTime? getLastEntry(AnalysisType type)
-        {
-            return new DateTime();
-        }
-
-        private DateTime findEarliestRequiredQuotation()
+        public void Setup(Asset asset, Timeframe timeframe, AnalysisType[] types)
         {
 
-            LoadLastEntries();
+            if (asset == null) throw new ArgumentNullException("Asset is empty");
+            if (timeframe == null) throw new ArgumentNullException("Timeframe is empty");
 
-            return new DateTime();
+            assetTimeframe = new AssetTimeframe(asset, timeframe);
+            analysisTypes = types;
+
         }
 
-        
+
         public bool Run(bool fromScratch)
         {
 
-            if (assetTimeframe == null || !assetTimeframe.isValid()) throw new Exception("Asset is required");
+            if (assetTimeframe == null) throw new ArgumentNullException("AssetTimeframe is empty");
+            if (assetTimeframe.asset == null) throw new ArgumentNullException("Asset is empty");
+            if (assetTimeframe.timeframe == null) throw new ArgumentNullException("Timeframe is empty");
 
-            assetTimeframe.LoadRequiredQuotations();
+            loadAnalyzers();
 
-            //_priceAnalyzer.Analyze(asset.Name, true);
-            //_macdAnalyzer.Analyze(symbol, false);
-            return false;
+            IQuotationService qService = ProcessServiceFactory.Instance().GetQuotationService();
+            DateTime earliestRequired = qService.findEarliestRequiredDate(fromScratch);
+            dataItems = qService.loadData(earliestRequired);
+
+
+
+            if (dataItems.Length > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
 
         }
 
