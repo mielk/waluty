@@ -23,6 +23,7 @@ namespace Stock.Domain.Services
 
         private IAnalysisDataService _dataService;
         private IMarketRepository _marketRepository;
+
         public Asset Asset { get; set; }
         public Timeframe Timeframe { get; set; }
 
@@ -36,6 +37,17 @@ namespace Stock.Domain.Services
 
         //Current peaks & troughs - for better performance.
         private Dictionary<ExtremumType, DataItem> currentExtrema;
+
+
+
+
+
+        /* Getter methods (for IAnalyzer interface) */
+        public Asset getAsset() { return Asset; }
+        public Timeframe getTimeframe() { return Timeframe; }
+
+
+
 
 
         /* CONSTRUCTORS */
@@ -52,87 +64,95 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze(string symbol)
+
+
+        public void Analyze()
         {
-            Analyze(symbol, false);
+            Analyze(false);
         }
 
-        public void Analyze(string symbol, bool fromScratch)
+        public void Analyze(bool fromScratch)
         {
 
-
-            /* Prepare instance. */
-            if (!DebugMode)
-            {
-                analysis = new Analysis(symbol, Type);
-                currentExtrema = new Dictionary<ExtremumType, DataItem>();
-                EnsureRepositories();
-                LoadParameters(symbol);
-            };
+        }
 
 
-            /* Fetch the proper data items and start index.
-             * The range of data to be analyzed depends on the [fromScratch] parameter 
-             * and the dates of last quotation and last analysis item. 
-             * 
-             * wideStartIndex - tylko wierzchołki i dołki są przeliczane od nowa (nic innego nie może się zmienić)
-             * narrowStartIndex - od tego elementu wszystko przeliczane jest od nowa (bo notowanie też mogło zostać 
-             *                      zaktualizowane i mogą się zmienić inne parametry)
-             * 
-             */
-            var wideStartIndex = 0;
-            var narrowStartIndex = 0;
-            if (fromScratch)
-            {
-                LoadDataSets(symbol);
-            }
-            else
-            {
-                var lastDates = _dataService.GetSymbolLastItems(symbol, Type.TableName());
-
-                //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
-                if (lastDates.IsUpToDate()) return;
-
-                if (lastDates.LastAnalysisItem == null)
-                {
-                    LoadDataSets(symbol);
-                }
-                else
-                {
-                    LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, MaxRange + DirectionCheckCounter);
-                    narrowStartIndex = FindIndex((DateTime)lastDates.LastAnalysisItem);
-                    wideStartIndex = Math.Max(narrowStartIndex - MaxRange, 0);
-                }
+        //public void Analyze(string symbol, bool fromScratch)
+        //{
 
 
-            }
+        //    /* Prepare instance. */
+        //    if (!DebugMode)
+        //    {
+        //        analysis = new Analysis(symbol, Type);
+        //        currentExtrema = new Dictionary<ExtremumType, DataItem>();
+        //        EnsureRepositories();
+        //        LoadParameters(symbol);
+        //    };
 
 
-            //Save info about this analysis.
-            analysis.FirstItemDate = Items[wideStartIndex].Date;
-            analysis.LastItemDate = Items[Items.Length - 1].Date;
-            analysis.AnalyzedItems = Items.Length - wideStartIndex + 1;
+        //    /* Fetch the proper data items and start index.
+        //     * The range of data to be analyzed depends on the [fromScratch] parameter 
+        //     * and the dates of last quotation and last analysis item. 
+        //     * 
+        //     * wideStartIndex - tylko wierzchołki i dołki są przeliczane od nowa (nic innego nie może się zmienić)
+        //     * narrowStartIndex - od tego elementu wszystko przeliczane jest od nowa (bo notowanie też mogło zostać 
+        //     *                      zaktualizowane i mogą się zmienić inne parametry)
+        //     * 
+        //     */
+        //    var wideStartIndex = 0;
+        //    var narrowStartIndex = 0;
+        //    if (fromScratch)
+        //    {
+        //        LoadDataSets(symbol);
+        //    }
+        //    else
+        //    {
+        //        var lastDates = _dataService.GetSymbolLastItems(symbol, Type.TableName());
+
+        //        //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
+        //        if (lastDates.IsUpToDate()) return;
+
+        //        if (lastDates.LastAnalysisItem == null)
+        //        {
+        //            LoadDataSets(symbol);
+        //        }
+        //        else
+        //        {
+        //            LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, MaxRange + DirectionCheckCounter);
+        //            narrowStartIndex = FindIndex((DateTime)lastDates.LastAnalysisItem);
+        //            wideStartIndex = Math.Max(narrowStartIndex - MaxRange, 0);
+        //        }
+
+
+        //    }
+
+
+        //    //Save info about this analysis.
+        //    analysis.FirstItemDate = Items[wideStartIndex].Date;
+        //    analysis.LastItemDate = Items[Items.Length - 1].Date;
+        //    analysis.AnalyzedItems = Items.Length - wideStartIndex + 1;
 
             
-            for (var i = wideStartIndex; i < Items.Length; i++)
-            {
-                AnalyzePrice(i, i >= narrowStartIndex);
-            }
+        //    for (var i = wideStartIndex; i < Items.Length; i++)
+        //    {
+        //        AnalyzePrice(i, i >= narrowStartIndex);
+        //    }
 
-            SaveChanges();
-
-
-            /* Start looking for trend lines */
-            ITrendService trendService = new TrendService(Symbol, Items);
-            trendService.Start();
+        //    SaveChanges();
 
 
-            //Insert info about this analysis to the database.
-            analysis.AnalysisEnd = DateTime.Now;
-            _dataService.AddAnalysisInfo(analysis);
+        //    /* Start looking for trend lines */
+        //    ITrendService trendService = new TrendService(Symbol, Items);
+        //    trendService.Start();
 
 
-        }
+        //    //Insert info about this analysis to the database.
+        //    analysis.AnalysisEnd = DateTime.Now;
+        //    _dataService.AddAnalysisInfo(analysis);
+
+
+        //}
 
 
 

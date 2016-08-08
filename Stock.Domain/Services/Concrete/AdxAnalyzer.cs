@@ -10,9 +10,18 @@ namespace Stock.Domain.Services
     public class AdxAnalyzer : IAdxAnalyzer
     {
 
+        private IAnalysisDataService _dataService;
+
+
         public Asset Asset { get; set; }
         public Timeframe Timeframe { get; set; }
-        private IAnalysisDataService _dataService;
+        
+
+        /* Getter methods (for IAnalyzer interface) */
+        public Asset getAsset() { return Asset; }
+        public Timeframe getTimeframe() { return Timeframe; }
+
+
 
 
         public AdxAnalyzer(Asset asset, Timeframe timeframe){
@@ -32,15 +41,16 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze(string symbol)
+
+
+        public void Analyze()
         {
-            Analyze(symbol, false);
+            Analyze(false);
         }
 
-
-
-        public void Analyze(string symbol, bool fromScratch)
+        public void Analyze(bool fromScratch)
         {
+
         }
 
 

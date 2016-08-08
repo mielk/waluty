@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stock.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace Stock.Domain.Services
 {
     public interface IAnalyzer
     {
-        void Analyze(string symbol);
-        void Analyze(string symbol, bool fromScratch);
+        void Analyze();
+        void Analyze(bool fromScratch);
+        Asset getAsset();
+        Timeframe getTimeframe();
     }
 }

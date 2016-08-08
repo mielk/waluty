@@ -25,8 +25,7 @@ namespace Stock.Domain.Enums
     {
         private static Dictionary<string, AnalysisType> types;
 
-        public static AnalysisType 
-            Type(string symbol)
+        public static AnalysisType Type(string symbol)
         {
 
             if (types == null) LoadTypes();
@@ -70,11 +69,6 @@ namespace Stock.Domain.Enums
 
             return list.ToArray();
 
-        }
-
-        public static IAnalyzer GetAnalyzer(Asset asset, Timeframe timeframe, AnalysisType type)
-        {
-            return AnalyzerFactory.Instance().getAnalyzer(type, asset, timeframe);
         }
 
     }

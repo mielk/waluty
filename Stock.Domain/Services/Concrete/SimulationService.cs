@@ -61,8 +61,8 @@ namespace Stock.Domain.Services
             //Napraw numerację (mogła zostać zepsuta przez obiekt PriceAnalyzer).
             Data.AppendIndexNumbers();
 
-            _priceAnalyzer.Analyze(this.Symbol, false);
-            _macdAnalyzer.Analyze(this.Symbol, false);
+            //_priceAnalyzer.Analyze(this.Symbol, false);
+            //_macdAnalyzer.Analyze(this.Symbol, false);
 
             return LastAnalyzed;
 

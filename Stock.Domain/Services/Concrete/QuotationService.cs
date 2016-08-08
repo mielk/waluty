@@ -14,9 +14,8 @@ namespace Stock.Domain.Services.Concrete
     {
 
         private AssetTimeframe assetTimeframe;
-        private AnalysisType[] analysisTypes;
         private static IDataRepository dataRepository;
-        private Dictionary<AnalysisType, IAnalyzer> _analyzers;
+        private Dictionary<AnalysisType, IAnalyzer> analyzers;
 
         public Asset getAsset()
         {
@@ -41,32 +40,40 @@ namespace Stock.Domain.Services.Concrete
             }
         }
 
-        public void Setup(Asset asset, Timeframe timeframe, AnalysisType[] types)
+        public  void Setup(Asset asset, Timeframe timeframe, Dictionary<AnalysisType, IAnalyzer> dictAnalyzers)
         {
 
-            if (assetTimeframe == null) throw new ArgumentNullException("AssetTimeframe is empty");
-            if (assetTimeframe.asset == null) throw new ArgumentNullException("Asset is empty");
-            if (assetTimeframe.timeframe == null) throw new ArgumentNullException("Timeframe is empty");
-
+            if (asset == null) throw new ArgumentNullException("Asset is empty");
+            if (timeframe == null) throw new ArgumentNullException("Timeframe is empty");
             assetTimeframe = new AssetTimeframe(asset, timeframe);
-            analysisTypes = types;
+
+            analyzers = dictAnalyzers;
 
         }
 
-
-        public DateTime findEarliestRequiredDate(bool fromScratch)
+        public void Setup(AssetTimeframe atf, Dictionary<AnalysisType, IAnalyzer> dictAnalyzers)
         {
-            return new DateTime();
+
+            if (atf == null) throw new ArgumentNullException("AssetTimeframe is empty");
+            if (atf.asset == null) throw new ArgumentNullException("Asset is empty");
+            if (atf.timeframe == null) throw new ArgumentNullException("Timeframe is empty");
+            assetTimeframe = atf;
+
+            analyzers = dictAnalyzers;
+
         }
 
-        public DataItem[] loadData(DateTime initialTime)
+        public Dictionary<AnalysisType, DateTime> getLastDates()
+        {
+            var dict = new Dictionary<AnalysisType, DateTime>();
+            return dict;
+        }
+
+        public DataItem[] fetchData()
         {
             return new DataItem[] { };
         }
 
-        public void count(int x)
-        {
-        }
 
 
     }

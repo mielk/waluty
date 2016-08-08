@@ -60,6 +60,15 @@ namespace Stock.Domain.Services
 
 
 
+        /* Getter methods (for IAnalyzer interface) */
+        public Asset getAsset() { return Asset; }
+        public Timeframe getTimeframe() { return Timeframe; }
+
+
+
+
+
+
         public TrendlineAnalyzer(Asset asset, Timeframe timeframe)
         {
             this.Asset = asset;
@@ -78,6 +87,17 @@ namespace Stock.Domain.Services
 
         }
 
+
+
+        public void Analyze()
+        {
+            Analyze(false);
+        }
+
+        public void Analyze(bool fromScratch)
+        {
+
+        }
 
 
         public Trendline Analyze(DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
@@ -120,11 +140,6 @@ namespace Stock.Domain.Services
 
         }
 
-
-
-        public void Analyze(string symbol) { }
-
-        public void Analyze(string symbol, bool fromScratch) { }
 
 
 

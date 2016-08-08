@@ -10,9 +10,8 @@ namespace Stock.Domain.Services.Abstract
 {
     public interface IQuotationService
     {
-        void Setup(Asset asset, Timeframe timeframe, AnalysisType[] types);
-        DateTime findEarliestRequiredDate(bool fromScratch);
-        DataItem[] loadData(DateTime initialTime);
-        void count(int x);
+        void Setup(Asset asset, Timeframe timeframe, Dictionary<AnalysisType, IAnalyzer> analyzers);
+        void Setup(AssetTimeframe atf, Dictionary<AnalysisType, IAnalyzer> analyzers);
+        DataItem[] fetchData();
     }
 }

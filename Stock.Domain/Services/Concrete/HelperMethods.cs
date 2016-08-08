@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
+using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Services
 {
@@ -150,6 +151,42 @@ namespace Stock.Domain.Services
 
             return (value >= min && value <= max);
 
+        }
+
+
+
+
+
+        public static DateTime? getEarliestDate(this List<DateTime?> dates){
+
+            DateTime? d = null;
+            foreach (var dt in dates)
+            {
+                if (dt == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    if (d == null || DateTime.Compare((DateTime)dt, (DateTime)d) < 0)
+                    {
+                        d = dt;
+                    }
+                }
+            }
+
+            return d;
+
+        }
+
+        public static IAnalyzer getAnalyzer(this AnalysisType type, Asset asset, Timeframe timeframe)
+        {
+            return AnalyzerFactory.Instance().getAnalyzer(type, asset, timeframe);
+        }
+
+        public static IAnalyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
+        {
+            return AnalyzerFactory.Instance().getAnalyzer(type, atf.asset, atf.timeframe);
         }
 
     }

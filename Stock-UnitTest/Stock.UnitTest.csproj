@@ -71,15 +71,16 @@
     <Compile Include="Stock.Domain\Entities\TimeframeUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\DataItemUnitTests.cs" />
+    <Compile Include="Stock.Domain\Services\Factories\AnalyzerFactoryUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\QuotationServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\PriceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\ProcessServiceUnitTests.cs" />
-    <Compile Include="Stock.Domain\_TODO\TimebandUnitTests.cs" />
+    <Compile Include="Stock.Domain\_TODO\TimeframeUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\DataItemUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendlineUnitTests.cs" />
-    <Compile Include="Stock.Domain\_TODO\PriceAnalyzerUnitTests.cs" />
+    <Compile Include="Stock.Domain\Services\PriceAnalyzerUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendServiceUnitTests.cs" />
-    <Compile Include="Stock.Domain\_TODO\HelperMethodsUnitTests.cs" />
+    <Compile Include="Stock.Domain\Services\HelperMethodsUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\UnitTestInitializer.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendlineAnalyzerUnitTests.cs" />
   </ItemGroup>

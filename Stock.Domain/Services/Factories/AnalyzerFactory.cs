@@ -39,6 +39,38 @@ namespace Stock.Domain.Services.Factories
 
         }
 
+
+
+        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers(AssetTimeframe atf, IEnumerable<AnalysisType> types)
+        {
+
+            var dict = new Dictionary<AnalysisType, IAnalyzer>();
+            foreach (var type in types)
+            {
+                IAnalyzer analyzer = getAnalyzer(type, atf.asset, atf.timeframe);
+                dict.Add(type, analyzer);
+            }
+
+            return dict;
+
+        }
+
+
+
+        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers(Asset asset, Timeframe timeframe, IEnumerable<AnalysisType> types)
+        {
+
+            var dict = new Dictionary<AnalysisType, IAnalyzer>();
+            foreach (var type in types)
+            {
+                IAnalyzer analyzer = getAnalyzer(type, asset, timeframe);
+                dict.Add(type, analyzer);
+            }
+
+            return dict;
+
+        }
+
     }
 
 }

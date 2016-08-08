@@ -35,7 +35,17 @@ namespace Stock.Domain.Services
         //Temporary variables
         private Macd previousMacd;
         private int histogramToOx = 0;
-        
+
+
+
+
+
+
+        /* Getter methods (for IAnalyzer interface) */
+        public Asset getAsset() { return Asset; }
+        public Timeframe getTimeframe() { return Timeframe; }
+
+
 
 
 
@@ -59,77 +69,83 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze(string symbol)
+        public void Analyze()
         {
-            Analyze(symbol, false);
+            Analyze(false);
         }
 
-        public void Analyze(string symbol, bool fromScratch)
+        public void Analyze(bool fromScratch)
         {
 
-            analysis = new Analysis(symbol, Type);
-
-            /* Prepare instance. */
-            if (!DebugMode)
-            {
-                EnsureRepositories();
-                LoadParameters(symbol);
-            };
+        }
 
 
-            /* Fetch the proper data items and start index.
-             * The range of data to be analyzed depends on the [fromScratch] parameter 
-             * and the dates of last quotation and last analysis item. 
-             */
-            var startIndex = 0;
-            if (fromScratch)
-            {
-                LoadDataSets(symbol);
-            }
-            else
-            {
-                var lastDates = _dataService.GetSymbolLastItems(symbol, Type.TableName());
+        //public void Analyze(string symbol, bool fromScratch)
+        //{
 
-                //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
-                if (lastDates.IsUpToDate()) return;
-                if (lastDates.LastAnalysisItem == null)
-                {
-                    LoadDataSets(symbol);
-                }
-                else
-                {
-                    LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, Slow + 1);
-                    startIndex = FindIndex((DateTime)lastDates.LastAnalysisItem);
-                }
+        //    analysis = new Analysis(symbol, Type);
 
-            }
+        //    /* Prepare instance. */
+        //    if (!DebugMode)
+        //    {
+        //        EnsureRepositories();
+        //        LoadParameters(symbol);
+        //    };
 
 
-            //Set previous Macd (it is used to speed up calculation and need to be 
-            //set here to avoid NullException for the first item).
-            if (startIndex > 0) previousMacd = Items[startIndex - 1].Macd;
+        //    /* Fetch the proper data items and start index.
+        //     * The range of data to be analyzed depends on the [fromScratch] parameter 
+        //     * and the dates of last quotation and last analysis item. 
+        //     */
+        //    var startIndex = 0;
+        //    if (fromScratch)
+        //    {
+        //        LoadDataSets(symbol);
+        //    }
+        //    else
+        //    {
+        //        var lastDates = _dataService.GetSymbolLastItems(symbol, Type.TableName());
+
+        //        //Check if analysis is up-to-date. If it is true, leave this method and run it again for the next symbol.
+        //        if (lastDates.IsUpToDate()) return;
+        //        if (lastDates.LastAnalysisItem == null)
+        //        {
+        //            LoadDataSets(symbol);
+        //        }
+        //        else
+        //        {
+        //            LoadDataSets(symbol, (DateTime)lastDates.LastAnalysisItem, Slow + 1);
+        //            startIndex = FindIndex((DateTime)lastDates.LastAnalysisItem);
+        //        }
+
+        //    }
 
 
-            //Save info about this analysis.
-            analysis.FirstItemDate = Items[startIndex].Date;
-            analysis.LastItemDate = Items[Items.Length - 1].Date;
-            analysis.AnalyzedItems = Items.Length - startIndex + 1;
+        //    //Set previous Macd (it is used to speed up calculation and need to be 
+        //    //set here to avoid NullException for the first item).
+        //    if (startIndex > 0) previousMacd = Items[startIndex - 1].Macd;
 
 
-            //Iterate through all items and calculate Macd;
+        //    //Save info about this analysis.
+        //    analysis.FirstItemDate = Items[startIndex].Date;
+        //    analysis.LastItemDate = Items[Items.Length - 1].Date;
+        //    analysis.AnalyzedItems = Items.Length - startIndex + 1;
+
+
+        //    //Iterate through all items and calculate Macd;
             
-            for (var i = startIndex; i < Items.Length; i++)
-            {
-                AnalyzeMacd(i, fromScratch);
-            }
+        //    for (var i = startIndex; i < Items.Length; i++)
+        //    {
+        //        AnalyzeMacd(i, fromScratch);
+        //    }
 
 
-            //Insert info about this analysis to the database.
-            analysis.AnalysisEnd = DateTime.Now;
-            _dataService.AddAnalysisInfo(analysis);
+        //    //Insert info about this analysis to the database.
+        //    analysis.AnalysisEnd = DateTime.Now;
+        //    _dataService.AddAnalysisInfo(analysis);
 
 
-        }
+        //}
 
 
 

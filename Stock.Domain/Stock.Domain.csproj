@@ -92,7 +92,6 @@
     <Compile Include="Services\Concrete\PriceAnalyzer.cs" />
     <Compile Include="Services\Concrete\PriceTrendComparer.cs" />
     <Compile Include="Services\Concrete\ProcessService.cs" />
-    <Compile Include="Services\Concrete\TImeframe.cs" />
     <Compile Include="Services\Concrete\TrendlineAnalyzer.cs" />
     <Compile Include="Services\Concrete\TrendService.cs" />
     <Compile Include="Services\Concrete\DataService.cs" />

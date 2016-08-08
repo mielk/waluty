@@ -8,6 +8,7 @@ using Stock.Domain.Enums;
 using Stock.Domain.Services.Abstract;
 using Stock.Domain.Services.Concrete;
 using Stock.Domain.Services.Factories;
+using System.Collections.Generic;
 
 namespace Stock_UnitTest.Stock.Domain.Services
 {
@@ -23,11 +24,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             Asset asset = null;
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
-            AnalysisType[] types = new AnalysisType[] { };
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
             service.Setup(asset, timeframe, types);
             service.Run(true);
-
-            Assert.IsTrue(service.getAsset() == asset);
             
         }
 
@@ -42,28 +41,83 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = null;
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
+            service.Setup(asset, timeframe, types);
+            service.Run(true);
+
+        }
+
+
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException), "Analyzers are not set")]
+        public void run_if_there_is_no_analyzers_assigned_exception_is_thrown()
+        {
+
+            var service = new ProcessService();
+
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalysisType[] types = new AnalysisType[] { };
             service.Setup(asset, timeframe, types);
             service.Run(true);
 
-            Assert.IsTrue(service.getTimeframe() == timeframe);
+        }
+
+
+
+        [TestMethod]
+        public void after_setup_properties_are_correctly_set()
+        {
+
+            var service = new ProcessService();
+
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
+            service.Setup(asset, timeframe, types);
+
+            Assert.AreEqual(service.getAsset(), asset);
+            Assert.AreEqual(service.getTimeframe(), timeframe);
 
         }
 
+
+
+
+        [TestMethod]
+        public void after_setup_proper_analyzers_are_assigned()
+        {
+
+            var service = new ProcessService();
+
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price, AnalysisType.Candlestick };
+            service.Setup(asset, timeframe, types);
+
+            var analyzers = service.getAnalyzers();
+
+            Assert.AreEqual(types.Length, analyzers.Count);
+
+        }
 
 
 
         private Mock<IQuotationService> mockedQuotationService()
         {
             Mock<IQuotationService> quotationService = new Mock<IQuotationService>();
-            quotationService.Setup(q => q.Setup(It.IsAny<Asset>(), It.IsAny<Timeframe>(), It.IsAny<AnalysisType[]>()));
+            quotationService.Setup(q => q.Setup(It.IsAny<Asset>(), It.IsAny<Timeframe>(), It.IsAny<Dictionary<AnalysisType, IAnalyzer>>()));
             ProcessServiceFactory.Instance().GetQuotationService(quotationService.Object);
             return quotationService;
         }
 
 
+        
+
+
         [TestMethod]
-        public void check_if_quotationProcessor_was_called_for_last_required_date()
+        public void quotationProcessor_is_called_once_for_loading_data()
         {
             IProcessService service = new ProcessService();
             var mockQuotationService = mockedQuotationService();
@@ -75,31 +129,10 @@ namespace Stock_UnitTest.Stock.Domain.Services
             service.Setup(asset, timeframe, types);
             service.Run(true);
 
-            mockQuotationService.Verify(x => x.findEarliestRequiredDate(It.IsAny<bool>()), Times.Exactly(1));
+            mockQuotationService.Verify(x => x.fetchData(), Times.Exactly(1));
 
         }
 
-
-
-        [TestMethod]
-        public void check_if_quotationProcessor_loading_method_was_called_with_proper_parameter()
-        {
-            var service = new ProcessService();
-            var mockQuotationService = mockedQuotationService();
-            DateTime dt = new DateTime();
-            mockQuotationService.Setup(q => q.findEarliestRequiredDate(It.IsAny<bool>())).Returns(dt);
-
-            Asset asset = new Asset(1, "USD");
-            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
-            AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
-            service.Setup(asset, timeframe, types);
-
-            service.Run(true);
-            mockQuotationService.Verify(x => x.loadData(dt), Times.Exactly(1));
-
-            Assert.IsTrue(service.getTimeframe() == timeframe);
-
-        }
 
 
         [TestMethod]
@@ -107,10 +140,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
             var service = new ProcessService();
             var mockQuotationService = mockedQuotationService();
-            DateTime dt = new DateTime();
             DataItem[] items = new DataItem[] { };
-            mockQuotationService.Setup(q => q.loadData(It.IsAny<DateTime>())).Returns(items);
-            mockQuotationService.Setup(q => q.findEarliestRequiredDate(It.IsAny<bool>())).Returns(dt);
+            mockQuotationService.Setup(q => q.fetchData()).Returns(items);
 
 
             Asset asset = new Asset(1, "USD");
@@ -118,13 +149,20 @@ namespace Stock_UnitTest.Stock.Domain.Services
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
             service.Setup(asset, timeframe, types);
 
-            bool result = service.Run(true);
-            //mockQuotationService.Verify(x => x.loadData(dt), Times.Exactly(1));
+            Assert.IsFalse(service.Run(true));
 
-            Assert.IsFalse(result);
         }
 
 
+
+
+        [TestMethod]
+        public void if_quotationService_returns_empty_array_of_data_items_analyzers_are_not_run()
+        {
+
+            Assert.Fail("Not created yet");
+
+        }
 
 
         //if_strings_are_passed_to_setup_and_asset_doesnt_exist_throw_exception()

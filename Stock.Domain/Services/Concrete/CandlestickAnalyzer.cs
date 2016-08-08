@@ -19,6 +19,14 @@ namespace Stock.Domain.Services
 
 
 
+
+        /* Getter methods (for IAnalyzer interface) */
+        public Asset getAsset() { return Asset; }
+        public Timeframe getTimeframe() { return Timeframe; }
+
+
+
+
         public CandlestickAnalyzer(Asset asset, Timeframe timeframe)
         {
             this.Asset = asset;
@@ -39,16 +47,17 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze(string symbol)
+
+        public void Analyze()
         {
-            Analyze(symbol, false);
+            Analyze(false);
         }
 
-
-
-        public void Analyze(string symbol, bool fromScratch)
+        public void Analyze(bool fromScratch)
         {
+
         }
+
 
     }
 
