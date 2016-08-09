@@ -12,7 +12,7 @@ using Stock.DAL.TransferObjects;
 namespace Stock.Domain.Services
 {
 
-    public class TrendlineAnalyzer : ITrendlineAnalyzer
+    public class TrendlineAnalyzer : Analyzer, ITrendlineAnalyzer
     {
 
         /* Constants */
@@ -47,25 +47,11 @@ namespace Stock.Domain.Services
 
 
 
-
-        /* Process properties */
-        public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
-
         /* Data collections */
         public DataItem[] Items { get; set; }
 
         /* Calculation variables */
         private Trendline Trendline;
-
-
-
-        /* Getter methods (for IAnalyzer interface) */
-        public Asset getAsset() { return Asset; }
-        public Timeframe getTimeframe() { return Timeframe; }
-
-
-
 
 
 
@@ -89,12 +75,12 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze()
+        public override void Analyze()
         {
             Analyze(false);
         }
 
-        public void Analyze(bool fromScratch)
+        public override void Analyze(bool fromScratch)
         {
 
         }

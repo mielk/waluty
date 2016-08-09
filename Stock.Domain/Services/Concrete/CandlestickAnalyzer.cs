@@ -8,21 +8,12 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services
 {
-    public class CandlestickAnalyzer : ICandlestickAnalyzer
+    public class CandlestickAnalyzer : Analyzer, ICandlestickAnalyzer
     {
         public const AnalysisType Type = AnalysisType.Candlestick;
 
         private IAnalysisDataService _dataService;
 
-        public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
-
-
-
-
-        /* Getter methods (for IAnalyzer interface) */
-        public Asset getAsset() { return Asset; }
-        public Timeframe getTimeframe() { return Timeframe; }
 
 
 
@@ -48,12 +39,12 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze()
+        public override void Analyze()
         {
             Analyze(false);
         }
 
-        public void Analyze(bool fromScratch)
+        public override void Analyze(bool fromScratch)
         {
 
         }

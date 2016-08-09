@@ -1,4 +1,5 @@
 ﻿using Stock.Domain.Entities;
+using Stock.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,12 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services
 {
-    public class AdxAnalyzer : IAdxAnalyzer
+    public class AdxAnalyzer : Analyzer, IAdxAnalyzer
     {
+        public const AnalysisType Type = AnalysisType.ADX;
 
         private IAnalysisDataService _dataService;
-
-
-        public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
         
-
-        /* Getter methods (for IAnalyzer interface) */
-        public Asset getAsset() { return Asset; }
-        public Timeframe getTimeframe() { return Timeframe; }
-
-
 
 
         public AdxAnalyzer(Asset asset, Timeframe timeframe){
@@ -41,14 +33,12 @@ namespace Stock.Domain.Services
 
 
 
-
-
-        public void Analyze()
+        public override void Analyze()
         {
             Analyze(false);
         }
 
-        public void Analyze(bool fromScratch)
+        public override void Analyze(bool fromScratch)
         {
 
         }

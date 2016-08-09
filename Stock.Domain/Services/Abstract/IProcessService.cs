@@ -10,7 +10,8 @@ namespace Stock.Domain.Services
 {
     public interface IProcessService
     {
-        void Setup(Asset asset, Timeframe timeframe, AnalysisType[] type);
+        void Setup(AnalysisType[] types);
+        void Setup(IEnumerable<AnalysisType> types);
         bool Run(bool fromScratch);
     }
 }

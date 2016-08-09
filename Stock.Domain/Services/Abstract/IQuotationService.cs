@@ -10,8 +10,6 @@ namespace Stock.Domain.Services.Abstract
 {
     public interface IQuotationService
     {
-        void Setup(Asset asset, Timeframe timeframe, Dictionary<AnalysisType, IAnalyzer> analyzers);
-        void Setup(AssetTimeframe atf, Dictionary<AnalysisType, IAnalyzer> analyzers);
-        DataItem[] fetchData();
+        DataItem[] fetchData(Dictionary<AnalysisType, Analyzer> analyzers);
     }
 }

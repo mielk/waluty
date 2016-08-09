@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services
 {
-    public interface IAdxAnalyzer : IAnalyzer
+    public interface IAdxAnalyzer
     {
     }
 }

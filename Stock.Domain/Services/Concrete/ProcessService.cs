@@ -13,12 +13,12 @@ using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Services
 {
+
     public class ProcessService : IProcessService
     {
 
         private AssetTimeframe assetTimeframe;
-        private IEnumerable<AnalysisType> analysisTypes;
-        private Dictionary<AnalysisType, IAnalyzer> analyzers;
+        private Dictionary<AnalysisType, Analyzer> analyzers;
         private DataItem[] dataItems;
 
 
@@ -45,40 +45,55 @@ namespace Stock.Domain.Services
                 return null;
             }
         }
-        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers() { 
+        public Dictionary<AnalysisType, Analyzer> getAnalyzers() { 
             return analyzers; 
         }
 
 
-
-        public void Setup(Asset asset, Timeframe timeframe, AnalysisType[] types)
+        public ProcessService(Asset asset, Timeframe timeframe)
         {
-
-            if (asset == null) throw new ArgumentNullException("Asset is empty");
-            if (timeframe == null) throw new ArgumentNullException("Timeframe is empty");
-            assetTimeframe = new AssetTimeframe(asset, timeframe);
-
-            analyzers = AnalyzerFactory.Instance().getAnalyzers(assetTimeframe, new List<AnalysisType>(types));
-
+            this.assetTimeframe = new AssetTimeframe(asset, timeframe);
         }
 
+        public ProcessService(AssetTimeframe atf)
+        {
+            this.assetTimeframe = atf;
+        }
+
+
+
+        public void Setup(AnalysisType[] types)
+        {
+            checkProperties();
+            analyzers = AnalyzerFactory.Instance().getAnalyzers(assetTimeframe, new List<AnalysisType>(types));
+        }
+
+        public void Setup(IEnumerable<AnalysisType> types)
+        {
+            checkProperties();
+            analyzers = AnalyzerFactory.Instance().getAnalyzers(assetTimeframe, new List<AnalysisType>(types));
+        }
+
+
+        private void checkProperties(){
+            if (assetTimeframe == null) throw new ArgumentNullException("AssetTimeframe is empty");
+            if (assetTimeframe.asset == null) throw new ArgumentNullException("Asset is empty");
+            if (assetTimeframe.timeframe == null) throw new ArgumentNullException("Timeframe is empty");
+        }
 
 
         public bool Run(bool fromScratch)
         {
 
             //Check if all necessary properties are properly loaded.
-            if (assetTimeframe == null) throw new ArgumentNullException("AssetTimeframe is empty");
-            if (assetTimeframe.asset == null) throw new ArgumentNullException("Asset is empty");
-            if (assetTimeframe.timeframe == null) throw new ArgumentNullException("Timeframe is empty");
+            checkProperties();
             if (analyzers.Count == 0) throw new ArgumentNullException("Analyzers are not set");
 
 
             //Get last date for each analysis and then find the earliest quotation date required
             //to calculate each analysis types.
             IQuotationService qService = ProcessServiceFactory.Instance().GetQuotationService();
-            qService.Setup(assetTimeframe, analyzers);
-            dataItems = qService.fetchData();
+            dataItems = qService.fetchData(analyzers);
             if (dataItems.Length == 0) return false;
             
 

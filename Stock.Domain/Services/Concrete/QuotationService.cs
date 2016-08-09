@@ -7,74 +7,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.DAL.Infrastructure;
+using Stock.DAL.TransferObjects;
 
 namespace Stock.Domain.Services.Concrete
 {
     public class QuotationService : IQuotationService
     {
 
-        private AssetTimeframe assetTimeframe;
-        private static IDataRepository dataRepository;
-        private Dictionary<AnalysisType, IAnalyzer> analyzers;
+        private IDataRepository repository = RepositoryFactory.GetDataRepository();
 
-        public Asset getAsset()
+        
+
+
+        public void loadLastCalculationDates(Dictionary<AnalysisType, Analyzer> analyzers)
         {
-            if (assetTimeframe != null)
+            foreach (var analyzer in analyzers.Values)
             {
-                return assetTimeframe.asset;
+                LastDates lastDates = repository.GetSymbolLastItems(analyzer.getSymbol(), analyzer.getAnalysisType().toString());
+                //analyzer.setLastCalculationDate(repository
+                
+
+                //GetSymbolLastItems
+
+                //analyzer.Analyze
             }
-            else
-            {
-                return null;
-            }
-        }
-        public Timeframe getTimeframe()
-        {
-            if (assetTimeframe != null)
-            {
-                return assetTimeframe.timeframe;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
-        public  void Setup(Asset asset, Timeframe timeframe, Dictionary<AnalysisType, IAnalyzer> dictAnalyzers)
-        {
-
-            if (asset == null) throw new ArgumentNullException("Asset is empty");
-            if (timeframe == null) throw new ArgumentNullException("Timeframe is empty");
-            assetTimeframe = new AssetTimeframe(asset, timeframe);
-
-            analyzers = dictAnalyzers;
 
         }
 
-        public void Setup(AssetTimeframe atf, Dictionary<AnalysisType, IAnalyzer> dictAnalyzers)
+
+        public DataItem[] fetchData(Dictionary<AnalysisType, Analyzer> analyzers)
         {
-
-            if (atf == null) throw new ArgumentNullException("AssetTimeframe is empty");
-            if (atf.asset == null) throw new ArgumentNullException("Asset is empty");
-            if (atf.timeframe == null) throw new ArgumentNullException("Timeframe is empty");
-            assetTimeframe = atf;
-
-            analyzers = dictAnalyzers;
-
-        }
-
-        public Dictionary<AnalysisType, DateTime> getLastDates()
-        {
-            var dict = new Dictionary<AnalysisType, DateTime>();
-            return dict;
-        }
-
-        public DataItem[] fetchData()
-        {
+            
             return new DataItem[] { };
+
         }
-
-
 
     }
 }

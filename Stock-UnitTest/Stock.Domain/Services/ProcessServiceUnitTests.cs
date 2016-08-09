@@ -20,12 +20,12 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [ExpectedException(typeof(ArgumentNullException), "Asset is empty")]
         public void run_if_asset_is_empty_exception_is_thrown()
         {
-            var service = new ProcessService();
 
             Asset asset = null;
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
-            service.Setup(asset, timeframe, types);
+            service.Setup(types);
             service.Run(true);
             
         }
@@ -37,12 +37,11 @@ namespace Stock_UnitTest.Stock.Domain.Services
         public void run_if_timeframe_is_empty_exception_is_thrown()
         {
             
-            var service = new ProcessService();
-
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = null;
+            var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
-            service.Setup(asset, timeframe, types);
+            service.Setup(types);
             service.Run(true);
 
         }
@@ -54,12 +53,11 @@ namespace Stock_UnitTest.Stock.Domain.Services
         public void run_if_there_is_no_analyzers_assigned_exception_is_thrown()
         {
 
-            var service = new ProcessService();
-
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { };
-            service.Setup(asset, timeframe, types);
+            service.Setup(types);
             service.Run(true);
 
         }
@@ -70,12 +68,11 @@ namespace Stock_UnitTest.Stock.Domain.Services
         public void after_setup_properties_are_correctly_set()
         {
 
-            var service = new ProcessService();
-
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
-            service.Setup(asset, timeframe, types);
+            service.Setup(types);
 
             Assert.AreEqual(service.getAsset(), asset);
             Assert.AreEqual(service.getTimeframe(), timeframe);
@@ -89,12 +86,11 @@ namespace Stock_UnitTest.Stock.Domain.Services
         public void after_setup_proper_analyzers_are_assigned()
         {
 
-            var service = new ProcessService();
-
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price, AnalysisType.Candlestick };
-            service.Setup(asset, timeframe, types);
+            service.Setup(types);
 
             var analyzers = service.getAnalyzers();
 
@@ -107,7 +103,6 @@ namespace Stock_UnitTest.Stock.Domain.Services
         private Mock<IQuotationService> mockedQuotationService()
         {
             Mock<IQuotationService> quotationService = new Mock<IQuotationService>();
-            quotationService.Setup(q => q.Setup(It.IsAny<Asset>(), It.IsAny<Timeframe>(), It.IsAny<Dictionary<AnalysisType, IAnalyzer>>()));
             ProcessServiceFactory.Instance().GetQuotationService(quotationService.Object);
             return quotationService;
         }
@@ -119,17 +114,17 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [TestMethod]
         public void quotationProcessor_is_called_once_for_loading_data()
         {
-            IProcessService service = new ProcessService();
-            var mockQuotationService = mockedQuotationService();
-
+            
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            IProcessService service = new ProcessService(asset, timeframe);
+            var mockQuotationService = mockedQuotationService();
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
             ProcessServiceFactory.Instance().GetQuotationService(mockQuotationService.Object);
-            service.Setup(asset, timeframe, types);
+            service.Setup(types);
             service.Run(true);
 
-            mockQuotationService.Verify(x => x.fetchData(), Times.Exactly(1));
+            mockQuotationService.Verify(x => x.fetchData(It.IsAny<Dictionary<AnalysisType, Analyzer>>()), Times.Exactly(1));
 
         }
 
@@ -138,22 +133,27 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [TestMethod]
         public void if_quotationService_returns_empty_array_of_data_items_Run_returns_false()
         {
-            var service = new ProcessService();
+            
             var mockQuotationService = mockedQuotationService();
             DataItem[] items = new DataItem[] { };
-            mockQuotationService.Setup(q => q.fetchData()).Returns(items);
-
+            mockQuotationService.Setup(q => q.fetchData(It.IsAny<Dictionary<AnalysisType, Analyzer>>())).Returns(items);
 
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
-            service.Setup(asset, timeframe, types);
+            service.Setup(types);
 
             Assert.IsFalse(service.Run(true));
 
         }
 
 
+
+        private void injectMockedAnalyzerFactory()
+        {
+
+        }
 
 
         [TestMethod]
@@ -163,6 +163,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Assert.Fail("Not created yet");
 
         }
+
 
 
         //if_strings_are_passed_to_setup_and_asset_doesnt_exist_throw_exception()

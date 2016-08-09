@@ -23,7 +23,7 @@ namespace Stock.Domain.Services.Factories
             _instance = instance;
         }
 
-        public IAnalyzer getAnalyzer(AnalysisType type, Asset asset, Timeframe timeframe)
+        public Analyzer getAnalyzer(AnalysisType type, Asset asset, Timeframe timeframe)
         {
 
             switch (type)
@@ -41,13 +41,13 @@ namespace Stock.Domain.Services.Factories
 
 
 
-        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers(AssetTimeframe atf, IEnumerable<AnalysisType> types)
+        public Dictionary<AnalysisType, Analyzer> getAnalyzers(AssetTimeframe atf, IEnumerable<AnalysisType> types)
         {
 
-            var dict = new Dictionary<AnalysisType, IAnalyzer>();
+            var dict = new Dictionary<AnalysisType, Analyzer>();
             foreach (var type in types)
             {
-                IAnalyzer analyzer = getAnalyzer(type, atf.asset, atf.timeframe);
+                Analyzer analyzer = getAnalyzer(type, atf.asset, atf.timeframe);
                 dict.Add(type, analyzer);
             }
 
@@ -57,13 +57,13 @@ namespace Stock.Domain.Services.Factories
 
 
 
-        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers(Asset asset, Timeframe timeframe, IEnumerable<AnalysisType> types)
+        public Dictionary<AnalysisType, Analyzer> getAnalyzers(Asset asset, Timeframe timeframe, IEnumerable<AnalysisType> types)
         {
 
-            var dict = new Dictionary<AnalysisType, IAnalyzer>();
+            var dict = new Dictionary<AnalysisType, Analyzer>();
             foreach (var type in types)
             {
-                IAnalyzer analyzer = getAnalyzer(type, asset, timeframe);
+                Analyzer analyzer = getAnalyzer(type, asset, timeframe);
                 dict.Add(type, analyzer);
             }
 

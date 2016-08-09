@@ -179,14 +179,19 @@ namespace Stock.Domain.Services
 
         }
 
-        public static IAnalyzer getAnalyzer(this AnalysisType type, Asset asset, Timeframe timeframe)
+        public static Analyzer getAnalyzer(this AnalysisType type, Asset asset, Timeframe timeframe)
         {
             return AnalyzerFactory.Instance().getAnalyzer(type, asset, timeframe);
         }
 
-        public static IAnalyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
+        public static Analyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
         {
             return AnalyzerFactory.Instance().getAnalyzer(type, atf.asset, atf.timeframe);
+        }
+
+        public static string toString(this AnalysisType type)
+        {
+            return AnalysisTypeHelper.getTypeString(type);
         }
 
     }

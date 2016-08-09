@@ -1,4 +1,5 @@
-﻿using Stock.Domain.Services.Abstract;
+﻿using Stock.Domain.Entities;
+using Stock.Domain.Services.Abstract;
 using Stock.Domain.Services.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,12 @@ namespace Stock.Domain.Services.Factories
     public class ProcessServiceFactory{
 
         private static ProcessServiceFactory _instance;
-
         private static IQuotationService _quotationService;
-        private static IProcessService _processService;
-        
+        private static Dictionary<string, IProcessService> services = new Dictionary<string, IProcessService>();
+
 
         private ProcessServiceFactory()
-        {
-            _processService = new ProcessService();
-            _quotationService = new QuotationService();
-        }
+        {}
 
 
         public static ProcessServiceFactory Instance()
@@ -28,17 +25,24 @@ namespace Stock.Domain.Services.Factories
             return _instance ?? (_instance = new ProcessServiceFactory());
         }
 
-        public IProcessService GetService()
+        public IProcessService GetProcessService(Asset asset, Timeframe timeframe)
         {
-            return _processService;
+            return GetProcessService(new AssetTimeframe(asset, timeframe));
         }
 
-        public IProcessService GetService(IProcessService inject)
+        public IProcessService GetProcessService(AssetTimeframe atf)
         {
-            if (inject != null){
-                _processService = inject;
+            string symbol = atf.Symbol();
+            IProcessService service = null;
+            try
+            {
+                services.TryGetValue(symbol, out service);
+                return service;
             }
-            return _processService;
+            catch (Exception) {
+                service = new ProcessService(atf);
+                return service;
+            }
         }
 
         public IQuotationService GetQuotationService()
@@ -52,6 +56,8 @@ namespace Stock.Domain.Services.Factories
             }
             return _quotationService;
         }
+
+
 
 
     }

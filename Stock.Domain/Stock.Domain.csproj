@@ -68,7 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IAdxAnalyzer.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
-    <Compile Include="Services\Abstract\AnalysisServices\IAnalyzer.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\Analyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ICandlestickAnalyzer.cs" />
     <Compile Include="Services\Abstract\IQuotationService.cs" />
     <Compile Include="Services\Abstract\ISimulationServiceFactory.cs" />

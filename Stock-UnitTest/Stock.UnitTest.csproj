@@ -71,6 +71,7 @@
     <Compile Include="Stock.Domain\Entities\TimeframeUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\DataItemUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\AssetTimeframeUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\Factories\AnalyzerFactoryUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\QuotationServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\PriceUnitTests.cs" />

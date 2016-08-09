@@ -13,9 +13,18 @@ namespace Stock.Domain.Entities
         public Asset asset { get; set; }
         public Timeframe timeframe { get; set; }
         public DataItem[] Items { get; set; }
-        public Dictionary<AnalysisType, DateTime?> LastDates { get; set; }
 
 
+        public string Symbol()
+        {
+            if (!isValid())
+            {
+                throw new ArgumentNullException("Asset or timeframe is null");
+            }
+
+            return asset.ShortName + "_" + timeframe.Name;
+
+        }
 
 
         public AssetTimeframe(Asset asset, Timeframe timeframe)
@@ -51,29 +60,6 @@ namespace Stock.Domain.Entities
         public bool isValid()
         {
             return asset != null && timeframe != null;
-        }
-
-        public void AddLastDbEntry(AnalysisType type, DateTime? date)
-        {
-
-            if (LastDates == null)
-            {
-                LastDates = new Dictionary<AnalysisType, DateTime?>();
-            }
-
-            LastDates.Add(type, date);
-
-        }
-
-        public void LoadRequiredQuotations()
-        {
-
-        }
-
-
-        private DateTime GetEarliestRequiredQuotation()
-        {
-            return new DateTime();
         }
 
 

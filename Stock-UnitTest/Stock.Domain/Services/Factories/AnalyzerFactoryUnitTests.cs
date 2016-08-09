@@ -20,7 +20,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
 
-            IAnalyzer analyzer = factory.getAnalyzer(AnalysisType.MACD, asset, timeframe);
+            Analyzer analyzer = factory.getAnalyzer(AnalysisType.MACD, asset, timeframe);
 
             Assert.IsTrue(typeof(IMacdAnalyzer).IsAssignableFrom(analyzer.GetType()));
             Assert.AreEqual(analyzer.getAsset(), asset);
@@ -37,7 +37,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
 
-            IAnalyzer analyzer = factory.getAnalyzer(AnalysisType.Price, asset, timeframe);
+            Analyzer analyzer = factory.getAnalyzer(AnalysisType.Price, asset, timeframe);
 
             Assert.IsTrue(typeof(IPriceAnalyzer).IsAssignableFrom(analyzer.GetType()));
             Assert.AreEqual(analyzer.getAsset(), asset);
@@ -55,7 +55,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
 
-            IAnalyzer analyzer = factory.getAnalyzer(AnalysisType.ADX, asset, timeframe);
+            Analyzer analyzer = factory.getAnalyzer(AnalysisType.ADX, asset, timeframe);
 
             Assert.IsTrue(typeof(IAdxAnalyzer).IsAssignableFrom(analyzer.GetType()));
             Assert.AreEqual(analyzer.getAsset(), asset);
@@ -73,7 +73,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
 
-            IAnalyzer analyzer = factory.getAnalyzer(AnalysisType.Candlestick, asset, timeframe);
+            Analyzer analyzer = factory.getAnalyzer(AnalysisType.Candlestick, asset, timeframe);
 
             Assert.IsTrue(typeof(ICandlestickAnalyzer).IsAssignableFrom(analyzer.GetType()));
             Assert.AreEqual(analyzer.getAsset(), asset);
@@ -93,7 +93,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
 
-            IAnalyzer analyzer = factory.getAnalyzer(AnalysisType.Trendline, asset, timeframe);
+            Analyzer analyzer = factory.getAnalyzer(AnalysisType.Trendline, asset, timeframe);
 
             Assert.IsTrue(typeof(ITrendlineAnalyzer).IsAssignableFrom(analyzer.GetType()));
             Assert.AreEqual(analyzer.getAsset(), asset);
@@ -124,7 +124,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             //Check if Price analyzers is correctly set.
             try
             {
-                IAnalyzer analyzer;
+                Analyzer analyzer;
                 analyzers.TryGetValue(AnalysisType.Price, out analyzer);
                 Assert.IsTrue(typeof(IPriceAnalyzer).IsAssignableFrom(analyzer.GetType()));
             }
@@ -137,7 +137,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             //Check if MACD analyzers is correctly set.
             try
             {
-                IAnalyzer analyzer;
+                Analyzer analyzer;
                 analyzers.TryGetValue(AnalysisType.MACD, out analyzer);
                 Assert.IsTrue(typeof(IMacdAnalyzer).IsAssignableFrom(analyzer.GetType()));
             }
@@ -150,7 +150,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             //Check if Trendline analyzers is correctly set.
             try
             {
-                IAnalyzer analyzer;
+                Analyzer analyzer;
                 analyzers.TryGetValue(AnalysisType.Trendline, out analyzer);
                 Assert.IsTrue(typeof(ITrendlineAnalyzer).IsAssignableFrom(analyzer.GetType()));
             }

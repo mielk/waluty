@@ -13,7 +13,7 @@ using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Services
 {
-    public class MacdAnalyzer : IMacdAnalyzer
+    public class MacdAnalyzer : Analyzer, IMacdAnalyzer
     {
         public const AnalysisType Type = AnalysisType.MACD;
         //Calculation params.
@@ -24,9 +24,6 @@ namespace Stock.Domain.Services
         private IAnalysisDataService _dataService;
         private IMarketRepository _marketRepository;
 
-        public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
-
         private Analysis analysis;
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
@@ -35,16 +32,6 @@ namespace Stock.Domain.Services
         //Temporary variables
         private Macd previousMacd;
         private int histogramToOx = 0;
-
-
-
-
-
-
-        /* Getter methods (for IAnalyzer interface) */
-        public Asset getAsset() { return Asset; }
-        public Timeframe getTimeframe() { return Timeframe; }
-
 
 
 
@@ -69,12 +56,12 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze()
+        public override void Analyze()
         {
             Analyze(false);
         }
 
-        public void Analyze(bool fromScratch)
+        public override void Analyze(bool fromScratch)
         {
 
         }

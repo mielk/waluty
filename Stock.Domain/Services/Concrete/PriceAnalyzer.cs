@@ -13,9 +13,10 @@ using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Services
 {
-    public class PriceAnalyzer : IPriceAnalyzer
+    public class PriceAnalyzer : Analyzer, IPriceAnalyzer
     {
         public const AnalysisType Type = AnalysisType.Price;
+        //--------------------------------------------------------------------
         public const int DirectionCheckCounter = 10;
         public const int DirectionCheckRequired = 6;
         public const int MinRange = 3;
@@ -23,9 +24,6 @@ namespace Stock.Domain.Services
 
         private IAnalysisDataService _dataService;
         private IMarketRepository _marketRepository;
-
-        public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
 
 
         public bool IsSimulation { get; set; }
@@ -37,15 +35,6 @@ namespace Stock.Domain.Services
 
         //Current peaks & troughs - for better performance.
         private Dictionary<ExtremumType, DataItem> currentExtrema;
-
-
-
-
-
-        /* Getter methods (for IAnalyzer interface) */
-        public Asset getAsset() { return Asset; }
-        public Timeframe getTimeframe() { return Timeframe; }
-
 
 
 
@@ -66,12 +55,12 @@ namespace Stock.Domain.Services
 
 
 
-        public void Analyze()
+        public override void Analyze()
         {
             Analyze(false);
         }
 
-        public void Analyze(bool fromScratch)
+        public override void Analyze(bool fromScratch)
         {
 
         }

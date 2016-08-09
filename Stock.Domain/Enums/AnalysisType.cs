@@ -23,30 +23,53 @@ namespace Stock.Domain.Enums
 
     public class AnalysisTypeHelper
     {
-        private static Dictionary<string, AnalysisType> types;
+        private static Dictionary<string, AnalysisType> byNames;
+        private static Dictionary<AnalysisType, string> byTypes;
 
         public static AnalysisType Type(string symbol)
         {
 
-            if (types == null) LoadTypes();
+            if (byNames == null) LoadTypes();
 
             var type = AnalysisType.Unknown;
-            types.TryGetValue(symbol, out type);
+            byNames.TryGetValue(symbol, out type);
 
             return type;
 
         }
 
+        public static string getTypeString(AnalysisType type)
+        {
+            string result = string.Empty;
+            try
+            {
+                byTypes.TryGetValue(type, out result);
+                return result;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
         private static void LoadTypes()
         {
-            types = new Dictionary<string, AnalysisType>();
-            types.Add("prices", AnalysisType.Price);
-            types.Add("trendline", AnalysisType.Trendline);
-            types.Add("macd", AnalysisType.MACD);
-            types.Add("adx", AnalysisType.ADX);
-            types.Add("candlestick", AnalysisType.Candlestick);
+            byNames = new Dictionary<string, AnalysisType>();
+            byTypes = new Dictionary<AnalysisType, string>();
+
+            byNames.Add("prices", AnalysisType.Price);
+            byTypes.Add(AnalysisType.Price, "prices");
+            byNames.Add("trendline", AnalysisType.Trendline);
+            byTypes.Add(AnalysisType.Trendline, "trendline");
+            byNames.Add("macd", AnalysisType.MACD);
+            byTypes.Add(AnalysisType.MACD, "macd");
+            byNames.Add("adx", AnalysisType.ADX);
+            byTypes.Add(AnalysisType.ADX, "adx");
+            byNames.Add("candlestick", AnalysisType.Candlestick);
+            byTypes.Add(AnalysisType.Candlestick, "candlestick");
 
         }
+
 
 
         public static AnalysisType[] StringToTypesList(string types)

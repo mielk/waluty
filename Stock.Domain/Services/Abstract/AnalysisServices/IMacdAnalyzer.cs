@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services
 {
-    public interface IMacdAnalyzer : IAnalyzer
+    public interface IMacdAnalyzer
     {
     }
 }
