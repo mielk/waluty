@@ -17,32 +17,34 @@ namespace Stock.Domain.Services.Concrete
 
         private IDataRepository repository = RepositoryFactory.GetDataRepository();
 
-        
 
 
-        public void loadLastCalculationDates(Dictionary<AnalysisType, Analyzer> analyzers)
+        public DateTime? getLastCalculationDate(string symbol, string analysisSymbol)
         {
-            foreach (var analyzer in analyzers.Values)
-            {
-                LastDates lastDates = repository.GetSymbolLastItems(analyzer.getSymbol(), analyzer.getAnalysisType().toString());
-                //analyzer.setLastCalculationDate(repository
-                
-
-                //GetSymbolLastItems
-
-                //analyzer.Analyze
-            }
-
-
+            return repository.GetAnalysisLastCalculation(symbol, analysisSymbol);
         }
 
+
+        private DateTime? findEarliestRequiredDate(IEnumerable<Analyzer> analyzers){
+
+            List<DateTime?> dates = new List<DateTime?>();
+            foreach (var analyzer in analyzers)
+            {
+                //dates.Add(analyzer.get
+            }
+
+            return null;
+
+        }
 
         public DataItem[] fetchData(Dictionary<AnalysisType, Analyzer> analyzers)
         {
-            
-            return new DataItem[] { };
 
+            DateTime? firstRequiredQuotationDate = findEarliestRequiredDate(analyzers.Values);
+
+            return new DataItem[] { };
         }
+
 
     }
 }

@@ -22,7 +22,7 @@ namespace Stock.Domain.Entities
 
         #region static methods
 
-        public static void injectService(IMarketService _service)
+        public new static void injectService(IMarketService _service)
         {
             service = _service;
         }

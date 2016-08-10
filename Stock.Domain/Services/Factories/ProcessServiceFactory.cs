@@ -47,6 +47,7 @@ namespace Stock.Domain.Services.Factories
 
         public IQuotationService GetQuotationService()
         {
+            if (_quotationService == null) _quotationService = new QuotationService();
             return _quotationService;
         }
 

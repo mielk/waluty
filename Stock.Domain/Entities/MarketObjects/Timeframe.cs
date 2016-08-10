@@ -26,6 +26,7 @@ namespace Stock.Domain.Entities
         public string Name { get; set; }
         public double Period { get; set; }
         public int Index { get; set; }
+        public TimeframeSymbol Symbol { get; set; }
         private static Dictionary<TimeframeSymbol, Timeframe> timeframes;
 
 

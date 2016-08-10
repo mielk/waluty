@@ -54,7 +54,6 @@ namespace Stock.Domain.Services
         {
             this.assetTimeframe = new AssetTimeframe(asset, timeframe);
         }
-
         public ProcessService(AssetTimeframe atf)
         {
             this.assetTimeframe = atf;
@@ -67,7 +66,6 @@ namespace Stock.Domain.Services
             checkProperties();
             analyzers = AnalyzerFactory.Instance().getAnalyzers(assetTimeframe, new List<AnalysisType>(types));
         }
-
         public void Setup(IEnumerable<AnalysisType> types)
         {
             checkProperties();

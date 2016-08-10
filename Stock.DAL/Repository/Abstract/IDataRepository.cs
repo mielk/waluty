@@ -42,6 +42,8 @@ namespace Stock.DAL.Repositories
 
         object GetDataSetProperties(string symbol);
         LastDates GetSymbolLastItems(string symbol, string analysisType);
+        DateTime? GetAnalysisLastCalculation(string symbol, string analysisType);
+        DateTime? GetLastQuotationDate(string symbol);
 
     }
 }

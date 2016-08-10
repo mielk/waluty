@@ -157,7 +157,7 @@ namespace Stock.Domain.Services
 
 
 
-        public static DateTime? getEarliestDate(this List<DateTime?> dates){
+        public static DateTime? getEarliestDate(this IEnumerable<DateTime?> dates){
 
             DateTime? d = null;
             foreach (var dt in dates)
@@ -193,6 +193,109 @@ namespace Stock.Domain.Services
         {
             return AnalysisTypeHelper.getTypeString(type);
         }
+
+
+        public static DateTime addTimeUnits(this DateTime date, TimeframeSymbol timeframe, int units)
+        {
+
+            DateTime newDate;
+
+            if (units == 0) return date.AddMilliseconds(0);
+
+            switch (timeframe)
+            {
+                case TimeframeSymbol.MN1:
+                    return date.AddMonths(units);
+
+                case TimeframeSymbol.W1:
+                    return date.AddDays(units * 7);
+
+                case TimeframeSymbol.D1:
+                    {
+                        int remainder = units % 5;
+                        int newWeekDay = (int)date.DayOfWeek + remainder;
+                        bool breakWeek = newWeekDay > 5 || newWeekDay <= 0;
+                        int daysToAdd = (units / 5) * 7 + remainder + Math.Sign(units) * (breakWeek ? 2 : 0);
+                        newDate = date.AddDays(daysToAdd);
+
+                        //Include year breaks.
+                        int yearBreaks = date.countNewYearBreaks(newDate, false);
+                        if (yearBreaks > 0)
+                        {
+                            newDate = newDate.addTimeUnits(timeframe, Math.Sign(units) * yearBreaks);
+                        }
+
+                        //Check if the result date is not New Year.
+                        if (newDate.DayOfYear == 1)
+                        {
+                            newDate = newDate.AddDays(Math.Sign(units));
+                        }
+
+                    }
+
+                    return newDate;
+
+                case TimeframeSymbol.H4:
+                    {
+                        //int remainder = units % 30;
+                        //int newWeekDay = (int)date.DayOfWeek + units % 5;
+
+                        newDate = date.AddHours(4 * units);
+
+                    }
+
+                    return newDate;
+
+            }
+
+            return date;
+            
+        }
+
+
+        public static int countNewYearBreaks(this DateTime date, DateTime compared, bool includeWeekendBreaks)
+        {
+
+            DateTime earlier, later;
+            int counter = 0;
+            
+
+            if (date.CompareTo(compared) > 0)
+            {
+                earlier = compared;
+                later = date;
+            }
+            else
+            {
+                earlier = date;
+                later = compared;
+            }
+
+
+
+            if (includeWeekendBreaks)
+            {
+                return later.Year - earlier.Year;
+            }
+            else
+            {
+
+                for (var i = earlier.Year + 1; i <= later.Year; i++)
+                {
+                    DateTime newYear = new DateTime(i, 1, 1);
+                    if (newYear.DayOfWeek != DayOfWeek.Sunday && newYear.DayOfWeek != DayOfWeek.Saturday)
+                    {
+                        counter++;
+                    }
+                }
+
+            }
+
+
+            return counter;
+
+        }
+
 
     }
 }

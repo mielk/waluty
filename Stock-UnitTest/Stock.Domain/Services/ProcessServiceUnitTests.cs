@@ -70,8 +70,12 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
+
+            Mock<IQuotationService> mockQuotationService = mockedQuotationService();
+            mockQuotationService.Setup(q => q.getLastCalculationDate(It.IsAny<string>(), It.IsAny<string>())).Returns(new DateTime());
+
             var service = new ProcessService(asset, timeframe);
-            AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
             service.Setup(types);
 
             Assert.AreEqual(service.getAsset(), asset);
@@ -81,15 +85,18 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
 
 
-
         [TestMethod]
         public void after_setup_proper_analyzers_are_assigned()
         {
 
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
+
+            Mock<IQuotationService> mockQuotationService = mockedQuotationService();
+            mockQuotationService.Setup(q => q.getLastCalculationDate(It.IsAny<string>(), It.IsAny<string>())).Returns(new DateTime());
+
             var service = new ProcessService(asset, timeframe);
-            AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price, AnalysisType.Candlestick };
             service.Setup(types);
 
             var analyzers = service.getAnalyzers();
@@ -108,7 +115,6 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
 
-        
 
 
         [TestMethod]

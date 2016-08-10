@@ -5,6 +5,8 @@ using Stock.Domain.Services.Factories;
 using Stock.Domain.Enums;
 using Stock.Domain.Entities;
 using System.Collections.Generic;
+using Moq;
+using Stock.Domain.Services.Abstract;
 
 namespace Stock_UnitTest.Stock.Domain.Services.Factories
 {
@@ -13,12 +15,24 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
     {
 
 
+
+        private Mock<IQuotationService> mockedQuotationService()
+        {
+            Mock<IQuotationService> quotationService = new Mock<IQuotationService>();
+            ProcessServiceFactory.Instance().GetQuotationService(quotationService.Object);
+            return quotationService;
+        }
+
+
+
         [TestMethod]
         public void getAnalyzer_returns_proper_analyzer_for_Macd()
         {
             Asset asset = new Asset(1, "a");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
+            Mock<IQuotationService> mockQuotationService = mockedQuotationService();
+            mockQuotationService.Setup(q => q.getLastCalculationDate(It.IsAny<string>(), It.IsAny<string>())).Returns(new DateTime());
 
             Analyzer analyzer = factory.getAnalyzer(AnalysisType.MACD, asset, timeframe);
 
@@ -36,6 +50,8 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Asset asset = new Asset(1, "a");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
+            Mock<IQuotationService> mockQuotationService = mockedQuotationService();
+            mockQuotationService.Setup(q => q.getLastCalculationDate(It.IsAny<string>(), It.IsAny<string>())).Returns(new DateTime());
 
             Analyzer analyzer = factory.getAnalyzer(AnalysisType.Price, asset, timeframe);
 
@@ -54,6 +70,8 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Asset asset = new Asset(1, "a");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
+            Mock<IQuotationService> mockQuotationService = mockedQuotationService();
+            mockQuotationService.Setup(q => q.getLastCalculationDate(It.IsAny<string>(), It.IsAny<string>())).Returns(new DateTime());
 
             Analyzer analyzer = factory.getAnalyzer(AnalysisType.ADX, asset, timeframe);
 
@@ -72,6 +90,8 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Asset asset = new Asset(1, "a");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
+            Mock<IQuotationService> mockQuotationService = mockedQuotationService();
+            mockQuotationService.Setup(q => q.getLastCalculationDate(It.IsAny<string>(), It.IsAny<string>())).Returns(new DateTime());
 
             Analyzer analyzer = factory.getAnalyzer(AnalysisType.Candlestick, asset, timeframe);
 
@@ -92,6 +112,8 @@ namespace Stock_UnitTest.Stock.Domain.Services.Factories
             Asset asset = new Asset(1, "a");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalyzerFactory factory = AnalyzerFactory.Instance();
+            Mock<IQuotationService> mockQuotationService = mockedQuotationService();
+            mockQuotationService.Setup(q => q.getLastCalculationDate(It.IsAny<string>(), It.IsAny<string>())).Returns(new DateTime());
 
             Analyzer analyzer = factory.getAnalyzer(AnalysisType.Trendline, asset, timeframe);
 

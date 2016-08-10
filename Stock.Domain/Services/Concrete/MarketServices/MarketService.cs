@@ -64,36 +64,46 @@ namespace Stock.Domain.Services
                                                                         #region assets
         public IEnumerable<Asset> FilterAssets(string q, int limit)
         {
+
+            if (App.StockType == Enums.StockType.Fx) return FilterPairs(q, limit);
+
             var dtos = _repository.FilterAssets(q, limit);
             return dtos.Select(Asset.FromDto).ToList();
         }
 
         public IEnumerable<Asset> GetAllAssets()
         {
+
+            if (App.StockType == Enums.StockType.Fx) return GetFxPairs();
+
             var dtos = _repository.GetAllAssets();
             return dtos.Select(Asset.FromDto).ToList();
         }
 
         public IEnumerable<Asset> GetAssetsForMarket(int marketId)
         {
+            if (App.StockType == Enums.StockType.Fx) return GetFxPairs();
             var dtos = _repository.GetAssetsForMarket(marketId);
             return dtos.Select(Asset.FromDto).ToList();
         }
 
         public Asset GetAsset(int id)
         {
+            if (App.StockType == Enums.StockType.Fx) return GetFxPair(id);
             var dto = _repository.GetAsset(id);
             return Asset.FromDto(dto);
         }
 
         public Asset GetAssetByName(string name)
         {
+            if (App.StockType == Enums.StockType.Fx) return GetFxPair(name);
             var dto = _repository.GetAssetByName(name);
             return Asset.FromDto(dto);
         }
 
         public Asset GetAssetBySymbol(string symbol)
         {
+            if (App.StockType == Enums.StockType.Fx) return GetFxPair(symbol);
             var dto = _repository.GetAssetBySymbol(symbol);
             return Asset.FromDto(dto);
         }

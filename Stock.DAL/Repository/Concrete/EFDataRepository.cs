@@ -602,13 +602,6 @@ namespace Stock.DAL.Repositories
         }
 
 
-        //public string toDb(double value)
-        //{
-        //    return Math.Round(value, 5).ToString().Replace(',', '.');
-        //}
-
-
-
         public void UpdateQuotation(QuotationDto quotation, string symbol)
         {
             string tableName = QuotationsTablePrefix + symbol;
@@ -845,6 +838,48 @@ namespace Stock.DAL.Repositories
 
         public void UpdateAdx(AdxDto adx, string symbol)
         {
+
+        }
+
+        public DateTime? GetAnalysisLastCalculation(string symbol, string analysisType)
+        {
+            string sqlAnalysisItem = "SELECT MAX(PriceDate) FROM " + analysisType + "_" + symbol + ";";
+
+            using (var context = new EFDbContext())
+            {
+
+                foreach (var i in context.Database.SqlQuery<String>(sqlAnalysisItem))
+                {
+
+                    try
+                    {
+                        return DateTime.Parse(i);
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        return null;
+                    }
+
+                }
+
+            }
+
+            return null;
+
+        }
+
+        public DateTime? GetLastQuotationDate(string symbol)
+        {
+            string sqlQuotation = "SELECT MAX(PriceDate) FROM quotations_" + symbol + " WHERE OpenPrice > -1;";
+            using (var context = new EFDbContext())
+            {
+                foreach (var i in context.Database.SqlQuery<String>(sqlQuotation))
+                {
+                    return DateTime.Parse(i);
+                }
+            }
+
+            return null;
 
         }
 

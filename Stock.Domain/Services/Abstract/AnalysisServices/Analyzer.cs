@@ -1,5 +1,6 @@
 ﻿using Stock.Domain.Entities;
 using Stock.Domain.Enums;
+using Stock.Domain.Services.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,19 @@ namespace Stock.Domain.Services
 {
     public abstract class Analyzer
     {
-
-        public virtual AnalysisType Type { get; set; }
+        public abstract AnalysisType Type { get; }
         public Asset Asset { get; set; }
         public Timeframe Timeframe { get; set; }
         public DateTime? LastCalculationDate { get; set; }
+        protected int DaysForAnalysis { get; set; }
+
+
+        public Analyzer(Asset asset, Timeframe timeframe)
+        {
+            this.Asset = asset;
+            this.Timeframe = timeframe;
+            this.LastCalculationDate = findLastCalculationDate();
+        }
 
 
         public Asset getAsset()
@@ -27,9 +36,26 @@ namespace Stock.Domain.Services
             return Timeframe;
         }
 
+        public AnalysisType getAnalysisType()
+        {
+            return Type;
+        }
+
         public DateTime? getLastCalculationDate()
         {
             return LastCalculationDate;
+        }
+
+        protected virtual DateTime? findLastCalculationDate()
+        {
+            return ProcessServiceFactory.Instance().GetQuotationService().getLastCalculationDate(getSymbol(), Type.toString());
+        }
+
+        public DateTime? getFirstRequiredDate()
+        {
+            if (LastCalculationDate == null) return null;
+            var d = (DateTime)LastCalculationDate;
+            return d.addTimeUnits(Timeframe.Symbol, -DaysForAnalysis);
         }
 
         public void setLastCalculationDate(DateTime? date)
@@ -42,10 +68,6 @@ namespace Stock.Domain.Services
             return Asset.ShortName + "_" + Timeframe.Name;
         }
 
-        public AnalysisType getAnalysisType()
-        {
-            return Type;
-        }
 
 
         public abstract void Analyze();

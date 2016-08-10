@@ -22,6 +22,7 @@ namespace Stock.Domain.Entities
         private static IEnumerable<Market> markets = new List<Market>();
 
 
+
         #region static methods
 
         public static void injectService(IMarketService _service)

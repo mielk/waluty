@@ -13,5 +13,10 @@ namespace Stock.Domain.Services
         void Setup(AnalysisType[] types);
         void Setup(IEnumerable<AnalysisType> types);
         bool Run(bool fromScratch);
+
+        Asset getAsset();
+        Timeframe getTimeframe();
+        Dictionary<AnalysisType, Analyzer> getAnalyzers();
+
     }
 }

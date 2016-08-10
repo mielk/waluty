@@ -38,6 +38,9 @@ namespace Stock.Domain.Entities
 
         private static void loadAllAssets()
         {
+
+            if (assets.Count() > 0) return;
+
             var dbAssets = service.GetAllAssets();
             foreach (var asset in dbAssets)
             {
@@ -53,8 +56,9 @@ namespace Stock.Domain.Entities
         public static Asset GetAssetById(int id)
         {
 
-            var asset = assets.SingleOrDefault(m => m.Id == id);
+            loadAllAssets();
 
+            var asset = assets.SingleOrDefault(m => m.Id == id);
             if (asset == null)
             {
                 asset = service.GetAsset(id);
@@ -71,8 +75,9 @@ namespace Stock.Domain.Entities
         public static Asset GetAssetByName(string name)
         {
 
-            var asset = assets.SingleOrDefault(m => m.Name.Equals(name));
+            loadAllAssets();
 
+            var asset = assets.SingleOrDefault(m => m.Name.Equals(name));
             if (asset == null)
             {
                 asset = service.GetAssetByName(name);
@@ -89,8 +94,9 @@ namespace Stock.Domain.Entities
         public static Asset GetAssetBySymbol(string symbol)
         {
 
-            var asset = assets.SingleOrDefault(m => m.ShortName.Equals(symbol));
+            loadAllAssets();
 
+            var asset = assets.SingleOrDefault(m => m.ShortName.Equals(symbol));
             if (asset == null)
             {
                 asset = service.GetAssetBySymbol(symbol);
@@ -119,6 +125,7 @@ namespace Stock.Domain.Entities
         {
             this.Id = id;
             this.Name = name;
+            this.ShortName = name;
             AssetTimeframes = new List<AssetTimeframe>();
         }
 
@@ -126,7 +133,7 @@ namespace Stock.Domain.Entities
         public static Asset FromDto(AssetDto dto)
         {
             Asset asset = new Asset(dto.Id, dto.Name);
-            asset.ShortName = dto.Symbol;
+            asset.ShortName = (dto.Symbol == null || dto.Symbol.Length == 0 ? dto.Name : dto.Symbol);
             asset.setMarket(dto.IdMarket);
             return asset;
         }

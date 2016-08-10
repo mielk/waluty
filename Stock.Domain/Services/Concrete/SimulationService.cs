@@ -28,8 +28,8 @@ namespace Stock.Domain.Services
         public SimulationService(IDataService dataService)
         {
             _dataService = dataService ?? DataServiceFactory.Instance().GetService();
-            _priceAnalyzer = new PriceAnalyzer(this);
-            _macdAnalyzer = new MacdAnalyzer(this);
+            //_priceAnalyzer = new PriceAnalyzer(this);
+            //_macdAnalyzer = new MacdAnalyzer(this);
         }
 
         public bool Start(string pair, string timeframe)
