@@ -72,17 +72,24 @@ namespace Stock.Domain.Entities
 
         #region countTimeUnits
 
-        public static int countTimeUnits(DateTime baseDate, DateTime comparedDate, TimeframeSymbol timeframeType)
+        public static int countTimeUnits(DateTime baseDate, DateTime comparedDate, TimeframeSymbol timeframe)
         {
-
-            switch (timeframeType)
+            DateTime properBaseDate = baseDate.Proper(timeframe);
+            DateTime properComparedDate = comparedDate.Proper(timeframe);
+            switch (timeframe)
             {
                 case TimeframeSymbol.MN1:
-                    return countTimeUnits_month(baseDate, comparedDate);
+                    return countTimeUnits_month(properBaseDate, properComparedDate);
                 case TimeframeSymbol.W1:
-                    return countTimeUnits_weeks(baseDate, comparedDate);
+                    return countTimeUnits_weeks(properBaseDate, properComparedDate);
                 case TimeframeSymbol.D1:
-                    return countTimeUnits_days(baseDate, comparedDate);
+                    return countTimeUnits_days(properBaseDate, properComparedDate);
+                case TimeframeSymbol.H4:
+                case TimeframeSymbol.H1:
+                case TimeframeSymbol.M30:
+                case TimeframeSymbol.M15:
+                case TimeframeSymbol.M5:
+                    return countTimeUnits_shortPeriod(properBaseDate, properComparedDate, timeframe);
             }
 
             return 0;
@@ -110,6 +117,20 @@ namespace Stock.Domain.Entities
             int yearBreaks = realBaseDate.countNewYearBreaks(realComparedDate, false);
             int christmas = realBaseDate.countChristmas(realComparedDate, false);
             return (realComparedDate - realBaseDate).Days - (weeks * 2) - (yearBreaks + christmas) * (realBaseDate.CompareTo(realComparedDate) < 0 ? 1 : -1);
+        }
+
+        private static int countTimeUnits_shortPeriod(DateTime baseDate, DateTime comparedDate, TimeframeSymbol timeframe)
+        {
+            DateTime properBaseDate = baseDate.Proper(timeframe);
+            DateTime properComparedDate = comparedDate.Proper(timeframe);
+            TimeSpan span = getTimespan(timeframe);
+            int spanMinutes = span.Hours * 60 + span.Minutes;
+
+            long datesMinutesDifference = (properComparedDate - properBaseDate).Ticks / 600000000;
+            int result = (int) datesMinutesDifference / spanMinutes;
+            int excluded = countExcludedItems(baseDate, comparedDate, timeframe);
+            return result - countExcludedItems(baseDate, comparedDate, timeframe);
+
         }
 
         #endregion countTimeUnits
@@ -212,6 +233,8 @@ namespace Stock.Domain.Entities
 
                 if (!startDate.isOpenMarketTime())
                 {
+                    DateTime nextOpenMarketTime = startDate.nextOpenMarketTime();
+                    DateTime proper = startDate.Proper(timeframe);
                     startDate = (sign > 0 ? startDate.nextOpenMarketTime() : startDate.Proper(timeframe));   
                 }
             }
@@ -222,24 +245,46 @@ namespace Stock.Domain.Entities
 
 
 
-        private static int countSpecialPeriods(DateTime startDate, DateTime endDate, TimeframeSymbol timeframe, 
-                                                bool countWeekends, bool countNewYear, bool countChristmas)
+        public static DateTime getChristmasProperDate(DateTime date, TimeframeSymbol timeframe)
+        {
+            DateTime d = date.getChristmasExactDate();
+            int units = getTimeframeHolidayInactiveUnits(timeframe);
+            TimeSpan span = getTimespan(timeframe, (-1) * units - 1);
+            return d.Add(span);
+        }
+
+        public static DateTime getNewYearProperDate(DateTime date, TimeframeSymbol timeframe)
+        {
+            DateTime d = date.getNewYearExactDate();
+            int units = getTimeframeHolidayInactiveUnits(timeframe);
+            TimeSpan span = getTimespan(timeframe, (-1) * units - 1);
+            return d.Add(span);
+        }
+
+        private static int getTimeframeHolidayInactiveUnits(TimeframeSymbol timeframe)
+        {
+            switch (timeframe)
+            {
+                case TimeframeSymbol.H4: return 0;
+                case TimeframeSymbol.H1: return 2;
+                case TimeframeSymbol.M30: return 5;
+                case TimeframeSymbol.M15: return 11;
+                case TimeframeSymbol.M5: return 35;
+                default: return 0;
+            }
+        }
+
+
+        private static int countExcludedItems(DateTime startDate, DateTime endDate, TimeframeSymbol timeframe)
         {
             int weekends = 0;
             int christmas = 0;
             int newYears = 0;
+            int sign = (startDate.CompareTo(endDate) < 0 ? 1 : -1);
 
-            if (countWeekends){
-                weekends = countWeekendItems(startDate, endDate, timeframe);
-            }
-            if (countNewYear)
-            {
-                newYears = startDate.countNewYearBreaks(endDate, false) * dayUnitsForTimeframe(timeframe);
-            }
-            if (countChristmas)
-            {
-                christmas = startDate.countChristmas(endDate, false) * dayUnitsForTimeframe(timeframe);
-            }
+            weekends = countWeekendItems(startDate, endDate, timeframe);
+            newYears = sign * startDate.countNewYearBreaks(endDate, false) * (dayUnitsForTimeframe(timeframe) + getTimeframeHolidayInactiveUnits(timeframe));
+            christmas = sign * startDate.countChristmas(endDate, false) * (dayUnitsForTimeframe(timeframe) + getTimeframeHolidayInactiveUnits(timeframe));
 
             return (weekends + christmas + newYears);
 

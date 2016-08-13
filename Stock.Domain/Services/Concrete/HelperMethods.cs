@@ -276,7 +276,27 @@ namespace Stock.Domain.Services
 
         public static bool IsChristmas(this DateTime d)
         {
-            return (d.Month == 12 && d.Day == 25);
+            if (d.Month == 12 && d.Day == 25)
+            {
+                return true;
+            }
+            else
+            {
+                return (d.Month == 12 && d.Day == 24 && d.TimeOfDay.CompareTo(new TimeSpan(21, 0, 0)) > 0);
+            }
+        }
+
+
+        public static bool IsNewYear(this DateTime d)
+        {
+            if (d.Month == 1 && d.Day == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return (d.Month == 12 && d.Day == 31 && d.TimeOfDay.CompareTo(new TimeSpan(21, 0, 0)) > 0);
+            }
         }
 
 
@@ -337,13 +357,18 @@ namespace Stock.Domain.Services
             }
 
             //include christmas & new year
-            if (d.IsChristmas() || d.DayOfYear == 1)
+            if (d.IsChristmas())
             {
-                return d.midnight().Add(span.invert()).ProperShortTime(timeframe);
+                return Timeframe.getChristmasProperDate(d, timeframe).ProperShortTime(timeframe);
+            }
+            
+            if (d.IsNewYear())
+            {
+                return Timeframe.getNewYearProperDate(d, timeframe).ProperShortTime(timeframe);
             }
 
             //To full time format.
-            var hours = -1 * (span.Hours == 0 ? d.Hour : d.Hour % span.Hours);
+            var hours = -1 * (span.Hours == 0 && span.Minutes == 0 ? d.Hour : (span.Minutes == 0 ? d.Hour % span.Hours : 0));
             var minutes = -1 * (span.Minutes == 0 ? d.Minute : d.Minute % span.Minutes);
             var seconds = -1 * (span.Seconds == 0 ? d.Second : d.Second % span.Seconds);
             TimeSpan toAdd = new TimeSpan(hours, minutes, seconds);
@@ -359,6 +384,11 @@ namespace Stock.Domain.Services
             return new TimeSpan(span.Hours * -1, span.Minutes * -1, span.Seconds * -1);
         }
 
+        public static TimeSpan multiply(this TimeSpan span, int multiplier)
+        {
+            return new TimeSpan(span.Hours * multiplier, span.Minutes * multiplier, span.Seconds * multiplier);
+        }
+
 
         public static DateTime midnight(this DateTime date)
         {
@@ -372,11 +402,24 @@ namespace Stock.Domain.Services
 
         public static bool isOpenMarketTime(this DateTime date)
         {
-            if (date.isWeekend() || date.IsChristmas() || date.DayOfYear == 1)
+            if (date.isWeekend() || date.IsChristmas() || date.IsNewYear())
             {
                 return false;
             }
             return true;
+        }
+
+
+
+        public static DateTime getChristmasExactDate(this DateTime date)
+        {
+            return new DateTime(date.Year, 12, 25, 0, 0, 0);
+        }
+
+
+        public static DateTime getNewYearExactDate(this DateTime date)
+        {
+            return new DateTime(date.Year + (date.Month == 12 ? 1 : 0), 1, 1, 0, 0, 0);
         }
 
 
@@ -388,7 +431,28 @@ namespace Stock.Domain.Services
             }
             else
             {
-                return nextOpenMarketTime(date.AddDays(1));
+
+                if (date.IsChristmas()){
+                    return nextOpenMarketTime(date.getChristmasExactDate().AddDays(1));
+                }
+                else if (date.IsNewYear())
+                {
+                    return nextOpenMarketTime(date.getNewYearExactDate().AddDays(1));
+                } 
+                else if (date.isWeekend())
+                {
+                    //return nextOpenMarketTime(
+                    return nextOpenMarketTime(date.AddDays(date.DayOfWeek == DayOfWeek.Saturday ? 2 : 1).midnight());
+                }
+
+                //DateTime d = new DateTime(date.Ticks);
+                //while (!isOpenMarketTime(d))
+                //{
+                //    d.
+                //}
+
+                //return nextOpenMarketTime(date.AddDays(1));
+                return date;
             }
         }
 
