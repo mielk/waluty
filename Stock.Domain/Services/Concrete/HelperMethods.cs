@@ -197,68 +197,31 @@ namespace Stock.Domain.Services
 
         public static DateTime addTimeUnits(this DateTime date, TimeframeSymbol timeframe, int units)
         {
-
-            DateTime newDate;
-
             if (units == 0) return date.AddMilliseconds(0);
-
-            switch (timeframe)
-            {
-                case TimeframeSymbol.MN1:
-                    return date.AddMonths(units);
-
-                case TimeframeSymbol.W1:
-                    return date.AddDays(units * 7);
-
-                case TimeframeSymbol.D1:
-                    {
-                        int remainder = units % 5;
-                        int newWeekDay = (int)date.DayOfWeek + remainder;
-                        bool breakWeek = newWeekDay > 5 || newWeekDay <= 0;
-                        int daysToAdd = (units / 5) * 7 + remainder + Math.Sign(units) * (breakWeek ? 2 : 0);
-                        newDate = date.AddDays(daysToAdd);
-
-                        //Include year breaks.
-                        int yearBreaks = date.countNewYearBreaks(newDate, false);
-                        if (yearBreaks > 0)
-                        {
-                            newDate = newDate.addTimeUnits(timeframe, Math.Sign(units) * yearBreaks);
-                        }
-
-                        //Check if the result date is not New Year.
-                        if (newDate.DayOfYear == 1)
-                        {
-                            newDate = newDate.AddDays(Math.Sign(units));
-                        }
-
-                    }
-
-                    return newDate;
-
-                case TimeframeSymbol.H4:
-                    {
-                        //int remainder = units % 30;
-                        //int newWeekDay = (int)date.DayOfWeek + units % 5;
-
-                        newDate = date.AddHours(4 * units);
-
-                    }
-
-                    return newDate;
-
-            }
-
-            return date;
-            
+            return Timeframe.addTimeUnits(date, timeframe, units);
         }
 
+        public static int countTimeUnits(this DateTime date, DateTime compared, TimeframeSymbol timeframe)
+        {
+            return Timeframe.countTimeUnits(date, compared, timeframe);
+        }
 
-        public static int countNewYearBreaks(this DateTime date, DateTime compared, bool includeWeekendBreaks)
+        public static int countNewYearBreaks(this DateTime date, DateTime compared, bool includeWeekends)
+        {
+            return date.countSpecialDays(compared, includeWeekends, 1, 1);
+        }
+
+        public static int countChristmas(this DateTime date, DateTime compared, bool includeWeekends)
+        {
+            return date.countSpecialDays(compared, includeWeekends, 12, 25);
+        }
+
+        public static int countSpecialDays(this DateTime date, DateTime compared, bool includeWeekends, int month, int day)
         {
 
             DateTime earlier, later;
             int counter = 0;
-            
+
 
             if (date.CompareTo(compared) > 0)
             {
@@ -272,18 +235,20 @@ namespace Stock.Domain.Services
             }
 
 
+            int startYear = (earlier.Month < month || earlier.Month == month && earlier.Day < day ? earlier.Year : earlier.Year + 1);
+            int endYear = (later.Month > month || later.Month == month && later.Day >= day ? later.Year : later.Year - 1);
 
-            if (includeWeekendBreaks)
+
+            if (includeWeekends)
             {
-                return later.Year - earlier.Year;
+                return endYear - startYear + 1;
             }
             else
             {
-
-                for (var i = earlier.Year + 1; i <= later.Year; i++)
+                for (var i = startYear; i <= endYear; i++)
                 {
-                    DateTime newYear = new DateTime(i, 1, 1);
-                    if (newYear.DayOfWeek != DayOfWeek.Sunday && newYear.DayOfWeek != DayOfWeek.Saturday)
+                    DateTime specialDay = new DateTime(i, month, day);
+                    if (specialDay.DayOfWeek != DayOfWeek.Sunday && specialDay.DayOfWeek != DayOfWeek.Saturday)
                     {
                         counter++;
                     }
@@ -297,5 +262,139 @@ namespace Stock.Domain.Services
         }
 
 
+
+        public static int DaysBetween(this DateTime d1, DateTime d2) {
+            return (d2 - d1).Days;
+        }
+
+        public static int WeeksDifference(this DateTime d1, DateTime d2)
+        {
+            DateTime real1 = d1.ProperWeek();
+            DateTime real2 = d2.ProperWeek();
+            return (real2 - real1).Days / 7;
+        }
+
+        public static bool IsChristmas(this DateTime d)
+        {
+            return (d.Month == 12 && d.Day == 25);
+        }
+
+
+        public static DateTime Proper(this DateTime d, TimeframeSymbol timeframe)
+        {
+            switch (timeframe)
+            {
+                case TimeframeSymbol.MN1: return d.ProperMonth();
+                case TimeframeSymbol.W1:  return d.ProperWeek();
+                case TimeframeSymbol.D1:  return d.ProperDay();
+                default: return d.ProperShortTime(timeframe);
+            }
+
+        }
+
+        private static DateTime ProperMonth(this DateTime d)
+        {
+            return new DateTime(d.Year, d.Month, 1);
+        }
+
+        private static DateTime ProperWeek(this DateTime d)
+        {
+            return d.AddDays(-1 * (int)d.DayOfWeek).midnight();
+        }
+
+        private static DateTime ProperDay(this DateTime d)
+        {
+
+            if (d.DayOfWeek == DayOfWeek.Saturday)
+            {
+                return d.AddDays(-1).ProperDay().midnight();
+            }
+            else if (d.DayOfWeek == DayOfWeek.Sunday)
+            {
+                return d.AddDays(-2).ProperDay().midnight();
+            }
+            else if (d.DayOfYear == 1)
+            {
+                return d.AddDays(-1).ProperDay().midnight();
+            }
+
+            return new DateTime(d.Ticks).midnight();
+
+        }
+
+        private static DateTime ProperShortTime(this DateTime d, TimeframeSymbol timeframe)
+        {
+            //To full time period.
+            TimeSpan span = Timeframe.getTimespan(timeframe, 1);
+
+            //include weekends
+            if (d.isWeekend())
+            {
+                var dt = (d.DayOfWeek == DayOfWeek.Sunday ? d.AddDays(-1) : d.AddDays(0));
+                var saturdayMidnight = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
+                return saturdayMidnight.Add(span.invert()).ProperShortTime(timeframe);
+
+            }
+
+            //include christmas & new year
+            if (d.IsChristmas() || d.DayOfYear == 1)
+            {
+                return d.midnight().Add(span.invert()).ProperShortTime(timeframe);
+            }
+
+            //To full time format.
+            var hours = -1 * (span.Hours == 0 ? d.Hour : d.Hour % span.Hours);
+            var minutes = -1 * (span.Minutes == 0 ? d.Minute : d.Minute % span.Minutes);
+            var seconds = -1 * (span.Seconds == 0 ? d.Second : d.Second % span.Seconds);
+            TimeSpan toAdd = new TimeSpan(hours, minutes, seconds);
+
+            return d.Add(toAdd);
+
+
+        }
+
+
+        public static TimeSpan invert(this TimeSpan span)
+        {
+            return new TimeSpan(span.Hours * -1, span.Minutes * -1, span.Seconds * -1);
+        }
+
+
+        public static DateTime midnight(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+        }
+
+        public static bool isWeekend(this DateTime date)
+        {
+            return (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? true : false);
+        }
+
+        public static bool isOpenMarketTime(this DateTime date)
+        {
+            if (date.isWeekend() || date.IsChristmas() || date.DayOfYear == 1)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        public static DateTime nextOpenMarketTime(this DateTime date)
+        {
+            if (isOpenMarketTime(date))
+            {
+                return new DateTime(date.Ticks);
+            }
+            else
+            {
+                return nextOpenMarketTime(date.AddDays(1));
+            }
+        }
+
+
     }
+
+
+
 }

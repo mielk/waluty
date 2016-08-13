@@ -7,12 +7,6 @@ namespace Stock_UnitTest.Stock.Domain.Entities
     public class TimeframeUnitTests
     {
 
-        [TestMethod]
-        public void NotInitialized()
-        {
-            Assert.Fail("Tests not initialized");
-        }
-
     }
 
 }
