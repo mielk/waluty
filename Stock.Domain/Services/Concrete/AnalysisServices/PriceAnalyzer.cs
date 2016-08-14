@@ -45,16 +45,19 @@ namespace Stock.Domain.Services
 
 
         /* CONSTRUCTORS */
-        public PriceAnalyzer(Asset asset, Timeframe timeframe) : base(asset, timeframe)
+        public PriceAnalyzer(AssetTimeframe atf)
+            : base(atf)
         {
         }
 
-        public PriceAnalyzer(IAnalysisDataService dataService, Asset asset, Timeframe timeframe) : base(asset, timeframe)
+        public PriceAnalyzer(IAnalysisDataService dataService, AssetTimeframe atf)
+            : base(atf)
         {
             _dataService = dataService;
         }
 
-        private void initialize()
+
+        protected override void initialize()
         {
             DaysForAnalysis = 240;
         }
@@ -62,13 +65,10 @@ namespace Stock.Domain.Services
 
 
 
-        public override void Analyze()
+        public override void Analyze(DataItem[] items)
         {
-            Analyze(false);
-        }
 
-        public override void Analyze(bool fromScratch)
-        {
+            var x = "Działa";
 
         }
 
@@ -172,10 +172,11 @@ namespace Stock.Domain.Services
         public void LoadParameters(string symbol)
         {
             Symbol = symbol;
-            Timeframe = Timeframe.GetTimeframe(symbol.GetTimeframeSymbol());
+            var timeframe = Timeframe.GetTimeframe(symbol.GetTimeframeSymbol());
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
             var pair = _marketRepository.GetFxPair(pairSymbol);
-            this.Asset = Asset.GetAssetById(pair.Id);
+            var asset = Asset.GetAssetById(pair.Id);
+            this.AssetTimeframe = new AssetTimeframe(asset, timeframe);
         }
 
         public void LoadDataSets(string symbol)

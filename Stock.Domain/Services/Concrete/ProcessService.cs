@@ -18,7 +18,7 @@ namespace Stock.Domain.Services
     {
 
         private AssetTimeframe assetTimeframe;
-        private Dictionary<AnalysisType, Analyzer> analyzers;
+        private Dictionary<AnalysisType, IAnalyzer> analyzers;
         private DataItem[] dataItems;
 
 
@@ -45,7 +45,7 @@ namespace Stock.Domain.Services
                 return null;
             }
         }
-        public Dictionary<AnalysisType, Analyzer> getAnalyzers() { 
+        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers() { 
             return analyzers; 
         }
 
@@ -98,7 +98,7 @@ namespace Stock.Domain.Services
             //If any data have been loaded, process them by all of assigned analyzers.
             foreach (var analyzer in analyzers.Values)
             {
-                analyzer.Analyze();
+                analyzer.Analyze(dataItems);
             }
 
 

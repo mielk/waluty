@@ -11,6 +11,6 @@ namespace Stock.Domain.Services.Abstract
     public interface IQuotationService
     {
         DateTime? getLastCalculationDate(string symbol, string analysisSymbol);
-        DataItem[] fetchData(Dictionary<AnalysisType, Analyzer> analyzers);
+        DataItem[] fetchData(Dictionary<AnalysisType, IAnalyzer> analyzers);
     }
 }

@@ -41,13 +41,14 @@ namespace Stock.Domain.Services
 
 
 
-        public MacdAnalyzer(Asset asset, Timeframe timeframe) : base(asset, timeframe)
+        public MacdAnalyzer(AssetTimeframe atf)
+            : base(atf)
         {
         }
 
 
-        public MacdAnalyzer(IAnalysisDataService dataService, Asset asset, Timeframe timeframe)
-            : base(asset, timeframe)
+        public MacdAnalyzer(IAnalysisDataService dataService, AssetTimeframe atf)
+            : base(atf)
         {
             this._dataService = dataService;
         }
@@ -57,24 +58,20 @@ namespace Stock.Domain.Services
             _dataService = dataService;
         }
 
-        private void initialize()
+        protected override void initialize()
         {
-            DaysForAnalysis = 240;
+            DaysForAnalysis = 300;
         }
 
 
 
 
 
-        public override void Analyze()
+        public override void Analyze(DataItem[] items)
         {
-            Analyze(false);
+            var x = "Działa";
         }
 
-        public override void Analyze(bool fromScratch)
-        {
-
-        }
 
 
         //public void Analyze(string symbol, bool fromScratch)
@@ -167,8 +164,12 @@ namespace Stock.Domain.Services
         {
             Symbol = symbol;
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
+            var timeframe = Timeframe.GetTimeframe(symbol.GetTimeframeSymbol());
             var pair = _marketRepository.GetFxPair(pairSymbol);
-            this.Asset = Asset.GetAssetById(pair.Id);
+            var asset = Asset.GetAssetById(pair.Id);
+            this.AssetTimeframe = new AssetTimeframe(asset, timeframe);
+
+
         }
 
         public void LoadDataSets(string symbol)

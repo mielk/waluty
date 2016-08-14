@@ -10,13 +10,120 @@ namespace Stock.DAL.Repositories
     {
 
         private const string PricesTableTemplate = "tm_prices_template";
-        private const string PricesTablePrefix = "prices_";
         private const string QuotationsTablePrefix = "quotations_";
+        private const string PricesTablePrefix = "prices_";
         private const string MacdTablePrefix = "macd_";
         private const string AdxTablePrefix = "adx_";
+        private const string CandlestickTablePrefix = "candlesticks_";
+        private const string TrendlinesTablePrefix = "trendlines_";
         private const string AnalysisInfoTable = "_log_analysis";
         private const string ExtremaEvaluationTable = "_extrema_evaluation";
 
+
+
+        public IEnumerable<DataItemDto> GetDataItems(string symbol, DateTime? startDate, DateTime? endDate, IEnumerable<string> analysisType)
+        {
+
+            Dictionary<long, DataItemDto> dictItems = getFxQuotationsAsDataItemsDictionary(symbol, startDate, endDate);
+
+            if (analysisType.Contains("prices"))
+            {
+                IEnumerable<PriceDto> prices = GetPrices(symbol, startDate, endDate);
+                foreach (var price in prices)
+                {
+                    try{
+                        DataItemDto did = null;
+                        dictItems.TryGetValue(price.PriceDate.Ticks, out did);
+                        if (did != null)
+                        {
+                            did.Price = price;
+                        }
+                    }catch (Exception){}
+                }
+            }
+
+            if (analysisType.Contains("macd"))
+            {
+                IEnumerable<MacdDto> macds = GetMacds(symbol, startDate, endDate);
+                foreach (var macd in macds)
+                {
+                    try
+                    {
+                        DataItemDto did = null;
+                        dictItems.TryGetValue(macd.PriceDate.Ticks, out did);
+                        if (did != null)
+                        {
+                            did.Macd = macd;
+                        }
+                    }
+                    catch (Exception) { }
+                }
+            }
+
+            if (analysisType.Contains("adx"))
+            {
+                IEnumerable<AdxDto> adxs = GetAdxs(symbol, startDate, endDate);
+                foreach (var adx in adxs)
+                {
+                    try
+                    {
+                        DataItemDto did = null;
+                        dictItems.TryGetValue(adx.PriceDate.Ticks, out did);
+                        if (did != null)
+                        {
+                            did.Adx = adx;
+                        }
+                    }
+                    catch (Exception) { }
+                }
+            }
+
+            if (analysisType.Contains("candlesticks"))
+            {
+                IEnumerable<CandlestickDto> candlesticks = GetCandlesticks(symbol, startDate, endDate);
+                foreach (var candle in candlesticks)
+                {
+                    try
+                    {
+                        DataItemDto did = null;
+                        dictItems.TryGetValue(candle.PriceDate.Ticks, out did);
+                        if (did != null)
+                        {
+                            did.Candlestick = candle;
+                        }
+                    }
+                    catch (Exception) { }
+                }
+            }
+
+
+            return dictItems.Values;
+
+
+        }
+
+
+        private Dictionary<long, DataItemDto> getFxQuotationsAsDataItemsDictionary(string symbol, DateTime? startDate, DateTime? endDate)
+        {
+            Dictionary<long, DataItemDto> dictItems = new Dictionary<long, DataItemDto>();
+            IEnumerable<DataItemDto> quotations;
+            if (endDate != null){
+                quotations = GetFxQuotations(symbol, (DateTime)startDate, (DateTime)endDate);
+            } else if (startDate != null){
+                quotations = GetFxQuotations(symbol, (DateTime)startDate);
+            } else {
+                quotations = GetFxQuotations(symbol);
+            }
+
+
+            foreach (var item in quotations)
+            {
+                dictItems.Add(item.PriceDate.Ticks, item);
+            }
+
+            return dictItems;
+
+        }
 
         //private static readonly EFDbContext Context = EFDbContext.GetInstance();
 
@@ -233,10 +340,8 @@ namespace Stock.DAL.Repositories
 
         public IEnumerable<DataItemDto> GetFxQuotations(string symbol, DateTime start)
         {
-            string sql = "SELECT * FROM fx.{0} WHERE PriceDate >= {1} ORDER BY PriceDate DESC";
-            string query = string.Format(sql, symbol, start.ToString());
+            string query = GetSqlForFxQuotations(symbol, start, null);
             IEnumerable<DataItemDto> quotations;
-
             using (var context = new EFDbContext())
             {
                 quotations = context.Database.SqlQuery<DataItemDto>(query).ToList();
@@ -332,6 +437,69 @@ namespace Stock.DAL.Repositories
         }
 
 
+
+        public IEnumerable<PriceDto> GetPrices(string symbol, DateTime? startDate, DateTime? endDate)
+        {
+
+            string query = GetSqlForFxCalculations(symbol, PricesTablePrefix, startDate, endDate);
+            IEnumerable<PriceDto> prices;
+
+            using (var context = new EFDbContext())
+            {
+                prices = context.Database.SqlQuery<PriceDto>(query).ToList();
+            }
+
+            return prices.OrderBy(q => q.PriceDate);
+
+        }
+
+        public IEnumerable<MacdDto> GetMacds(string symbol, DateTime? startDate, DateTime? endDate)
+        {
+
+            string query = GetSqlForFxCalculations(symbol, MacdTablePrefix, startDate, endDate);
+            IEnumerable<MacdDto> macds;
+
+            using (var context = new EFDbContext())
+            {
+                macds = context.Database.SqlQuery<MacdDto>(query).ToList();
+            }
+
+            return macds.OrderBy(q => q.PriceDate);
+
+        }
+
+        public IEnumerable<AdxDto> GetAdxs(string symbol, DateTime? startDate, DateTime? endDate)
+        {
+
+            string query = GetSqlForFxCalculations(symbol, AdxTablePrefix, startDate, endDate);
+            IEnumerable<AdxDto> adxs;
+
+            using (var context = new EFDbContext())
+            {
+                adxs = context.Database.SqlQuery<AdxDto>(query).ToList();
+            }
+
+            return adxs.OrderBy(q => q.PriceDate);
+
+        }
+
+        public IEnumerable<CandlestickDto> GetCandlesticks(string symbol, DateTime? startDate, DateTime? endDate)
+        {
+
+            string query = GetSqlForFxCalculations(symbol, AdxTablePrefix, startDate, endDate);
+            IEnumerable<CandlestickDto> candlesticks;
+
+            using (var context = new EFDbContext())
+            {
+                candlesticks = context.Database.SqlQuery<CandlestickDto>(query).ToList();
+            }
+
+            return candlesticks.OrderBy(q => q.PriceDate);
+
+        }
+
+
+
         private string GetSqlForPlainFxQuotations(string symbol)
         {
             var timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
@@ -346,6 +514,26 @@ namespace Stock.DAL.Repositories
                                 " q.PriceDate;";
 
             return string.Format(sql, symbol, timeframe);
+
+        }
+
+
+        private string GetSqlForFxCalculations(string symbol, string tableName, DateTime? startDate, DateTime? endDate)
+        {
+
+            string timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
+            string where = (startDate != null ? "a.PriceDate >= '" + startDate + "'" + (endDate != null ? " AND a.PriceDate <= '" + endDate + "'" : string.Empty) : string.Empty);
+            string sql = "USE fx; " +
+                            "SELECT " +
+                                " '{2}' AS Timeframe " +
+                                ", a.*" +
+                            " FROM" +
+                                " {0}{1} AS a" +
+                                (where.Length > 0 ? " WHERE " + where : string.Empty) +
+                            " ORDER BY" +
+                                " a.PriceDate;";
+
+            return string.Format(sql, tableName, symbol, timeframe);
 
         }
 
@@ -371,7 +559,7 @@ namespace Stock.DAL.Repositories
 
         }
 
-        private string GetSqlForFxQuotations(string symbol, DateTime startDate, DateTime endDate)
+        private string GetSqlForFxQuotations(string symbol, DateTime startDate, DateTime? endDate)
         {
 
             var timeframe = symbol.Substring(symbol.IndexOf('_') + 1);
@@ -386,8 +574,8 @@ namespace Stock.DAL.Repositories
                                 " LEFT JOIN prices_{0} AS p ON q.PriceDate = p.PriceDate" +
                                 " LEFT JOIN macd_{0} AS m ON q.PriceDate = m.PriceDate" +
                             " WHERE" +
-                                " q.PriceDate >= '" + startDate + "' AND" +
-                                " q.PriceDate <= '" + endDate + "'" + 
+                                " q.PriceDate >= '" + startDate + "' " +
+                                (endDate == null ? "" : "AND q.PriceDate <= '" + endDate + "'") + 
                             " ORDER BY" +
                                 " q.PriceDate;";
 

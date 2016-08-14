@@ -19,8 +19,7 @@ namespace Stock.Domain.Services
         private const int MinDistance = 5;
 
         /* Process properties */
-        private Asset Asset;
-        private Timeframe Timeframe;
+        private AssetTimeframe AssetTimeframe;
         private string Symbol;
 
         /* Data collections */
@@ -83,19 +82,19 @@ namespace Stock.Domain.Services
             this.Symbol = symbol;
 
             var names = symbol.Split('_');
-            this.Asset = MarketService.Instance().GetFxPair(names[0]);
-            this.Timeframe = Timeframe.GetTimeframeByShortName(names[1]);
-            this.analyzer = new TrendlineAnalyzer(Asset, Timeframe);
+            var asset = MarketService.Instance().GetFxPair(names[0]);
+            var timeframe = Timeframe.GetTimeframeByShortName(names[1]);
+            this.AssetTimeframe = new AssetTimeframe(asset, timeframe);
+            this.analyzer = new TrendlineAnalyzer(this.AssetTimeframe);
 
         }
 
         private void LoadProperties(Asset asset, Timeframe timeframe)
         {
 
-            this.Asset = asset;
-            this.Timeframe = timeframe;
-            this.Symbol = asset.Name + "_" + timeframe.Name;
-            this.analyzer = new TrendlineAnalyzer(Asset, Timeframe);
+            this.AssetTimeframe = new AssetTimeframe(asset, timeframe);
+            this.Symbol = this.AssetTimeframe.Symbol();
+            this.analyzer = new TrendlineAnalyzer(this.AssetTimeframe);
 
         }
 

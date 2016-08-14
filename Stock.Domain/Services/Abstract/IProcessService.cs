@@ -16,7 +16,7 @@ namespace Stock.Domain.Services
 
         Asset getAsset();
         Timeframe getTimeframe();
-        Dictionary<AnalysisType, Analyzer> getAnalyzers();
+        Dictionary<AnalysisType, IAnalyzer> getAnalyzers();
 
     }
 }

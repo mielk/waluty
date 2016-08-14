@@ -7,6 +7,7 @@ using Stock.Domain.Entities;
 using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
+using Stock.Domain.Enums;
 
 namespace Stock.Domain.Services
 {
@@ -18,6 +19,30 @@ namespace Stock.Domain.Services
         public DataService(IDataRepository repository)
         {
             _repository = repository ?? RepositoryFactory.GetDataRepository();
+        }
+
+
+
+
+        public IEnumerable<DataItem> GetDataItems(AssetTimeframe atf, DateTime? startDate, DateTime? endDate, 
+                                                    IEnumerable<AnalysisType> analysisTypes)
+        {
+
+            List<string> list = new List<string>();
+            foreach (var at in analysisTypes)
+            {
+                list.Add(at.TableName());
+            }
+
+            IEnumerable<DataItemDto> dataItemsDto = _repository.GetDataItems(atf.Symbol(), startDate, endDate, list);
+            List<DataItem> dataItems = new List<DataItem>();
+            foreach (var dto in dataItemsDto)
+            {
+                dataItems.Add(DataItem.FromDto(dto));
+            }
+
+            return dataItems;
+
         }
 
 
@@ -184,6 +209,18 @@ namespace Stock.Domain.Services
         {
             _repository.UpdateQuotation(quotation.ToDto(), symbol);
         }
+
+
+
+        public DateTime? GetAnalysisLastCalculation(string symbol, string analysisType){
+            return _repository.GetAnalysisLastCalculation(symbol, analysisType);
+        }
+
+        public DateTime? GetLastQuotationDate(string symbol)
+        {
+            return _repository.GetLastQuotationDate(symbol);
+        }
+
 
     }
 }

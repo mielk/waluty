@@ -130,7 +130,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             service.Setup(types);
             service.Run(true);
 
-            mockQuotationService.Verify(x => x.fetchData(It.IsAny<Dictionary<AnalysisType, Analyzer>>()), Times.Exactly(1));
+            mockQuotationService.Verify(x => x.fetchData(It.IsAny<Dictionary<AnalysisType, IAnalyzer>>()), Times.Exactly(1));
 
         }
 
@@ -142,7 +142,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             
             var mockQuotationService = mockedQuotationService();
             DataItem[] items = new DataItem[] { };
-            mockQuotationService.Setup(q => q.fetchData(It.IsAny<Dictionary<AnalysisType, Analyzer>>())).Returns(items);
+            mockQuotationService.Setup(q => q.fetchData(It.IsAny<Dictionary<AnalysisType, IAnalyzer>>())).Returns(items);
 
             Asset asset = new Asset(1, "USD");
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);

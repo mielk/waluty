@@ -60,13 +60,15 @@ namespace Stock.Domain.Services
 
 
 
-        public TrendlineAnalyzer(Asset asset, Timeframe timeframe) : base(asset, timeframe)
+        public TrendlineAnalyzer(AssetTimeframe atf)
+            : base(atf)
         {
         }
 
-        private void initialize()
+
+        protected override void initialize()
         {
-            DaysForAnalysis = 240;
+            DaysForAnalysis = 300;
         }
 
 
@@ -82,20 +84,14 @@ namespace Stock.Domain.Services
         public void Initialize(DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
         {
 
-            this.Trendline = new Trendline(Asset, Timeframe, initialItem, initialLevel, boundItem, boundLevel);
+            this.Trendline = new Trendline(AssetTimeframe.asset, AssetTimeframe.timeframe, initialItem, initialLevel, boundItem, boundLevel);
 
         }
 
 
-
-        public override void Analyze()
+        public override void Analyze(DataItem[] items)
         {
-            Analyze(false);
-        }
-
-        public override void Analyze(bool fromScratch)
-        {
-
+            
         }
 
 

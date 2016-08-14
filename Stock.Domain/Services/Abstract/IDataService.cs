@@ -1,5 +1,6 @@
 ﻿using Stock.DAL.TransferObjects;
 using Stock.Domain.Entities;
+using Stock.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace Stock.Domain.Services
 {
     public interface IDataService
     {
+
+        IEnumerable<DataItem> GetDataItems(AssetTimeframe atf, DateTime? startDate, DateTime? endDate, IEnumerable<AnalysisType> analysisType);
+
         IEnumerable<Quotation> GetQuotations(int companyId, int timeframe);
         IEnumerable<Quotation> GetQuotations(int companyId, int timeframe, int count);
         IEnumerable<Quotation> GetQuotations(int companyId, int timeframe, DateTime start);
@@ -23,5 +27,8 @@ namespace Stock.Domain.Services
 
         object GetDataSetProperties(string symbol);
         LastDates GetSymbolLastItems(string symbol, string analysisType);
+        DateTime? GetAnalysisLastCalculation(string symbol, string analysisType);
+        DateTime? GetLastQuotationDate(string symbol);
+
     }
 }

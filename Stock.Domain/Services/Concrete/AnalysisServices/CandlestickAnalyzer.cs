@@ -21,13 +21,14 @@ namespace Stock.Domain.Services
 
 
 
-        public CandlestickAnalyzer(Asset asset, Timeframe timeframe) : base(asset, timeframe)
+        public CandlestickAnalyzer(AssetTimeframe atf)
+            : base(atf)
         {
         }
 
 
-        public CandlestickAnalyzer(IAnalysisDataService dataService, Asset asset, Timeframe timeframe)
-            : base(asset, timeframe)
+        public CandlestickAnalyzer(IAnalysisDataService dataService, AssetTimeframe atf)
+            : base(atf)
         {
             this._dataService = dataService;
         }
@@ -37,9 +38,10 @@ namespace Stock.Domain.Services
             _dataService = dataService;
         }
 
-        private void initialize()
+
+        protected override void initialize()
         {
-            DaysForAnalysis = 240;
+            DaysForAnalysis = 300;
         }
 
 
@@ -47,14 +49,9 @@ namespace Stock.Domain.Services
 
 
 
-        public override void Analyze()
+        public override void Analyze(DataItem[] items)
         {
-            Analyze(false);
-        }
-
-        public override void Analyze(bool fromScratch)
-        {
-
+            
         }
 
 

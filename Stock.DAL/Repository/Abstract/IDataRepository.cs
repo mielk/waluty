@@ -9,6 +9,15 @@ namespace Stock.DAL.Repositories
 {
     public interface IDataRepository
     {
+
+
+
+        IEnumerable<DataItemDto> GetDataItems(string symbol, DateTime? startDate, DateTime? endDate, IEnumerable<string> analysisType);
+
+
+
+
+
         IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe);
         IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe, int count);
         IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe, DateTime start);

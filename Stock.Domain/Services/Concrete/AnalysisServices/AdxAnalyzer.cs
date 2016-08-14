@@ -21,33 +21,30 @@ namespace Stock.Domain.Services
         
 
 
-        public AdxAnalyzer(Asset asset, Timeframe timeframe) : base(asset, timeframe)
+        public AdxAnalyzer(AssetTimeframe atf) : base(atf)
         {
             initialize();
         }
 
-        public AdxAnalyzer(IAnalysisDataService dataService, Asset asset, Timeframe timeframe) : base(asset, timeframe)
+        public AdxAnalyzer(IAnalysisDataService dataService, AssetTimeframe atf)
+            : base(atf)
         {
             initialize();
             this._dataService = dataService;
         }
 
-        private void initialize()
+
+        protected override void initialize()
         {
-            DaysForAnalysis = 240;
+            DaysForAnalysis = 300;
         }
 
 
 
 
-        public override void Analyze()
+        public override void Analyze(DataItem[] items)
         {
-            Analyze(false);
-        }
-
-        public override void Analyze(bool fromScratch)
-        {
-
+            ;
         }
 
 

@@ -23,16 +23,16 @@ namespace Stock.Domain.Services.Factories
             _instance = instance;
         }
 
-        public Analyzer getAnalyzer(AnalysisType type, Asset asset, Timeframe timeframe)
+        public IAnalyzer getAnalyzer(AnalysisType type, AssetTimeframe atf)
         {
 
             switch (type)
             {
-                case AnalysisType.Price: return new PriceAnalyzer(asset, timeframe);
-                case AnalysisType.MACD: return new MacdAnalyzer(asset, timeframe);
-                case AnalysisType.ADX: return new AdxAnalyzer(asset, timeframe);
-                case AnalysisType.Candlestick: return new CandlestickAnalyzer(asset, timeframe);
-                case AnalysisType.Trendline: return new TrendlineAnalyzer(asset, timeframe);
+                case AnalysisType.Price: return new PriceAnalyzer(atf);
+                case AnalysisType.MACD: return new MacdAnalyzer(atf);
+                case AnalysisType.ADX: return new AdxAnalyzer(atf);
+                case AnalysisType.Candlestick: return new CandlestickAnalyzer(atf);
+                case AnalysisType.Trendline: return new TrendlineAnalyzer(atf);
                 case AnalysisType.Unknown: return null;
                 default: return null;
             }
@@ -41,13 +41,13 @@ namespace Stock.Domain.Services.Factories
 
 
 
-        public Dictionary<AnalysisType, Analyzer> getAnalyzers(AssetTimeframe atf, IEnumerable<AnalysisType> types)
+        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers(AssetTimeframe atf, IEnumerable<AnalysisType> types)
         {
 
-            var dict = new Dictionary<AnalysisType, Analyzer>();
+            var dict = new Dictionary<AnalysisType, IAnalyzer>();
             foreach (var type in types)
             {
-                Analyzer analyzer = getAnalyzer(type, atf.asset, atf.timeframe);
+                IAnalyzer analyzer = getAnalyzer(type, atf);
                 dict.Add(type, analyzer);
             }
 
@@ -57,13 +57,14 @@ namespace Stock.Domain.Services.Factories
 
 
 
-        public Dictionary<AnalysisType, Analyzer> getAnalyzers(Asset asset, Timeframe timeframe, IEnumerable<AnalysisType> types)
+        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers(Asset asset, Timeframe timeframe, IEnumerable<AnalysisType> types)
         {
 
-            var dict = new Dictionary<AnalysisType, Analyzer>();
+            AssetTimeframe atf = new AssetTimeframe(asset, timeframe);
+            var dict = new Dictionary<AnalysisType, IAnalyzer>();
             foreach (var type in types)
             {
-                Analyzer analyzer = getAnalyzer(type, asset, timeframe);
+                IAnalyzer analyzer = getAnalyzer(type, atf);
                 dict.Add(type, analyzer);
             }
 

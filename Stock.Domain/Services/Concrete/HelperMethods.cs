@@ -88,6 +88,10 @@ namespace Stock.Domain.Services
                     return "macd";
                 case AnalysisType.ADX:
                     return "adx";
+                case AnalysisType.Candlestick:
+                    return "candlesticks";
+                case AnalysisType.Trendline:
+                    return "trendlines";
                 default:
                     return "";
             }
@@ -179,14 +183,15 @@ namespace Stock.Domain.Services
 
         }
 
-        public static Analyzer getAnalyzer(this AnalysisType type, Asset asset, Timeframe timeframe)
+        public static IAnalyzer getAnalyzer(this AnalysisType type, Asset asset, Timeframe timeframe)
         {
-            return AnalyzerFactory.Instance().getAnalyzer(type, asset, timeframe);
+            AssetTimeframe atf = new AssetTimeframe(asset, timeframe);
+            return AnalyzerFactory.Instance().getAnalyzer(type, atf);
         }
 
-        public static Analyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
+        public static IAnalyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
         {
-            return AnalyzerFactory.Instance().getAnalyzer(type, atf.asset, atf.timeframe);
+            return AnalyzerFactory.Instance().getAnalyzer(type, atf);
         }
 
         public static string toString(this AnalysisType type)

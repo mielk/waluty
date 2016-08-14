@@ -319,14 +319,14 @@ namespace Stock.Domain.Entities
         private static void LoadTimeframes()
         {
             timeframes = new Dictionary<TimeframeSymbol, Timeframe>();
-            timeframes.Add(TimeframeSymbol.M5, new Timeframe { Id = 1, Index = 1, Name = "M5", Period = (5d / (60d * 24d)) });
-            timeframes.Add(TimeframeSymbol.M15, new Timeframe { Id = 2, Index = 2, Name = "M15", Period = (1d / 96d) });
-            timeframes.Add(TimeframeSymbol.M30, new Timeframe { Id = 3, Index = 3, Name = "M30", Period = (1d / 48d) });
-            timeframes.Add(TimeframeSymbol.H1, new Timeframe { Id = 4, Index = 4, Name = "H1", Period = (1d / 24d) });
-            timeframes.Add(TimeframeSymbol.H4, new Timeframe { Id = 5, Index = 5, Name = "H4", Period = (1d / 6d) });
-            timeframes.Add(TimeframeSymbol.D1, new Timeframe { Id = 6, Index = 6, Name = "D1", Period = 1d });
-            timeframes.Add(TimeframeSymbol.W1, new Timeframe { Id = 7, Index = 7, Name = "W1", Period = 7d });
-            timeframes.Add(TimeframeSymbol.MN1, new Timeframe { Id = 8, Index = 8, Name = "MN1", Period = 28d });
+            timeframes.Add(TimeframeSymbol.M5, new Timeframe { Id = 1, Index = 1, Name = "M5", Symbol = TimeframeSymbol.M5, Period = (5d / (60d * 24d)) });
+            timeframes.Add(TimeframeSymbol.M15, new Timeframe { Id = 2, Index = 2, Name = "M15", Symbol = TimeframeSymbol.M15, Period = (1d / 96d) });
+            timeframes.Add(TimeframeSymbol.M30, new Timeframe { Id = 3, Index = 3, Name = "M30", Symbol = TimeframeSymbol.M30, Period = (1d / 48d) });
+            timeframes.Add(TimeframeSymbol.H1, new Timeframe { Id = 4, Index = 4, Name = "H1", Symbol = TimeframeSymbol.H1, Period = (1d / 24d) });
+            timeframes.Add(TimeframeSymbol.H4, new Timeframe { Id = 5, Index = 5, Name = "H4", Symbol = TimeframeSymbol.H4, Period = (1d / 6d) });
+            timeframes.Add(TimeframeSymbol.D1, new Timeframe { Id = 6, Index = 6, Name = "D1", Symbol = TimeframeSymbol.D1, Period = 1d });
+            timeframes.Add(TimeframeSymbol.W1, new Timeframe { Id = 7, Index = 7, Name = "W1", Symbol = TimeframeSymbol.W1, Period = 7d });
+            timeframes.Add(TimeframeSymbol.MN1, new Timeframe { Id = 8, Index = 8, Name = "MN1", Symbol = TimeframeSymbol.MN1, Period = 28d });
 
         }
 

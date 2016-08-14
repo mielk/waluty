@@ -9,42 +9,62 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
+using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Services.Concrete
 {
     public class QuotationService : IQuotationService
     {
 
-        private IDataRepository repository = RepositoryFactory.GetDataRepository();
-
+        private IDataService service = DataServiceFactory.Instance().GetService();
 
 
         public DateTime? getLastCalculationDate(string symbol, string analysisSymbol)
         {
-            return repository.GetAnalysisLastCalculation(symbol, analysisSymbol);
+            return service.GetAnalysisLastCalculation(symbol, analysisSymbol);
         }
 
 
-        private DateTime? findEarliestRequiredDate(IEnumerable<Analyzer> analyzers){
+        private DateTime? findEarliestRequiredDate(IEnumerable<IAnalyzer> analyzers){
 
             List<DateTime?> dates = new List<DateTime?>();
             foreach (var analyzer in analyzers)
             {
-                //dates.Add(analyzer.get
+                DateTime? date = analyzer.getFirstRequiredDate();
+                dates.Add(date);
             }
 
-            return null;
+            return dates.getEarliestDate();
 
         }
 
-        public DataItem[] fetchData(Dictionary<AnalysisType, Analyzer> analyzers)
+        public DataItem[] fetchData(Dictionary<AnalysisType, IAnalyzer> analyzers)
         {
 
             DateTime? firstRequiredQuotationDate = findEarliestRequiredDate(analyzers.Values);
+            AssetTimeframe atf = fetchAssetTimeframe(analyzers);
+            IEnumerable<AnalysisType> analysisTypes = analyzers.Keys;
+            IEnumerable<DataItem> items = service.GetDataItems(atf, firstRequiredQuotationDate, null, analysisTypes);
+            DataItem[] itemsArray = items.ToArray();
+            itemsArray.AppendIndexNumbers();
 
-            return new DataItem[] { };
+            return itemsArray;
+
+        }
+
+
+
+        private AssetTimeframe fetchAssetTimeframe(Dictionary<AnalysisType, IAnalyzer> analyzers)
+        {
+            foreach (var analyzer in analyzers.Values)
+            {
+                return analyzer.getAssetTimeframe();
+            }
+            return null;
         }
 
 
     }
+
+ 
 }
