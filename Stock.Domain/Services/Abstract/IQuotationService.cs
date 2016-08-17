@@ -10,6 +10,7 @@ namespace Stock.Domain.Services.Abstract
 {
     public interface IQuotationService
     {
+        void injectDataService(IDataService dataService);
         DateTime? getLastCalculationDate(string symbol, string analysisSymbol);
         DataItem[] fetchData(Dictionary<AnalysisType, IAnalyzer> analyzers);
     }

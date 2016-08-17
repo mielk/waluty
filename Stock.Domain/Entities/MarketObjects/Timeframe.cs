@@ -233,9 +233,9 @@ namespace Stock.Domain.Entities
 
                 if (!startDate.isOpenMarketTime())
                 {
-                    DateTime nextOpenMarketTime = startDate.nextOpenMarketTime();
+                    DateTime nextOpenMarketTime = startDate.ifNotOpenMarketGetNext();
                     DateTime proper = startDate.Proper(timeframe);
-                    startDate = (sign > 0 ? startDate.nextOpenMarketTime() : startDate.Proper(timeframe));   
+                    startDate = (sign > 0 ? startDate.ifNotOpenMarketGetNext() : startDate.Proper(timeframe));   
                 }
             }
 

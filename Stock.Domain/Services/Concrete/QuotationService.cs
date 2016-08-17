@@ -19,6 +19,11 @@ namespace Stock.Domain.Services.Concrete
         private IDataService service = DataServiceFactory.Instance().GetService();
 
 
+        public void injectDataService(IDataService dataService)
+        {
+            this.service = dataService;
+        }
+
         public DateTime? getLastCalculationDate(string symbol, string analysisSymbol)
         {
             return service.GetAnalysisLastCalculation(symbol, analysisSymbol);
@@ -51,7 +56,6 @@ namespace Stock.Domain.Services.Concrete
             return itemsArray;
 
         }
-
 
 
         private AssetTimeframe fetchAssetTimeframe(Dictionary<AnalysisType, IAnalyzer> analyzers)

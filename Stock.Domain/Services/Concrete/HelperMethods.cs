@@ -428,7 +428,7 @@ namespace Stock.Domain.Services
         }
 
 
-        public static DateTime nextOpenMarketTime(this DateTime date)
+        public static DateTime ifNotOpenMarketGetNext(this DateTime date)
         {
             if (isOpenMarketTime(date))
             {
@@ -438,29 +438,37 @@ namespace Stock.Domain.Services
             {
 
                 if (date.IsChristmas()){
-                    return nextOpenMarketTime(date.getChristmasExactDate().AddDays(1));
+                    return ifNotOpenMarketGetNext(date.getChristmasExactDate().AddDays(1));
                 }
                 else if (date.IsNewYear())
                 {
-                    return nextOpenMarketTime(date.getNewYearExactDate().AddDays(1));
+                    return ifNotOpenMarketGetNext(date.getNewYearExactDate().AddDays(1));
                 } 
                 else if (date.isWeekend())
                 {
                     //return nextOpenMarketTime(
-                    return nextOpenMarketTime(date.AddDays(date.DayOfWeek == DayOfWeek.Saturday ? 2 : 1).midnight());
+                    return ifNotOpenMarketGetNext(date.AddDays(date.DayOfWeek == DayOfWeek.Saturday ? 2 : 1).midnight());
                 }
 
-                //DateTime d = new DateTime(date.Ticks);
-                //while (!isOpenMarketTime(d))
-                //{
-                //    d.
-                //}
-
-                //return nextOpenMarketTime(date.AddDays(1));
                 return date;
+
             }
         }
 
+        public static DateTime getNext(this DateTime date, TimeframeSymbol timeframe)
+        {
+            DateTime d = date.Proper(timeframe);
+            switch (timeframe)
+            {
+                case TimeframeSymbol.MN1: return new DateTime(d.Year, d.Month + 1, 1, 0, 0, 0);
+                case TimeframeSymbol.W1: return d.AddDays(7);
+                case TimeframeSymbol.D1:
+                    return d.AddDays(1).ifNotOpenMarketGetNext();
+                default:
+                    return d.Add(Timeframe.getTimespan(timeframe)).ifNotOpenMarketGetNext();
+            }
+
+        }
 
     }
 

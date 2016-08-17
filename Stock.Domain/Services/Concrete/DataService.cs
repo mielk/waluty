@@ -221,6 +221,10 @@ namespace Stock.Domain.Services
             return _repository.GetLastQuotationDate(symbol);
         }
 
+        public DateTime? GetFirstQuotationDate(string symbol)
+        {
+            return null;
+        }
 
     }
 }

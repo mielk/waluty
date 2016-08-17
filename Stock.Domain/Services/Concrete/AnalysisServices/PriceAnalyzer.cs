@@ -21,18 +21,19 @@ namespace Stock.Domain.Services
             get { return AnalysisType.Price; }
         }
 
-        //--------------------------------------------------------------------
         public const int DirectionCheckCounter = 10;
         public const int DirectionCheckRequired = 6;
         public const int MinRange = 3;
         public const int MaxRange = 360;
 
-        private IAnalysisDataService _dataService;
-        private IMarketRepository _marketRepository;
+        private IPriceProcessor processor;
+
+        //private IAnalysisDataService _dataService;
+        //private IMarketRepository _marketRepository;
 
 
         public bool IsSimulation { get; set; }
-        private Analysis analysis;
+        //private Analysis analysis;
         public DataItem[] Items { get; set; }
         public bool DebugMode { get; set; }
         public string Symbol;
@@ -50,19 +51,16 @@ namespace Stock.Domain.Services
         {
         }
 
-        public PriceAnalyzer(IAnalysisDataService dataService, AssetTimeframe atf)
-            : base(atf)
-        {
-            _dataService = dataService;
-        }
-
-
         protected override void initialize()
         {
             DaysForAnalysis = 240;
         }
 
 
+        public void injectProcessor(IPriceProcessor obj)
+        {
+            this.processor = obj;
+        }
 
 
         public override void Analyze(DataItem[] items)
@@ -152,36 +150,19 @@ namespace Stock.Domain.Services
 
 
 
-
-        public void EnsureRepositories()
-        {
-            //Check if DateRepository is appended.
-            if (_dataService == null)
-            {
-                _dataService = AnalysisDataServiceFactory.Instance().GetService();
-            }
-
-            //Check if FXRepository is appended.
-            if (_marketRepository == null)
-            {
-                _marketRepository = RepositoryFactory.GetMarketRepository();
-            }
-
-        }
-
         public void LoadParameters(string symbol)
         {
             Symbol = symbol;
             var timeframe = Timeframe.GetTimeframe(symbol.GetTimeframeSymbol());
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
-            var pair = _marketRepository.GetFxPair(pairSymbol);
+            var pair = MarketService.Instance().GetFxPair(pairSymbol);
             var asset = Asset.GetAssetById(pair.Id);
             this.AssetTimeframe = new AssetTimeframe(asset, timeframe);
         }
 
         public void LoadDataSets(string symbol)
         {
-            Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName()).ToArray();
+            //Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName()).ToArray();
             Items.AppendIndexNumbers();
         }
 
@@ -193,7 +174,7 @@ namespace Stock.Domain.Services
 
         public void LoadDataSets(string symbol, DateTime lastAnalysisItem, int counter)
         {
-            Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).ToArray();
+            //Items = _dataService.GetFxQuotationsForAnalysis(symbol, Type.TableName(), lastAnalysisItem, counter).ToArray();
             Items.AppendIndexNumbers();
         }
 
@@ -261,7 +242,7 @@ namespace Stock.Domain.Services
                 if (previousQuotation != null)
                 {
                     item.Quotation.CompleteMissing(previousQuotation);
-                    _dataService.UpdateQuotation(item.Quotation, Symbol);
+                    //_dataService.UpdateQuotation(item.Quotation, Symbol);
                 }
                 
             }
@@ -298,11 +279,11 @@ namespace Stock.Domain.Services
 
                 if (item.Price.Id == 0)
                 {
-                    _dataService.AddPrice(item.Price, Symbol);
+                    //_dataService.AddPrice(item.Price, Symbol);
                 }
                 else if (item.Price.IsUpdated)
                 {
-                    _dataService.UpdatePrice(item.Price, Symbol);
+                    //_dataService.UpdatePrice(item.Price, Symbol);
                 }
 
             }

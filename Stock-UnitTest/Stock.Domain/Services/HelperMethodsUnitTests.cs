@@ -988,6 +988,427 @@ namespace Stock_UnitTest.Stock.Services
 
 
 
+        #region next
+
+        [TestMethod]
+        [TestCategory("Next.MN1")]
+        public void next_MN1_returns_proper_value_if_base_date_is_first_day_of_month()
+        {
+            DateTime baseDate = new DateTime(2016, 8, 1);
+            Assert.AreEqual(new DateTime(2016, 9, 1), baseDate.getNext(TimeframeSymbol.MN1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.MN1")]
+        public void next_MN1_returns_proper_value_if_base_date_is_not_first_day_of_month()
+        {
+            DateTime baseDate = new DateTime(2016, 8, 10);
+            Assert.AreEqual(new DateTime(2016, 9, 1), baseDate.getNext(TimeframeSymbol.MN1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.W1")]
+        public void next_W1_returns_proper_value_for_middle_week_day()
+        {
+            DateTime d = new DateTime(2016, 8, 16);
+            Assert.AreEqual(new DateTime(2016, 8, 21, 0, 0, 0), d.getNext(TimeframeSymbol.W1));
+        }
+        
+        [TestMethod]
+        [TestCategory("Next.W1")]
+        public void next_W1_returns_proper_value_for_sunday()
+        {
+            DateTime d = new DateTime(2016, 8, 14);
+            Assert.AreEqual(new DateTime(2016, 8, 21, 0, 0, 0), d.getNext(TimeframeSymbol.W1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.W1")]
+        public void next_W1_returns_proper_value_for_saturday()
+        {
+            DateTime d = new DateTime(2016, 8, 20);
+            Assert.AreEqual(new DateTime(2016, 8, 21, 0, 0, 0), d.getNext(TimeframeSymbol.W1));
+        }
+
+
+        [TestMethod]
+        [TestCategory("Next.D1")]
+        public void next_D1_returns_proper_value_for_middle_week_day()
+        {
+            DateTime d = new DateTime(2016, 8, 16);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 0, 0, 0), d.getNext(TimeframeSymbol.D1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.D1")]
+        public void next_D1_returns_proper_value_for_weekend()
+        {
+            DateTime d = new DateTime(2016, 8, 14);
+            Assert.AreEqual(new DateTime(2016, 8, 15, 0, 0, 0), d.getNext(TimeframeSymbol.D1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.D1")]
+        public void next_D1_returns_proper_value_for_friday_christmas()
+        {
+            DateTime d = new DateTime(2015, 12, 24);
+            Assert.AreEqual(new DateTime(2015, 12, 28), d.getNext(TimeframeSymbol.D1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.D1")]
+        public void next_D1_returns_proper_value_for_friday_newYear()
+        {
+            DateTime d = new DateTime(2015, 12, 31);
+            Assert.AreEqual(new DateTime(2016, 1, 4), d.getNext(TimeframeSymbol.D1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.D1")]
+        public void next_D1_returns_proper_value_for_middle_day_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 15, 13, 21);
+            Assert.AreEqual(new DateTime(2016, 8, 18, 0, 0, 0), d.getNext(TimeframeSymbol.D1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_middle_hours_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 15, 13, 21);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 16, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_middle_week_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 20, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_last_week_quotation()
+        {
+            DateTime d = new DateTime(2016, 8, 19, 20, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_weekend_value()
+        {
+            DateTime d = new DateTime(2016, 8, 20, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_last_quotations_before_christmas()
+        {
+            DateTime d = new DateTime(2014, 12, 24, 20, 0, 0);
+            Assert.AreEqual(new DateTime(2014, 12, 26, 0, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_last_quotations_before_newYear()
+        {
+            DateTime d = new DateTime(2014, 12, 31, 20, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_last_quotations_before_friday_newYear()
+        {
+            DateTime d = new DateTime(2015, 12, 31, 20, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 1, 4, 0, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H4")]
+        public void next_H4_returns_proper_value_for_last_quotations_before_friday_christmas()
+        {
+            DateTime d = new DateTime(2015, 12, 24, 20, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 12, 28, 0, 0, 0), d.getNext(TimeframeSymbol.H4));
+        }
+
+
+
+
+
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_middle_hours_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 15, 13, 21);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 16, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_middle_week_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 17, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_last_week_quotation()
+        {
+            DateTime d = new DateTime(2016, 8, 19, 23, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_weekend_value()
+        {
+            DateTime d = new DateTime(2016, 8, 20, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_last_quotations_before_christmas()
+        {
+            DateTime d = new DateTime(2014, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2014, 12, 26, 0, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_last_quotations_before_newYear()
+        {
+            DateTime d = new DateTime(2014, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_last_quotations_before_friday_newYear()
+        {
+            DateTime d = new DateTime(2015, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 1, 4, 0, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.H1")]
+        public void next_H1_returns_proper_value_for_last_quotations_before_friday_christmas()
+        {
+            DateTime d = new DateTime(2015, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 12, 28, 0, 0, 0), d.getNext(TimeframeSymbol.H1));
+        }
+
+
+
+
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_middle_hours_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 15, 13, 21);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 15, 30, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_middle_week_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 16, 30, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_last_week_quotation()
+        {
+            DateTime d = new DateTime(2016, 8, 19, 23, 30, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_weekend_value()
+        {
+            DateTime d = new DateTime(2016, 8, 20, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_last_quotations_before_christmas()
+        {
+            DateTime d = new DateTime(2014, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2014, 12, 26, 0, 0, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_last_quotations_before_newYear()
+        {
+            DateTime d = new DateTime(2014, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_last_quotations_before_friday_newYear()
+        {
+            DateTime d = new DateTime(2015, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 1, 4, 0, 0, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M30")]
+        public void next_M30_returns_proper_value_for_last_quotations_before_friday_christmas()
+        {
+            DateTime d = new DateTime(2015, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 12, 28, 0, 0, 0), d.getNext(TimeframeSymbol.M30));
+        }
+
+
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_middle_hours_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 15, 13, 21);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 15, 15, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_middle_week_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 16, 15, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_last_week_quotation()
+        {
+            DateTime d = new DateTime(2016, 8, 19, 23, 45, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_weekend_value()
+        {
+            DateTime d = new DateTime(2016, 8, 20, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_last_quotations_before_christmas()
+        {
+            DateTime d = new DateTime(2014, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2014, 12, 26, 0, 0, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_last_quotations_before_newYear()
+        {
+            DateTime d = new DateTime(2014, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_last_quotations_before_friday_newYear()
+        {
+            DateTime d = new DateTime(2015, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 1, 4, 0, 0, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M15")]
+        public void next_M15_returns_proper_value_for_last_quotations_before_friday_christmas()
+        {
+            DateTime d = new DateTime(2015, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 12, 28, 0, 0, 0), d.getNext(TimeframeSymbol.M15));
+        }
+
+
+
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_middle_hours_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 15, 3, 21);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 15, 5, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_middle_week_value()
+        {
+            DateTime d = new DateTime(2016, 8, 17, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 17, 16, 5, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_last_week_quotation()
+        {
+            DateTime d = new DateTime(2016, 8, 19, 23, 55, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_weekend_value()
+        {
+            DateTime d = new DateTime(2016, 8, 20, 16, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 8, 22, 0, 0, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_last_quotations_before_christmas()
+        {
+            DateTime d = new DateTime(2014, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2014, 12, 26, 0, 0, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_last_quotations_before_newYear()
+        {
+            DateTime d = new DateTime(2014, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_last_quotations_before_friday_newYear()
+        {
+            DateTime d = new DateTime(2015, 12, 31, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2016, 1, 4, 0, 0, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+        [TestMethod]
+        [TestCategory("Next.M5")]
+        public void next_M5_returns_proper_value_for_last_quotations_before_friday_christmas()
+        {
+            DateTime d = new DateTime(2015, 12, 24, 21, 0, 0);
+            Assert.AreEqual(new DateTime(2015, 12, 28, 0, 0, 0), d.getNext(TimeframeSymbol.M5));
+        }
+
+
+        #endregion next
+
+
         #region M5
 
         [TestMethod]

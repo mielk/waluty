@@ -71,6 +71,7 @@
     <Compile Include="Services\Abstract\AnalysisServices\IAdxAnalyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IAnalyzer.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
+    <Compile Include="Services\Abstract\IPriceProcessor.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\Analyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ICandlestickAnalyzer.cs" />
     <Compile Include="Services\Abstract\IQuotationService.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Entities\Analysis\ExtremaUtils.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\AdxAnalyzer.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\CandlestickAnalyzer.cs" />
+    <Compile Include="Services\Concrete\AnalysisServices\PriceProcessor.cs" />
     <Compile Include="Services\Concrete\QuotationService.cs" />
     <Compile Include="Services\Concrete\SimulationService.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\MacdAnalyzer.cs" />

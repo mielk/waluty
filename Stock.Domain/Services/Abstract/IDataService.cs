@@ -29,6 +29,7 @@ namespace Stock.Domain.Services
         LastDates GetSymbolLastItems(string symbol, string analysisType);
         DateTime? GetAnalysisLastCalculation(string symbol, string analysisType);
         DateTime? GetLastQuotationDate(string symbol);
+        DateTime? GetFirstQuotationDate(string symbol);
 
     }
 }

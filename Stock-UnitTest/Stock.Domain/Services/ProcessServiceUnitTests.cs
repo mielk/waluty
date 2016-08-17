@@ -16,6 +16,25 @@ namespace Stock_UnitTest.Stock.Domain.Services
     public class ProcessServiceUnitTests
     {
 
+
+
+        private Asset testAsset()
+        {
+            var asset = new Asset(1, "asset");
+            return asset;
+        }
+
+        private Timeframe testTimeframe()
+        {
+            return Timeframe.GetTimeframe(TimeframeSymbol.M5);
+        }
+
+        private AssetTimeframe testAssetTimeframe()
+        {
+            return new AssetTimeframe(testAsset(), testTimeframe());
+        }
+
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException), "Asset is empty")]
         public void run_if_asset_is_empty_exception_is_thrown()
@@ -156,18 +175,68 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
 
 
-        private void injectMockedAnalyzerFactory()
+        private void injectMockedAnalyzerFactory(Dictionary<AnalysisType, Analyzer> analyzers)
         {
-
+            AnalyzerFactory factory = getMockAnalyzerFactory(analyzers);
+            AnalyzerFactory.inject(factory);
         }
 
+        private void injectMockedAnalyzerFactory(AssetTimeframe atf)
+        {
+            Dictionary<AnalysisType, Analyzer> analyzers = getMockAnalyzersDictionary(atf);
+            injectMockedAnalyzerFactory(analyzers);
+        }
+
+        private void injectMockedAnalyzerFactory()
+        {
+            Dictionary<AnalysisType, Analyzer> analyzers = getMockAnalyzersDictionary(testAssetTimeframe());
+            injectMockedAnalyzerFactory(analyzers);
+        }
+
+        private DataItem[] getDataItemsArray(int counter)
+        {
+            return new DataItem[]{ };
+        }
+
+        private Dictionary<AnalysisType, Analyzer> getMockAnalyzersDictionary(AssetTimeframe atf)
+        {
+            
+            return null;
+        }
+
+        //private T getMockedAnalyzer<T>(AnalysisType type)
+        //{
+
+        //}
+
+        private AnalyzerFactory getMockAnalyzerFactory(Dictionary<AnalysisType, Analyzer> analyzers)
+        {
+            Mock<AnalyzerFactory> mockAnalyzerFactory = new Mock<AnalyzerFactory>();
+            foreach (var analyzer in analyzers.Values)
+            {
+                mockAnalyzerFactory.Setup(af => af.getAnalyzer(analyzer.getAnalysisType(), analyzer.AssetTimeframe)).Returns(analyzer);
+            }
+            return mockAnalyzerFactory.Object;
+        }
 
         [TestMethod]
         [Ignore]
         public void if_quotationService_returns_empty_array_of_data_items_analyzers_are_not_run()
         {
 
-            
+            var mockQuotationService = mockedQuotationService();
+            DataItem[] items = getDataItemsArray(0);
+            mockQuotationService.Setup(q => q.fetchData(It.IsAny<Dictionary<AnalysisType, IAnalyzer>>())).Returns(items);
+
+            Asset asset = new Asset(1, "USD");
+            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            var service = new ProcessService(asset, timeframe);
+            AnalysisType[] types = new AnalysisType[] { AnalysisType.Price, AnalysisType.MACD };
+            service.Setup(types);
+
+
+
+            Assert.IsFalse(service.Run(true));
 
         }
 
