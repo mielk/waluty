@@ -10,8 +10,11 @@ namespace Stock.Domain.Services
 {
     public interface IProcessService
     {
-        void Setup(AnalysisType[] types);
-        void Setup(IEnumerable<AnalysisType> types);
+        //void Setup(AnalysisType[] types);
+        //void Setup(IEnumerable<AnalysisType> types);
+        //void loadAnalyzers(Dictionary<AnalysisType, IAnalyzer> analyzers);
+        //void injectQuotationService(IQuotationService instance);
+
         bool Run(bool fromScratch);
 
         Asset getAsset();

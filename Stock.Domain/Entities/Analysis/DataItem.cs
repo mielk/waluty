@@ -11,6 +11,7 @@ namespace Stock.Domain.Entities
     public class DataItem
     {
         public int AssetId { get; set; }
+        public Asset Asset { get; set; }
         public Timeframe Timeframe { get; set; }
         public DateTime Date { get; set; }
         public Quotation Quotation { get; set; }
@@ -94,7 +95,8 @@ namespace Stock.Domain.Entities
         public static DataItem FromDto(DataItemDto dto)
         {
             var item = new DataItem();
-            item.AssetId = dto.AssetId;
+            //item.AssetId = dto.AssetId;
+            item.Asset = Asset.GetAssetById(dto.AssetId);
             item.Date = dto.PriceDate;
             item.Timeframe = Timeframe.GetTimeframeByShortName(dto.Timeframe);
 

@@ -41,7 +41,7 @@ namespace Stock.Web.Controllers
             //Convert the given names of analysis into enumerations.
             Asset _asset = Asset.GetAssetByName(asset);
             Timeframe _timeframe = Timeframe.GetTimeframeByShortName(timeframe);
-            IProcessService service = new ProcessService(_asset, _timeframe);
+            ProcessService service = new ProcessService(_asset, _timeframe);
             var types = AnalysisTypeHelper.StringToTypesList(analysisTypes, ',');
 
             service.Setup(types);

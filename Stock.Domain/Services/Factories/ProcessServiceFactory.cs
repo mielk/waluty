@@ -1,5 +1,4 @@
 ﻿using Stock.Domain.Entities;
-using Stock.Domain.Services.Abstract;
 using Stock.Domain.Services.Concrete;
 using System;
 using System.Collections.Generic;

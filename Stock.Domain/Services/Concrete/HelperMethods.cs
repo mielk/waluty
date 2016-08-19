@@ -446,7 +446,6 @@ namespace Stock.Domain.Services
                 } 
                 else if (date.isWeekend())
                 {
-                    //return nextOpenMarketTime(
                     return ifNotOpenMarketGetNext(date.AddDays(date.DayOfWeek == DayOfWeek.Saturday ? 2 : 1).midnight());
                 }
 

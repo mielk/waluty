@@ -6,7 +6,6 @@ using Stock.Domain.Services;
 using Moq;
 using Stock.Domain.Services.Factories;
 using Stock.Domain.Services.Concrete;
-using Stock.Domain.Services.Abstract;
 using Stock.Domain.Entities;
 using Stock.DAL.Repositories;
 
@@ -19,65 +18,88 @@ namespace Stock_UnitTest.Stock.Domain.Services
         //getLastDates
         private static IQuotationService service = ProcessServiceFactory.Instance().GetQuotationService();
 
-        private Dictionary<AnalysisType, IAnalyzer> generateMockAnalyzers()
+
+        #region testObjects
+
+        private Asset testAsset()
         {
-            AssetTimeframe atf = new AssetTimeframe(new Asset(1, "EURUSD"), Timeframe.GetTimeframe(TimeframeSymbol.H1));
-            Dictionary<AnalysisType, IAnalyzer> dict = new Dictionary<AnalysisType, IAnalyzer>();
-            Mock<IAnalyzer> mockPriceAnalyzer = new Mock<IAnalyzer>();
-            mockPriceAnalyzer.Setup(q => q.getFirstRequiredDate()).Returns(new DateTime(2016, 4, 21, 12, 0, 0));
-            mockPriceAnalyzer.Setup(q => q.getAssetTimeframe()).Returns(atf);
-            dict.Add(AnalysisType.Price, mockPriceAnalyzer.Object);
-
-            Mock<IAnalyzer> mockMacdAnalyzer = new Mock<IAnalyzer>();
-            mockMacdAnalyzer.Setup(q => q.getFirstRequiredDate()).Returns(new DateTime(2016, 4, 23, 16, 0, 0));
-            mockMacdAnalyzer.Setup(q => q.getAssetTimeframe()).Returns(atf);
-            dict.Add(AnalysisType.MACD, mockMacdAnalyzer.Object);
-
-            return dict;
-
+            var asset = new Asset(1, "asset");
+            return asset;
         }
 
-
-        private Mock<IDataService> mockedDataService()
+        private Timeframe testTimeframe()
         {
-            //IEnumerable<DataItem> items = getTestDataItemsCollection();
-            //return mockedDataService(items);
-            return null;
+            return Timeframe.GetTimeframe(TimeframeSymbol.M5);
         }
 
-        private Mock<IDataService> mockedDataService(IEnumerable<DataItem> items, DateTime? firstQuotation, DateTime? lastQuotation)
+        private AssetTimeframe testAssetTimeframe()
         {
-            Mock<IDataService> mockedService = new Mock<IDataService>();
-            mockedService.Setup(r => r.GetFirstQuotationDate(It.IsAny<string>())).Returns(firstQuotation);
-            mockedService.Setup(r => r.GetLastQuotationDate(It.IsAny<string>())).Returns(lastQuotation);
-            mockedService.Setup(r => r.GetDataItems(It.IsAny<AssetTimeframe>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<IEnumerable<AnalysisType>>())).Returns(items);
-            return mockedService;
+            return new AssetTimeframe(testAsset(), testTimeframe());
         }
+
+        #endregion testObjects
+
+
+        #region testServices
+
+        private Mock<IAnalyzer> generateMockAnalyzer(AssetTimeframe atf, AnalysisType type, DateTime? firstRequiredDate)
+        {
+            Mock<IAnalyzer> mock = new Mock<IAnalyzer>();
+            mock.Setup(q => q.getFirstRequiredDate()).Returns(firstRequiredDate);
+            mock.Setup(q => q.getAssetTimeframe()).Returns(atf);
+            mock.Setup(q => q.getAnalysisType()).Returns(type);
+            return mock;
+        }
+
+        #endregion testServices
+
 
         private IEnumerable<DataItem> getTestDataItemsCollection(DateTime startDate, DateTime endDate)
         {
-
             return null;
         }
 
 
 
         [TestMethod]
-        public void fetchData_first_item_in_returned_array_has_earliest_required_date_check_for_null()
+        public void fetchData_for_firstRequiredDate_equal_to_null_proper_method_of_dataService_is_called()
         {
-            var analyzers = generateMockAnalyzers();
-            DataItem[] items = service.fetchData(analyzers);
-            var result = items[0];
+
+            AssetTimeframe atf = testAssetTimeframe();
+            Dictionary<AnalysisType, IAnalyzer> analyzers = new Dictionary<AnalysisType, IAnalyzer>();
+            DateTime firstRequired = new DateTime(2016, 8, 1);
+            analyzers.Add(AnalysisType.Price, generateMockAnalyzer(atf, AnalysisType.Price, firstRequired).Object);
+            analyzers.Add(AnalysisType.MACD, generateMockAnalyzer(atf, AnalysisType.MACD, null).Object);
+            analyzers.Add(AnalysisType.ADX, generateMockAnalyzer(atf, AnalysisType.ADX, firstRequired).Object);
+
+            Mock<IDataService> mockedDataService = new Mock<IDataService>();
+            QuotationService qService = new QuotationService();
+            qService.injectDataService(mockedDataService.Object);
+
+            DataItem[] items = qService.fetchData(analyzers);
+            mockedDataService.Verify(x => x.GetDataItems(atf, null, null, analyzers.Keys), Times.Exactly(1));
+
         }
 
         [TestMethod]
-        public void fetchData_first_item_in_returned_array_has_earliest_required_date_check_for_not_null()
+        public void fetchData_for_firstRequiredDate_not_null_proper_method_of_dataService_is_called()
         {
-        }
 
-        [TestMethod]
-        public void fetchData_last_item_in_returned_array_has_last_quotation_date()
-        {
+            AssetTimeframe atf = testAssetTimeframe();
+            Dictionary<AnalysisType, IAnalyzer> analyzers = new Dictionary<AnalysisType, IAnalyzer>();
+            DateTime laterDate = new DateTime(2016, 8, 1);
+            DateTime earlierDate = new DateTime(2016, 7, 5);
+            analyzers.Add(AnalysisType.Price, generateMockAnalyzer(atf, AnalysisType.Price, laterDate).Object);
+            analyzers.Add(AnalysisType.MACD, generateMockAnalyzer(atf, AnalysisType.MACD, earlierDate).Object);
+            analyzers.Add(AnalysisType.ADX, generateMockAnalyzer(atf, AnalysisType.ADX, laterDate).Object);
+
+            Mock<IDataService> mockedDataService = new Mock<IDataService>();
+            QuotationService qService = new QuotationService();
+            qService.injectDataService(mockedDataService.Object);
+
+            DataItem[] items = qService.fetchData(analyzers);
+            mockedDataService.Verify(x => x.GetDataItems(atf, earlierDate, null, analyzers.Keys), Times.Exactly(1));
+
         }
 
     }

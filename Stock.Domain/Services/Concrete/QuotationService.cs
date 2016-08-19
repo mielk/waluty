@@ -1,7 +1,6 @@
 ﻿using Stock.DAL.Repositories;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
-using Stock.Domain.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;

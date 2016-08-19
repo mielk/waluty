@@ -6,7 +6,6 @@ using Stock.Domain.Enums;
 using Stock.Domain.Entities;
 using System.Collections.Generic;
 using Moq;
-using Stock.Domain.Services.Abstract;
 
 namespace Stock_UnitTest.Stock.Domain.Services.Factories
 {

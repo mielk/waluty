@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stock.Domain.Services.Abstract
+namespace Stock.Domain.Services
 {
     public interface IQuotationService
     {
