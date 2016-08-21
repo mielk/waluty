@@ -18,5 +18,9 @@ namespace Stock.Domain.Services
         DateTime? getFirstRequiredDate();
         void setLastCalculationDate(DateTime? date);
         void Analyze(DataItem[] items);
+        void injectDaysForAnalysis(int value);
+        DataItem getDataItem(int index);
+        int getDataItemsLength();
+        IEnumerable<DataItem> getDataItems();
     }
 }

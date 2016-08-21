@@ -12,6 +12,7 @@ namespace Stock.Domain.Entities
     public class Analysis
     {
         public AnalysisType Type { get; set; }
+        public AssetTimeframe assetTimeframe { get; set; }
         public string Symbol { get; set; }
         public DateTime FirstItemDate { get; set; }
         public DateTime LastItemDate { get; set; }
@@ -22,10 +23,19 @@ namespace Stock.Domain.Entities
 
         public Analysis(string symbol, AnalysisType type)
         {
+            //assetTimeframe = assetTimeframe.
             Symbol = symbol;
             Type = type;
             AnalysisStart = DateTime.Now;
         }
+
+        public Analysis(AssetTimeframe atf, AnalysisType type)
+        {
+            assetTimeframe = atf;
+            Type = type;
+            AnalysisStart = DateTime.Now;
+        }
+
 
 
         private double TotalTime()

@@ -28,6 +28,10 @@ namespace Stock.Domain.Services.Concrete
             return service.GetAnalysisLastCalculation(symbol, analysisSymbol);
         }
 
+        public DateTime? getLastCalculationDate(AssetTimeframe atf, AnalysisType analysisType)
+        {
+            return service.GetAnalysisLastCalculation(atf.Symbol(), analysisType.toString());
+        }
 
         private DateTime? findEarliestRequiredDate(IEnumerable<IAnalyzer> analyzers){
 

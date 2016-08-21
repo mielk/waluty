@@ -28,6 +28,7 @@ namespace Stock.Domain.Entities
         public Extremum TroughByLowExtremum { get; set; }
         public bool IsUpdated { get; set; }
         public bool IsNew { get; set; }
+        public bool IsComplete { get; set; }
 
 
         public static Price FromDto(PriceDto dto)

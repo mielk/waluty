@@ -39,9 +39,16 @@ namespace Stock.Domain.Services
         }
 
 
-        protected override void initialize()
+        protected override IAnalyzerProcessor getProcessor()
         {
-            DaysForAnalysis = 300;
+            //if (processor == null) processor = new PriceProcessor(this);
+            //return processor;
+            return null;
+        }
+
+        protected override void initialize_specific()
+        {
+            ItemsForAnalysis = 300;
         }
 
 

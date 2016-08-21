@@ -11,6 +11,7 @@ namespace Stock.Domain.Services
     public class AdxAnalyzer : Analyzer, IAdxAnalyzer
     {
 
+
         public override AnalysisType Type
         {
             get { return AnalysisType.ADX; }
@@ -23,22 +24,29 @@ namespace Stock.Domain.Services
 
         public AdxAnalyzer(AssetTimeframe atf) : base(atf)
         {
-            initialize();
+            initialize_specific();
         }
 
         public AdxAnalyzer(IAnalysisDataService dataService, AssetTimeframe atf)
             : base(atf)
         {
-            initialize();
+            initialize_specific();
             this._dataService = dataService;
         }
 
 
-        protected override void initialize()
+        protected override void initialize_specific()
         {
-            DaysForAnalysis = 300;
+            ItemsForAnalysis = 300;
         }
 
+
+        protected override IAnalyzerProcessor getProcessor()
+        {
+            //if (processor == null) processor = new adxpro(this);
+            //return processor;
+            return null;
+        }
 
 
 

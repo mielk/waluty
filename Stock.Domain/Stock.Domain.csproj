@@ -71,6 +71,7 @@
     <Compile Include="Services\Abstract\AnalysisServices\IAdxAnalyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IAnalyzer.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
+    <Compile Include="Services\Abstract\IAnalyzerProcessor.cs" />
     <Compile Include="Services\Abstract\IPriceProcessor.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\Analyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ICandlestickAnalyzer.cs" />

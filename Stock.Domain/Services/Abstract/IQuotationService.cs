@@ -12,6 +12,7 @@ namespace Stock.Domain.Services
     {
         void injectDataService(IDataService dataService);
         DateTime? getLastCalculationDate(string symbol, string analysisSymbol);
+        DateTime? getLastCalculationDate(AssetTimeframe atf, AnalysisType analysisType);
         DataItem[] fetchData(Dictionary<AnalysisType, IAnalyzer> analyzers);
     }
 }

@@ -13,6 +13,7 @@ namespace Stock.Domain.Entities
     {
 
         public int ExtremumId { get; set; }
+        public AssetTimeframe assetTimeframe { get; set; }
         public string Symbol { get; set; }
         public ExtremumType Type { get; set; }
         public DateTime PriceDate { get; set; }
@@ -40,6 +41,14 @@ namespace Stock.Domain.Entities
         {
             this.PriceDate = date;
             this.Symbol = symbol;
+            this.Type = Extrema.GetExtremumType(isPeak, byClose);
+
+        }
+
+        public Extremum(DateTime date, AssetTimeframe atf, bool isPeak, bool byClose)
+        {
+            this.PriceDate = date;
+            this.assetTimeframe = atf;
             this.Type = Extrema.GetExtremumType(isPeak, byClose);
 
         }
