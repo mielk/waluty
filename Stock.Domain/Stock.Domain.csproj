@@ -70,9 +70,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IAdxAnalyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IAnalyzer.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\ITrendlineProcessor.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
     <Compile Include="Services\Abstract\IAnalyzerProcessor.cs" />
-    <Compile Include="Services\Abstract\IPriceProcessor.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IPriceProcessor.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\Analyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ICandlestickAnalyzer.cs" />
     <Compile Include="Services\Abstract\IQuotationService.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Services\Concrete\AnalysisServices\AdxAnalyzer.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\CandlestickAnalyzer.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\PriceProcessor.cs" />
+    <Compile Include="Services\Concrete\AnalysisServices\TrendlineProcessor.cs" />
     <Compile Include="Services\Concrete\QuotationService.cs" />
     <Compile Include="Services\Concrete\SimulationQuotationService.cs" />
     <Compile Include="Services\Concrete\SimulationService.cs" />

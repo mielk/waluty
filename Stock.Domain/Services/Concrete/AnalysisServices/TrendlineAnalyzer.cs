@@ -15,53 +15,22 @@ namespace Stock.Domain.Services
     public class TrendlineAnalyzer : Analyzer, ITrendlineAnalyzer
     {
 
+        private ITrendlineProcessor processor;
+
+        private const int RangeToCheck = 200;
+        private const int MinDistance = 5;
+
+        private IEnumerable<DataItem> extrema;
+        private IEnumerable<Trendline> trendlines = new List<Trendline>();
+
+
         public override AnalysisType Type
         {
             get { return AnalysisType.Trendline; }
         }
 
-        /* Constants */
 
-        /* Ile notowań przed wierzchołkiem początkowym ma być uwzględnione w analizie. */
-        public int QuotationsBeforeInitialItem = 3;
-
-        /* Maksymalny zakres bez żadnego odbicia od linii trendu. Po napotkaniu tylu notowań bez odbicia,
-         * trend jest uznawany za zakończony. */
-        public int MaxRangeWithoutHit = 300;
-
-        /* Minimalny dystans pomiędzy wierzchołkami, aby mogły być zaliczone do tej samej linii trendu.
-         * Ma to zapobiec naliczaniu do tej samej linii trendu dwóch leżących koło siebie ekstremów, 
-         * z których jeden jest ekstremum wg ceny zamknięcia a drugi ekstremum wg ceny ekstremalnej. */
-        public int MinDistance = 3;
-
-        /* Maksymalne odchylenie dla uznania wierzchołka za odbicie od linii trendu. 
-         * Po przekroczeniu takiego odchylenia wierzchołek nie będzie uznawany za odbicie. */
-        public double MaxExtremumVariation = 0.002d;
-
-        /* Maksymalne odchylenie dla uznania nie-wierzchołka za odbicie od linii trendu. 
-         * Po przekroczeniu takiego odchylenia nie-wierzchołek nie będzie uznawany za odbicie. */
-        public double MaxNonExtremumVariation = 0.001d;
-
-        /* Minimalne przekroczenie linii trendu potrzebne, żeby uznać dane notowanie za przebicie (TrendBreak).
-         * Jeżeli przekroczenie linii jest mniejsze, nie jest ono uznawane za przebicie. */
-        public double MinForTrendlineBreak = 0.001d;
-
-        /* Minimalna punktacja potrzebna, żeby linia trendu była przekazana w wyniku działania funkcji Analyze.
-         * Wszystkie linie trendu, które uzyskają mniejszą punktację, są ignorowane. */
-        public int MinTrendlineScore = 1;
-
-
-
-        /* Data collections */
-        public DataItem[] Items { get; set; }
-
-        /* Calculation variables */
-        private Trendline Trendline;
-
-
-
-        public TrendlineAnalyzer(AssetTimeframe atf)
-            : base(atf)
+        public TrendlineAnalyzer(AssetTimeframe atf) : base(atf)
         {
         }
 
@@ -73,75 +42,143 @@ namespace Stock.Domain.Services
 
         protected override IAnalyzerProcessor getProcessor()
         {
-            //if (processor == null) processor = new adxpro(this);
-            //return processor;
-            return null;
+            ITrendlineAnalyzer analyzer = this;
+            if (processor == null) processor = new TrendlineProcessor(analyzer);
+            return processor;
         }
 
-
-
-
-
-        public void LoadItems(DataItem[] items)
-        {
-            this.Items = items;
-        }
-
-        public void Initialize(DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
-        {
-
-            this.Trendline = new Trendline(AssetTimeframe.asset, AssetTimeframe.timeframe, initialItem, initialLevel, boundItem, boundLevel);
-
-        }
 
 
         public override void Analyze(DataItem[] items)
         {
-            var x = 1;
+
+            //Create [TrendlineProcessor] instance.
+            ITrendlineAnalyzer self = this;
+            processor = new TrendlineProcessor(self);
+
+            /* Extract items that are marked as extrema. */
+            this.trendlines = new List<Trendline>();
+            this.extrema = items.Where(i => i.Price != null && i.Price.IsExtremum()).OrderBy(i => i.Date).ToArray();
+
+
+            foreach (var extremum in extrema)
+            {
+                /* Iterate through all the groups above and check trendlines for each pair of extrema. */
+                var subextrema = extrema.Where(i => i.Date > extremum.Date).ToArray();
+                foreach (var subextremum in subextrema)
+                {
+
+                    if (Math.Abs(extremum.Distance(subextremum)) > RangeToCheck) break;
+
+                    var trendlines = ProcessSinglePair(extremum, subextremum);
+                    foreach (var trendline in trendlines)
+                    {
+                        trendlines.Add(trendline);
+                    }
+
+                }
+
+            }
+
+            //processor.Analyze(items);
         }
 
 
-        public Trendline Analyze(DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        public List<Trendline> ProcessSinglePair(DataItem extremum, DataItem subextremum)
         {
 
-            /* Assign values to this object's properties. */
-            Initialize(initialItem, initialLevel, boundItem, boundLevel);
+            List<Trendline> trendlines = new List<Trendline>();
 
 
-            /*  Iteracja po wszystkich notowaniach.
-             *  Rozpoczyna od pierwszego elementu - 5.
-             *  Kończy w momencie, kiedy trend zostaje uznany za zakończony lub
-             *  gdy dojdzie do końca tablicy z notowaniami. */
-            for (var i = Math.Max(initialItem.Index - QuotationsBeforeInitialItem, 0); i < Items.Length; i++)
+            /* 
+             *  Check if the space between those extrema is not less than minimum distance, defined by [MinDistance] const.
+             *  If it is less than [MinDistance], it means those extrema lie to close to each other and are probably parts
+             *  of the same bigger Peak/Trough.
+             */
+            if (Math.Abs(extremum.Distance(subextremum)) < MinDistance) return trendlines;
+
+
+            /*
+             *  If there are opposite extrema (peak/trough) check if they can be processed.
+             *  In order to process the following pair: troughs are checked only if flag [isAbove] = true, 
+             *  peaks if [isAbove] = false;
+             */
+            if ((extremum.Price.IsPeak() && subextremum.Price.IsTrough()) || (extremum.Price.IsTrough() && subextremum.Price.IsPeak()))
             {
-
-                DataItem item = Items[i];
-                DataItem nextItem = (i < Items.Length - 1 ? Items[i + 1] : null);
-
-                
-                /* Każde pojedyncze notowanie jest wysyłane do obiektu [Trendline], gdzie jest
-                    * ono sprawdzane pod kątem położenia względem linii trendu. */
-                Trendline.Check(item, nextItem);
-                
+                var midextremum = extrema.Where(e => e.Price != null && e.Date > extremum.Date && e.Date < subextremum.Date && e.Price.IsPeak() == extremum.Price.IsPeak()).ToArray();
+                if (midextremum.Length == 0)
+                {
+                    return trendlines;
+                }
+            }
 
 
-                /* Po dodaniu jakiegokolwiek zdarzenia (odbicie od linii trendu, przebicie jej),
-                 * obiekt klasy Trendline przelicza swoją punktację [Score] i sprawdza czy trend
-                 * powinien zostać uznany za zakończony, wtedy ustawaia mu [IsFinished] = true. 
-                 *
-                 * W tym miejscu sprawdzamy, czy trend w trakcie dodawania elementu został uznany za 
-                 * zakończony. W takiej sytuacji program opuszcza pętlę. */
-                if (Trendline.IsFinished) break;
 
+            /*
+             *  If the tests above are passed, we can continue with calculating relevance of each trendline variant for this pair.
+             */
+            for (var a = extremum.GetProperOpenOrClose(); a <= extremum.GetProperHighOrLow(); a += extremum.TrendlineAnalysisStep())
+            {
+                for (var b = subextremum.GetProperOpenOrClose(); b <= subextremum.GetProperHighOrLow(); b += subextremum.TrendlineAnalysisStep())
+                {
+
+                    var trendline = processor.Analyze(extremum, a, subextremum, b);
+                    if (trendline != null) trendlines.Add(trendline);
+
+                }
 
             }
 
 
-            return Trendline.Score >= MinTrendlineScore ? Trendline : null;
+            return FilterTrendlines(trendlines);
+
 
         }
 
 
+
+
+        public List<Trendline> FilterTrendlines(List<Trendline> trendlines)
+        {
+
+            var result = new List<Trendline>();
+
+            //Podziel linie na kategorie wg HitsMD5.
+            Dictionary<string, List<Trendline>> groups = new Dictionary<string, List<Trendline>>();
+            foreach (var trendline in trendlines)
+            {
+                var md5 = trendline.HitsHashCode;
+                List<Trendline> group = null;
+                groups.TryGetValue(md5, out group);
+
+                if (group == null)
+                {
+                    group = new List<Trendline>();
+                    groups.Add(md5, group);
+                }
+
+                group.Add(trendline);
+
+            }
+
+            //Z każdej grupy pozostaw tylko linię z najlepszą punktacją (+ ewentualnie linie przekraczające określony poziom).
+
+            foreach (var group in groups.Values)
+            {
+
+                var best = group.Max(t => t.Score);
+                var ordered = group.Where(t => t.Score >= 0.9d * best).OrderByDescending(t => t.Score).ToArray();
+
+                foreach (var trendline in ordered)
+                {
+                    result.Add(trendline);
+                }
+
+            }
+
+            return result;
+
+        }
 
 
     }

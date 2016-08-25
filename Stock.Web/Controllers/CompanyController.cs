@@ -13,14 +13,12 @@ namespace Stock.Web.Controllers
     {
         private readonly IMarketService marketService;
         private readonly IDataService dataService;
-        private readonly ITrendService trendService;
 
 
         public CompanyController(IDataService dataService)
         {
             this.marketService = MarketServiceFactory.CreateService();
             this.dataService = dataService;
-            this.trendService = null;
         }
 
         //

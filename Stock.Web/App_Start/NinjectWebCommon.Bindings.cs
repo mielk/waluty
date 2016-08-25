@@ -24,7 +24,6 @@ namespace Stock.Web
             kernel.Bind<ISimulationServiceFactory>().To<SimulationServiceFactory>();
             kernel.Bind<IProcessService>().To<ProcessService>();
             kernel.Bind<ITrendlineAnalyzer>().To<TrendlineAnalyzer>();
-            kernel.Bind<ITrendService>().To<TrendService>();
 
             kernel.Bind<IMarketRepository>().To<EFMarketRepository>();
             kernel.Bind<IDataRepository>().To<EFDataRepository>();

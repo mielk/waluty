@@ -3,9 +3,9 @@ using Stock.Domain.Entities;
 
 namespace Stock.Domain.Services
 {
-    public interface ITrendService
-    {
-        void LoadItems(DataItem[] items);
-        Trendline[] Start();
-    }
+    //public interface ITrendService
+    //{
+    //    void LoadItems(DataItem[] items);
+    //    Trendline[] Start();
+    //}
 }
