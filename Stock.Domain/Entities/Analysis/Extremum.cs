@@ -57,7 +57,7 @@ namespace Stock.Domain.Entities
         {
 
             //Timeframe
-            var timeframeSymbol = Symbol.GetTimeframeSymbol();
+            var timeframeSymbol = assetTimeframe.timeframe.Symbol;// Symbol.GetTimeframeSymbol();
             var timeframeFactor = timeframeSymbol.GetExtremumEvaluationFactor();
 
             //Range

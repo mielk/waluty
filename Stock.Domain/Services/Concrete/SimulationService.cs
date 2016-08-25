@@ -8,6 +8,7 @@ using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Services.Factories;
+using Stock.Domain.Enums;
 
 namespace Stock.Domain.Services
 {
@@ -15,34 +16,56 @@ namespace Stock.Domain.Services
     {
 
         private readonly IDataService _dataService;
-        private readonly IPriceAnalyzer _priceAnalyzer;
-        private readonly IMacdAnalyzer _macdAnalyzer;
+        private IAnalyzer _priceAnalyzer;
+        //private IMacdAnalyzer _macdAnalyzer;
+        private IAnalyzer _trendAnalyzer;
         public DataItem[] Data { get; set; }
         public DataItem[] CurrentDataSet { get; set; }
+        public AnalysisType[] types { get; set; }
         public int LastAnalyzed { get; set; }
         public string Symbol { get; set; }
-        public string Pair { get; set; }
-        public string Timeframe { get; set; }
+        public AssetTimeframe AssetTimeframe { get; set; }
+        public IQuotationService quotationService;
+        //public string Pair { get; set; }
+        //public string Timeframe { get; set; }
 
 
         public SimulationService(IDataService dataService)
         {
             _dataService = dataService ?? DataServiceFactory.Instance().GetService();
-            //_priceAnalyzer = new PriceAnalyzer(this);
+            quotationService = new SimulationQuotationService(this);
             //_macdAnalyzer = new MacdAnalyzer(this);
         }
 
-        public bool Start(string pair, string timeframe)
+        public bool Start(string pair, string timeframe, AnalysisType[] types)
         {
-            this.Pair = pair;
-            this.Timeframe = timeframe;
-            this.Symbol = pair + '_' + timeframe;
+            return Start(new AssetTimeframe(pair, timeframe), types);
+        }
+
+        public bool Start(AssetTimeframe atf, AnalysisType[] types)
+        {
+
+            this.Symbol = atf.Symbol();
+            this.types = types;
 
             try
             {
                 Data = _dataService.GetFxQuotations(this.Symbol, true).ToArray();
                 Data.AppendIndexNumbers();
+
+
+                if (types.Contains(AnalysisType.Price)){
+                    _priceAnalyzer = new PriceAnalyzer(atf);
+                    ((Analyzer)_priceAnalyzer).injectQuotationService(quotationService);
+                }
+
+                if (types.Contains(AnalysisType.Trendline)){
+                    _trendAnalyzer = new TrendlineAnalyzer(atf);
+                    ((Analyzer)_trendAnalyzer).injectQuotationService(quotationService);
+                }
+
                 return true;
+
             }
             catch (Exception)
             {
@@ -61,11 +84,37 @@ namespace Stock.Domain.Services
             //Napraw numerację (mogła zostać zepsuta przez obiekt PriceAnalyzer).
             Data.AppendIndexNumbers();
 
-            //_priceAnalyzer.Analyze(this.Symbol, false);
+            if (_priceAnalyzer != null) _priceAnalyzer.Analyze(CurrentDataSet);
             //_macdAnalyzer.Analyze(this.Symbol, false);
+            if (_trendAnalyzer != null) _trendAnalyzer.Analyze(CurrentDataSet);
 
             return LastAnalyzed;
 
+        }
+
+
+        public DateTime? getLastCalculationDate(AnalysisType type)
+        {
+            if (LastAnalyzed > 2) return Data[LastAnalyzed - 2].Date;
+            return null;
+        }
+
+        public DateTime? getLastCalculationDate(string symbol, string analysisSymbol)
+        {
+            if (LastAnalyzed > 2) return Data[LastAnalyzed - 2].Date;
+            return null;
+        }
+
+        public DateTime? getLastCalculationDate(AssetTimeframe atf, AnalysisType analysisType)
+        {
+            if (LastAnalyzed > 2) return Data[LastAnalyzed - 2].Date;
+            return null;
+        }
+
+        public DataItem[] fetchData(Dictionary<AnalysisType, IAnalyzer> analyzers)
+        {
+            var data = Data.Where(d => d.Index < LastAnalyzed).ToArray();
+            return data;
         }
 
 

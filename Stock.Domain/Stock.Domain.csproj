@@ -91,6 +91,7 @@
     <Compile Include="Services\Concrete\AnalysisServices\CandlestickAnalyzer.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\PriceProcessor.cs" />
     <Compile Include="Services\Concrete\QuotationService.cs" />
+    <Compile Include="Services\Concrete\SimulationQuotationService.cs" />
     <Compile Include="Services\Concrete\SimulationService.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\MacdAnalyzer.cs" />
     <Compile Include="Services\Concrete\ExtremumPriceTrendComparer.cs" />

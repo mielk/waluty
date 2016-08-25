@@ -65,7 +65,10 @@ namespace Stock.Domain.Entities
 
         public Extremum Extremum(ExtremumType type)
         {
-            return (Price == null ? null : Price.GetExtremumObject(type));
+            if (Price == null) return null;
+            Extremum extremum = Price.GetExtremumObject(type);
+            if (extremum == null || extremum.Cancelled) return null;
+            return extremum;
         }
 
         /* Covered with unit tests. */

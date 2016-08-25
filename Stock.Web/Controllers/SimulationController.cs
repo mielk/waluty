@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
 using Stock.Domain.Entities;
+using Stock.Domain.Enums;
 
 
 namespace Stock.Web.Controllers
@@ -32,11 +33,16 @@ namespace Stock.Web.Controllers
         [HttpGet]
         [AllowAnonymous]
         public ActionResult InitializeSimulation(string pair, string timeframe)
+
+            //Później dodać, żeby można było podać jako parametr wejściowy datę, od której ma się rozpoczynać
+            //symulacja. Na razie wszystkie symulacje rozpoczynają się od początku.
+            //Kolejny parametr do dodania to jakie analizy mają być wykonane. Obecnie domyślnie robi tylko PRICE.
         {
 
             //Restart simulation object.
             var service = this.ssf.GetService();
-            var result = service.Start(pair, timeframe);
+            var types = new AnalysisType[] { AnalysisType.Price, AnalysisType.Trendline };
+            var result = service.Start(pair, timeframe, types);
 
             var json = new { pair = pair, timeframe = timeframe, result = result };
             return Json(json, JsonRequestBehavior.AllowGet);

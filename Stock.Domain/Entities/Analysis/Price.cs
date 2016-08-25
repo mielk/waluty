@@ -83,19 +83,19 @@ namespace Stock.Domain.Entities
             {
                 case ExtremumType.PeakByClose:
                     PeakByCloseExtremum = extremum;
-                    PeakByClose = extremum.Evaluate();
+                    PeakByClose = extremum == null ? 0 : extremum.Evaluate();
                     break;
                 case ExtremumType.PeakByHigh:
                     PeakByHighExtremum= extremum;
-                    PeakByHigh = extremum.Evaluate();
+                    PeakByHigh = extremum == null ? 0 : extremum.Evaluate();
                     break;
                 case ExtremumType.TroughByClose:
                     TroughByCloseExtremum = extremum;
-                    TroughByClose = extremum.Evaluate();
+                    TroughByClose = extremum == null ? 0 : extremum.Evaluate();
                     break;
                 case ExtremumType.TroughByLow:
                     TroughByLowExtremum = extremum;
-                    TroughByLow = extremum.Evaluate();
+                    TroughByLow = extremum == null ? 0 : extremum.Evaluate();
                     break;
             }
         }

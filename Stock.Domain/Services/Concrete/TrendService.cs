@@ -55,6 +55,11 @@ namespace Stock.Domain.Services
             LoadProperties(symbol);
             LoadItems(items);
         }
+
+        public TrendService(AssetTimeframe atf)
+        {
+            LoadProperties(atf);
+        }
         #endregion
 
         #region GETTER_METHODS
@@ -93,6 +98,14 @@ namespace Stock.Domain.Services
         {
 
             this.AssetTimeframe = new AssetTimeframe(asset, timeframe);
+            this.Symbol = this.AssetTimeframe.Symbol();
+            this.analyzer = new TrendlineAnalyzer(this.AssetTimeframe);
+
+        }
+
+        private void LoadProperties(AssetTimeframe atf)
+        {
+            this.AssetTimeframe = atf;
             this.Symbol = this.AssetTimeframe.Symbol();
             this.analyzer = new TrendlineAnalyzer(this.AssetTimeframe);
 

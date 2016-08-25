@@ -42,6 +42,53 @@ namespace Stock.Domain.Services
             this.atf = atf;
             if (item == null) return;
             if (item.Quotation == null) return;
+
+
+            //Calculate new values for peaks and troughs and apply them to the current item price.
+            //If any of this is changed, this price will have flag [IsChange] set to @true.
+            //This is the only thing that can be changed for items being only updated.
+            CheckForExtremum(item, ExtremumType.PeakByClose, false);
+            CheckForExtremum(item, ExtremumType.PeakByHigh, false);
+            CheckForExtremum(item, ExtremumType.TroughByClose, false);
+            CheckForExtremum(item, ExtremumType.TroughByLow, false);
+            CheckPriceGap(item);
+
+
+        }
+
+        private void runLeftSide(IAnalyzer analyzer, DataItem item, AssetTimeframe atf)
+        {
+            //Check if quotation is missing (but only in the middle of not-missing quotations, 
+            //because missing quotations at the end of array was excluded one line above).
+            //If it is copy data from the previous quotation.
+            if (!item.Quotation.IsComplete())
+            {
+                var previousQuotation = (item.Index > 0 ? analyzer.getDataItem(item.Index - 1).Quotation : null);
+                if (previousQuotation != null)
+                {
+                    item.Quotation.CompleteMissing(previousQuotation);
+                    //_dataService.UpdateQuotation(item.Quotation, Symbol);
+                }
+
+            }
+
+
+            //Ensure that [Price] object is appended to this [DataItem].
+            item.Price = new Price();
+            item.Price.Date = item.Date;
+            if (item.Index > 0) item.Price.CloseDelta = CalculateDeltaClosePrice(item.Quotation.Close, item.Index);
+            item.Price.Direction2D = CalculateDirection2D(item.Index);
+            item.Price.Direction3D = CalculateDirection3D(item.Index);
+
+            //Calculate new values for peaks and troughs and apply them to the current item price.
+            //If any of this is changed, this price will have flag [IsChange] set to @true.
+            //This is the only thing that can be changed for items being only updated.
+            CheckForExtremum(item, ExtremumType.PeakByClose, true);
+            CheckForExtremum(item, ExtremumType.PeakByHigh, true);
+            CheckForExtremum(item, ExtremumType.TroughByClose, true);
+            CheckForExtremum(item, ExtremumType.TroughByLow, true);
+            CheckPriceGap(item);
+
         }
 
         public void runFull(IAnalyzer analyzer, int index, AssetTimeframe atf)
@@ -55,54 +102,12 @@ namespace Stock.Domain.Services
             this.atf = atf;
             if (item == null) return;
             if (item.Quotation == null) return;
-        }
-        
-        private void AnalyzePrice(int index, bool fromScratch)
-        {
 
-            //Check if this item should be analyzed.
-            DataItem item = (index < 0 || index >= analyzer.getDataItemsLength() ? null : analyzer.getDataItem(index));
-            //If this item nor any later item has complete quotation, it means the previous one
-            //was the last real quotation and analysis should finish here.
-            if (!item.Quotation.IsComplete() && !LaterQuotationsExists(index)) return;
-
-
-            //Check if quotation is missing (but only in the middle of not-missing quotations, 
-            //because missing quotations at the end of array was excluded one line above).
-            //If it is copy data from the previous quotation.
-            if (!item.Quotation.IsComplete())
-            {
-                var previousQuotation = (index > 0 ? analyzer.getDataItem(index - 1).Quotation : null);
-                if (previousQuotation != null)
-                {
-                    item.Quotation.CompleteMissing(previousQuotation);
-                    //_dataService.UpdateQuotation(item.Quotation, Symbol);
-                }
-
-            }
-
-
-            //Ensure that [Price] object is appended to this [DataItem].
-            if (item.Price == null || fromScratch)
-            {
-                item.Price = new Price();
-                item.Price.Date = item.Date;
-                item.Price.CloseDelta = CalculateDeltaClosePrice(item.Quotation.Close, index);
-                item.Price.Direction2D = CalculateDirection2D(index);
-                item.Price.Direction3D = CalculateDirection3D(index);
-            }
-
-
-            //Calculate new values for peaks and troughs and apply them to the current item price.
-            //If any of this is changed, this price will have flag [IsChange] set to @true.
-            //This is the only thing that can be changed for items being only updated.
-            CheckForExtremum(item, ExtremumType.PeakByClose, fromScratch);
-            CheckForExtremum(item, ExtremumType.PeakByHigh, fromScratch);
-            CheckForExtremum(item, ExtremumType.TroughByClose, fromScratch);
-            CheckForExtremum(item, ExtremumType.TroughByLow, fromScratch);
-            CheckPriceGap(item);
+            runLeftSide(analyzer, item, atf);
 
         }
+
+
 
         private void SaveChanges()
         {
@@ -127,15 +132,15 @@ namespace Stock.Domain.Services
 
 
 
-        private bool LaterQuotationsExists(int index)
-        {
-            for (var i = index; i < analyzer.getDataItemsLength(); i++)
-            {
-                DataItem item = analyzer.getDataItem(i);
-                if (item.Price.IsComplete) return true;
-            }
-            return false;
-        }
+        //private bool LaterQuotationsExists(int index)
+        //{
+        //    for (var i = index; i < analyzer.getDataItemsLength(); i++)
+        //    {
+        //        DataItem item = analyzer.getDataItem(i);
+        //        if (item.Price.IsComplete) return true;
+        //    }
+        //    return false;
+        //}
 
 
         private void CheckPriceGap(DataItem item)
@@ -297,6 +302,9 @@ namespace Stock.Domain.Services
             int startIndex = item.Index + 1;
             int endIndex = nextExtremum.Index - 1;
             var itemsRange = analyzer.getDataItems().Where(i => i.Index >= startIndex && i.Index <= endIndex);
+
+            if (itemsRange.Count() == 0) return 0;
+
             double oppositeValue = (type.IsPeak() ?
                                         itemsRange.Min(i => i.Quotation.Low) :
                                         itemsRange.Max(i => i.Quotation.High));
@@ -314,8 +322,9 @@ namespace Stock.Domain.Services
 
             startIndex = (prevExtremum == null ? 0 : prevExtremum.Index);
             endIndex = item.Index - 1;
-            IEnumerable<DataItem> items = analyzer.getItems();
-            var itemsRange = analyzer.getItems().Where(i => i.Index >= startIndex && i.Index <= endIndex);
+            IEnumerable<DataItem> items = analyzer.getDataItems();
+            var itemsRange = items.Where(i => i.Index >= startIndex && i.Index <= endIndex);
+            if (itemsRange.Count() == 0) return 0;
             double oppositeValue = (type.IsPeak() ?
                                         itemsRange.Min(i => i.Quotation.Low) :
                                         itemsRange.Max(i => i.Quotation.High));
@@ -359,6 +368,7 @@ namespace Stock.Domain.Services
                 if (laterCounter < MinRange && laterCounter < (analyzer.getDataItemsLength() - 1 - item.Index))
                 {
                     extremum.Cancelled = true;
+                    item.Price.ApplyExtremumValue(type, null);
                     item.Price.IsUpdated = true;
                     return true;
                 }
@@ -429,7 +439,7 @@ namespace Stock.Domain.Services
 
 
         /*
-         * Funkcja zwraca liczbę notować, które zostały do końca zestawu.
+         * Funkcja zwraca liczbę notowań, które zostały do końca zestawu.
          */
         private int quotationsLeft(DataItem item)
         {

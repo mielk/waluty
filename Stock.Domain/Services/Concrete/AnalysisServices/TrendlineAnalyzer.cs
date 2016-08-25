@@ -97,7 +97,7 @@ namespace Stock.Domain.Services
 
         public override void Analyze(DataItem[] items)
         {
-            
+            var x = 1;
         }
 
 

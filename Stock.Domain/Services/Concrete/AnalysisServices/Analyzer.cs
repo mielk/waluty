@@ -158,7 +158,7 @@ namespace Stock.Domain.Services
             this.items = items.ToArray();
 
             int indexAnalysisStart = 0;
-            int indexLastCalculation = 0;
+            int indexLastCalculation = -1;
 
             //Calculate required index numbers.
             if (LastCalculationDate != null){
@@ -170,7 +170,7 @@ namespace Stock.Domain.Services
             
 
             //Only right analysis.
-            for (var i = indexAnalysisStart; i <= indexLastCalculation; i++)
+            for (var i = Math.Max(indexAnalysisStart, 0) ; i <= indexLastCalculation; i++)
             {
                 processor.runRightSide(this, items[i], AssetTimeframe);
             }
@@ -180,6 +180,8 @@ namespace Stock.Domain.Services
             {
                 processor.runFull(this, items[i], AssetTimeframe);
             }
+
+            LastCalculationDate = items[items.Length - 1].Date;
 
             //Save info about analysis to Analysis object.
             //analysis.AnalysisStart = 
