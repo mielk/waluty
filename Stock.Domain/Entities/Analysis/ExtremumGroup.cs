@@ -14,8 +14,8 @@ namespace Stock.Domain.Entities
         public ExtremumType type { get; set; }
 
         public DateTime getDate(){
-            if (master.Date.CompareTo(slave.Date) < 0) return master.Date;
-            return slave.Date;
+            if (master != null && (slave == null || master.Date.CompareTo(slave.Date) < 0)) return master.Date;
+            return (slave != null ? slave.Date : new DateTime());
         }
 
     }

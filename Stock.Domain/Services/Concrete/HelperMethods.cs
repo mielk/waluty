@@ -44,6 +44,7 @@ namespace Stock.Domain.Services
                     group.master = item;
                 }
 
+                group.type = item.Price.IsTrough() ? ExtremumType.TroughByClose : ExtremumType.PeakByClose;
                 list.Add(group);
 
             }
