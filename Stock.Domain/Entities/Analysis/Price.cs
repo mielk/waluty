@@ -133,9 +133,14 @@ namespace Stock.Domain.Entities
             return GetExtremumObject(Extrema.GetExtremumType(isPeak, byClose));
         }
 
-        public bool IsExtremum()
+        public bool IsExtremumOrPriceGap()
         {
             return (PeakByClose > 0 || PeakByHigh > 0 || TroughByClose > 0 || TroughByLow > 0 || PriceGap > 0);
+        }
+
+        public bool IsExtremum()
+        {
+            return (PeakByClose > 0 || PeakByHigh > 0 || TroughByClose > 0 || TroughByLow > 0);
         }
 
         public bool IsExtremum(TrendlineType type)
