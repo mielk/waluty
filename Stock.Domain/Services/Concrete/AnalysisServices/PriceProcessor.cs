@@ -428,6 +428,7 @@ namespace Stock.Domain.Services
                 if (extremum.LaterChange5 == null) extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
                 if (extremum.LaterChange10 == null) extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
                 extremum.IsOpen = (item.Index + extremum.LaterCounter == analyzer.getDataItemsLength() - 1) || quotationsLeft(item) < 10;
+
                 setCurrentExtremum(type, item);
                 item.Price.ApplyExtremumValue(type, extremum);
                 item.Price.IsUpdated = true;
