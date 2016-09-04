@@ -14,7 +14,7 @@ namespace Stock.Domain.Services
 
     public class TrendlineAnalyzer : Analyzer, ITrendlineAnalyzer
     {
-
+        private const int OppositeExtremaMinDistance = 10;
         private ITrendlineProcessor processor;
 
         private const int RangeToCheck = 200;
@@ -77,16 +77,26 @@ namespace Stock.Domain.Services
 
             preAnalysisStaff(items);
 
-            foreach (var extremum in extremaGroups)
+            IEnumerable<ExtremumGroup> newGroups = this.extremaGroups.Where(i => i.getDate().CompareTo(LastCalculationDate) > 0);
+
+            foreach (var extremum in newGroups)
             {
 
                 /* Iterate through all the groups above and check trendlines for each pair of extrema. */
-                var subextrema = extremaGroups.Where(i => i.getDate() > extremum.getDate()).ToArray();
-                foreach (var subextremum in subextrema)
+                var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() && 
+                                    i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis));
+
+                if (previous.Count() > 0)
+                {
+                    var x = 1;
+                }
+
+                foreach (var subextremum in previous)
                 {
 
                     if (Math.Abs(extremum.master.Distance(subextremum.master)) > RangeToCheck) break;
-
+                    //If items are of opposite type, there must be more distance between them.
+                    if (extremum.type.IsOpposite(subextremum.type) && Math.Abs(extremum.master.Distance(subextremum.master)) < OppositeExtremaMinDistance) break;
                     var trendlines = ProcessSinglePair(extremum.master, subextremum.master);
                     foreach (var trendline in trendlines)
                     {

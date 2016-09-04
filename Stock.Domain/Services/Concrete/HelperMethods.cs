@@ -57,6 +57,18 @@ namespace Stock.Domain.Services
             return (type == ExtremumType.PeakByClose || type == ExtremumType.TroughByClose);
         }
 
+        public static bool IsOpposite(this ExtremumType type, ExtremumType tested)
+        {
+            if (type == ExtremumType.PeakByClose || type == ExtremumType.PeakByHigh)
+            {
+                return (tested == ExtremumType.TroughByClose || tested == ExtremumType.TroughByLow);
+            }
+            else
+            {
+                return (tested == ExtremumType.PeakByClose || tested == ExtremumType.PeakByHigh);
+            }
+        }
+
         public static ExtremumType GetOppositeByPriceLevel(this ExtremumType type)
         {
             if (type == ExtremumType.PeakByClose) return ExtremumType.PeakByHigh;
