@@ -86,18 +86,13 @@ namespace Stock.Domain.Services
                 var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() && 
                                     i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis));
 
-                if (previous.Count() > 0)
-                {
-                    var x = 1;
-                }
-
                 foreach (var subextremum in previous)
                 {
 
                     if (Math.Abs(extremum.master.Distance(subextremum.master)) > RangeToCheck) break;
                     //If items are of opposite type, there must be more distance between them.
                     if (extremum.type.IsOpposite(subextremum.type) && Math.Abs(extremum.master.Distance(subextremum.master)) < OppositeExtremaMinDistance) break;
-                    var trendlines = ProcessSinglePair(extremum.master, subextremum.master);
+                    var trendlines = ProcessSinglePair(extremum, subextremum);
                     foreach (var trendline in trendlines)
                     {
                         trendlines.Add(trendline);
@@ -111,54 +106,55 @@ namespace Stock.Domain.Services
         }
 
 
-        public List<Trendline> ProcessSinglePair(DataItem extremum, DataItem subextremum)
+        public List<Trendline> ProcessSinglePair(ExtremumGroup extremum, ExtremumGroup subextremum)
         {
 
             List<Trendline> trendlines = new List<Trendline>();
 
 
-            /* 
-             *  Check if the space between those extrema is not less than minimum distance, defined by [MinDistance] const.
-             *  If it is less than [MinDistance], it means those extrema lie to close to each other and are probably parts
-             *  of the same bigger Peak/Trough.
-             */
-            if (Math.Abs(extremum.Distance(subextremum)) < MinDistance) return trendlines;
+            ///* 
+            // *  Check if the space between those extrema is not less than minimum distance, defined by [MinDistance] const.
+            // *  If it is less than [MinDistance], it means those extrema lie to close to each other and are probably parts
+            // *  of the same bigger Peak/Trough.
+            // */
+            //if (Math.Abs(extremum.Distance(subextremum)) < MinDistance) return trendlines;
 
 
-            /*
-             *  If there are opposite extrema (peak/trough) check if they can be processed.
-             *  In order to process the following pair: troughs are checked only if flag [isAbove] = true, 
-             *  peaks if [isAbove] = false;
-             */
-            if ((extremum.Price.IsPeak() && subextremum.Price.IsTrough()) || (extremum.Price.IsTrough() && subextremum.Price.IsPeak()))
-            {
-                var midextremum = extremaGroups.Where(e => e.master.Price != null && e.master.Date > extremum.Date && e.master.Date < subextremum.Date && e.master.Price.IsPeak() == extremum.Price.IsPeak()).ToArray();
-                if (midextremum.Length == 0)
-                {
-                    return trendlines;
-                }
-            }
+            ///*
+            // *  If there are opposite extrema (peak/trough) check if they can be processed.
+            // *  In order to process the following pair: troughs are checked only if flag [isAbove] = true, 
+            // *  peaks if [isAbove] = false;
+            // */
+            //if ((extremum.Price.IsPeak() && subextremum.Price.IsTrough()) || (extremum.Price.IsTrough() && subextremum.Price.IsPeak()))
+            //{
+            //    var midextremum = extremaGroups.Where(e => e.master.Price != null && e.master.Date > extremum.Date && e.master.Date < subextremum.Date && e.master.Price.IsPeak() == extremum.Price.IsPeak()).ToArray();
+            //    if (midextremum.Length == 0)
+            //    {
+            //        return trendlines;
+            //    }
+            //}
 
 
 
-            /*
-             *  If the tests above are passed, we can continue with calculating relevance of each trendline variant for this pair.
-             */
-            for (var a = extremum.GetProperOpenOrClose(); a <= extremum.GetProperHighOrLow(); a += extremum.TrendlineAnalysisStep())
-            {
-                for (var b = subextremum.GetProperOpenOrClose(); b <= subextremum.GetProperHighOrLow(); b += subextremum.TrendlineAnalysisStep())
-                {
+            ///*
+            // *  If the tests above are passed, we can continue with calculating relevance of each trendline variant for this pair.
+            // */
+            //for (var a = extremum.GetProperOpenOrClose(); a <= extremum.GetProperHighOrLow(); a += extremum.TrendlineAnalysisStep())
+            //{
+            //    for (var b = subextremum.GetProperOpenOrClose(); b <= subextremum.GetProperHighOrLow(); b += subextremum.TrendlineAnalysisStep())
+            //    {
 
-                    var trendline = processor.Analyze(extremum, a, subextremum, b);
-                    if (trendline != null) trendlines.Add(trendline);
+            //        var trendline = processor.Analyze(extremum, a, subextremum, b);
+            //        if (trendline != null) trendlines.Add(trendline);
 
-                }
+            //    }
 
-            }
+            //}
 
 
-            return FilterTrendlines(trendlines);
+            //return FilterTrendlines(trendlines);
 
+            return null;
 
         }
 
