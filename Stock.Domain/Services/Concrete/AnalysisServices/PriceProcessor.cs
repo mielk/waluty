@@ -428,8 +428,10 @@ namespace Stock.Domain.Services
                 if (extremum.LaterChange5 == null) extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
                 if (extremum.LaterChange10 == null) extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
                 extremum.IsOpen = (item.Index + extremum.LaterCounter == analyzer.getDataItemsLength() - 1) || quotationsLeft(item) < 10;
-
-                setCurrentExtremum(type, item);
+                if (extremum.IsConfirmed())
+                {
+                    setCurrentExtremum(type, item);
+                }
                 item.Price.ApplyExtremumValue(type, extremum);
                 item.Price.IsUpdated = true;
             }
@@ -485,6 +487,34 @@ namespace Stock.Domain.Services
 
         private void setCurrentExtremum(ExtremumType type, DataItem item)
         {
+
+            DataItem previous = null;
+            try
+            {
+                currentExtrema.TryGetValue(type.GetOppositeByPriceLevel(), out previous);
+            }
+            catch (Exception)
+            {
+            }
+
+            if (previous != null){
+                if (previous.Index != item.Index){
+                    if (Math.Abs(previous.Index - item.Index) == 1)
+                    {
+                        if (type.IsByClosePrice())
+                        {
+                            item.SlaveExtremum = previous;
+                            previous.MasterExtremum = item;
+                        }
+                        else
+                        {
+                            item.MasterExtremum = previous;
+                            previous.SlaveExtremum = item;
+                        }
+                    }
+                }
+            }
+
             currentExtrema[type] = item;
         }
 
