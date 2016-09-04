@@ -18,6 +18,8 @@ namespace Stock.Domain.Entities
         public Price Price { get; set; }
         public Macd Macd { get; set; }
         public Adx Adx { get; set; }
+        public DataItem MasterExtremum { get; set; }
+        public DataItem SlaveExtremum { get; set; }
         
 
         public int Index { get; set; }
