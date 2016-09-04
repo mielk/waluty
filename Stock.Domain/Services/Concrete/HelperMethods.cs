@@ -13,6 +13,11 @@ namespace Stock.Domain.Services
     public static class HelperMethods
     {
 
+        public static bool IsMasterType(this ExtremumType type)
+        {
+            return (type == ExtremumType.PeakByClose || type == ExtremumType.TroughByClose);
+        }
+
         public static ExtremumType GetOppositeByPriceLevel(this ExtremumType type)
         {
             if (type == ExtremumType.PeakByClose) return ExtremumType.PeakByHigh;
