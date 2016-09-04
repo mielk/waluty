@@ -20,7 +20,7 @@ namespace Stock.Domain.Services
         private const int RangeToCheck = 200;
         private const int MinDistance = 5;
 
-        private IEnumerable<DataItem> extrema;
+        private IEnumerable<ExtremumGroup> extremaGroups;
         private IEnumerable<Trendline> trendlines = new List<Trendline>();
 
 
@@ -48,29 +48,46 @@ namespace Stock.Domain.Services
         }
 
 
+        private void preAnalysisStaff(DataItem[] items)
+        {
+
+            //Create [TrendlineProcessor] instance.
+            if (processor == null)
+            {
+                ITrendlineAnalyzer self = this;
+                processor = new TrendlineProcessor(self);
+            }
+
+            if (trendlines == null)
+            {
+                this.trendlines = new List<Trendline>();
+            }
+
+
+            /* Extract items that are marked as extrema. */
+            this.extremaGroups = items.Where(i => i.Price != null && i.Price.IsExtremum()).OrderBy(i => i.Date).GetExtremaGroups().OrderBy(i => i.getDate()); ;
+            
+
+        }
+
+
 
         public override void Analyze(DataItem[] items)
         {
 
-            //Create [TrendlineProcessor] instance.
-            ITrendlineAnalyzer self = this;
-            processor = new TrendlineProcessor(self);
+            preAnalysisStaff(items);
 
-            /* Extract items that are marked as extrema. */
-            this.trendlines = new List<Trendline>();
-            this.extrema = items.Where(i => i.Price != null && i.Price.IsExtremum()).OrderBy(i => i.Date).ToArray();
-
-
-            foreach (var extremum in extrema)
+            foreach (var extremum in extremaGroups)
             {
+
                 /* Iterate through all the groups above and check trendlines for each pair of extrema. */
-                var subextrema = extrema.Where(i => i.Date > extremum.Date).ToArray();
+                var subextrema = extremaGroups.Where(i => i.getDate() > extremum.getDate()).ToArray();
                 foreach (var subextremum in subextrema)
                 {
 
-                    if (Math.Abs(extremum.Distance(subextremum)) > RangeToCheck) break;
+                    if (Math.Abs(extremum.master.Distance(subextremum.master)) > RangeToCheck) break;
 
-                    var trendlines = ProcessSinglePair(extremum, subextremum);
+                    var trendlines = ProcessSinglePair(extremum.master, subextremum.master);
                     foreach (var trendline in trendlines)
                     {
                         trendlines.Add(trendline);
@@ -105,7 +122,7 @@ namespace Stock.Domain.Services
              */
             if ((extremum.Price.IsPeak() && subextremum.Price.IsTrough()) || (extremum.Price.IsTrough() && subextremum.Price.IsPeak()))
             {
-                var midextremum = extrema.Where(e => e.Price != null && e.Date > extremum.Date && e.Date < subextremum.Date && e.Price.IsPeak() == extremum.Price.IsPeak()).ToArray();
+                var midextremum = extremaGroups.Where(e => e.master.Price != null && e.master.Date > extremum.Date && e.master.Date < subextremum.Date && e.master.Price.IsPeak() == extremum.Price.IsPeak()).ToArray();
                 if (midextremum.Length == 0)
                 {
                     return trendlines;
