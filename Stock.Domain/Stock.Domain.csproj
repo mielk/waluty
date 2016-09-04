@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Entities\Analysis\Analysis.cs" />
+    <Compile Include="Entities\Analysis\ExtremumGroup.cs" />
     <Compile Include="Entities\MarketObjects\Asset.cs" />
     <Compile Include="Entities\MarketObjects\AssetTimeframe.cs" />
     <Compile Include="Entities\Analysis\Adx.cs" />

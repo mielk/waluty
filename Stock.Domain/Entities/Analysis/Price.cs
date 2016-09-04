@@ -106,6 +106,11 @@ namespace Stock.Domain.Entities
             ApplyExtremumValue(type, extremum);
         }
 
+        public bool IsExtremumByClosePrice()
+        {
+            return (PeakByClose > 0 || TroughByClose > 0);
+        }
+
         public Extremum GetExtremumObject(ExtremumType type)
         {
             switch (type)

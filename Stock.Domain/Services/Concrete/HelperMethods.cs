@@ -10,8 +10,46 @@ using Stock.Domain.Services.Factories;
 namespace Stock.Domain.Services
 {
 
+
     public static class HelperMethods
     {
+
+
+        public static IEnumerable<ExtremumGroup> GetExtremaGroups(this IEnumerable<DataItem> extrema){
+            DataItem[] items = extrema.OrderBy(i => i.Date).ToArray();
+            List<ExtremumGroup> list = new List<ExtremumGroup>();
+
+            for (var i = 0; i < items.Length; i++)
+            {
+                DataItem item = items[i];
+                ExtremumGroup group = new ExtremumGroup();
+                if (i < items.Length - 1 && items[i + 1].Index - item.Index == 1)
+                {
+                    if (item.Price.IsExtremumByClosePrice())
+                    {
+                        group.master = item;
+                        group.slave = items[i + 1];
+                    }
+                    else
+                    {
+                        group.master = items[i + 1];
+                        group.slave = item;
+                    }
+
+                    i++;
+
+                }
+                else
+                {
+                    group.master = item;
+                }
+
+                list.Add(group);
+
+            }
+
+            return list;
+        }
 
         public static bool IsByClosePrice(this ExtremumType type)
         {
