@@ -13,6 +13,14 @@ namespace Stock.Domain.Services
     public static class HelperMethods
     {
 
+        public static ExtremumType GetOppositeByPriceLevel(this ExtremumType type)
+        {
+            if (type == ExtremumType.PeakByClose) return ExtremumType.PeakByHigh;
+            if (type == ExtremumType.PeakByHigh) return ExtremumType.PeakByClose;
+            if (type == ExtremumType.TroughByClose) return ExtremumType.TroughByLow;
+            if (type == ExtremumType.TroughByLow) return ExtremumType.TroughByClose;
+            return ExtremumType.PeakByClose;
+        }
 
         public static double GetExtremumEvaluationFactor(this TimeframeSymbol value)
         {
