@@ -11,7 +11,7 @@ namespace Stock.Domain.Entities
 {
     public class Extremum
     {
-
+        private const int MinLaterCounter = 3;
         public int ExtremumId { get; set; }
         public AssetTimeframe assetTimeframe { get; set; }
         public string Symbol { get; set; }
@@ -53,12 +53,19 @@ namespace Stock.Domain.Entities
 
         }
 
+        public bool IsConfirmed()
+        {
+            return LaterCounter > MinLaterCounter;
+        }
+
         public double Evaluate()
         {
 
             //Timeframe
             var timeframeSymbol = assetTimeframe.timeframe.Symbol;// Symbol.GetTimeframeSymbol();
             var timeframeFactor = timeframeSymbol.GetExtremumEvaluationFactor();
+
+            if (LaterCounter < MinLaterCounter) return 0d;
 
             //Range
             var maxRange = (double)Extrema.MaxRange;
