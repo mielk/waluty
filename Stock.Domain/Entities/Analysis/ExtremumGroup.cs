@@ -10,6 +10,7 @@ namespace Stock.Domain.Entities
 {
     public class ExtremumGroup
     {
+        private const double MIN_STEP = 0.00001d;
         public DataItem master { get; set; }
         public DataItem slave { get; set; }
         public ExtremumType type { get; set; }
@@ -17,6 +18,16 @@ namespace Stock.Domain.Entities
         public DateTime getDate(){
             if (master != null && (slave == null || master.Date.CompareTo(slave.Date) < 0)) return master.Date;
             return (slave != null ? slave.Date : new DateTime());
+        }
+
+        public DataItem getStartItem()
+        {
+            return (slave == null || slave.Index > master.Index ? master : slave);
+        }
+
+        public DataItem getEndItem()
+        {
+            return (slave == null || slave.Index < master.Index ? master : slave);
         }
 
         public double getIndex() 
@@ -85,7 +96,7 @@ namespace Stock.Domain.Entities
         {
             var close = master.Quotation.Close;
             var extreme = getExtremePrice();
-            return Math.Abs(close - extreme) / 10;
+            return Math.Max(Math.Abs(close - extreme) / 10, MIN_STEP);
         }
 
     }

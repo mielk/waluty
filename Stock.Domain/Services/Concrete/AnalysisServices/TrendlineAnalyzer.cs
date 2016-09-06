@@ -15,13 +15,13 @@ namespace Stock.Domain.Services
     public class TrendlineAnalyzer : Analyzer, ITrendlineAnalyzer
     {
         private const int OppositeExtremaMinDistance = 10;
+        private const int MinDistance = 5;
         private ITrendlineProcessor processor;
 
         private const int RangeToCheck = 200;
-        private const int MinDistance = 5;
 
         private IEnumerable<ExtremumGroup> extremaGroups;
-        private IEnumerable<Trendline> trendlines = new List<Trendline>();
+        private List<Trendline> trendlines = new List<Trendline>();
 
 
         public override AnalysisType Type
@@ -90,12 +90,17 @@ namespace Stock.Domain.Services
                 {
 
                     if (Math.Abs(extremum.master.Distance(subextremum.master)) > RangeToCheck) break;
-                    //If items are of opposite type, there must be more distance between them.
+
+                    //Items must have minimum distance between each other.
+                    if (Math.Abs(extremum.master.Distance(subextremum.master)) < MinDistance) break;
                     if (extremum.type.IsOpposite(subextremum.type) && Math.Abs(extremum.master.Distance(subextremum.master)) < OppositeExtremaMinDistance) break;
-                    var trendlines = ProcessSinglePair(extremum, subextremum);
-                    foreach (var trendline in trendlines)
+
+
+
+                    var pairTrendlines = ProcessSinglePair(extremum, subextremum);
+                    foreach (var trendline in pairTrendlines)
                     {
-                        trendlines.Add(trendline);
+                        addTrendline(trendline);
                     }
 
                 }
@@ -106,55 +111,48 @@ namespace Stock.Domain.Services
         }
 
 
+
+
         public List<Trendline> ProcessSinglePair(ExtremumGroup extremum, ExtremumGroup subextremum)
         {
 
             List<Trendline> trendlines = new List<Trendline>();
 
 
-            ///* 
-            // *  Check if the space between those extrema is not less than minimum distance, defined by [MinDistance] const.
-            // *  If it is less than [MinDistance], it means those extrema lie to close to each other and are probably parts
-            // *  of the same bigger Peak/Trough.
-            // */
-            //if (Math.Abs(extremum.Distance(subextremum)) < MinDistance) return trendlines;
-
-
-            ///*
-            // *  If there are opposite extrema (peak/trough) check if they can be processed.
-            // *  In order to process the following pair: troughs are checked only if flag [isAbove] = true, 
-            // *  peaks if [isAbove] = false;
-            // */
-            //if ((extremum.Price.IsPeak() && subextremum.Price.IsTrough()) || (extremum.Price.IsTrough() && subextremum.Price.IsPeak()))
-            //{
-            //    var midextremum = extremaGroups.Where(e => e.master.Price != null && e.master.Date > extremum.Date && e.master.Date < subextremum.Date && e.master.Price.IsPeak() == extremum.Price.IsPeak()).ToArray();
-            //    if (midextremum.Length == 0)
-            //    {
-            //        return trendlines;
-            //    }
-            //}
+            /*
+             *  If there are opposite extrema (peak/trough) check if they can be processed.
+             *  There must be at least one other extremum between them.
+             *  In order to process the following pair: troughs are checked only if flag [isAbove] = true, 
+             *  peaks if [isAbove] = false;
+             */
+            if ((extremum.type.IsPeak() && !subextremum.type.IsPeak()) || (!extremum.type.IsPeak() && subextremum.type.IsPeak()))
+            {
+                var midextremum = extremaGroups.Where(e => e.master.Price != null && e.master.Date > extremum.master.Date && e.master.Date < subextremum.master.Date && e.type.IsPeak() == extremum.type.IsPeak()).ToArray();
+                if (midextremum.Length == 0)
+                {
+                    return trendlines;
+                }
+            }
 
 
 
-            ///*
-            // *  If the tests above are passed, we can continue with calculating relevance of each trendline variant for this pair.
-            // */
-            //for (var a = extremum.GetProperOpenOrClose(); a <= extremum.GetProperHighOrLow(); a += extremum.TrendlineAnalysisStep())
-            //{
-            //    for (var b = subextremum.GetProperOpenOrClose(); b <= subextremum.GetProperHighOrLow(); b += subextremum.TrendlineAnalysisStep())
-            //    {
+            /*
+             *  If the tests above are passed, we can continue with calculating relevance of each trendline variant for this pair.
+             */
+            for (var a = extremum.getLower(); a <= extremum.getHigher(); a += extremum.getStep())
+            {
+                for (var b = subextremum.getLower(); b <= subextremum.getHigher(); b += subextremum.getStep())
+                {
 
-            //        var trendline = processor.Analyze(extremum, a, subextremum, b);
-            //        if (trendline != null) trendlines.Add(trendline);
+                    var trendline = processor.Analyze(extremum.getStartItem(), a, subextremum.getEndItem(), b);
+                    if (trendline != null) trendlines.Add(trendline);
 
-            //    }
+                }
 
-            //}
+            }
 
 
-            //return FilterTrendlines(trendlines);
-
-            return null;
+            return FilterTrendlines(trendlines);
 
         }
 
@@ -203,6 +201,10 @@ namespace Stock.Domain.Services
 
         }
 
+        private void addTrendline(Trendline trendline)
+        {
+            trendlines.Add(trendline);
+        }
 
     }
 }
