@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.Domain.Services;
 
 namespace Stock.Domain.Entities
 {
@@ -16,6 +17,75 @@ namespace Stock.Domain.Entities
         public DateTime getDate(){
             if (master != null && (slave == null || master.Date.CompareTo(slave.Date) < 0)) return master.Date;
             return (slave != null ? slave.Date : new DateTime());
+        }
+
+        public double getIndex() 
+        {
+            if (slave == null)
+            {
+                return master.Index;
+            }
+            else
+            {
+                return (master.Index + slave.Index) / 2;
+            }
+        }
+
+        public double getClosePrice()
+        {
+            return getCloseDataItem().Quotation.Close;
+        }
+
+        public DataItem getCloseDataItem()
+        {
+            return master;
+        }
+
+        public DataItem getExtremeDataItem()
+        {
+            return (slave != null ? slave : master);
+        }
+
+        public double getExtremePrice()
+        {
+            Quotation q = getExtremeDataItem().Quotation;
+            return (type == ExtremumType.PeakByClose || type == ExtremumType.PeakByHigh ? q.High : q.Low);
+        }
+
+        public ExtremumType getType()
+        {
+            return type;
+        }
+
+        public double getLower()
+        {
+            if (type.IsPeak())
+            {
+                return master.Quotation.Close;
+            }
+            else
+            {
+                return getExtremePrice();
+            }
+        }
+
+        public double getHigher()
+        {
+            if (type.IsPeak())
+            {
+                return getExtremePrice();
+            }
+            else
+            {
+                return master.Quotation.Close;
+            }
+        }
+
+        public double getStep()
+        {
+            var close = master.Quotation.Close;
+            var extreme = getExtremePrice();
+            return Math.Abs(close - extreme) / 10;
         }
 
     }

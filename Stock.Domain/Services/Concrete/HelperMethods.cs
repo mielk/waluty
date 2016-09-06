@@ -69,6 +69,11 @@ namespace Stock.Domain.Services
             }
         }
 
+        public static bool IsPeak(this ExtremumType type)
+        {
+            return (type == ExtremumType.PeakByClose || type == ExtremumType.PeakByHigh);
+        }
+
         public static ExtremumType GetOppositeByPriceLevel(this ExtremumType type)
         {
             if (type == ExtremumType.PeakByClose) return ExtremumType.PeakByHigh;
@@ -161,14 +166,6 @@ namespace Stock.Domain.Services
             }
         }
 
-        public static bool IsPeak(this ExtremumType type)
-        {
-            if (type == ExtremumType.PeakByClose || type == ExtremumType.PeakByHigh)
-                return true;
-
-            return false;
-
-        }
 
         public static bool ByClose(this ExtremumType type)
         {
