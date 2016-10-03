@@ -15,6 +15,7 @@ namespace Stock.Domain.Services
         int NextStep(int incrementation);
         object GetDataSetProperties();
         IEnumerable<DataItem> GetQuotations(DateTime startDateTime, DateTime endDateTime);
+        IEnumerable<Trendline> GetTrendlines(DateTime startDateTime, DateTime endDateTime);
         DateTime? getLastCalculationDate(AnalysisType type);
         DateTime? getLastCalculationDate(string symbol, string analysisSymbol);
         DateTime? getLastCalculationDate(AssetTimeframe atf, AnalysisType analysisType);

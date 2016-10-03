@@ -154,8 +154,12 @@ function QuotationSet(params) {
                 async: true,
                 callback: function (res) {
 
+                    var _quotations = res.quotations;
+                    var _trendlines = res.trendlines;
+
+
                     //Populate quotations collection.
-                    assignQuotations(res);
+                    assignQuotations(_quotations);
 
                     //If function has been passed as a parameter, call it.
                     if (mielk.objects.isFunction(fn)) {
@@ -163,6 +167,7 @@ function QuotationSet(params) {
                             initial: !initialized,
                             obj: quotations,
                             arr: quotationsArray,
+                            trendlines: _trendlines,
                             complete: (startIndex === 0)
                         });
                     }

@@ -12,7 +12,6 @@ namespace Stock.Domain.Services
 
         /* Calculation variables */
         private Trendline Trendline;
-
         private ITrendlineAnalyzer analyzer;
 
 
@@ -64,10 +63,12 @@ namespace Stock.Domain.Services
 
         public void runFull(IAnalyzer analyzer, DataItem item, AssetTimeframe atf) { }
 
-        public Trendline Analyze(DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        public void Analyze(Trendline trendline)
         {
-            return null;
+
         }
+
+
 
     }
 }

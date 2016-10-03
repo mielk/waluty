@@ -18,6 +18,10 @@ function Chart(params) {
     var height = params.height;
     var properties = params.properties;
 
+    //Displayed properties.
+    var displayTrendlines = true;
+    var displayCandlestickFormations = true;
+
     //UI.
     var svg = undefined;
     var valuesPanel = undefined;
@@ -195,6 +199,13 @@ function Chart(params) {
     self.hover = hover;
     self.destroy = destroy;
     //self.showInfo = showInfo;
+
+    self.showTrendlines = function () {
+        return displayTrendlines;
+    }
+    self.showCandlestickFormations = function () {
+        return displayCandlestickFormations;
+    }
 
     initialize();
 

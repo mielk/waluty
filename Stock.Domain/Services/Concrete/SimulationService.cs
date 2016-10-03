@@ -16,18 +16,17 @@ namespace Stock.Domain.Services
     {
 
         private readonly IDataService _dataService;
-        private IAnalyzer _priceAnalyzer;
+        private IPriceAnalyzer _priceAnalyzer;
         //private IMacdAnalyzer _macdAnalyzer;
-        private IAnalyzer _trendAnalyzer;
+        private ITrendlineAnalyzer _trendAnalyzer;
+        public AnalysisType[] types { get; set; }
         public DataItem[] Data { get; set; }
         public DataItem[] CurrentDataSet { get; set; }
-        public AnalysisType[] types { get; set; }
         public int LastAnalyzed { get; set; }
         public string Symbol { get; set; }
         public AssetTimeframe AssetTimeframe { get; set; }
         public IQuotationService quotationService;
-        //public string Pair { get; set; }
-        //public string Timeframe { get; set; }
+
 
 
         public SimulationService(IDataService dataService)
@@ -131,12 +130,6 @@ namespace Stock.Domain.Services
         }
 
 
-        public IEnumerable<DataItem> GetQuotations(DateTime startDate, DateTime endDate)
-        {
-            IEnumerable<DataItem> items = CurrentDataSet.Where(di => di.Date >= startDate && di.Date <= endDate).OrderBy(di => di.Index);
-            return items;
-        }
-
 
         //Implementation of [IAnalysisDataService]//
         public IEnumerable<DataItem> GetFxQuotationsForAnalysis(string symbol, string tableName)
@@ -162,6 +155,24 @@ namespace Stock.Domain.Services
 
         }
 
+
+        public IEnumerable<DataItem> GetQuotations(DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<DataItem> items = CurrentDataSet.Where(di => di.Date >= startDate && di.Date <= endDate).OrderBy(di => di.Index);
+            return items;
+        }
+
+        public IEnumerable<Trendline> GetTrendlines(DateTime startDateTime, DateTime endDateTime)
+        {
+
+            if (_trendAnalyzer != null)
+            {
+                return _trendAnalyzer.GetTrendlines();
+            }
+
+            return new List<Trendline>();
+
+        }
         
 
         //Fake methods to met [IAnalysisDataService] interface requirements.//

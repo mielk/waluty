@@ -96,11 +96,16 @@ namespace Stock.Domain.Services
                     if (extremum.type.IsOpposite(subextremum.type) && Math.Abs(extremum.master.Distance(subextremum.master)) < OppositeExtremaMinDistance) break;
 
 
+                    //Do tego momentu docierają tylko te pary wierzchołków, które spełniają kryteria początkowe.
 
-                    var pairTrendlines = ProcessSinglePair(extremum, subextremum);
+
+
+                    //Do zmiennej pairTrendlines przypisywana jest kolekcja wszystkich kombinacji trendlinów stworzonych dla aktualnie rozpatrywanej pary wierzchołków.
+                    var pairTrendlines = ProcessSinglePair(subextremum, extremum);
                     foreach (var trendline in pairTrendlines)
                     {
                         addTrendline(trendline);
+                        break;
                     }
 
                 }
@@ -143,16 +148,26 @@ namespace Stock.Domain.Services
             {
                 for (var b = subextremum.getLower(); b <= subextremum.getHigher(); b += subextremum.getStep())
                 {
+                    var trendline = new Trendline(this.AssetTimeframe, new ValuePoint(extremum.getStartItem(), a), new ValuePoint(subextremum.getEndItem(), b));
+                    processor.Analyze(trendline);
 
-                    var trendline = processor.Analyze(extremum.getStartItem(), a, subextremum.getEndItem(), b);
-                    if (trendline != null) trendlines.Add(trendline);
+                    if (trendline != null)
+                    {
+
+                        if (trendlines.Count == 0)
+                        {
+                            trendlines.Add(trendline);
+                        }
+
+                    }
 
                 }
 
             }
 
 
-            return FilterTrendlines(trendlines);
+            //return FilterTrendlines(trendlines);
+            return trendlines;
 
         }
 
@@ -203,7 +218,12 @@ namespace Stock.Domain.Services
 
         private void addTrendline(Trendline trendline)
         {
-            trendlines.Add(trendline);
+            this.trendlines.Add(trendline);
+        }
+
+        public IEnumerable<Trendline> GetTrendlines()
+        {
+            return trendlines;
         }
 
     }

@@ -86,15 +86,14 @@ namespace Stock.Web.Controllers
 
             //findTrendlines(pairSymbol, timeframe);
 
-            var service = this.ssf.GetService();
+            ISimulationService service = this.ssf.GetService();
             IEnumerable<DataItem> quotations = service.GetQuotations(startDateTime, endDateTime);
+            IEnumerable<Trendline> trendlines = service.GetTrendlines(startDateTime, endDateTime);
+            var result = new { quotations = quotations, trendlines = trendlines };
 
-            return Json(quotations, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-
-
-
 
     }
 }

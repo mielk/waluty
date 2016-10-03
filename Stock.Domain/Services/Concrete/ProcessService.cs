@@ -60,7 +60,6 @@ namespace Stock.Domain.Services
         }
 
 
-
         #region Setup
 
             public void Setup(AnalysisType[] types)

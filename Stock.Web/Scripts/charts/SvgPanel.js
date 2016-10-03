@@ -52,20 +52,25 @@
         self.svg = Raphael(self.key);
     }
 
-    function loadQuotations(quotations) {
+    function loadQuotations(res) {
 
-        self.quotations = quotations;
+        self.quotations = res;
 
         //Ensure that renderer is loaded.
         if (!self.renderer) {
             self.renderer = self.type.svgRenderer({
                 parent: self,
                 size: size,
-                quotations: quotations.arr,
-                complete: quotations.complete
+                quotations: res.arr,
+                complete: res.complete,
+                trendlines: res.trendlines
             });
         } else {
-            self.renderer.updateQuotations(quotations.arr, quotations.complete);
+            self.renderer.updateQuotations(res.arr, res.complete);
+            if (parent.showTrendlines){
+                self.renderer.updateTrendlines(res.trendlines);
+            }
+
         }
 
         render();
@@ -78,7 +83,23 @@
             self.svg.clear();
             drawPaths(drawObjects.paths);
             drawCircles(drawObjects.circles);
+            
+            if (self.parent.showTrendlines()) {
+                var trendlineObjects = self.renderer.getDrawTrendlines(self.quotations.trendlines);
+                drawTrendlines(trendlineObjects);
+            }
+
         }
+    }
+
+    function drawTrendlines(trendlines) {
+
+        if (trendlines) {
+            trendlines.forEach(function (trendline) {
+                self.svg.path(trendline.path).attr(trendline.attr);
+            });
+        }
+
     }
 
     function drawPaths(paths) {
@@ -153,6 +174,7 @@ function AbstractSvgRenderer(params) {
     };   //Parameters specific for this type of chart.
     self.size = params.size;
     self.quotations = params.quotations;
+    self.trendlines = params.trendlines;
     self.paths = {};
     self.offset = 0;
 
@@ -269,9 +291,15 @@ function AbstractSvgRenderer(params) {
                 items[i] = self.createBasePath(invertedIndex, quotations[i], params);
         }
 
+
         //Join all SVG paths together and return them.
         return self.totalPaths(items);
 
+    }
+
+    //Funkcja zwracająca linie trendu do narysowania w formacie ścieżek SVG.
+    self.getDrawTrendlines = function (trendlines) {
+        return 1;
     }
 
     //Funkcja obliczająca pozycję pionową dla danej wartości (w zależności od wysokości kontenera).
@@ -312,6 +340,16 @@ function AbstractSvgRenderer(params) {
     self.updateQuotations = function (quotations, complete) {
         self.quotations = quotations;
         self.params.complete = complete;
+
+        if (self.params.complete && self.params.runWhenComplete) {
+            self.startAnalysis();
+        }
+
+    }
+
+
+    self.updateTrendlines = function (trendlines) {
+        self.trendlines = trendlines;
 
         if (self.params.complete && self.params.runWhenComplete) {
             self.startAnalysis();

@@ -80,8 +80,11 @@ namespace Stock.Web.Controllers
             {
                 quotations = dataService.GetQuotations(companyId, timeframe);
             }
+            IEnumerable<Trendline> trendlines = null;
 
-            return Json(quotations, JsonRequestBehavior.AllowGet);
+            var result = new { quotations = quotations, trendlines = trendlines };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -99,8 +102,10 @@ namespace Stock.Web.Controllers
             IEnumerable<DataItem> quotations = (count > 0 ? 
                                     dataService.GetFxQuotations(symbol, count) : 
                                     dataService.GetFxQuotations(symbol));
+            IEnumerable<Trendline> trendlines = null;
 
-            return Json(quotations, JsonRequestBehavior.AllowGet);
+            var result = new { quotations = quotations, trendlines = trendlines };
+            return Json(result, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -120,8 +125,10 @@ namespace Stock.Web.Controllers
 
             string symbol = pairSymbol + "_" + timeframe;
             IEnumerable<DataItem> quotations = dataService.GetFxQuotations(symbol, startDateTime, endDateTime);
+            IEnumerable<Trendline> trendlines = null;
+            var result = new { quotations = quotations, trendlines = trendlines };
 
-            return Json(quotations, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
 
         }
 

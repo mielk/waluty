@@ -16,13 +16,16 @@ namespace Stock.Domain.Entities
     {
 
         public int Id { get; set; }
-        public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
-        public DataItem InitialItem { get; set; }
-        public double InitialLevel { get; set; }
-        public int InitialIndex { get; set; }
-        public DataItem BoundItem { get; set; }
-        public double BoundLevel { get; set; }
+        public AssetTimeframe AssetTimeframe { get; set; }
+        //public Asset Asset { get; set; }
+        //public Timeframe Timeframe { get; set; }
+        public ValuePoint InitialPoint { get; set; }
+        //public DataItem InitialItem { get; set; }
+        //public double InitialLevel { get; set; }
+        //public int InitialIndex { get; set; }
+        public ValuePoint BoundPoint { get; set; }
+        //public DataItem BoundItem { get; set; }
+        //public double BoundLevel { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool IsFinished { get; set; }
@@ -40,19 +43,30 @@ namespace Stock.Domain.Entities
         private IPriceTrendComparer otherComparer = new PriceTrendComparer();
 
 
-
-        public Trendline(int id, Asset asset, Timeframe timeframe, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        public Trendline(int id, AssetTimeframe atf, ValuePoint initial, ValuePoint bound)
         {
             initialize();
             this.Id = id;
-            assignProperties(asset, timeframe, initialItem, initialLevel, boundItem, boundLevel);
+            assignProperties(atf, initial, bound);
         }
 
-        public Trendline(Asset asset, Timeframe timeframe, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        public Trendline(AssetTimeframe atf, ValuePoint initial, ValuePoint bound)
         {
             initialize();
-            assignProperties(asset, timeframe, initialItem, initialLevel, boundItem, boundLevel);
+            assignProperties(atf, initial, bound);
         }
+
+
+        public Asset asset()
+        {
+            return this.AssetTimeframe.asset;
+        }
+
+        public Timeframe timeframe()
+        {
+            return this.AssetTimeframe.timeframe;
+        }
+
 
         private void initialize()
         {
@@ -63,17 +77,13 @@ namespace Stock.Domain.Entities
         }
 
 
-        private void assignProperties(Asset asset, Timeframe timeframe, DataItem initialItem, double initialLevel, DataItem boundItem, double boundLevel)
+        private void assignProperties(AssetTimeframe atf, ValuePoint initial, ValuePoint bound)
         {
-            this.Asset = asset;
-            this.Timeframe = timeframe;
-            this.InitialItem = initialItem;
-            this.InitialLevel = initialLevel;
-            this.InitialIndex = initialItem.Index;
-            this.BoundItem = boundItem;
-            this.BoundLevel = boundLevel;
-            this.Slope = (BoundLevel - InitialLevel) / (BoundItem.Index - InitialIndex);
-            this.CurrentType = (initialItem.Price.IsPeak() ? TrendlineType.Resistance : TrendlineType.Support);
+            this.AssetTimeframe = atf;
+            this.InitialPoint = initial;
+            this.BoundPoint = bound;
+            this.Slope = (bound.value - initial.value) / (BoundPoint.index() - InitialPoint.index());
+            this.CurrentType = (initial.dataItem.Price.IsPeak() ? TrendlineType.Resistance : TrendlineType.Support);
 
         }
 
@@ -84,10 +94,10 @@ namespace Stock.Domain.Entities
 
         public override string ToString()
         {
-            return InitialItem.Date.ToString() + "; " +
-                    InitialLevel + "; " +
-                    BoundItem.Date.ToString() + "; " +
-                    BoundLevel + "; " +
+            return InitialPoint.dataItem.Date.ToString() + "; " +
+                    InitialPoint.value + "; " +
+                    BoundPoint.dataItem.Date.ToString() + "; " +
+                    BoundPoint.value + "; " +
                     Slope + "; " +
                     Hits.Count + "; " +
                     HitsHashCode + "; " +
@@ -100,7 +110,7 @@ namespace Stock.Domain.Entities
          * dla podanego indeksu. */
         public double GetLevel(int index)
         {
-            return (index - this.InitialIndex) * this.Slope + this.InitialLevel;
+            return (index - this.InitialPoint.index()) * this.Slope + this.InitialPoint.value;
         }
 
         public bool IsAscending()
