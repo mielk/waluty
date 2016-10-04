@@ -280,12 +280,12 @@ function AbstractSvgRenderer(params) {
         var initialIndex = Math.max(0, trendline.InitialPoint.dataItem.Index - INITIAL_OFFSET);
         var x1 = self.quotations[initialIndex].coordinates.middle;
         var value1 = self.countTrendlineValue(trendline, initialIndex);
-        var y1 = this.getY(value1);
+        var y1 = self.getY(value1);
         var boundIndex = trendline.BoundPoint.dataItem.Index;
         //var x2 = (self.offset + self.size.width - (boundIndex * params.width) + (params.space / 2));
         var x2 = self.quotations[boundIndex].coordinates.middle + (AFTER_OFFSET * params.width);
         var value2 = self.countTrendlineValue(trendline, boundIndex + AFTER_OFFSET);
-        var y2 = this.getY(value2);
+        var y2 = self.getY(value2);
 
         //var invertedIndex = quotations.length - i;
 
