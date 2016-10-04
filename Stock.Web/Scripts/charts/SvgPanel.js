@@ -269,6 +269,52 @@ function AbstractSvgRenderer(params) {
 
     }
 
+    self.countTrendlineValue = function(trendline, index){
+        return (index - trendline.InitialPoint.dataItem.Index) * trendline.Slope + trendline.InitialPoint.value;
+    }
+
+    self.createTrendlinePath = function (trendline, params) {
+        var INITIAL_OFFSET = 4;
+        var AFTER_OFFSET = 10;
+        var bodyWidth = params.width - params.space;
+        var initialIndex = Math.max(0, trendline.InitialPoint.dataItem.Index - INITIAL_OFFSET);
+        var x1 = self.quotations[initialIndex].coordinates.middle;
+        var value1 = self.countTrendlineValue(trendline, initialIndex);
+        var y1 = this.getY(value1);
+        var boundIndex = trendline.BoundPoint.dataItem.Index;
+        //var x2 = (self.offset + self.size.width - (boundIndex * params.width) + (params.space / 2));
+        var x2 = self.quotations[boundIndex].coordinates.middle + (AFTER_OFFSET * params.width);
+        var value2 = self.countTrendlineValue(trendline, boundIndex + AFTER_OFFSET);
+        var y2 = this.getY(value2);
+
+        //var invertedIndex = quotations.length - i;
+
+        var attr = {
+            'stroke': '#888',
+            'stroke-width': 1
+        };
+        
+
+        //Calculate coordinates.
+        var path = 'M' + x1 + ',' + y1 + 'L' + x2 + ',' + y2;
+
+
+        //Save the coordinates of this item's candle 
+        //(used later to display values on the chart and to scale charts).
+        trendline.coordinates = {
+            x1: x1,
+            y1: y1,
+            x2: x2,
+            y2: y2
+        };
+
+        return {
+            path: path,
+            attr: attr
+        }
+
+    }
+
     //Funkcja zwraca wszystkie obiekty, które mają zostać narysowane na tym wykresie.
     self.getDrawObjects = function (quotations) {
 
@@ -299,7 +345,30 @@ function AbstractSvgRenderer(params) {
 
     //Funkcja zwracająca linie trendu do narysowania w formacie ścieżek SVG.
     self.getDrawTrendlines = function (trendlines) {
-        return 1;
+
+        var trendlinesPath = [];
+
+        var params = {
+            width: STOCK.CONFIG.candle.width,
+            space: STOCK.CONFIG.candle.width * STOCK.CONFIG.candle.space,
+            other: self.parent.properties
+        };
+
+        if (trendlines) {
+            trendlines.forEach(function (trendline) {
+                var res = self.createTrendlinePath(trendline, params);
+                trendlinesPath.push(res);
+            });
+        }
+
+        //path
+        //attr
+
+        if (trendlines) {
+            return trendlinesPath;
+        }
+
+        return null;
     }
 
     //Funkcja obliczająca pozycję pionową dla danej wartości (w zależności od wysokości kontenera).

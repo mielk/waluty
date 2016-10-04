@@ -675,6 +675,7 @@ function AbstractSvgRenderer() {
 
     };
 
+
     self.createDatePaths = function (i, item, offset) {
         var vertical = '';
         var dateScale = '';
@@ -842,6 +843,10 @@ function AbstractSvgRenderer() {
             default:
                 return cfg.transparent;
         }
+    };
+
+    self.createTrendlinePath = function (trendline) {
+
     };
 
 }
