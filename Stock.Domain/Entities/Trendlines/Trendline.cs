@@ -17,15 +17,8 @@ namespace Stock.Domain.Entities
 
         public int Id { get; set; }
         public AssetTimeframe AssetTimeframe { get; set; }
-        //public Asset Asset { get; set; }
-        //public Timeframe Timeframe { get; set; }
         public ValuePoint InitialPoint { get; set; }
-        //public DataItem InitialItem { get; set; }
-        //public double InitialLevel { get; set; }
-        //public int InitialIndex { get; set; }
         public ValuePoint BoundPoint { get; set; }
-        //public DataItem BoundItem { get; set; }
-        //public double BoundLevel { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool IsFinished { get; set; }
@@ -35,12 +28,14 @@ namespace Stock.Domain.Entities
         public Guid Uid { get; set; }
         public List<TrendHit> Hits { get; set; }
         public List<TrendBreak> Breaks { get; set; }
+        public List<TrendDistance> Distances { get; set; }
         public TrendlineType CurrentType { get; set; }
         public DataItem PreviousHit { get; set; }
         public DataItem PreviousBreak { get; set; }
         private double TotalOverBreak;
         private IPriceTrendComparer extremumComparer = new ExtremumPriceTrendComparer();
         private IPriceTrendComparer otherComparer = new PriceTrendComparer();
+        public DataItem LastAnalyzed { get; set; }
 
 
         public Trendline(int id, AssetTimeframe atf, ValuePoint initial, ValuePoint bound)
@@ -136,6 +131,10 @@ namespace Stock.Domain.Entities
             return hitAverage * Math.Sqrt(Hits.Count);
         }
 
+        public bool IsImportant()
+        {
+            return true;
+        }
 
         public void AddHit(TrendHit hit)
         {

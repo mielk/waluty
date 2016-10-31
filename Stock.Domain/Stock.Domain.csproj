@@ -61,9 +61,10 @@
     <Compile Include="Entities\Analysis\Quotation.cs" />
     <Compile Include="Entities\MarketObjects\Market.cs" />
     <Compile Include="Entities\MarketObjects\Timeframe.cs" />
-    <Compile Include="Entities\Analysis\TrendBreak.cs" />
-    <Compile Include="Entities\Analysis\TrendHit.cs" />
-    <Compile Include="Entities\Analysis\Trendline.cs" />
+    <Compile Include="Entities\Trendlines\TrendBreak.cs" />
+    <Compile Include="Entities\Trendlines\TrendDistance.cs" />
+    <Compile Include="Entities\Trendlines\TrendHit.cs" />
+    <Compile Include="Entities\Trendlines\Trendline.cs" />
     <Compile Include="Entities\MarketObjects\User.cs" />
     <Compile Include="Enums\AnalysisType.cs" />
     <Compile Include="Enums\ExtremumType.cs" />

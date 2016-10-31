@@ -22,6 +22,7 @@ namespace Stock.Domain.Services
 
         private IEnumerable<ExtremumGroup> extremaGroups;
         private List<Trendline> trendlines = new List<Trendline>();
+        private Dictionary<string, Trendline> optimalTrendlines = new Dictionary<string, Trendline>();
 
 
         public override AnalysisType Type
@@ -32,6 +33,7 @@ namespace Stock.Domain.Services
 
         public TrendlineAnalyzer(AssetTimeframe atf) : base(atf)
         {
+            trendlines = new List<Trendline>();
         }
 
 
@@ -101,10 +103,17 @@ namespace Stock.Domain.Services
 
 
                     //Do zmiennej pairTrendlines przypisywana jest kolekcja wszystkich kombinacji trendlinów stworzonych dla aktualnie rozpatrywanej pary wierzchołków.
-                    var pairTrendlines = ProcessSinglePair(subextremum, extremum);
+                    var pairTrendlines = ProcessSinglePair(subextremum, extremum, items);
+
+                    //Zapisać zwrócone linie trendu do bazy.
+
+                    //Potem dodać do listy [trendlines].
+                    this.trendlines.AddRange(pairTrendlines);
+
+                    //wybrać najlepszy i dodać do optymalnych.
                     foreach (var trendline in pairTrendlines)
                     {
-                        addTrendline(trendline);
+                        addOptimalTrendline(trendline);
                         break;
                     }
 
@@ -118,7 +127,7 @@ namespace Stock.Domain.Services
 
 
 
-        public List<Trendline> ProcessSinglePair(ExtremumGroup extremum, ExtremumGroup subextremum)
+        public List<Trendline> ProcessSinglePair(ExtremumGroup extremum, ExtremumGroup subextremum, DataItem[] items)
         {
 
             List<Trendline> trendlines = new List<Trendline>();
@@ -149,9 +158,9 @@ namespace Stock.Domain.Services
                 for (var b = subextremum.getLower(); b <= subextremum.getHigher(); b += subextremum.getStep())
                 {
                     var trendline = new Trendline(this.AssetTimeframe, new ValuePoint(extremum.getStartItem(), a), new ValuePoint(subextremum.getEndItem(), b));
-                    processor.Analyze(trendline);
+                    processor.Analyze(trendline, items, trendline.LastAnalyzed);
 
-                    if (trendline != null)
+                    if (trendline.IsImportant())
                     {
 
                         if (trendlines.Count == 0)
@@ -216,9 +225,9 @@ namespace Stock.Domain.Services
 
         }
 
-        private void addTrendline(Trendline trendline)
+        private void addOptimalTrendline(Trendline trendline)
         {
-            this.trendlines.Add(trendline);
+            this.optimalTrendlines.Add(trendline.HitsHashCode, trendline);
         }
 
         public IEnumerable<Trendline> GetTrendlines()

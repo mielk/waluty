@@ -12,15 +12,22 @@ namespace Stock.Domain.Entities
         private const double TimeRangeWeight = 0.2d;
         private const double SlopeWeight = 1.0d;
         public int Id { get; set; }
-        public int TrendlineId { get; set; }
+        public Trendline Trendline { get; set; }
         public DataItem Item { get; set; }
         public double CrossLevel { get; set; }
+        public double CLHRatio { get; set; }
+        public double ExtremumPoints { get; set; }
         public double Score { get; set; }
         public Guid Guid { get; set; }
         public double DistanceScore { get; set; }
         public double TimeRangeScore { get; set; }
         public double SlopeScore { get; set; }
         public double EvaluationScore { get; set; }
+        public TrendHit PreviousHit { get; set; }
+        public TrendDistance DistanceFromPreviousHit { get; set; }
+        public TrendHit NextHit { get; set; }
+        public TrendDistance DistanceToNextHit { get; set; }
+        
 
         public TrendHit()
         {

@@ -26,6 +26,8 @@ namespace Stock.Domain.Entities
         public Extremum PeakByHighExtremum { get; set; }
         public Extremum TroughByCloseExtremum { get; set; }
         public Extremum TroughByLowExtremum { get; set; }
+        public double CloseRatio { get; set; }
+        public double ExtremumRatio { get; set; }
         public bool IsUpdated { get; set; }
         public bool IsNew { get; set; }
         public bool IsComplete { get; set; }
@@ -46,6 +48,8 @@ namespace Stock.Domain.Entities
             price.PeakByHigh = dto.PeakByHighEvaluation;
             price.TroughByClose = dto.TroughByCloseEvaluation;
             price.TroughByLow = dto.TroughByLowEvaluation;
+            price.CloseRatio = dto.CloseRatio;
+            price.ExtremumRatio = dto.ExtremumRatio;
 
             return price;
 
@@ -71,6 +75,8 @@ namespace Stock.Domain.Entities
                 , PeakByHigh = (PeakByHighExtremum != null ? PeakByHighExtremum.ToDto() : null)
                 , TroughByClose = (TroughByCloseExtremum != null ? TroughByCloseExtremum.ToDto() : null)
                 , TroughByLow = (TroughByLowExtremum != null ? TroughByLowExtremum.ToDto() : null)
+                , CloseRatio = this.CloseRatio
+                , ExtremumRatio = this.ExtremumRatio
             };
 
             return dto;

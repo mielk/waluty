@@ -9,6 +9,6 @@ namespace Stock.Domain.Services
 {
     public interface ITrendlineProcessor : IAnalyzerProcessor
     {
-        void Analyze(Trendline trendline);
+        void Analyze(Trendline trendline, DataItem[] items, DataItem startItem);
     }
 }

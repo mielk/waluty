@@ -63,7 +63,7 @@ namespace Stock.Domain.Services
 
         public void runFull(IAnalyzer analyzer, DataItem item, AssetTimeframe atf) { }
 
-        public void Analyze(Trendline trendline)
+        public void Analyze(Trendline trendline, DataItem[] items, DataItem startItem)
         {
 
         }

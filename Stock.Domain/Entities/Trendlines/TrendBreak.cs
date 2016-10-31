@@ -10,9 +10,11 @@ namespace Stock.Domain.Entities
     public class TrendBreak
     {
         public int Id { get; set; }
+        public Trendline Trendline { get; set; }
         public DataItem Item { get; set; }
         public double TrendLevel { get; set; }
         public double Score { get; set; }
+        public TrendDistance TrendDistance { get; set; }
     }
 
 }

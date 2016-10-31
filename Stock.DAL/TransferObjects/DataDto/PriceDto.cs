@@ -26,6 +26,8 @@ namespace Stock.DAL.TransferObjects
         public ExtremumDto PeakByHigh { get; set; }
         public ExtremumDto TroughByClose { get; set; }
         public ExtremumDto TroughByLow { get; set; }
+        public double CloseRatio { get; set; }
+        public double ExtremumRatio { get; set; }
 
         [NotMapped]
         public int TimeframeId { get; set; }
