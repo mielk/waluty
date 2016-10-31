@@ -224,6 +224,13 @@ namespace Stock.Domain.Entities
 
         }
 
+
+        public double calculateTrendlineQuotationPoints(Trendline trendline)
+        {
+            return 0;
+        }
+
+
     }
 
 }

@@ -20,5 +20,10 @@ namespace Stock.Domain.Entities
         public double pointsForQuotations { get; set; }
         public IEnumerable<TrendBreak> breaks { get; set; }
 
+        public void Calculate()
+        {
+
+        }
+
     }
 }

@@ -16,6 +16,7 @@ namespace Stock.Domain.Services
 
 
         /* Constants */
+        private const double MinPointsForTrendHit = 100;
 
         /* Ile notowań przed wierzchołkiem początkowym ma być uwzględnione w analizie. */
         public int QuotationsBeforeInitialItem = 3;
@@ -65,7 +66,93 @@ namespace Stock.Domain.Services
 
         public void Analyze(Trendline trendline, DataItem[] items, DataItem startItem)
         {
+            
+            TrendDistance distance = null;
+            var _startItem = (startItem == null ? trendline.InitialPoint.dataItem : startItem);
+            var _startIndex = _startItem.Index;
+            var currentHit = trendline.LastHit();
 
+            for (var i = _startIndex; i < items.Length; i++)
+            {
+                DataItem item = items[i];
+                bool isExtremum;
+
+                isExtremum = item.Price.IsExtremum();
+
+                //Get points for this dataItem.
+                var points = item.Price.calculateTrendlineQuotationPoints(trendline);
+                
+
+                //
+
+
+                if (isExtremum && points > MinPointsForTrendHit)
+                {
+                    //Sprawdza czy jest w odpowiedniej odległości od linii trendu.
+                    //Jeżeli tak, to traktuje to jako TrendHit.
+                    //Jeżeli nie, przechodzi do bloku else.
+                    TrendHit hit = new TrendHit();
+                    hit.Trendline = trendline;
+                    hit.PreviousHit = currentHit;
+                    hit.DistanceFromPreviousHit = distance;
+                    currentHit = hit;
+
+                    if (distance != null)
+                    {
+                        distance.EndHit = hit;
+                        distance.Calculate();
+                        trendline.AddDistance(distance);
+                    }
+
+                    distance = new TrendDistance();
+                    distance.Trendline = trendline;
+                    hit.DistanceToNextHit = distance;
+
+                }
+                else
+                {
+
+                    if (distance == null)
+                    {
+                        distance = new TrendDistance();
+                        distance.Trendline = trendline;
+                        distance.StartHit = currentHit;
+                    }
+
+                    var ptBreakExtremum = calculatePointForBreakExtremum(trendline, item);
+                    var ptBreakClose = getTrendBreakIfExists(trendline, item);
+                    var ptQuotation = CalculatePointForQuotation(trendline, item);
+
+                    //sprawdza czy nie przekroczyło.
+                    //Jeżeli przekroczyło LH dodaje do breakExtremum
+                    //Jeżeli przekroczyło C tworzy obiekt TrendBreak i dodaje do Trendline (wylicza też wartość tego TrendBreaka).
+
+                }
+
+            }
+
+        }
+
+
+
+
+
+
+
+
+        private double calculatePointForBreakExtremum(Trendline trendline, DataItem item)
+        {
+            return 0;
+        }
+
+        private TrendBreak getTrendBreakIfExists(Trendline trendline, DataItem item)
+        {
+            return null;
+        }
+
+        private double CalculatePointForQuotation(Trendline trendline, DataItem item)
+        {
+            return 0;
         }
 
 

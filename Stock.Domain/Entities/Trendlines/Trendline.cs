@@ -148,6 +148,11 @@ namespace Stock.Domain.Entities
             this.RecalculateScore();
         }
 
+        public void AddDistance(TrendDistance trendDistance)
+        {
+            this.Distances.Add(trendDistance);
+            this.RecalculateScore();
+        }
 
 
         public void Finish(DataItem item)
@@ -186,6 +191,19 @@ namespace Stock.Domain.Entities
 
         }
 
+
+        public TrendHit LastHit()
+        {
+            if (Hits.Count > 0)
+            {
+                var maxDate = Hits.Max(h => h.Item.Date);
+                return Hits.SingleOrDefault(h => h.Item.Date.CompareTo(maxDate) == 0);
+            }
+            else
+            {
+                return null;
+            }
+        }
 
 
         public bool IsExtremum(DataItem item)

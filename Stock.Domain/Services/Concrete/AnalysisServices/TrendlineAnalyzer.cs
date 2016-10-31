@@ -111,11 +111,11 @@ namespace Stock.Domain.Services
                     this.trendlines.AddRange(pairTrendlines);
 
                     //wybrać najlepszy i dodać do optymalnych.
-                    foreach (var trendline in pairTrendlines)
-                    {
-                        addOptimalTrendline(trendline);
-                        break;
-                    }
+                    //foreach (var trendline in pairTrendlines)
+                    //{
+                    //    addOptimalTrendline(trendline);
+                    //    break;
+                    //}
 
                 }
 
