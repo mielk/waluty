@@ -83,7 +83,7 @@
             self.svg.clear();
             drawPaths(drawObjects.paths);
             drawCircles(drawObjects.circles);
-            
+
             if (self.parent.showTrendlines()) {
                 var trendlineObjects = self.renderer.getDrawTrendlines(self.quotations.trendlines);
                 drawTrendlines(trendlineObjects);
@@ -346,7 +346,10 @@ function AbstractSvgRenderer(params) {
     //Funkcja zwracająca linie trendu do narysowania w formacie ścieżek SVG.
     self.getDrawTrendlines = function (trendlines) {
 
-        var trendlinesPath = [];
+        var paths = {
+            finished: '',
+            active: ''
+        };
 
         var params = {
             width: STOCK.CONFIG.candle.width,
@@ -357,18 +360,35 @@ function AbstractSvgRenderer(params) {
         if (trendlines) {
             trendlines.forEach(function (trendline) {
                 var res = self.createTrendlinePath(trendline, params);
-                trendlinesPath.push(res);
+                if (item.IsFinished) {
+                    paths.finished += res.path;
+                } else {
+                    paths.active += res.path;
+                }
             });
         }
 
-        //path
-        //attr
+        //Add properties for each path.
+        var array = [];
+        array.push({
+            path: paths.finished,
+            attr: {
+                'stroke': '#888',
+                'stroke-width': 1
+            }
+        });
 
-        if (trendlines) {
-            return trendlinesPath;
-        }
+        //Adding descending candles.
+        array.push({
+            path: paths.active,
+            attr: {
+                'stroke': 'black',
+                'stroke-width': 1
+            }
+        });
 
-        return null;
+        return array;
+
     }
 
     //Funkcja obliczająca pozycję pionową dla danej wartości (w zależności od wysokości kontenera).
