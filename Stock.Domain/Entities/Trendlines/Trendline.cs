@@ -28,7 +28,7 @@ namespace Stock.Domain.Entities
         public Guid Uid { get; set; }
         public List<TrendHit> Hits { get; set; }
         public List<TrendBreak> Breaks { get; set; }
-        public List<TrendDistance> Distances { get; set; }
+        public List<TrendBounce> Bounces { get; set; }
         public TrendlineType CurrentType { get; set; }
         public DataItem PreviousHit { get; set; }
         public DataItem PreviousBreak { get; set; }
@@ -36,6 +36,10 @@ namespace Stock.Domain.Entities
         private IPriceTrendComparer extremumComparer = new ExtremumPriceTrendComparer();
         private IPriceTrendComparer otherComparer = new PriceTrendComparer();
         public DataItem LastAnalyzed { get; set; }
+
+        //Analyse-purpose variables.
+        public TrendHit currentHit { get; set; }
+        public TrendBounce currentBounce { get; set; }
 
 
         public Trendline(int id, AssetTimeframe atf, ValuePoint initial, ValuePoint bound)
@@ -67,6 +71,7 @@ namespace Stock.Domain.Entities
         {
             Uid = System.Guid.NewGuid();
             Hits = new List<TrendHit>();
+            Bounces = new List<TrendBounce>();
             Breaks = new List<TrendBreak>();
            
         }
@@ -108,12 +113,11 @@ namespace Stock.Domain.Entities
             return (index - this.InitialPoint.index()) * this.Slope + this.InitialPoint.value;
         }
 
+
         public bool IsAscending()
         {
             return (Slope > 0);
         }
-
-
 
 
         public void RecalculateScore()
@@ -136,6 +140,53 @@ namespace Stock.Domain.Entities
             return true;
         }
 
+
+
+
+        public void setNewHit(DataItem item)
+        {
+
+            TrendHit hit = new TrendHit(this, item, currentHit, currentBounce);
+            TrendBounce bounce = new TrendBounce(this, hit);
+            hit.BounceToNextHit = bounce;
+
+
+            //Close current hit and bounce.
+            if (currentHit != null)
+            {
+                currentHit.NextHit = hit;
+                this.Hits.Add(currentHit);
+            }
+            if (currentBounce != null)
+            {
+                currentBounce.EndHit = hit;
+                this.Bounces.Add(currentBounce);
+            }
+
+            currentHit = hit;
+            currentBounce = bounce;
+
+            //Calculate points.
+            hit.Calculate();
+            bounce.Calculate();
+            
+        }
+
+
+        public void setNewBreak(DataItem item)
+        {
+            TrendBreak tBreak = new TrendBreak();
+            tBreak.Trendline = this;
+            tBreak.TrendBounce = currentBounce;
+            tBreak.TrendLevel = this.GetLevel(item.Index);
+            tBreak.Item = item;
+            
+            currentBounce.AddBreak(tBreak);
+            this.Breaks.Add(tBreak);
+            this.SwitchTrendlineType();
+        }
+
+
         public void AddHit(TrendHit hit)
         {
             this.Hits.Add(hit);
@@ -148,9 +199,9 @@ namespace Stock.Domain.Entities
             this.RecalculateScore();
         }
 
-        public void AddDistance(TrendDistance trendDistance)
+        public void AddBounce(TrendBounce TrendBounce)
         {
-            this.Distances.Add(trendDistance);
+            this.Bounces.Add(TrendBounce);
             this.RecalculateScore();
         }
 
@@ -198,6 +249,20 @@ namespace Stock.Domain.Entities
             {
                 var maxDate = Hits.Max(h => h.Item.Date);
                 return Hits.SingleOrDefault(h => h.Item.Date.CompareTo(maxDate) == 0);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        public TrendBounce LastBounce()
+        {
+            if (Bounces.Count > 0)
+            {
+                var maxDate = Bounces.Max(b => b.StartHit.Item.Date);
+                return Bounces.SingleOrDefault(b => b.StartHit.Item.Date.CompareTo(maxDate) == 0);
             }
             else
             {

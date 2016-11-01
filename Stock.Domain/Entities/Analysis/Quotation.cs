@@ -38,6 +38,18 @@ namespace Stock.Domain.Entities
             IsUpdated = true;
         }
 
+        public double ProperValue(TrendlineType type)
+        {
+            if (type == TrendlineType.Resistance)
+            {
+                return High;
+            }
+            else
+            {
+                return Low;
+            }
+        }
+
         public double ProperValue(ExtremumType extremumType)
         {
             switch (extremumType)

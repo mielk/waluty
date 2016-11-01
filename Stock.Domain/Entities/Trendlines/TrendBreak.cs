@@ -14,7 +14,7 @@ namespace Stock.Domain.Entities
         public DataItem Item { get; set; }
         public double TrendLevel { get; set; }
         public double Score { get; set; }
-        public TrendDistance TrendDistance { get; set; }
+        public TrendBounce TrendBounce { get; set; }
     }
 
 }

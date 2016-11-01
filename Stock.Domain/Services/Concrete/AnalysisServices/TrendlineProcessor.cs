@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.Domain.Enums;
 
 namespace Stock.Domain.Services
 {
@@ -17,6 +18,8 @@ namespace Stock.Domain.Services
 
         /* Constants */
         private const double MinPointsForTrendHit = 100;
+
+        private const double MinDistanceForHit = 0.001;
 
         /* Ile notowań przed wierzchołkiem początkowym ma być uwzględnione w analizie. */
         public int QuotationsBeforeInitialItem = 3;
@@ -67,67 +70,50 @@ namespace Stock.Domain.Services
         public void Analyze(Trendline trendline, DataItem[] items, DataItem startItem)
         {
             
-            TrendDistance distance = null;
             var _startItem = (startItem == null ? trendline.InitialPoint.dataItem : startItem);
             var _startIndex = _startItem.Index;
             var currentHit = trendline.LastHit();
+            var currentBounce = trendline.LastBounce();
 
             for (var i = _startIndex; i < items.Length; i++)
             {
                 DataItem item = items[i];
-                bool isExtremum;
+                TrendlineType type = trendline.CurrentType;
+                bool isExtremum = item.Price.IsExtremum(type);
+                var distance = item.Quotation.ProperValue(type) - trendline.GetLevel(i);
 
-                isExtremum = item.Price.IsExtremum();
 
-                //Get points for this dataItem.
-                var points = item.Price.calculateTrendlineQuotationPoints(trendline);
+                ////Get points for this dataItem.
+                //var points = item.Price.calculateTrendlineQuotationPoints(trendline);
                 
 
-                //
-
-
-                if (isExtremum && points > MinPointsForTrendHit)
+                if (isExtremum && distance <= MinDistanceForHit)
                 {
-                    //Sprawdza czy jest w odpowiedniej odległości od linii trendu.
-                    //Jeżeli tak, to traktuje to jako TrendHit.
-                    //Jeżeli nie, przechodzi do bloku else.
-                    TrendHit hit = new TrendHit();
-                    hit.Trendline = trendline;
-                    hit.PreviousHit = currentHit;
-                    hit.DistanceFromPreviousHit = distance;
-                    currentHit = hit;
+                    //Hit.
 
-                    if (distance != null)
-                    {
-                        distance.EndHit = hit;
-                        distance.Calculate();
-                        trendline.AddDistance(distance);
-                    }
-
-                    distance = new TrendDistance();
-                    distance.Trendline = trendline;
-                    hit.DistanceToNextHit = distance;
+                    trendline.setNewHit(item);
+                    currentHit = trendline.currentHit;
+                    currentBounce = trendline.currentBounce;
 
                 }
                 else
                 {
 
-                    if (distance == null)
+                    bool isBreakClose = ((item.Quotation.Close - trendline.GetLevel(i)) * trendline.CurrentType.GetFactor() > 0);
+                    double ptBreakExtremum = calculatePointForBreakExtremum(trendline, item);
+                    double ptQuotation = CalculatePointForQuotation(trendline, item);
+
+                    if (isBreakClose)
                     {
-                        distance = new TrendDistance();
-                        distance.Trendline = trendline;
-                        distance.StartHit = currentHit;
+                        trendline.setNewBreak(item);
                     }
 
-                    var ptBreakExtremum = calculatePointForBreakExtremum(trendline, item);
-                    var ptBreakClose = getTrendBreakIfExists(trendline, item);
-                    var ptQuotation = CalculatePointForQuotation(trendline, item);
-
-                    //sprawdza czy nie przekroczyło.
-                    //Jeżeli przekroczyło LH dodaje do breakExtremum
-                    //Jeżeli przekroczyło C tworzy obiekt TrendBreak i dodaje do Trendline (wylicza też wartość tego TrendBreaka).
+                    currentBounce.AddExtremumBreak(ptBreakExtremum);
+                    currentBounce.AddQuotationPoints(ptQuotation);
 
                 }
+
+
 
             }
 

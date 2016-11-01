@@ -80,7 +80,7 @@
     <Compile Include="TransferObjects\MarketObjectsDto\MarketDto.cs" />
     <Compile Include="TransferObjects\DataDto\QuotationDto.cs" />
     <Compile Include="TransferObjects\TrendlineDto\TrendHitDto.cs" />
-    <Compile Include="TransferObjects\TrendlineDto\TrendDistanceDto.cs" />
+    <Compile Include="TransferObjects\TrendlineDto\TrendBounceDto.cs" />
     <Compile Include="TransferObjects\TrendlineDto\TrendBreakDto.cs" />
     <Compile Include="TransferObjects\TrendlineDto\TrendlineDto.cs" />
   </ItemGroup>

@@ -139,7 +139,10 @@ namespace Stock.Domain.Services
              *  In order to process the following pair: troughs are checked only if flag [isAbove] = true, 
              *  peaks if [isAbove] = false;
              */
-            if ((extremum.type.IsPeak() && !subextremum.type.IsPeak()) || (!extremum.type.IsPeak() && subextremum.type.IsPeak()))
+
+            bool areOppositeExtrema = (extremum.type.IsPeak() && !subextremum.type.IsPeak()) || (!extremum.type.IsPeak() && subextremum.type.IsPeak());
+
+            if (areOppositeExtrema)
             {
                 var midextremum = extremaGroups.Where(e => e.master.Price != null && e.master.Date > extremum.master.Date && e.master.Date < subextremum.master.Date && e.type.IsPeak() == extremum.type.IsPeak()).ToArray();
                 if (midextremum.Length == 0)

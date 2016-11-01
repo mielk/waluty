@@ -19,14 +19,14 @@ namespace Stock.Domain.Entities
         public double ExtremumPoints { get; set; }
         public double Score { get; set; }
         public Guid Guid { get; set; }
-        public double DistanceScore { get; set; }
+        public double BounceScore { get; set; }
         public double TimeRangeScore { get; set; }
         public double SlopeScore { get; set; }
         public double EvaluationScore { get; set; }
         public TrendHit PreviousHit { get; set; }
-        public TrendDistance DistanceFromPreviousHit { get; set; }
+        public TrendBounce BounceFromPreviousHit { get; set; }
         public TrendHit NextHit { get; set; }
-        public TrendDistance DistanceToNextHit { get; set; }
+        public TrendBounce BounceToNextHit { get; set; }
         
 
         public TrendHit()
@@ -34,10 +34,32 @@ namespace Stock.Domain.Entities
             Guid = System.Guid.NewGuid();
         }
 
+        public TrendHit(Trendline trendline)
+        {
+            Guid = System.Guid.NewGuid();
+            this.Trendline = trendline;
+        }
+
+        public TrendHit(Trendline trendline, DataItem item)
+        {
+            Guid = System.Guid.NewGuid();
+            this.Trendline = trendline;
+            this.Item = item;
+        }
+
+        public TrendHit(Trendline trendline, DataItem item, TrendHit prevHit, TrendBounce prevBounce)
+        {
+            Guid = System.Guid.NewGuid();
+            this.Trendline = trendline;
+            this.Item = item;
+            this.PreviousHit = prevHit;
+            this.BounceFromPreviousHit = prevBounce;
+        }
+
 
         public void Calculate()
         {
-            this.Score = (1 + DistanceScore) * (1 + SlopeScore * SlopeWeight) * 
+            this.Score = (1 + BounceScore) * (1 + SlopeScore * SlopeWeight) * 
                 (1 + TimeRangeScore * TimeRangeWeight) * (1 + EvaluationScore);
         }
 
