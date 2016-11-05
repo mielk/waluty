@@ -79,13 +79,23 @@ namespace Stock.Domain.Services
 
             preAnalysisStaff(items);
 
+            //Add new trendlines to collection of trendlines.
+            this.trendlines.AddRange(getNewTrendlines());
+
+            AnalyzeExistingTrendlines(items);
+        }
+
+        private IEnumerable<Trendline> getNewTrendlines()
+        {
+
+            List<Trendline> trendlines = new List<Trendline>();
             IEnumerable<ExtremumGroup> newGroups = this.extremaGroups.Where(i => i.getDate().CompareTo(LastCalculationDate) > 0);
 
             foreach (var extremum in newGroups)
             {
 
                 /* Iterate through all the groups above and check trendlines for each pair of extrema. */
-                var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() && 
+                var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() &&
                                     i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis));
 
                 foreach (var subextremum in previous)
@@ -100,31 +110,26 @@ namespace Stock.Domain.Services
 
                     //Do tego momentu docierają tylko te pary wierzchołków, które spełniają kryteria początkowe.
 
-
-
                     //Do zmiennej pairTrendlines przypisywana jest kolekcja wszystkich kombinacji trendlinów stworzonych dla aktualnie rozpatrywanej pary wierzchołków.
-                    var pairTrendlines = ProcessSinglePair(subextremum, extremum, items);
 
-                    //Zapisać zwrócone linie trendu do bazy.
-
-                    //Potem dodać do listy [trendlines].
-                    this.trendlines.AddRange(pairTrendlines);
-
-                    //wybrać najlepszy i dodać do optymalnych.
-                    //foreach (var trendline in pairTrendlines)
-                    //{
-                    //    addOptimalTrendline(trendline);
-                    //    break;
-                    //}
+                    //[!] Zapisać zwrócone linie trendu do bazy.
+                    trendlines.AddRange(ProcessSinglePair(subextremum, extremum, items));
 
                 }
 
             }
 
-            //processor.Analyze(items);
+            return trendlines;
+
         }
 
-
+        private void AnalyzeExistingTrendlines(DataItem[] items)
+        {
+            foreach (var trendline in trendlines)
+            {
+                processor.Analyze(trendline, items, trendline.LastAnalyzed);
+            }
+        }
 
 
         public List<Trendline> ProcessSinglePair(ExtremumGroup extremum, ExtremumGroup subextremum, DataItem[] items)
@@ -161,24 +166,11 @@ namespace Stock.Domain.Services
                 for (var b = subextremum.getLower(); b <= subextremum.getHigher(); b += subextremum.getStep())
                 {
                     var trendline = new Trendline(this.AssetTimeframe, new ValuePoint(extremum.getStartItem(), a), new ValuePoint(subextremum.getEndItem(), b));
-                    processor.Analyze(trendline, items, trendline.LastAnalyzed);
-
-                    if (trendline.IsImportant())
-                    {
-
-                        if (trendlines.Count == 0)
-                        {
-                            trendlines.Add(trendline);
-                        }
-
-                    }
-
+                    trendlines.Add(trendline);
                 }
 
             }
 
-
-            //return FilterTrendlines(trendlines);
             return trendlines;
 
         }

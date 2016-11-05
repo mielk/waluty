@@ -15,6 +15,8 @@ namespace Stock.Domain.Entities
     public class Trendline
     {
 
+        private const double MaxDistanceForHit = 0.001;
+
         public int Id { get; set; }
         public AssetTimeframe AssetTimeframe { get; set; }
         public ValuePoint InitialPoint { get; set; }
@@ -141,6 +143,14 @@ namespace Stock.Domain.Entities
         }
 
 
+        public bool IsMinimumForHit(DataItem item)
+        {
+            var properValue = item.Quotation.ProperValue(this.CurrentType);
+            var level = GetLevel(item.Index);
+            var distance = properValue - level;
+            var ratio = distance / level;
+            return ratio <= MaxDistanceForHit;
+        }
 
 
         public void setNewHit(DataItem item)

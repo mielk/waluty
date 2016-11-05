@@ -19,8 +19,6 @@ namespace Stock.Domain.Services
         /* Constants */
         private const double MinPointsForTrendHit = 100;
 
-        private const double MinDistanceForHit = 0.001;
-
         /* Ile notowań przed wierzchołkiem początkowym ma być uwzględnione w analizie. */
         public int QuotationsBeforeInitialItem = 3;
 
@@ -74,26 +72,28 @@ namespace Stock.Domain.Services
             var _startIndex = _startItem.Index;
             var currentHit = trendline.LastHit();
             var currentBounce = trendline.LastBounce();
+            ExtremumGroup extremumGroup;
 
             for (var i = _startIndex; i < items.Length; i++)
             {
                 DataItem item = items[i];
                 TrendlineType type = trendline.CurrentType;
                 bool isExtremum = item.Price.IsExtremum(type);
-                var distance = item.Quotation.ProperValue(type) - trendline.GetLevel(i);
 
 
                 ////Get points for this dataItem.
                 //var points = item.Price.calculateTrendlineQuotationPoints(trendline);
                 
 
-                if (isExtremum && distance <= MinDistanceForHit)
+                if (isExtremum && trendline.IsMinimumForHit(item) && (i - currentHit.Item.Index > 1))
                 {
-                    //Hit.
 
+                    //Hit.
                     trendline.setNewHit(item);
                     currentHit = trendline.currentHit;
                     currentBounce = trendline.currentBounce;
+
+                    extremumGroup = item.Price.GetExtremumGroup();
 
                 }
                 else

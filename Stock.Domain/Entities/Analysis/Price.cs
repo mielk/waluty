@@ -231,6 +231,20 @@ namespace Stock.Domain.Entities
         }
 
 
+        public ExtremumGroup GetExtremumGroup()
+        {
+        //{ get; set; }
+        //public Extremum PeakByHighExtremum { get; set; }
+        //public Extremum TroughByCloseExtremum { get; set; }
+        //public Extremum TroughByLowExtremum { get; set; }
+
+            if (PeakByCloseExtremum != null){
+                return PeakByCloseExtremum.gr
+            } else (IsTrough()){
+            }
+        }
+
+
     }
 
 }
