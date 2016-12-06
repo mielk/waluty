@@ -238,10 +238,13 @@ namespace Stock.Domain.Entities
         //public Extremum TroughByCloseExtremum { get; set; }
         //public Extremum TroughByLowExtremum { get; set; }
 
-            if (PeakByCloseExtremum != null){
-                return PeakByCloseExtremum.gr
-            } else (IsTrough()){
-            }
+            //if (PeakByCloseExtremum != null){
+            //    //return PeakByCloseExtremum.gr
+            //} else (IsTrough()){
+            //}
+
+            return null;
+
         }
 
 

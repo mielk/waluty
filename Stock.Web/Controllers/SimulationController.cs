@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Stock.Domain.Services;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
+using System.Diagnostics;
 
 
 namespace Stock.Web.Controllers
@@ -45,6 +46,9 @@ namespace Stock.Web.Controllers
             var result = service.Start(pair, timeframe, types);
 
             var json = new { pair = pair, timeframe = timeframe, result = result };
+
+            Debug.WriteLine(string.Format("+;Initializing simulation [{0}, {1}]", pair, timeframe));
+
             return Json(json, JsonRequestBehavior.AllowGet);
 
         }
@@ -56,9 +60,16 @@ namespace Stock.Web.Controllers
         public ActionResult NextStep(int incrementation)
         {
 
+            Debug.WriteLine("---------------------------------------------------------------------------");
+            Debug.WriteLine("+;<SimulationController.NextStep>");
+
             var service = this.ssf.GetService();
             var index = service.NextStep(incrementation);            
+
             var json = new { index = index };
+
+            Debug.WriteLine("+;<///SimulationController.NextStep>");
+
             return Json(json, JsonRequestBehavior.AllowGet);
 
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
+using System.Diagnostics;
 
 namespace Stock.Domain.Services
 {
@@ -72,7 +73,6 @@ namespace Stock.Domain.Services
             var _startIndex = _startItem.Index;
             var currentHit = trendline.LastHit();
             var currentBounce = trendline.LastBounce();
-            ExtremumGroup extremumGroup;
 
             for (var i = _startIndex; i < items.Length; i++)
             {
@@ -92,8 +92,6 @@ namespace Stock.Domain.Services
                     trendline.setNewHit(item);
                     currentHit = trendline.currentHit;
                     currentBounce = trendline.currentBounce;
-
-                    extremumGroup = item.Price.GetExtremumGroup();
 
                 }
                 else

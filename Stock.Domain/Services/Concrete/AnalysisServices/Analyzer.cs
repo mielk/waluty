@@ -26,11 +26,11 @@ namespace Stock.Domain.Services
 
         public DateTime? LastCalculationDate { 
             get {
-                if (!lastCalculationDateInitialized)
-                {
-                    pLastCalculationDate = getQuotationService().getLastCalculationDate(AssetTimeframe, Type);
-                    lastCalculationDateInitialized = true;
-                }
+                //if (!lastCalculationDateInitialized)
+                //{
+                //    pLastCalculationDate = getQuotationService().getLastCalculationDate(AssetTimeframe, Type);
+                //    lastCalculationDateInitialized = true;
+                //}
                 return pLastCalculationDate;
             }
             set {

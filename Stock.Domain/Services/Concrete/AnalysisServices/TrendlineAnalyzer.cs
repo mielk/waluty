@@ -8,6 +8,7 @@ using Stock.Domain.Enums;
 using Stock.DAL.Repositories;
 using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
+using System.Diagnostics;
 
 namespace Stock.Domain.Services
 {
@@ -53,6 +54,8 @@ namespace Stock.Domain.Services
         private void preAnalysisStaff(DataItem[] items)
         {
 
+            //Debug.WriteLine("+;<TrendlineAnalyzer.preAnalysisStaff>");
+
             //Create [TrendlineProcessor] instance.
             if (processor == null)
             {
@@ -68,7 +71,9 @@ namespace Stock.Domain.Services
 
             /* Extract items that are marked as extrema. */
             this.extremaGroups = items.Where(i => i.Price != null && i.Price.IsExtremum()).OrderBy(i => i.Date).GetExtremaGroups().OrderBy(i => i.getDate()); ;
-            
+
+            Debug.WriteLine("+;TrendlineAnalyzer.preAnalysisStaff | extremaGroups: " + extremaGroups.ToArray().Length);
+            //Debug.WriteLine("+;<///TrendlineAnalyzer.preAnalysisStaff>");
 
         }
 
@@ -77,29 +82,55 @@ namespace Stock.Domain.Services
         public override void Analyze(DataItem[] items)
         {
 
+            Debug.WriteLine("+;<TrendlineAnalyzer.Analyze>");
+
             preAnalysisStaff(items);
 
             //Add new trendlines to collection of trendlines.
             this.trendlines.AddRange(getNewTrendlines());
 
             AnalyzeExistingTrendlines(items);
+
+            Debug.WriteLine("+;<///TrendlineAnalyzer.Analyze>");
+
         }
+
+
 
         private IEnumerable<Trendline> getNewTrendlines()
         {
 
+            Debug.WriteLine("+;<TrendlineAnalyzer.getNewTrendlines>");
+
             List<Trendline> trendlines = new List<Trendline>();
+
+
+            if (this.extremaGroups.ToArray().Length > 0)
+            {
+                Debug.WriteLine(this.extremaGroups.ToArray().Length);
+            }
+
             IEnumerable<ExtremumGroup> newGroups = this.extremaGroups.Where(i => i.getDate().CompareTo(LastCalculationDate) > 0);
+
+            Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | newGroups: " + newGroups.ToArray().Length);
 
             foreach (var extremum in newGroups)
             {
+
+
+                Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Analyzing single extremum: " + extremum.getDate());
+
 
                 /* Iterate through all the groups above and check trendlines for each pair of extrema. */
                 var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() &&
                                     i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis));
 
+                Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Previous: " + previous.ToArray().Length);
+
                 foreach (var subextremum in previous)
                 {
+
+                    Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremum: " + extremum.getDate() + " | Subextremum: " + subextremum.getDate());
 
                     if (Math.Abs(extremum.master.Distance(subextremum.master)) > RangeToCheck) break;
 
@@ -119,16 +150,19 @@ namespace Stock.Domain.Services
 
             }
 
+            Debug.WriteLine("+;<///TrendlineAnalyzer.getNewTrendlines>");
             return trendlines;
 
         }
 
         private void AnalyzeExistingTrendlines(DataItem[] items)
         {
+            Debug.WriteLine("+;<TrendlineAnalyzer.AnalyzeExistingTrendlines>");
             foreach (var trendline in trendlines)
             {
                 processor.Analyze(trendline, items, trendline.LastAnalyzed);
-            }
+            }  
+            Debug.WriteLine("+;<///TrendlineAnalyzer.AnalyzeExistingTrendlines>");
         }
 
 

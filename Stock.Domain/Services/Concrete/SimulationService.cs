@@ -9,6 +9,7 @@ using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Services.Factories;
 using Stock.Domain.Enums;
+using System.Diagnostics;
 
 namespace Stock.Domain.Services
 {
@@ -52,6 +53,7 @@ namespace Stock.Domain.Services
                 Data = _dataService.GetFxQuotations(this.Symbol, true).ToArray();
                 Data.AppendIndexNumbers();
 
+                Debug.WriteLine(string.Format("+;SimulationService.Start - Data loaded (Items: {0})", Data.Length));
 
                 if (types.Contains(AnalysisType.Price)){
                     _priceAnalyzer = new PriceAnalyzer(atf);
@@ -75,18 +77,37 @@ namespace Stock.Domain.Services
 
         public int NextStep(int incrementation)
         {
+
+            Debug.WriteLine("+;<SimulationService.NextStep>");
             LastAnalyzed++;
 
+            Debug.WriteLine(string.Format("*;SimulationService.NextStep | LastAnalyzed: {0}", LastAnalyzed));
+
             CurrentDataSet = Data.Where(d => d.Index < LastAnalyzed).ToArray();
+
+            Debug.WriteLine(string.Format("*;SimulationService.NextStep | CurrentDataSet length: {0}", 
+                                CurrentDataSet.Length));
+            Debug.WriteLine(string.Format("*;SimulationService.NextStep | CurrentDataSet lastItem: {0}", 
+                                CurrentDataSet.Max(d => d.Date)));
+             
             
 
             //Napraw numerację (mogła zostać zepsuta przez obiekt PriceAnalyzer).
             Data.AppendIndexNumbers();
 
+
+            //Prices.
             if (_priceAnalyzer != null) _priceAnalyzer.Analyze(CurrentDataSet);
+
+
+            //MACD.
             //_macdAnalyzer.Analyze(this.Symbol, false);
+
+
+            //Trendlines.
             if (_trendAnalyzer != null) _trendAnalyzer.Analyze(CurrentDataSet);
 
+            Debug.WriteLine("+;<///SimulationService.NextStep>");
             return LastAnalyzed;
 
         }
