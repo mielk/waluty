@@ -87,7 +87,8 @@ namespace Stock.Domain.Services
             preAnalysisStaff(items);
 
             //Add new trendlines to collection of trendlines.
-            this.trendlines.AddRange(getNewTrendlines());
+            var newTrendlines = getNewTrendlines();
+            this.trendlines.AddRange(newTrendlines);
 
             AnalyzeExistingTrendlines(items);
 
@@ -97,54 +98,51 @@ namespace Stock.Domain.Services
 
 
 
+
         private IEnumerable<Trendline> getNewTrendlines()
         {
 
-            Debug.WriteLine("+;<TrendlineAnalyzer.getNewTrendlines>");
+Debug.WriteLine("+;<TrendlineAnalyzer.getNewTrendlines>");
 
             List<Trendline> trendlines = new List<Trendline>();
 
-
-            if (this.extremaGroups.ToArray().Length > 0)
-            {
-                Debug.WriteLine(this.extremaGroups.ToArray().Length);
-            }
-
+            //Ekstrema, które pojawiły się od czasu ostatniego przeanalizowanego ekstremum.
             IEnumerable<ExtremumGroup> newGroups = this.extremaGroups.Where(i => i.getDate().CompareTo(LastCalculationDate) > 0);
 
-            Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | newGroups: " + newGroups.ToArray().Length);
+Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | newGroups: " + newGroups.ToArray().Length);
 
             foreach (var extremum in newGroups)
             {
 
 
-                Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Analyzing single extremum: " + extremum.getDate());
+Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Analyzing single extremum: " + extremum.getDate());
 
 
-                /* Iterate through all the groups above and check trendlines for each pair of extrema. */
+                /* Dla aktualnie procesowanego ekstremum - znajduje wszystkie wcześniejsze ekstrema, z którym to ekstremum może być sparowane. */
                 var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() &&
                                     i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis));
 
-                Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Previous: " + previous.ToArray().Length);
+Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Previous: " + previous.ToArray().Length);
 
+
+                /* Krzyżuje aktualnie procesowane ekstremum ze wszystkimi ekstremami odnalezionymi w poprzednim punkcie. */
                 foreach (var subextremum in previous)
                 {
 
-                    Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremum: " + extremum.getDate() + " | Subextremum: " + subextremum.getDate());
+                    if (checkIfExtremaPairValid(extremum, subextremum))
+                    {
 
-                    if (Math.Abs(extremum.master.Distance(subextremum.master)) > RangeToCheck) break;
-
-                    //Items must have minimum distance between each other.
-                    if (Math.Abs(extremum.master.Distance(subextremum.master)) < MinDistance) break;
-                    if (extremum.type.IsOpposite(subextremum.type) && Math.Abs(extremum.master.Distance(subextremum.master)) < OppositeExtremaMinDistance) break;
+Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremum: " + extremum.getDate() + " | Subextremum: " + subextremum.getDate());
 
 
-                    //Do tego momentu docierają tylko te pary wierzchołków, które spełniają kryteria początkowe.
+                        //Do tego momentu docierają tylko te pary wierzchołków, które spełniają kryteria początkowe.
 
-                    //Do zmiennej pairTrendlines przypisywana jest kolekcja wszystkich kombinacji trendlinów stworzonych dla aktualnie rozpatrywanej pary wierzchołków.
+                        //Do zmiennej pairTrendlines przypisywana jest kolekcja wszystkich kombinacji trendlinów stworzonych dla aktualnie rozpatrywanej pary wierzchołków.
 
-                    //[!] Zapisać zwrócone linie trendu do bazy.
-                    trendlines.AddRange(ProcessSinglePair(subextremum, extremum, items));
+                        //[!] Zapisać zwrócone linie trendu do bazy.
+                        trendlines.AddRange(ProcessSinglePair(subextremum, extremum, items));
+
+                    }
 
                 }
 
@@ -155,6 +153,22 @@ namespace Stock.Domain.Services
 
         }
 
+
+
+        private bool checkIfExtremaPairValid(ExtremumGroup extremum, ExtremumGroup subextremum)
+        {
+            if (Math.Abs(extremum.master.Distance(subextremum.master)) > RangeToCheck) return false;
+
+            //Items must have minimum distance between each other.
+            if (Math.Abs(extremum.master.Distance(subextremum.master)) < MinDistance) return false;
+            if (extremum.type.IsOpposite(subextremum.type) && Math.Abs(extremum.master.Distance(subextremum.master)) < OppositeExtremaMinDistance) return false;
+
+            return true;
+
+        }
+
+
+
         private void AnalyzeExistingTrendlines(DataItem[] items)
         {
             Debug.WriteLine("+;<TrendlineAnalyzer.AnalyzeExistingTrendlines>");
@@ -164,6 +178,7 @@ namespace Stock.Domain.Services
             }  
             Debug.WriteLine("+;<///TrendlineAnalyzer.AnalyzeExistingTrendlines>");
         }
+
 
 
         public List<Trendline> ProcessSinglePair(ExtremumGroup extremum, ExtremumGroup subextremum, DataItem[] items)
