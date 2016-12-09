@@ -99,5 +99,12 @@ namespace Stock.Domain.Entities
             return Math.Max(Math.Abs(close - extreme) / 10, MIN_STEP);
         }
 
+        public bool isOpposite(ExtremumGroup subextremum)
+        {
+            if (type.IsPeak() && !subextremum.type.IsPeak()) return true;
+            if (!type.IsPeak() && subextremum.type.IsPeak()) return true;
+            return false;
+        }
+
     }
 }

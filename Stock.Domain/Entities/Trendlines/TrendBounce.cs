@@ -47,11 +47,18 @@ namespace Stock.Domain.Entities
             }
         }
 
-        public void AddQuotationPoints(double value)
+        public void AddQuotation(Trendline trendline, DataItem item)
         {
             this.length++;
-            this.pointsForQuotations += value;
+            this.pointsForQuotations += calculatePointForQuotation(trendline, item);
         }
+
+
+        private double calculatePointForQuotation(Trendline trendline, DataItem item)
+        {
+            return 0;
+        }
+
 
         public void Calculate()
         {

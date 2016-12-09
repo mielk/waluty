@@ -86,7 +86,6 @@ namespace Stock.Domain.Entities
             this.BoundPoint = bound;
             this.Slope = (bound.value - initial.value) / (BoundPoint.index() - InitialPoint.index());
             this.CurrentType = (initial.dataItem.Price.IsPeak() ? TrendlineType.Resistance : TrendlineType.Support);
-
         }
 
 
@@ -153,10 +152,10 @@ namespace Stock.Domain.Entities
         }
 
 
-        public void setNewHit(DataItem item)
+        public void setNewHit(DataItem item, double level, TrendlineType type)
         {
 
-            TrendHit hit = new TrendHit(this, item, currentHit, currentBounce);
+            TrendHit hit = new TrendHit(this, item, level, type, currentHit, currentBounce);
             TrendBounce bounce = new TrendBounce(this, hit);
             hit.BounceToNextHit = bounce;
 
@@ -177,8 +176,8 @@ namespace Stock.Domain.Entities
             currentBounce = bounce;
 
             //Calculate points.
-            hit.Calculate();
-            bounce.Calculate();
+            //hit.Calculate();
+            //bounce.Calculate();
             
         }
 

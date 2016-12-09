@@ -60,7 +60,8 @@ namespace Stock.Domain.Services
                     ((Analyzer)_priceAnalyzer).injectQuotationService(quotationService);
                 }
 
-                if (types.Contains(AnalysisType.Trendline)){
+                if (types.Contains(AnalysisType.Trendline))
+                {
                     _trendAnalyzer = new TrendlineAnalyzer(atf);
                     ((Analyzer)_trendAnalyzer).injectQuotationService(quotationService);
                 }

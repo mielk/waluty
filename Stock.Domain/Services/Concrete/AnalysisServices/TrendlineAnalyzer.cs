@@ -22,7 +22,8 @@ namespace Stock.Domain.Services
         private const int RangeToCheck = 200;
 
         private IEnumerable<ExtremumGroup> extremaGroups;
-        private List<Trendline> trendlines = new List<Trendline>();
+        private List<Trendline> activeTrendlines = new List<Trendline>();
+        private List<Trendline> extinctTrendlines = new List<Trendline>();
         private Dictionary<string, Trendline> optimalTrendlines = new Dictionary<string, Trendline>();
 
 
@@ -34,7 +35,7 @@ namespace Stock.Domain.Services
 
         public TrendlineAnalyzer(AssetTimeframe atf) : base(atf)
         {
-            trendlines = new List<Trendline>();
+            activeTrendlines = new List<Trendline>();
         }
 
 
@@ -63,9 +64,9 @@ namespace Stock.Domain.Services
                 processor = new TrendlineProcessor(self);
             }
 
-            if (trendlines == null)
+            if (activeTrendlines == null)
             {
-                this.trendlines = new List<Trendline>();
+                this.activeTrendlines = new List<Trendline>();
             }
 
 
@@ -88,7 +89,7 @@ namespace Stock.Domain.Services
 
             //Add new trendlines to collection of trendlines.
             var newTrendlines = getNewTrendlines();
-            this.trendlines.AddRange(newTrendlines);
+            this.activeTrendlines.AddRange(newTrendlines);
 
             AnalyzeExistingTrendlines(items);
 
@@ -132,15 +133,15 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Previous: " + previous.T
                     if (checkIfExtremaPairValid(extremum, subextremum))
                     {
 
+//Do tego momentu docierają tylko te pary wierzchołków, które spełniają kryteria początkowe.
 Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremum: " + extremum.getDate() + " | Subextremum: " + subextremum.getDate());
-
-
-                        //Do tego momentu docierają tylko te pary wierzchołków, które spełniają kryteria początkowe.
+                        
 
                         //Do zmiennej pairTrendlines przypisywana jest kolekcja wszystkich kombinacji trendlinów stworzonych dla aktualnie rozpatrywanej pary wierzchołków.
+                        List<Trendline> pairTrendlines = GetTrendlineVariantsForExtremaPair(subextremum, extremum, items);
 
                         //[!] Zapisać zwrócone linie trendu do bazy.
-                        trendlines.AddRange(ProcessSinglePair(subextremum, extremum, items));
+                        trendlines.AddRange(pairTrendlines);
 
                     }
 
@@ -148,7 +149,8 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremu
 
             }
 
-            Debug.WriteLine("+;<///TrendlineAnalyzer.getNewTrendlines>");
+Debug.WriteLine("+;<///TrendlineAnalyzer.getNewTrendlines>");
+
             return trendlines;
 
         }
@@ -168,35 +170,17 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremu
         }
 
 
-
-        private void AnalyzeExistingTrendlines(DataItem[] items)
-        {
-            Debug.WriteLine("+;<TrendlineAnalyzer.AnalyzeExistingTrendlines>");
-            foreach (var trendline in trendlines)
-            {
-                processor.Analyze(trendline, items, trendline.LastAnalyzed);
-            }  
-            Debug.WriteLine("+;<///TrendlineAnalyzer.AnalyzeExistingTrendlines>");
-        }
-
-
-
-        public List<Trendline> ProcessSinglePair(ExtremumGroup extremum, ExtremumGroup subextremum, DataItem[] items)
+        public List<Trendline> GetTrendlineVariantsForExtremaPair(ExtremumGroup extremum, ExtremumGroup subextremum, DataItem[] items)
         {
 
             List<Trendline> trendlines = new List<Trendline>();
 
 
             /*
-             *  If there are opposite extrema (peak/trough) check if they can be processed.
-             *  There must be at least one other extremum between them.
-             *  In order to process the following pair: troughs are checked only if flag [isAbove] = true, 
-             *  peaks if [isAbove] = false;
+             * Jeżeli ekstrema przekazane do tej funkcji są odwrotne (czyli jedno jest wierzchołkiem, a drugie dołkiem),
+             * żeby mogły być procesowane pomiędzy nimi musi być co najmniej jedno inne ekstremum.
              */
-
-            bool areOppositeExtrema = (extremum.type.IsPeak() && !subextremum.type.IsPeak()) || (!extremum.type.IsPeak() && subextremum.type.IsPeak());
-
-            if (areOppositeExtrema)
+            if (extremum.isOpposite(subextremum)) 
             {
                 var midextremum = extremaGroups.Where(e => e.master.Price != null && e.master.Date > extremum.master.Date && e.master.Date < subextremum.master.Date && e.type.IsPeak() == extremum.type.IsPeak()).ToArray();
                 if (midextremum.Length == 0)
@@ -206,13 +190,17 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremu
             }
 
 
+            double extremumLower = extremum.getLower();
+            double extremumHigher = extremum.getHigher();
+            double extremumStep = extremum.getStep();
+            double subextremumLower = subextremum.getLower();
+            double subextremumHigher = subextremum.getHigher();
+            double subextremumStep = subextremum.getStep();
 
-            /*
-             *  If the tests above are passed, we can continue with calculating relevance of each trendline variant for this pair.
-             */
-            for (var a = extremum.getLower(); a <= extremum.getHigher(); a += extremum.getStep())
+
+            for (var a = extremumLower; a <= extremumHigher + (extremumStep / 2); a += extremumStep)
             {
-                for (var b = subextremum.getLower(); b <= subextremum.getHigher(); b += subextremum.getStep())
+                for (var b = subextremumLower; b <= subextremumHigher + (subextremumStep / 2); b += subextremumStep)
                 {
                     var trendline = new Trendline(this.AssetTimeframe, new ValuePoint(extremum.getStartItem(), a), new ValuePoint(subextremum.getEndItem(), b));
                     trendlines.Add(trendline);
@@ -223,6 +211,26 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremu
             return trendlines;
 
         }
+
+
+
+
+
+
+        private void AnalyzeExistingTrendlines(DataItem[] items)
+        {
+
+Debug.WriteLine("+;<TrendlineAnalyzer.AnalyzeExistingTrendlines>");
+            
+            foreach (var trendline in activeTrendlines)
+            {
+                processor.Analyze(trendline, items, trendline.LastAnalyzed);
+            }
+
+Debug.WriteLine("+;<///TrendlineAnalyzer.AnalyzeExistingTrendlines>");
+
+        }
+
 
 
 
@@ -276,7 +284,7 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Cross analysis | Extremu
 
         public IEnumerable<Trendline> GetTrendlines()
         {
-            return trendlines;
+            return activeTrendlines;
         }
 
     }

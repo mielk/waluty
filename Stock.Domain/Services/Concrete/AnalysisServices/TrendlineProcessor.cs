@@ -79,17 +79,19 @@ namespace Stock.Domain.Services
                 DataItem item = items[i];
                 TrendlineType type = trendline.CurrentType;
                 bool isExtremum = item.Price.IsExtremum(type);
-
+                double level = trendline.GetLevel(i);
 
                 ////Get points for this dataItem.
                 //var points = item.Price.calculateTrendlineQuotationPoints(trendline);
                 
 
-                if (isExtremum && trendline.IsMinimumForHit(item) && (i - currentHit.Item.Index > 1))
+                if (isExtremum && 
+                    trendline.IsMinimumForHit(item) && 
+                    (currentHit == null || i - currentHit.Item.Index > 1))
                 {
 
                     //Hit.
-                    trendline.setNewHit(item);
+                    trendline.setNewHit(item, level, type);
                     currentHit = trendline.currentHit;
                     currentBounce = trendline.currentBounce;
 
@@ -99,7 +101,6 @@ namespace Stock.Domain.Services
 
                     bool isBreakClose = ((item.Quotation.Close - trendline.GetLevel(i)) * trendline.CurrentType.GetFactor() > 0);
                     double ptBreakExtremum = calculatePointForBreakExtremum(trendline, item);
-                    double ptQuotation = CalculatePointForQuotation(trendline, item);
 
                     if (isBreakClose)
                     {
@@ -107,7 +108,7 @@ namespace Stock.Domain.Services
                     }
 
                     currentBounce.AddExtremumBreak(ptBreakExtremum);
-                    currentBounce.AddQuotationPoints(ptQuotation);
+                    currentBounce.AddQuotation(trendline, item);
 
                 }
 
@@ -132,11 +133,6 @@ namespace Stock.Domain.Services
         private TrendBreak getTrendBreakIfExists(Trendline trendline, DataItem item)
         {
             return null;
-        }
-
-        private double CalculatePointForQuotation(Trendline trendline, DataItem item)
-        {
-            return 0;
         }
 
 
