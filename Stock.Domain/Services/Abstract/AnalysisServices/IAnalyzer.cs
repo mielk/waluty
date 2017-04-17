@@ -10,10 +10,17 @@ namespace Stock.Domain.Services
 {
     public interface IAnalyzer
     {
+        //Basic.
+        void injectAsset(Asset asset);
+        void injectTimeframe(Timeframe timeframe);
+        void injectAssetTimeframe(AssetTimeframe assetTimeframe);
         Asset getAsset();
         Timeframe getTimeframe();
         AssetTimeframe getAssetTimeframe();
         AnalysisType getAnalysisType();
+
+
+
         DateTime? getLastCalculationDate();
         DateTime? getFirstRequiredDate();
         void setLastCalculationDate(DateTime? date);

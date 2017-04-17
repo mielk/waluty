@@ -26,6 +26,10 @@ namespace Stock.Domain.Services
         {
         }
 
+
+
+
+
         protected override void initialize_specific()
         {
             ItemsForAnalysis = 240;

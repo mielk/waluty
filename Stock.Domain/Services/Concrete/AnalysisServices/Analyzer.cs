@@ -13,31 +13,22 @@ namespace Stock.Domain.Services
     {
         public abstract AnalysisType Type { get; }
         public AssetTimeframe AssetTimeframe { get; set; }
+        private IQuotationService quotationService;
+        protected IAnalyzerProcessor processor;
+
+
+
+
         bool lastCalculationDateInitialized { get; set; }
         protected int ItemsForAnalysis { get; set; }
         private DateTime? pLastCalculationDate;
         protected DataItem[] items;
-        protected IAnalyzerProcessor processor;
-        private IQuotationService quotationService;
+        
+        
         private Analysis analysis;
         public bool IsSimulation { get; set; }
 
-        
 
-        public DateTime? LastCalculationDate { 
-            get {
-                //if (!lastCalculationDateInitialized)
-                //{
-                //    pLastCalculationDate = getQuotationService().getLastCalculationDate(AssetTimeframe, Type);
-                //    lastCalculationDateInitialized = true;
-                //}
-                return pLastCalculationDate;
-            }
-            set {
-                pLastCalculationDate = value;
-                this.lastCalculationDateInitialized = true;            
-            }
-        }
 
         public Analyzer(AssetTimeframe atf)
         {
@@ -58,6 +49,24 @@ namespace Stock.Domain.Services
         }
 
         protected abstract void initialize_specific();
+
+
+
+
+
+        public DateTime? LastCalculationDate
+        {
+            get
+            {
+                return pLastCalculationDate;
+            }
+            set
+            {
+                pLastCalculationDate = value;
+                this.lastCalculationDateInitialized = true;
+            }
+        }
+
 
         public AssetTimeframe getAssetTimeframe(){
             return AssetTimeframe;

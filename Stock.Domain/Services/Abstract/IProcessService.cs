@@ -8,17 +8,20 @@ using Stock.Domain.Enums;
 
 namespace Stock.Domain.Services
 {
-    public interface IProcessService
+    public interface IProcessService : IService
     {
+
+        //INHERITED [IService]
+        //bool Run(bool fromScratch);
+        //Asset getAsset();
+        //Timeframe getTimeframe();
+
+
         //void Setup(AnalysisType[] types);
         //void Setup(IEnumerable<AnalysisType> types);
         //void loadAnalyzers(Dictionary<AnalysisType, IAnalyzer> analyzers);
         //void injectQuotationService(IQuotationService instance);
 
-        bool Run(bool fromScratch);
-
-        Asset getAsset();
-        Timeframe getTimeframe();
         Dictionary<AnalysisType, IAnalyzer> getAnalyzers();
 
     }

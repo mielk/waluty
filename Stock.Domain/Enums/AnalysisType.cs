@@ -28,18 +28,15 @@ namespace Stock.Domain.Enums
 
         public static AnalysisType Type(string symbol)
         {
-
-            if (byNames == null) LoadTypes();
-
+            if (byNames == null) loadTypes();
             var type = AnalysisType.Unknown;
             byNames.TryGetValue(symbol, out type);
-
             return type;
-
         }
 
         public static string getTypeString(AnalysisType type)
         {
+            if (byTypes == null) loadTypes();
             string result = string.Empty;
             try
             {
@@ -52,38 +49,45 @@ namespace Stock.Domain.Enums
             }
         }
 
-        private static void LoadTypes()
+        private static void loadTypes()
         {
             byNames = new Dictionary<string, AnalysisType>();
             byTypes = new Dictionary<AnalysisType, string>();
 
-            byNames.Add("prices", AnalysisType.Price);
-            byTypes.Add(AnalysisType.Price, "prices");
-            byNames.Add("trendline", AnalysisType.Trendline);
-            byTypes.Add(AnalysisType.Trendline, "trendline");
-            byNames.Add("macd", AnalysisType.MACD);
-            byTypes.Add(AnalysisType.MACD, "macd");
-            byNames.Add("adx", AnalysisType.ADX);
-            byTypes.Add(AnalysisType.ADX, "adx");
-            byNames.Add("candlestick", AnalysisType.Candlestick);
-            byTypes.Add(AnalysisType.Candlestick, "candlestick");
+            loadType(AnalysisType.Price, new string[] { "prices", "price", "Prices", "Price" });
+            loadType(AnalysisType.Trendline, new string[] { "trendlines", "trendline", "Trendlines", "Trendline" });
+            loadType(AnalysisType.MACD, new string[] { "macd", "MACD", "Macd" });
+            loadType(AnalysisType.ADX, new string[] {"adx", "ADX", "Adx" });
+            loadType(AnalysisType.Candlestick, new string[] { "candlestick", "Candlestick" });
 
         }
 
-
-
-        public static AnalysisType[] StringToTypesList(string types)
+        private static void loadType(AnalysisType type, string[] names)
         {
-            return StringToTypesList(types, ',');
+
+            foreach (string name in names)
+            {
+                byNames.Add(name, type);
+                if (!byTypes.ContainsKey(type))
+                {
+                    byTypes.Add(type, name);
+                }
+            }
         }
 
-        public static AnalysisType[] StringToTypesList(string types, char separator)
+        public static AnalysisType[] FromStringListToTypesList(string types)
+        {
+            return FromStringListToTypesList(types, ',');
+        }
+
+        public static AnalysisType[] FromStringListToTypesList(string types, char separator)
         {
             var strTypes = types.Split(separator);
             List<AnalysisType> list = new List<AnalysisType>();
             for (var i = 0; i < strTypes.Length; i++)
             {
-                var type = Type(strTypes[i]);
+                var key = strTypes[i].Trim();
+                var type = Type(key);
                 if (type != AnalysisType.Unknown)
                 {
                     list.Add(type);

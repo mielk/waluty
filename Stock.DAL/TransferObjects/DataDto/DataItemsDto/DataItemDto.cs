@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Stock.DAL.TransferObjects
 {
-    public class DataItemDto : IDateItem
+    public class DataItemDto : IDateItemDto
     {
 
         public int AssetId { get; set; }

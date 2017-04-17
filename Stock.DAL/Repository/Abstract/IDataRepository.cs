@@ -10,13 +10,7 @@ namespace Stock.DAL.Repositories
     public interface IDataRepository
     {
 
-
-
         IEnumerable<DataItemDto> GetDataItems(string symbol, DateTime? startDate, DateTime? endDate, IEnumerable<string> analysisType);
-
-
-
-
 
         IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe);
         IEnumerable<DataItemDto> GetQuotations(int assetId, int timeframe, int count);
@@ -45,7 +39,6 @@ namespace Stock.DAL.Repositories
         void UpdateAdx(AdxDto adx, string symbol);
         void AddAnalysisInfo(AnalysisDto analysis);
         
-
         bool CheckIfTableExists(string tableName);
         bool CreateTable(string tableName, string template);
 

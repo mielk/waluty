@@ -42,7 +42,7 @@ namespace Stock.Web.Controllers
             Asset _asset = Asset.GetAssetByName(asset);
             Timeframe _timeframe = Timeframe.GetTimeframeByShortName(timeframe);
             ProcessService service = new ProcessService(_asset, _timeframe);
-            var types = AnalysisTypeHelper.StringToTypesList(analysisTypes, ',');
+            var types = AnalysisTypeHelper.FromStringListToTypesList(analysisTypes, ',');
 
             service.Setup(types);
             var result = service.Run(fromScratch);

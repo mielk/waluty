@@ -8,8 +8,14 @@ using Stock.Domain.Enums;
 
 namespace Stock.Domain.Services
 {
-    public interface ISimulationService
+    public interface ISimulationService : IService
     {
+
+        //INHERITED [IService]
+        //bool Run(bool fromScratch);
+        //Asset getAsset();
+        //Timeframe getTimeframe();
+
         bool Start(string pair, string timeframe, AnalysisType[] types);
         bool Start(AssetTimeframe atf, AnalysisType[] types);
         int NextStep(int incrementation);

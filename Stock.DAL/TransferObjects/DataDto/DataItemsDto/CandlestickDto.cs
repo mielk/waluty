@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 
 namespace Stock.DAL.TransferObjects
 {
-    public class QuotationDto
+    public class CandlestickDto : IDateItemDto
     {
+
         [Key]
         public int Id { get; set; }
-        public DateTime PriceDate { get; set; }
         public int AssetId { get; set; }
-        public double OpenPrice { get; set; }
-        public double HighPrice { get; set; }
-        public double LowPrice { get; set; }
-        public double ClosePrice { get; set; }
-        public double Volume { get; set; }
+        public DateTime PriceDate { get; set; }
+
         [NotMapped]
         public int TimeframeId { get; set; }
 
+        public DateTime GetDate()
+        {
+            return PriceDate;
+        }
 
     }
 }

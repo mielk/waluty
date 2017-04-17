@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Stock.DAL.TransferObjects
 {
-    public class PriceDto : IDateItem
+    public class PriceDto : IDateItemDto
     {
         [Key]
         public int Id { get; set; }

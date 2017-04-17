@@ -29,6 +29,21 @@ namespace Stock.Domain.Services
         public IQuotationService quotationService;
 
 
+        public bool Run(bool fromScratch)
+        {
+            return false;   
+        }
+
+        public Asset getAsset()
+        {
+            return AssetTimeframe.asset;
+        }
+
+        public Timeframe getTimeframe()
+        {
+            return AssetTimeframe.timeframe;
+        }
+
 
         public SimulationService(IDataService dataService)
         {

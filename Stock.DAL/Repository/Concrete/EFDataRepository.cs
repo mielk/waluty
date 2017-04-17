@@ -3,6 +3,7 @@ using Stock.DAL.TransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Stock.DAL.Helpers;
 
 namespace Stock.DAL.Repositories
 {
@@ -904,7 +905,7 @@ namespace Stock.DAL.Repositories
 
             if (extremum == null) return;
 
-            string sqlInsert = string.Format(extremum.InsertSql(), ExtremaEvaluationTable);
+            string sqlInsert = string.Format(ExtremumDALHelper.InsertSql(extremum), ExtremaEvaluationTable);
 
             using (var context = new EFDbContext())
             {
@@ -920,7 +921,7 @@ namespace Stock.DAL.Repositories
 
             if (extremum == null) return;
 
-            string sql = string.Format(extremum.Cancelled ? extremum.RemoveSql() : extremum.UpdateSql(), ExtremaEvaluationTable);
+            string sql = string.Format(extremum.Cancelled ? ExtremumDALHelper.RemoveSql(extremum) : ExtremumDALHelper.UpdateSql(extremum), ExtremaEvaluationTable);
 
             using (var context = new EFDbContext())
             {

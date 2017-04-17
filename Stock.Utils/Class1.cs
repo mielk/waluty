@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stock.DAL.TransferObjects
+namespace Stock.Utils
 {
-    public interface IDateItem
+    public class Class1
     {
-        DateTime PriceDate { get; set; }
     }
 }

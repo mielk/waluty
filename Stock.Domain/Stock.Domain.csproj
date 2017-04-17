@@ -114,6 +114,7 @@
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
     <Compile Include="Services\Factories\ProcessServiceFactory.cs" />
     <Compile Include="Services\Factories\DataServiceFactory.cs" />
+    <Compile Include="Services\IService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stock.DAL\Stock.DAL.csproj">
