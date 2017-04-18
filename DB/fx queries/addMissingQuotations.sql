@@ -9,35 +9,38 @@ CREATE PROCEDURE createTemporaryTablesForAddingMissingQuotations(_assetId INT)
         #SET _lastUpdateDate = getLastUpdateDate(0, 0, 1);
         SET _lastUpdateDate = getLastUpdateDate(0, 0, 0);
     
+    
 		# Basic missing quotations table (with dates after last quotation).
 		DROP TEMPORARY TABLE IF EXISTS tempTable_AddMissingQuotations;
         CREATE TEMPORARY TABLE tempTable_AddMissingQuotations 
-				SELECT
-					d.Date, d.timeframeId, d.IndexNumber
-				FROM
-					(SELECT * FROM quotations WHERE PriceDate >= _lastUpdateDate AND assetId = _assetId) q
-					RIGHT JOIN 
-					(SELECT * FROM dates WHERE Date >= _lastUpdateDate) d
-					ON q.PriceDate = d.Date AND q.timeframeId = d.timeframeId
-				WHERE
-					q.PriceDate IS NULL;
+				(INDEX tempIndex_Date (Date ASC), 
+				INDEX tempIndex_Timeframe (TimeframeId ASC))
+			SELECT
+				d.timeframeId, d.Date
+			FROM
+				(SELECT * FROM quotations WHERE assetId = _assetId AND PriceDate >= _lastUpdateDate) q
+				RIGHT JOIN 
+				(SELECT * FROM dates WHERE Date >= _lastUpdateDate) d
+				ON q.PriceDate = d.Date AND q.timeframeId = d.timeframeId
+			WHERE
+				q.PriceDate IS NULL;
 		
-        # Table containing last update dates for given assed and various timeframes.
+        
+        # Table containing last update dates for given asset and various timeframes.
 		DROP TEMPORARY TABLE IF EXISTS tempTable_MaxQuotationDateForAssetByTimeframes;
         CREATE TEMPORARY TABLE tempTable_MaxQuotationDateForAssetByTimeframes 
-				SELECT 
-					timeframeId, MAX(PriceDate) AS maxDate, MIN(PriceDate) AS minDate
-				FROM
-					quotations
-				WHERE
-					assetId = 1
-				GROUP BY timeframeId;
+			SELECT 
+				timeframeId, MAX(PriceDate) AS maxDate, MIN(PriceDate) AS minDate
+			FROM
+				quotations
+			WHERE
+				assetId = 1
+			GROUP BY timeframeId;
         
         # Remove out of date range records.
         CALL removeOutOfDateRangeRecords();
-		
+        
     END //
-
 
 DROP PROCEDURE IF EXISTS removeOutOfDateRangeRecords //
 CREATE PROCEDURE removeOutOfDateRangeRecords()
@@ -58,7 +61,54 @@ CREATE PROCEDURE removeOutOfDateRangeRecords()
 DROP PROCEDURE IF EXISTS insertRecordsForMissingDates //
 CREATE PROCEDURE insertRecordsForMissingDates(_assetId INT)
 	BEGIN
-		
+        DECLARE _timeframeId INT;
+        DECLARE _date DATETIME;
+		DECLARE done INT DEFAULT FALSE;
+		DECLARE cursor_i CURSOR FOR SELECT DISTINCT TimeframeId, Date FROM tempTable_AddMissingQuotations ORDER BY Date ASC;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+        
+		OPEN cursor_i;
+		add_loop: LOOP
+			FETCH cursor_i INTO _timeframeId, _date;
+			IF done THEN
+				LEAVE add_loop;
+			END IF;
+            
+            INSERT INTO quotations (PriceDate, AssetId, TimeframeId, OpenPrice, HighPrice, LowPrice, ClosePrice, RealClosePrice, Volume)
+			SELECT
+				_date AS PriceDate,
+				q.AssetId,
+				q.TimeFrameId,
+				q.ClosePrice,
+				q.ClosePrice,
+				q.ClosePrice,
+				q.ClosePrice,
+				NULL,
+				-1
+			FROM 
+				quotations q
+			WHERE
+				assetId = _assetId 
+				AND timeframeId = _timeframeId 
+				AND PriceDate = (SELECT 
+									Date
+								FROM 
+									dates
+								WHERE	
+									timeframeId = _timeframeId AND 
+									IndexNumber = (SELECT IndexNumber - 1 FROM dates WHERE timeframeId = _timeframeId AND Date = _date));
+
+		END LOOP;
+
+    END //
+
+
+DROP PROCEDURE IF EXISTS removeTemporaryTablesForAddingMissingQuotations //
+CREATE PROCEDURE removeTemporaryTablesForAddingMissingQuotations()
+	BEGIN
+		#DROP TEMPORARY TABLE IF EXISTS tempTable_AddMissingQuotations;
+		DROP TEMPORARY TABLE IF EXISTS tempTable_MaxQuotationDateForAssetByTimeframes;
+        DROP TEMPORARY TABLE IF EXISTS tempTable_RecordsToInsert;
     END //
 
 
@@ -67,6 +117,7 @@ CREATE PROCEDURE addMissingQuotationsForSingleAsset(_assetId INT)
 	BEGIN
 		CALL createTemporaryTablesForAddingMissingQuotations(_assetId);
         CALL insertRecordsForMissingDates(_assetId);        
+        CALL removeTemporaryTablesForAddingMissingQuotations();
     END //
 
 
@@ -77,8 +128,6 @@ CREATE PROCEDURE _addMissingQuotations()
 		DECLARE done INT DEFAULT FALSE;
 		DECLARE cursor_i CURSOR FOR SELECT DISTINCT AssetId FROM v_all_symbols ORDER BY AssetId ASC;
 		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-    
-		SELECT 'Quotations before: ', COUNT(*) FROM quotations;
         
 		OPEN cursor_i;
 		add_loop: LOOP
@@ -86,13 +135,10 @@ CREATE PROCEDURE _addMissingQuotations()
 			IF done THEN
 				LEAVE add_loop;
 			END IF;
-            #CALL addMissingQuotationsForSingleAsset(_assetId);
+            CALL addMissingQuotationsForSingleAsset(_assetId);
 		END LOOP;
         
-        CALL addMissingQuotationsForSingleAsset(1);
-        #CALL deleteRedundantQuotationsForSingleSymbol(1, 2);
-        
-        SELECT 'Quotations after: ', COUNT(*) FROM quotations;
+        SELECT 'Done' AS status, COUNT(*) AS QuotationsAfter FROM quotations;
         
 	END //
 
