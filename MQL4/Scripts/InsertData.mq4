@@ -13,50 +13,77 @@
 #include "..\libraries\functions.mq4"
 #include "..\libraries\mysql.mq4"
 
-//+------------------------------------------------------------------+
-//| Script program start function                                    |
-//+------------------------------------------------------------------+
+
 void OnStart()
 {
-   //Alert(10);
+   double processStartTimestamp = TimeLocal();
+   Alert("========================================================");
+   Alert("[Start price update]");
    quotationsFullUpdate();
+   
+   double updateEndTimestamp = TimeLocal();
+   double secondsElapsed = updateEndTimestamp - processStartTimestamp;
+   Alert("Quotations downloaded | " + secondsElapsed + "s");
+   
+   
+   checkDataConsistency();
+   secondsElapsed = (double) TimeLocal() - updateEndTimestamp;
+   Alert("Consistency checked | " + secondsElapsed + "s");
+   Alert("========================================================");
 }
+
 
 
 void quotationsFullUpdate(){
-   string sqlPairs = "SELECT * FROM v_symbols_last_updates;";
-   string pairs[][2];
+   string pairs[][4];
    
-   fetchArray(sqlPairs, pairs);
-   
+   fetchArrayByTableName("v_symbols_last_updates", pairs);
    
    for (int i = 0; i < ArrayRange(pairs, 0); i++){
-      string symbol = pairs[i, 0];
+      int assetId = pairs[i, 0];
+      int timeframeId = pairs[i, 1];
+      string symbol = pairs[i, 2];
       string pair = StringSubstr(symbol, 0, 6);
-      datetime lastUpdate = convertStringToDate(pairs[i, 1]);
-      //datetime lastUpdate = convertStringToDate("2015-03-27 01:30:00");
+      datetime lastUpdate = convertStringToDate(pairs[i, 3]);
       ENUM_TIMEFRAMES timeframe = stringToTimeframe(StringSubstr(symbol, 7, StringLen(symbol) - 7));
 
-      Alert("[Begin] " + symbol + " | " + dateToTime(lastUpdate));
-      int inserted = InsertSingleQuotationSet(pair, timeframe, lastUpdate);
-      Alert("Done: " + symbol + " (" + inserted + " records)");
+      Alert("--------------------------------------------------------");
+      Alert("[Symbol] " + symbol);
+      Alert("[Last quotation before update] " + dateToTime(lastUpdate));
+      
+      RemoveLastQuotation(assetId, timeframeId, lastUpdate);
+      int inserted = InsertSingleQuotationSet(assetId, timeframeId, pair, timeframe, lastUpdate);
+     
+      Alert("[Added] " + inserted + " record(s)");
+      Alert("[Last quotation after update] " + getLastUpdate(symbol));
       
    }
    
-   Alert("end");
-   
 }
 
-int InsertSingleQuotationSet(string symbol, ENUM_TIMEFRAMES timeframe, datetime lastUpdate){
-   
+string getLastUpdate(string symbol){
+   string sql = "SELECT lastUpdate FROM v_symbols_last_updates WHERE symbol = '" + symbol + "';";
+   string date[][1];
+   fetchArrayBySql(sql, date);
+   return date[0, 0];
+}
+
+
+void RemoveLastQuotation(int assetId, int timeframeId, datetime lastUpdate){
+   string query = "DELETE FROM quotations " + 
+                  "WHERE AssetId = " + assetId + " AND " + 
+                        "TimeframeId = " + timeframeId + " AND " + 
+                        "PriceDate >= '" + dateToTime(lastUpdate) + "';";
+   insert(query);
+}
+
+
+int InsertSingleQuotationSet(int assetId, int timeframeId, string symbol, ENUM_TIMEFRAMES timeframe, datetime lastUpdate){
    MqlRates rates[];
    int copied = 0;
    datetime lastRate = 0;
    
-   
-   //Fetch quotations from broker servers.
    if (TimeYear(lastUpdate) < 2010){
-      //LastUpdate == NULL
       copied = getAllAvailableRates(symbol, timeframe, 0, rates);         
    } else {
       copied = getRates(symbol, timeframe, lastUpdate, rates);
@@ -64,9 +91,7 @@ int InsertSingleQuotationSet(string symbol, ENUM_TIMEFRAMES timeframe, datetime 
    
    
    
-	if(copied > 0)
-     {
-
+	if(copied > 0) {
       int size = copied;
 
       for (int i = 0; i < size; i++)
@@ -77,43 +102,25 @@ int InsertSingleQuotationSet(string symbol, ENUM_TIMEFRAMES timeframe, datetime 
             lastRate = date;
          }
 
-         string query = "INSERT INTO quotations_" + symbol + "_" + periodToString(timeframe) + 
-                  "(PriceDate, AssetId, OpenPrice, HighPrice, LowPrice, ClosePrice, Volume) VALUES (" + 
-                  "'" + dateToTime(rates[i].time) + "', " + 
-                  (string) 1 + ", " + 
-                  (string) rates[i].open + ", " + 
-                  (string) rates[i].high + ", " + 
-                  (string) rates[i].low + ", " + 
-                  (string) rates[i].close + ", " + 
-                  (string) rates[i].tick_volume + ");";
-         //Alert(query);
+         string query = "INSERT INTO quotations" +
+                        "(PriceDate, AssetId, TimeframeId, OpenPrice, HighPrice, LowPrice, ClosePrice, Volume) " +
+                        "VALUES (" + 
+                        "'" + dateToTime(rates[i].time) + "', " + 
+                        (string) assetId + ", " + 
+                        (string) timeframeId + ", " + 
+                        (string) rates[i].open + ", " + 
+                        (string) rates[i].high + ", " + 
+                        (string) rates[i].low + ", " + 
+                        (string) rates[i].close + ", " + 
+                        (string) rates[i].tick_volume + ");";
          insert(query);
-         
-         //Try updating.
-         string updateQuery = "UPDATE quotations_" + symbol + "_" + periodToString(timeframe) + " SET " + 
-                  " OpenPrice = " + (string) rates[i].open + ", " + 
-                  " HighPrice = " + (string) rates[i].high + ", " + 
-                  " LowPrice = " + (string) rates[i].low + ", " + 
-                  " ClosePrice = " + (string) rates[i].close + ", " + 
-                  " Volume = " + (string) rates[i].tick_volume + " " + 
-                  " WHERE PriceDate = " + "'" + dateToTime(rates[i].time) + "';";                 
-         //Alert(updateQuery);
-         insert(updateQuery);
-         
+
       }
-  
-  
-      string lastUpdateQuery = "UPDATE last_updates " +
-                  "SET Last_Quotation_Update = " + "'" + dateToTime(lastRate) + "' " +
-                  "WHERE Symbol = " + "'" + symbol + "_" + periodToString(timeframe) + "';";
-      Alert(lastUpdateQuery);
-      insert(lastUpdateQuery);
-  
-      
+
       return copied;
       
      }
-   else Print("Failed to get history data for the symbol ", Symbol());
+  else Print("Failed to get history data for the symbol ", Symbol());
   
   return 0;
    
@@ -125,6 +132,7 @@ int InsertSingleQuotationSet(string symbol, ENUM_TIMEFRAMES timeframe, datetime 
 int getRates(string symbol, ENUM_TIMEFRAMES timeframe, datetime startDate, MqlRates& rates[]){
    int copied = CopyRates(symbol, timeframe, startDate, TimeCurrent(), rates); //);
    return ArrayRange(rates, 0);
+   
 }
 
 
@@ -140,3 +148,7 @@ int getAllAvailableRates(string symbol, ENUM_TIMEFRAMES timeframe, int startPos,
    return ArrayRange(rates, 0);
 }
 
+void checkDataConsistency(){
+   string query = "CALL _checkQuotationsConsistency();";
+   insert(query);   
+}
