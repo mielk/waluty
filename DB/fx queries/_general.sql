@@ -16,6 +16,7 @@ CREATE PROCEDURE _checkQuotationsConsistency()
 		START TRANSACTION;
 			CALL _feedCalendarTable();
 			CALL _deleteRedundantQuotations();
+            CALL _addMissingQuotations();
             CALL _stampQuotationsLastUpdate();
         COMMIT;
         

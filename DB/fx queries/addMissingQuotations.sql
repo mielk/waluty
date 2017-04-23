@@ -5,10 +5,7 @@ CREATE PROCEDURE createTemporaryTablesForAddingMissingQuotations(_assetId INT)
 	BEGIN
     
 		DECLARE _lastUpdateDate DATETIME;
-        
-        #SET _lastUpdateDate = getLastUpdateDate(0, 0, 1);
-        SET _lastUpdateDate = getLastUpdateDate(0, 0, 0);
-    
+        SET _lastUpdateDate = getLastUpdateDate(0, 0, 1);
     
 		# Basic missing quotations table (with dates after last quotation).
 		DROP TEMPORARY TABLE IF EXISTS tempTable_AddMissingQuotations;
@@ -24,7 +21,6 @@ CREATE PROCEDURE createTemporaryTablesForAddingMissingQuotations(_assetId INT)
 				ON q.PriceDate = d.Date AND q.timeframeId = d.timeframeId
 			WHERE
 				q.PriceDate IS NULL;
-		
         
         # Table containing last update dates for given asset and various timeframes.
 		DROP TEMPORARY TABLE IF EXISTS tempTable_MaxQuotationDateForAssetByTimeframes;
@@ -40,7 +36,11 @@ CREATE PROCEDURE createTemporaryTablesForAddingMissingQuotations(_assetId INT)
         # Remove out of date range records.
         CALL removeOutOfDateRangeRecords();
         
+		
+        #select * from tempTable_AddMissingQuotations;        
+        
     END //
+
 
 DROP PROCEDURE IF EXISTS removeOutOfDateRangeRecords //
 CREATE PROCEDURE removeOutOfDateRangeRecords()
@@ -106,7 +106,7 @@ CREATE PROCEDURE insertRecordsForMissingDates(_assetId INT)
 DROP PROCEDURE IF EXISTS removeTemporaryTablesForAddingMissingQuotations //
 CREATE PROCEDURE removeTemporaryTablesForAddingMissingQuotations()
 	BEGIN
-		#DROP TEMPORARY TABLE IF EXISTS tempTable_AddMissingQuotations;
+		DROP TEMPORARY TABLE IF EXISTS tempTable_AddMissingQuotations;
 		DROP TEMPORARY TABLE IF EXISTS tempTable_MaxQuotationDateForAssetByTimeframes;
         DROP TEMPORARY TABLE IF EXISTS tempTable_RecordsToInsert;
     END //
@@ -141,5 +141,5 @@ CREATE PROCEDURE _addMissingQuotations()
         SELECT 'Done' AS status, COUNT(*) AS QuotationsAfter FROM quotations;
         
 	END //
-
-CALL _addMissingQuotations();
+        
+CALL _addMissingQuotations();    

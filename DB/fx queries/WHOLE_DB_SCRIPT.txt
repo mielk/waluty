@@ -1,0 +1,739 @@
+CREATE TABLE `_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `property` varchar(45) NOT NULL,
+  `value` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `property_UNIQUE` (`property`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `_errors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(255) DEFAULT NULL,
+  `timestamp` datetime DEFAULT NULL,
+  `module` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `adx` (
+  `AdxId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `AssetId` int(11) unsigned NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `PriceDate` datetime NOT NULL,
+  `TR` float DEFAULT NULL,
+  `DM1Pos` float DEFAULT NULL,
+  `DM1Neg` float DEFAULT NULL,
+  `TR14` float DEFAULT NULL,
+  `DM14Pos` float DEFAULT NULL,
+  `DM14Neg` float DEFAULT NULL,
+  `DI14Pos` float DEFAULT NULL,
+  `DI14Neg` float DEFAULT NULL,
+  `DI14Diff` float DEFAULT NULL,
+  `DI14Sum` float DEFAULT NULL,
+  `DX` float DEFAULT NULL,
+  `ADX` float DEFAULT NULL,
+  `DaysUnder20` int(11) DEFAULT NULL,
+  `DaysUnder15` int(11) DEFAULT NULL,
+  `Cross20` float DEFAULT NULL,
+  `DeltaDIPos` float DEFAULT NULL,
+  `DeltaDINeg` float DEFAULT NULL,
+  `DeltaADX` float DEFAULT NULL,
+  `DIPosDirection3D` int(11) DEFAULT NULL,
+  `DIPosDirection2D` int(11) DEFAULT NULL,
+  `DINegDirection3D` int(11) DEFAULT NULL,
+  `DINegDirection2D` int(11) DEFAULT NULL,
+  `ADXDirection3D` int(11) DEFAULT NULL,
+  `ADXDirection2D` int(11) DEFAULT NULL,
+  `DIPosDirectionChanged` int(11) DEFAULT NULL,
+  `DINegDirectionChanged` int(11) DEFAULT NULL,
+  `ADXDirectionChanged` int(11) DEFAULT NULL,
+  `DIDifference` float DEFAULT NULL,
+  `DILinesCrossing` int(11) DEFAULT NULL,
+  PRIMARY KEY (`AdxId`),
+  UNIQUE KEY `Adx_Unique_AssetTimeframeDate` (`AssetId`,`TimeframeId`,`PriceDate`),
+  KEY `Adx_PriceDate` (`PriceDate`),
+  KEY `Adx_TimeframeId` (`TimeframeId`),
+  KEY `Adx_AssetId` (`AssetId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+CREATE TABLE `analyses` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `AnalysisName` varchar(45) NOT NULL,
+  `Symbol` varchar(45) NOT NULL,
+  `FirstAnalysedItemDate` datetime NOT NULL,
+  `LastAnalysedItemDate` datetime NOT NULL,
+  `AnalysedUnits` int(11) NOT NULL,
+  `AnalysisStart` datetime NOT NULL,
+  `AnalysisEnd` datetime NOT NULL,
+  `AnalysisTotalTime` float DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4034 DEFAULT CHARSET=utf8;
+CREATE TABLE `analysis_types` (
+  `AnalysisTypeId` int(11) NOT NULL,
+  `AnalysisTypeName` varchar(45) NOT NULL,
+  PRIMARY KEY (`AnalysisTypeId`),
+  UNIQUE KEY `AnalysisTypeName_UNIQUE` (`AnalysisTypeName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `currencies` (
+  `Id` int(10) unsigned NOT NULL,
+  `CurrencyName` varchar(3) NOT NULL,
+  `CurrencyFullName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `CurrencyName` (`CurrencyName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `dates` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Date` datetime NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `IndexNumber` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  KEY `index_Date` (`Date`),
+  KEY `index_Timeframe` (`TimeframeId`),
+  KEY `index_IndexNumber` (`IndexNumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=539034 DEFAULT CHARSET=utf8;
+CREATE TABLE `extrema` (
+  `ExtremumId` int(11) NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) NOT NULL,
+  `Type` int(11) NOT NULL,
+  `PriceDate` datetime NOT NULL,
+  `EarlierCounter` int(11) NOT NULL,
+  `LaterCounter` int(11) NOT NULL,
+  `EarlierAmplitude` float DEFAULT NULL,
+  `LaterAmplitude` float DEFAULT NULL,
+  `Volatility` float NOT NULL,
+  `EarlierChange1` float DEFAULT NULL,
+  `EarlierChange2` float DEFAULT NULL,
+  `EarlierChange3` float DEFAULT NULL,
+  `EarlierChange5` float DEFAULT NULL,
+  `EarlierChange10` float DEFAULT NULL,
+  `LaterChange1` float DEFAULT NULL,
+  `LaterChange2` float DEFAULT NULL,
+  `LaterChange3` float DEFAULT NULL,
+  `LaterChange5` float DEFAULT NULL,
+  `LaterChange10` float DEFAULT NULL,
+  `Timestamp` datetime NOT NULL,
+  `IsOpen` bit(1) DEFAULT b'0',
+  PRIMARY KEY (`ExtremumId`),
+  KEY `PriceDate` (`PriceDate`),
+  KEY `Symbol` (`Symbol`)
+) ENGINE=InnoDB AUTO_INCREMENT=1187260 DEFAULT CHARSET=utf8;
+CREATE TABLE `last_updates` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `AssetId` int(11) NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `AnalysisTypeId` int(11) NOT NULL,
+  `LastDate` datetime NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `LastUpdates_Unique_AssetTimeframeAnalysis` (`AssetId`,`AnalysisTypeId`,`TimeframeId`),
+  KEY `LastUpdates_AssetId` (`AssetId`),
+  KEY `LastUpdates_TimeframeId` (`TimeframeId`),
+  KEY `LastUpdates_AnalysisId` (`AnalysisTypeId`),
+  CONSTRAINT `lastUpdates_analysisTypes` FOREIGN KEY (`AnalysisTypeId`) REFERENCES `analysis_types` (`AnalysisTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+CREATE TABLE `macd` (
+  `MacdId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `AssetId` int(11) unsigned NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `PriceDate` datetime NOT NULL,
+  `MA13` float DEFAULT NULL,
+  `EMA13` float DEFAULT NULL,
+  `MA26` float DEFAULT NULL,
+  `EMA26` float DEFAULT NULL,
+  `MACDLine` float DEFAULT NULL,
+  `SignalLine` float DEFAULT NULL,
+  `Histogram` float DEFAULT NULL,
+  `HistogramAvg` float DEFAULT NULL,
+  `HistogramExtremum` float DEFAULT NULL,
+  `DeltaHistogram` float DEFAULT NULL,
+  `DeltaHistogramPositive` int(11) DEFAULT NULL,
+  `DeltaHistogramNegative` int(11) DEFAULT NULL,
+  `DeltaHistogramZero` int(11) DEFAULT NULL,
+  `HistogramDirection2D` int(1) DEFAULT NULL,
+  `HistogramDirection3D` int(1) DEFAULT NULL,
+  `HistogramDirectionChanged` int(11) DEFAULT NULL,
+  `HistogramToOX` int(1) DEFAULT NULL,
+  `HistogramRow` int(11) DEFAULT NULL,
+  `OxCrossing` float DEFAULT NULL,
+  `MacdPeak` int(11) DEFAULT NULL,
+  `LastMACDPeak` float DEFAULT NULL,
+  `MACDPeakSlope` float DEFAULT NULL,
+  `MACDTrough` int(11) DEFAULT NULL,
+  `LastMACDTrough` float DEFAULT NULL,
+  `MACDTroughSlope` float DEFAULT NULL,
+  PRIMARY KEY (`MacdId`),
+  UNIQUE KEY `Macd_Unique_AssetTimeframeDate` (`AssetId`,`TimeframeId`,`PriceDate`),
+  KEY `Macd_PriceDate` (`PriceDate`),
+  KEY `Macd_TimeframeId` (`TimeframeId`),
+  KEY `Macd_AssetId` (`AssetId`)
+) ENGINE=InnoDB AUTO_INCREMENT=574571 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+CREATE TABLE `markets` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `shortName` varchar(3) COLLATE utf8_polish_ci NOT NULL,
+  `startTime` varchar(8) COLLATE utf8_polish_ci DEFAULT NULL,
+  `endTime` varchar(8) COLLATE utf8_polish_ci DEFAULT NULL,
+  `isAroundClock` bit(1) DEFAULT b'0',
+  `isActive` bit(1) DEFAULT b'1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+CREATE TABLE `pairs` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(6) NOT NULL,
+  `BaseCurrency` int(3) NOT NULL,
+  `QuoteCurrency` int(3) NOT NULL,
+  `IsActive` bit(1) NOT NULL DEFAULT b'1',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `PairName` (`Name`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+CREATE TABLE `prices` (
+  `PriceId` int(10) NOT NULL AUTO_INCREMENT,
+  `AssetId` int(10) unsigned NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `PriceDate` datetime NOT NULL,
+  `DeltaClosePrice` double DEFAULT NULL,
+  `PriceDirection3D` int(10) DEFAULT NULL,
+  `PriceDirection2D` int(10) DEFAULT NULL,
+  `PeakByCloseEvaluation` double DEFAULT NULL,
+  `PeakByHighEvaluation` double DEFAULT NULL,
+  `TroughByCloseEvaluation` double DEFAULT NULL,
+  `TroughByLowEvaluation` double DEFAULT NULL,
+  `PriceGap` double DEFAULT '0',
+  `CloseRatio` double DEFAULT NULL,
+  `ExtremumRatio` double DEFAULT NULL,
+  PRIMARY KEY (`PriceId`),
+  UNIQUE KEY `Prices_Unique_AssetTimeframeDate` (`TimeframeId`,`AssetId`,`PriceDate`),
+  KEY `Prices_AssetId` (`AssetId`),
+  KEY `Prices_TimeframeId` (`TimeframeId`),
+  KEY `Prices_PriceDate` (`PriceDate`)
+) ENGINE=InnoDB AUTO_INCREMENT=692596 DEFAULT CHARSET=utf8;
+CREATE TABLE `quotations` (
+  `QuotationId` int(10) NOT NULL AUTO_INCREMENT,
+  `PriceDate` datetime NOT NULL,
+  `AssetId` int(10) NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `OpenPrice` double NOT NULL,
+  `HighPrice` double NOT NULL,
+  `LowPrice` double NOT NULL,
+  `ClosePrice` double NOT NULL,
+  `RealClosePrice` double DEFAULT NULL,
+  `Volume` double DEFAULT NULL,
+  PRIMARY KEY (`QuotationId`),
+  UNIQUE KEY `Quotations_Unique_AssetTimeframeDate` (`PriceDate`,`AssetId`,`TimeframeId`),
+  KEY `Quotations_PriceDate` (`PriceDate`),
+  KEY `Quotations_AssetId` (`AssetId`),
+  KEY `Quotations_TimeframeId` (`TimeframeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3111784 DEFAULT CHARSET=utf8;
+CREATE TABLE `timeframes` (
+  `Id` int(11) NOT NULL,
+  `Symbol` varchar(6) NOT NULL,
+  `PeriodCounter` double DEFAULT NULL,
+  `IsActive` bit(1) NOT NULL DEFAULT b'1',
+  `PeriodUnit` varchar(45) NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `Symbol` (`Symbol`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_all_symbols` AS select `f`.`Name` AS `PairName`,`tf`.`Symbol` AS `Timeframe`,concat(`f`.`Name`,'_',`tf`.`Symbol`) AS `symbol`,`f`.`Id` AS `AssetId`,`tf`.`Id` AS `TimeframeId` from (`pairs` `f` join `timeframes` `tf`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_dates_for_timeframe` AS select `dates`.`Id` AS `Id`,`dates`.`Date` AS `Date`,`dates`.`TimeframeId` AS `TimeframeId`,`dates`.`IndexNumber` AS `IndexNumber` from `dates` where (`dates`.`TimeframeId` = `TIMEFRAMEID`());
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_quotation_date_ranges` AS select `quotations`.`AssetId` AS `AssetId`,`quotations`.`TimeframeId` AS `TimeframeId`,min(`quotations`.`PriceDate`) AS `minDate`,max(`quotations`.`PriceDate`) AS `maxDate` from `quotations` where (`quotations`.`OpenPrice` > 0) group by `quotations`.`AssetId`,`quotations`.`TimeframeId`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_quotations_for_symbol` AS select `quotations`.`PriceDate` AS `PriceDate` from `quotations` where ((`quotations`.`AssetId` = `ASSETID`()) and (`quotations`.`TimeframeId` = `TIMEFRAMEID`()));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_redundant_quotations` AS select `q`.`PriceDate` AS `PriceDate`,`d`.`Id` AS `Id`,`d`.`Date` AS `Date`,`d`.`TimeframeId` AS `TimeframeId`,`d`.`IndexNumber` AS `IndexNumber` from (`v_quotations_for_symbol` `q` left join `v_dates_for_timeframe` `d` on((`q`.`PriceDate` = `d`.`Date`))) where isnull(`d`.`Date`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_symbols_last_updates` AS select `p`.`Id` AS `assetId`,`t`.`Id` AS `timeframeId`,concat(`p`.`Name`,'_',`t`.`Symbol`) AS `symbol`,coalesce(`v`.`maxDate`,'2001-01-01 00:00:00') AS `lastUpdate` from ((`v_quotation_date_ranges` `v` join `pairs` `p`) join `timeframes` `t`) where ((`v`.`AssetId` = `p`.`Id`) and (`v`.`TimeframeId` = `t`.`Id`));
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `_addMissingQuotations`()
+BEGIN
+        DECLARE _assetId INT;
+		DECLARE done INT DEFAULT FALSE;
+		DECLARE cursor_i CURSOR FOR SELECT DISTINCT AssetId FROM v_all_symbols ORDER BY AssetId ASC;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+        
+		OPEN cursor_i;
+		add_loop: LOOP
+			FETCH cursor_i INTO _assetId;
+			IF done THEN
+				LEAVE add_loop;
+			END IF;
+            CALL addMissingQuotationsForSingleAsset(_assetId);
+		END LOOP;
+        
+        SELECT 'Done' AS status, COUNT(*) AS QuotationsAfter FROM quotations;
+        
+	END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `_checkQuotationsConsistency`()
+BEGIN
+
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+			ROLLBACK;
+        END;
+
+        DECLARE EXIT HANDLER FOR SQLWARNING
+        BEGIN
+			ROLLBACK;
+        END;        
+
+		START TRANSACTION;
+			CALL _feedCalendarTable();
+			CALL _deleteRedundantQuotations();
+            CALL _addMissingQuotations();
+            CALL _stampQuotationsLastUpdate();
+        COMMIT;
+        
+        SELECT 'Checking quotations consistency: Done' AS ProcessStatus;
+
+    END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `_deleteRedundantQuotations`()
+BEGIN
+    
+		DECLARE _analysisTypeId INT DEFAULT 1;
+		DECLARE _lastUpdateDate DATETIME;
+        DECLARE _ids NVARCHAR(1000);
+    
+		#SELECT 'Quotations before: ', COUNT(*) FROM quotations;    
+    
+        SET _lastUpdateDate = getLastUpdateDate(0, 0, _analysisTypeId);
+        CALL createRedundantQuotationTemporaryTable(_lastUpdateDate);
+        SET _ids = getRedundantQuotationIdsAsString();
+        
+        IF char_length(_ids) > 0 THEN
+			SET @sql =  CONCAT("DELETE FROM quotations WHERE QuotationId IN (", _ids, ");");
+            PREPARE stmt FROM @sql;
+            EXECUTE stmt;
+            DEALLOCATE PREPARE stmt;
+            #SELECT CONCAT('IDs: ', _ids, ' removed');
+        END IF;        
+        
+        #SELECT 'Quotations after: ', COUNT(*) FROM quotations;
+        
+	END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `_feedCalendarTable`()
+BEGIN
+		DECLARE timeframeId INT;
+		DECLARE done INT DEFAULT FALSE;
+		DECLARE cursor_i CURSOR FOR SELECT Id FROM timeframes ORDER BY Id ASC;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+		OPEN cursor_i;    
+		update_loop: LOOP
+			FETCH cursor_i INTO timeframeId;
+			IF done THEN
+				LEAVE update_loop;
+			END IF;
+            CALL feedCalendarTableForSingleTimeframe(timeframeId);
+		END LOOP;
+	END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `_stampQuotationsLastUpdate`()
+BEGIN
+		DECLARE recordExists INT;
+        DECLARE latestQuotationDate DATETIME;
+        
+        SELECT EXISTS(SELECT * FROM last_updates WHERE assetId = 0 AND timeframeId = 0 AND analysisTypeId = 1) INTO recordExists;
+        SET latestQuotationDate = getLatestQuotationDate();
+        
+        IF recordExists = 1 THEN
+			UPDATE last_updates SET LastDate = latestQuotationDate WHERE assetId = 0 AND timeframeId = 0 AND analysisTypeId = 1;
+        ELSEIF recordExists = 0 THEN
+			INSERT INTO last_updates(AssetId, TimeframeId, AnalysisTypeId, LastUpdate) VALUES(0, 0, 1, latestQuotationDate);
+        END IF;
+        
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addMissingQuotationsForSingleAsset`(_assetId INT)
+BEGIN
+		CALL createTemporaryTablesForAddingMissingQuotations(_assetId);
+        CALL insertRecordsForMissingDates(_assetId);        
+        CALL removeTemporaryTablesForAddingMissingQuotations();
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `appendDatesIndex`()
+BEGIN
+		SET @rank=0;
+        
+        DROP TEMPORARY TABLE IF EXISTS tempTable_AppendingDatesIndex;
+        CREATE TEMPORARY TABLE tempTable_AppendingDatesIndex 
+			SELECT 
+				@rank := @rank + 1 AS Rank,
+				d.Id AS Id
+			FROM
+				tDates d
+			ORDER BY date;
+
+
+		UPDATE tDates d
+		JOIN tempTable_AppendingDatesIndex b
+		ON d.Id = b.Id
+		SET d.indexNumber = b.rank;
+
+		DROP TEMPORARY TABLE IF EXISTS tempTable_AppendingDatesIndex;
+
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createDatesTable`()
+BEGIN
+        DROP TEMPORARY TABLE IF EXISTS tDates;
+        CREATE TEMPORARY TABLE tDates (Id INT PRIMARY KEY, Date DATETIME, TimeframeId INT, IndexNumber INT(11) NULL);
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createIdsTable`(counter INT)
+BEGIN
+		DROP TEMPORARY TABLE IF EXISTS tIds;
+		CREATE TEMPORARY TABLE tIds (Id INT PRIMARY KEY AUTO_INCREMENT, Fake INT(1) NULL);
+		INSERT INTO tIds(Fake) SELECT NULL FROM quotations LIMIT counter;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createRedundantQuotationTemporaryTable`(_lastUpdateDate DATETIME)
+BEGIN
+		DROP TEMPORARY TABLE IF EXISTS tempRedundantQuotations;
+        CREATE TEMPORARY TABLE tempRedundantQuotations SELECT
+															q.QuotationId
+														FROM
+															(SELECT * FROM quotations WHERE PriceDate >= _lastUpdateDate) q
+															LEFT JOIN 
+															(SELECT * FROM dates WHERE Date >= _lastUpdateDate) d
+															ON q.PriceDate = d.Date AND q.timeframeId = d.timeframeId
+														WHERE
+															d.Date IS NULL;
+
+                               
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createTemporaryTablesForAddingMissingQuotations`(_assetId INT)
+BEGIN
+    
+		DECLARE _lastUpdateDate DATETIME;
+        SET _lastUpdateDate = getLastUpdateDate(0, 0, 1);
+    
+		# Basic missing quotations table (with dates after last quotation).
+		DROP TEMPORARY TABLE IF EXISTS tempTable_AddMissingQuotations;
+        CREATE TEMPORARY TABLE tempTable_AddMissingQuotations 
+				(INDEX tempIndex_Date (Date ASC), 
+				INDEX tempIndex_Timeframe (TimeframeId ASC))
+			SELECT
+				d.timeframeId, d.Date
+			FROM
+				(SELECT * FROM quotations WHERE assetId = _assetId AND PriceDate >= _lastUpdateDate) q
+				RIGHT JOIN 
+				(SELECT * FROM dates WHERE Date >= _lastUpdateDate) d
+				ON q.PriceDate = d.Date AND q.timeframeId = d.timeframeId
+			WHERE
+				q.PriceDate IS NULL;
+        
+        # Table containing last update dates for given asset and various timeframes.
+		DROP TEMPORARY TABLE IF EXISTS tempTable_MaxQuotationDateForAssetByTimeframes;
+        CREATE TEMPORARY TABLE tempTable_MaxQuotationDateForAssetByTimeframes 
+			SELECT 
+				timeframeId, MAX(PriceDate) AS maxDate, MIN(PriceDate) AS minDate
+			FROM
+				quotations
+			WHERE
+				assetId = 1
+			GROUP BY timeframeId;
+        
+        # Remove out of date range records.
+        CALL removeOutOfDateRangeRecords();
+        
+		
+        #select * from tempTable_AddMissingQuotations;        
+        
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteWeekendDates`()
+BEGIN
+        DELETE FROM tDates
+        WHERE 
+			TimeframeId < 7
+			AND (weekday(Date) >= 5
+            OR (DAY(Date) = 1 AND MONTH(Date) = 1 AND TimeframeId < 7)
+            OR (DAY(Date) = 25 AND MONTH(Date) = 12 AND TimeframeId < 7)
+            OR (DAY(Date) = 24 AND MONTH(Date) = 12 AND HOUR(Date) >= 21)
+            OR (DAY(Date) = 31 AND MONTH(Date) = 12 AND HOUR(Date) >= 21));
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `feedCalendarTableForSingleTimeframe`(timeframeId INT)
+BEGIN
+		DECLARE initialDate DATETIME;
+        DECLARE lastIndex INT;
+		DECLARE periodUnit NVARCHAR(45);
+		DECLARE periodMultiplier INT;
+		DECLARE difference INT;
+		
+		SET initialDate = getLastDateInDatesTable(timeframeId);
+        SET lastIndex = getLastIndexInDatesTable(timeframeId);
+		SET periodUnit = getPeriodUnitForTimeframe(timeframeId);
+		SET periodMultiplier = getPeriodMultiplierForTimeframe(timeframeId);    
+		SET difference = getDateDifferenceInTimeframes(initialDate, NOW(), periodUnit, periodMultiplier);
+        
+        #SELECT initialDate, lastIndex, periodUnit, periodMultiplier, difference;
+        
+        CALL createIdsTable(difference);
+        CALL createDatesTable();
+        CALL populateDatesTable(timeframeId, initialDate, periodMultiplier, periodUnit);
+        CALL deleteWeekendDates();
+        CALL appendDatesIndex();
+		CALL moveDatesToDestinationTable(lastIndex);
+        
+		DROP TEMPORARY TABLE IF EXISTS tIds;
+        DROP TEMPORARY TABLE IF EXISTS tDates;
+		
+	END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertRecordsForMissingDates`(_assetId INT)
+BEGIN
+        DECLARE _timeframeId INT;
+        DECLARE _date DATETIME;
+		DECLARE done INT DEFAULT FALSE;
+		DECLARE cursor_i CURSOR FOR SELECT DISTINCT TimeframeId, Date FROM tempTable_AddMissingQuotations ORDER BY Date ASC;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+        
+		OPEN cursor_i;
+		add_loop: LOOP
+			FETCH cursor_i INTO _timeframeId, _date;
+			IF done THEN
+				LEAVE add_loop;
+			END IF;
+            
+            INSERT INTO quotations (PriceDate, AssetId, TimeframeId, OpenPrice, HighPrice, LowPrice, ClosePrice, RealClosePrice, Volume)
+			SELECT
+				_date AS PriceDate,
+				q.AssetId,
+				q.TimeFrameId,
+				q.ClosePrice,
+				q.ClosePrice,
+				q.ClosePrice,
+				q.ClosePrice,
+				NULL,
+				-1
+			FROM 
+				quotations q
+			WHERE
+				assetId = _assetId 
+				AND timeframeId = _timeframeId 
+				AND PriceDate = (SELECT 
+									Date
+								FROM 
+									dates
+								WHERE	
+									timeframeId = _timeframeId AND 
+									IndexNumber = (SELECT IndexNumber - 1 FROM dates WHERE timeframeId = _timeframeId AND Date = _date));
+
+		END LOOP;
+
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `moveDatesToDestinationTable`(lastIndex INT)
+BEGIN
+		
+        INSERT INTO dates(Date, TimeframeId, IndexNumber)
+		SELECT 
+			Date, timeframeId AS TimeframeId, lastIndex + IndexNumber AS IndexNumber 
+        FROM tDates;
+        
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `populateDatesTable`(timeframe INT, initialDate DATETIME, periodMultiplier INT, periodUnit NVARCHAR(45))
+BEGIN	
+    
+		IF periodUnit = 'MINUTE' THEN
+			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier MINUTE), timeframe FROM tIds;
+		ELSEIF periodUnit = 'HOUR' THEN
+            INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier HOUR), timeframe FROM tIds;
+        ELSEIF periodUnit = 'DAY' THEN
+			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier DAY), timeframe FROM tIds;
+		ELSEIF periodUnit = 'WEEK' THEN
+			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier * 7 DAY), timeframe FROM tIds;
+        ELSEIF periodUnit = 'MONTH' THEN
+			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier MONTH), timeframe FROM tIds;
+        END IF;
+        
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `removeOutOfDateRangeRecords`()
+BEGIN
+
+		DELETE tempTable_AddMissingQuotations
+		FROM 
+			tempTable_AddMissingQuotations 
+			INNER JOIN tempTable_MaxQuotationDateForAssetByTimeframes 
+            USING (timeframeId)
+		WHERE
+			Date > MaxDate OR
+			Date < MinDate;    
+    
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `removeTemporaryTablesForAddingMissingQuotations`()
+BEGIN
+		DROP TEMPORARY TABLE IF EXISTS tempTable_AddMissingQuotations;
+		DROP TEMPORARY TABLE IF EXISTS tempTable_MaxQuotationDateForAssetByTimeframes;
+        DROP TEMPORARY TABLE IF EXISTS tempTable_RecordsToInsert;
+    END$$
+DELIMITER ;
+
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `ASSETID`() RETURNS int(11)
+    NO SQL
+    DETERMINISTIC
+RETURN @assetId$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getDateDifferenceInTimeframes`(startDateTime DATETIME, endDateTime DATETIME, periodUnit NVARCHAR(45), multiplier INT) RETURNS float
+BEGIN
+		
+        DECLARE difference FLOAT;
+        
+        IF periodUnit = 'MINUTE' THEN
+			SET difference = TIMESTAMPDIFF(MINUTE, startDateTime, endDateTime);
+		ELSEIF periodUnit = 'HOUR' THEN
+			SET difference = TIMESTAMPDIFF(HOUR, startDateTime, endDateTime);
+        ELSEIF periodUnit = 'DAY' THEN
+			SET difference = DATEDIFF(endDateTime, startDateTime);
+		ELSEIF periodUnit = 'WEEK' THEN
+			SET difference = FLOOR(DATEDIFF(endDateTime, startDateTime) / 7) + IF(weekday(startDateTime) > weekday(endDateTime), 1, 0);
+        ELSEIF periodUnit = 'MONTH' THEN
+			SET difference = 12 * (YEAR(endDateTime) - YEAR(startDateTime)) + MONTH(endDateTime) - MONTH(startDateTime);
+        END IF;
+        
+        RETURN difference / multiplier;
+        
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getFirstDateInDatesTable`(timeframeId INT) RETURNS datetime
+BEGIN
+		DECLARE result DATETIME;
+        SELECT MIN(Date) INTO result
+        FROM dates d
+        WHERE d.TimeframeId = timeframeId;
+        
+        RETURN result;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getLastDateInDatesTable`(timeframeId INT) RETURNS datetime
+BEGIN
+    
+		DECLARE result DATETIME;
+        SELECT MAX(Date) INTO result
+        FROM dates d
+        WHERE d.TimeframeId = timeframeId;
+        
+        RETURN result;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getLastIndexInDatesTable`(timeframeId INT) RETURNS int(11)
+BEGIN
+    
+		DECLARE result INT;
+        SELECT MAX(indexNumber) INTO result
+        FROM dates d
+        WHERE d.TimeframeId = timeframeId;
+        
+        RETURN result;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getLastUpdateDate`(_assetId INT, _timeframeId INT, _analysisTypeId INT) RETURNS datetime
+BEGIN
+    
+		DECLARE result DATETIME;
+        SELECT LastDate INTO result
+        FROM last_updates lu
+        WHERE lu.AssetId = _assetId AND lu.TimeframeId = _timeframeId AND lu.AnalysisTypeId = _analysisTypeId;
+        
+        IF result IS NULL THEN
+			SET result = '1990-01-01';
+        END IF;
+        
+        RETURN result;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getLatestQuotationDate`() RETURNS datetime
+BEGIN
+		DECLARE latestQuotationDate DATETIME;
+        SELECT MAX(PriceDate) INTO latestQuotationDate FROM quotations;
+        RETURN latestQuotationDate;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getPeriodMultiplierForTimeframe`(timeframeId INT) RETURNS int(11)
+BEGIN
+		DECLARE result INT;
+        
+        SELECT PeriodCounter INTO result
+        FROM timeframes tf
+        WHERE tf.Id = timeframeId;
+        
+        RETURN result;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getPeriodUnitForTimeframe`(timeframeId INT) RETURNS varchar(45) CHARSET utf8
+BEGIN
+		DECLARE result NVARCHAR(45);
+        SELECT PeriodUnit INTO result
+        FROM timeframes tf
+        WHERE tf.Id = timeframeId;
+        
+        RETURN result;
+    END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getRedundantQuotationIdsAsString`() RETURNS varchar(1000) CHARSET utf8
+BEGIN
+		
+        DECLARE quotationId INT;
+		DECLARE done INT DEFAULT FALSE;
+        DECLARE ids NVARCHAR(1000) DEFAULT '';
+		DECLARE cursor_i CURSOR FOR SELECT * FROM tempRedundantQuotations;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+        
+		OPEN cursor_i;
+		getQuotations_loop: LOOP
+			FETCH cursor_i INTO quotationId;
+			IF done THEN
+				LEAVE getQuotations_loop;
+			END IF;
+            
+            IF char_length(ids) > 0 THEN
+				SET ids = CONCAT(ids, ', ', quotationId);
+            ELSEIF char_length(ids) = 0 THEN
+				SET ids = quotationId;
+            END IF;
+            
+		END LOOP;
+		
+        RETURN ids;
+        
+	END$$
+DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `TIMEFRAMEID`() RETURNS int(11)
+    NO SQL
+    DETERMINISTIC
+RETURN @timeframeId$$
+DELIMITER ;
