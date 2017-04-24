@@ -76,9 +76,6 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         private IEnumerable<FxPair> pairsCollection()
         {
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
-            Currency.injectService(mockService.Object);
 
             List<FxPair> fxPairs = new List<FxPair>();
             fxPairs.Add(new FxPair(1, "EURUSD", 2, 1));

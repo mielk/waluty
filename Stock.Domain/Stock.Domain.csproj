@@ -77,6 +77,7 @@
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
     <Compile Include="Services\Abstract\IAnalyzerProcessor.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IPriceProcessor.cs" />
+    <Compile Include="Services\Abstract\MarketServices\ICurrencyService.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\Analyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ICandlestickAnalyzer.cs" />
     <Compile Include="Services\Abstract\IQuotationService.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Services\Concrete\AnalysisServices\CandlestickAnalyzer.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\PriceProcessor.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\TrendlineProcessor.cs" />
+    <Compile Include="Services\Concrete\MarketServices\CurrencyService.cs" />
     <Compile Include="Services\Concrete\QuotationService.cs" />
     <Compile Include="Services\Concrete\SimulationQuotationService.cs" />
     <Compile Include="Services\Concrete\SimulationService.cs" />
@@ -111,12 +113,17 @@
     <Compile Include="Services\Factories\AnalysisDataServiceFactory.cs" />
     <Compile Include="Services\Factories\AnalyzerFactory.cs" />
     <Compile Include="Services\Factories\MarketServiceFactory.cs" />
+    <Compile Include="Services\Factories\ServiceFactory.cs" />
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
     <Compile Include="Services\Factories\ProcessServiceFactory.cs" />
     <Compile Include="Services\Factories\DataServiceFactory.cs" />
     <Compile Include="Services\IService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\adfadsfasdf\Stock.Utils.csproj">
+      <Project>{b789b6ff-7998-4e37-873c-fdf69044377f}</Project>
+      <Name>Stock.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stock.DAL\Stock.DAL.csproj">
       <Project>{3eb97661-0497-42ef-88ba-67642bdc8175}</Project>
       <Name>Stock.DAL</Name>

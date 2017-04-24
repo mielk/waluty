@@ -94,7 +94,7 @@ namespace Stock.Domain.Entities
 
         public FxPair(int id, string name, int baseCurrencyId, int quoteCurrencyId) : base(id, name)
         {
-            assignCurrencies(Currency.GetCurrencyById(baseCurrencyId), Currency.GetCurrencyById(quoteCurrencyId));
+            assignCurrencies(Currency.ById(baseCurrencyId), Currency.ById(quoteCurrencyId));
         }
 
         private void assignCurrencies(Currency baseCurrency, Currency quoteCurrency)

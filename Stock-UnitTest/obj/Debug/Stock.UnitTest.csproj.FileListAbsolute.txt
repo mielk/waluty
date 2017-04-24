@@ -59,3 +59,5 @@ C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\EntityFramework.xml
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock.UnitTest.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.pdb
+C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\adfadsfasdf.dll
+C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\adfadsfasdf.pdb

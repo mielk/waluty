@@ -139,34 +139,5 @@ namespace Stock.Domain.Services
         }
                                                                         #endregion fx
 
-
-
-                                                                        #region currencies
-        public IEnumerable<Currency> GetCurrencies()
-        {
-            var dtos = _repository.GetCurrencies();
-            return dtos.Select(Currency.FromDto).ToList();
-        }
-
-        public Currency GetCurrencyById(int id)
-        {
-            var dto = _repository.GetCurrencyById(id);
-            return Currency.FromDto(dto);
-        }
-
-        public Currency GetCurrencyByName(string name)
-        {
-            var dto = _repository.GetCurrencyByName(name);
-            return Currency.FromDto(dto);
-        }
-
-        public Currency GetCurrencyBySymbol(string symbol)
-        {
-            var dto = _repository.GetCurrencyBySymbol(symbol);
-            return Currency.FromDto(dto);
-        }
-                                                                        #endregion currencies
-
-
     }
 }

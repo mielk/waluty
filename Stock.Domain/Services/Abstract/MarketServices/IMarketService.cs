@@ -40,14 +40,6 @@ namespace Stock.Domain.Services
                                                                         #endregion fx
 
 
-                                                                        #region currencies
-        IEnumerable<Currency> GetCurrencies();
-        Currency GetCurrencyById(int id);
-        Currency GetCurrencyByName(string name);
-        Currency GetCurrencyBySymbol(string symbol);
-                                                                        #endregion currencies
-
-
 
     }
 }

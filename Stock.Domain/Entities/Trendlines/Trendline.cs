@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Enums;
 using Stock.Domain.Services;
+using Stock.Utils;
 
 namespace Stock.Domain.Entities
 {
@@ -345,7 +346,7 @@ namespace Stock.Domain.Entities
             int currentIndex = item.Index;
             int previousHitIndex = this.PreviousHit.Index;
 
-            if (!previousHitIndex.isInRange(previousIndex, currentIndex)){
+            if (!previousHitIndex.IsInRange(previousIndex, currentIndex)){
                 return this.TotalOverBreak;
             }
 

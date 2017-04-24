@@ -644,14 +644,6 @@ namespace Stock.DAL.Repositories
             string query = string.Format(sql, tableName);
             IEnumerable<PriceDto> prices;
 
-
-            //Check if table exists. If not, create it.
-            if (!CheckIfTableExists(tableName))
-            {
-                CreateTable(tableName, PricesTableTemplate);
-            }
-
-
             using (var context = new EFDbContext())
             {
                 prices = context.Database.SqlQuery<PriceDto>(query).ToList();
@@ -661,49 +653,6 @@ namespace Stock.DAL.Repositories
 
         }
 
-        public bool CheckIfTableExists(string tableName)
-        {
-
-            using (var context = new EFDbContext())
-            {
-
-                bool exists = context.Database
-                                     .SqlQuery<int?>(@"
-                         SELECT 1 FROM information_schema.tables AS T
-                         WHERE table_schema = 'fx' 
-                                AND table_name = '" + tableName + "' LIMIT 1")
-                                     .SingleOrDefault() != null;
-
-
-                return exists;
-
-
-            }
-
-        }
-
-        public bool CreateTable(string tableName, string template)
-        {
-
-            string sqlCommand = string.Format("CREATE TABLE {0} LIKE {1}", tableName, template);
-
-
-            using (var context = new EFDbContext())
-            {
-
-                try
-                {
-                    context.Database.ExecuteSqlCommand(sqlCommand);
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-
-            }
-     
-        }
 
         public IEnumerable<String> GetStats()
         {

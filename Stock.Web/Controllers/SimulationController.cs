@@ -15,15 +15,11 @@ namespace Stock.Web.Controllers
     {
 
         private readonly ISimulationServiceFactory ssf;
-        //private readonly ISimulationService simulationService;
 
         public SimulationController(ISimulationServiceFactory serviceFactory)
         {
             this.ssf = serviceFactory;
         }
-
-        //
-        // GET: /Simulation/
 
         public ActionResult Index()
         {

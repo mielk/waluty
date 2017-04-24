@@ -64,8 +64,10 @@
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Infrastructure\RepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Abstract\ICurrencyRepository.cs" />
     <Compile Include="Repository\Abstract\IDataRepository.cs" />
     <Compile Include="Repository\Abstract\IMarketRepository.cs" />
+    <Compile Include="Repository\Concrete\EFCurrencyRepository.cs" />
     <Compile Include="Repository\Concrete\EFDataRepository.cs" />
     <Compile Include="Repository\Concrete\EFMarketRepository.cs" />
     <Compile Include="TransferObjects\DataDto\AnalysisDto.cs" />

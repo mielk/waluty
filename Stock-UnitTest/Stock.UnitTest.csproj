@@ -66,6 +66,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stock.DAL\Helpers\DbStringBuilderUnitTest.cs" />
     <Compile Include="Stock.DAL\Helpers\HelperMethodUnitTest.cs" />
+    <Compile Include="Stock.DAL\Infrastructure\RepositoryFactoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\EFCurrencyRepositoryUnitTest.cs" />
     <Compile Include="Stock.Domain\Entities\AssetUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\CurrencyUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\FxPairUnitTests.cs" />
@@ -75,8 +77,9 @@
     <Compile Include="Stock.Domain\Entities\DataItemUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\AssetTimeframeUnitTest.cs" />
     <Compile Include="Stock.Domain\Enums\AnalysisTypeHelperUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\Analyzers\PriceAnalyzerUnitTests.cs" />
+    <Compile Include="Stock.Domain\Services\AnalysisServices\PriceAnalyzerUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Factories\AnalyzerFactoryUnitTests.cs" />
+    <Compile Include="Stock.Domain\Services\MarketServices\CurrencyServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\QuotationServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\EfficiencyTests.cs" />
     <Compile Include="Stock.Domain\_TODO\PriceUnitTests.cs" />
@@ -89,13 +92,18 @@
     <Compile Include="Stock.Domain\Services\HelperMethodsUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\UnitTestInitializer.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendlineAnalyzerUnitTests.cs" />
+    <Compile Include="Stock.Utils\HelperMethods\ContainerHelperMethodsUnitTest.cs" />
+    <Compile Include="Stock.Utils\HelperMethods\NumericHelperMethodsUnitTest.cs" />
     <Compile Include="tools\UnitTestTools.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Stock.DAL\Infrastructure\" />
     <Folder Include="Stock.Web\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\adfadsfasdf\Stock.Utils.csproj">
+      <Project>{b789b6ff-7998-4e37-873c-fdf69044377f}</Project>
+      <Name>Stock.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stock.DAL\Stock.DAL.csproj">
       <Project>{3eb97661-0497-42ef-88ba-67642bdc8175}</Project>
       <Name>Stock.DAL</Name>

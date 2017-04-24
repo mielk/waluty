@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Moq;
 using Stock.Domain.Services;
 using System.Linq;
+using Stock.Utils;
 
 namespace Stock_UnitTest.Stock.Domain.Entities
 {
@@ -16,44 +17,28 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         private const int DEFAULT_ID = 1;
         private const string DEFAULT_NAME = "US Dollar";
         private const string DEFAULT_SYMBOL = "USD";
-        private const string DEFAULT_BASE_CURRENCY_SYMBOL = "USD";
-        private const string DEFAULT_QUOTE_CURRENCY_SYMBOL = "EUR";
-        private const int DEFAULT_BASE_CURRENCY_ID = 1;
-        private const int DEFAULT_QUOTE_CURRENCY_ID = 2;
-
 
         //Arrange.
-        private Currency getCurrency(int id)
-        {
-            return currenciesCollection().SingleOrDefault(c => c.Id == id);
-        }
-
-        private Currency getCurrencyBySymbol(string symbol)
-        {
-            return currenciesCollection().SingleOrDefault(c => c.Symbol.Equals(symbol));
-        }
-
-        private IEnumerable<Currency> currenciesCollection()
+        private IEnumerable<Currency> getCurrenciesCollection()
         {
             List<Currency> currencies = new List<Currency>();
-            currencies.Add(new Currency(DEFAULT_BASE_CURRENCY_ID, DEFAULT_BASE_CURRENCY_SYMBOL, "US Dollar"));
-            currencies.Add(new Currency(DEFAULT_QUOTE_CURRENCY_ID, DEFAULT_QUOTE_CURRENCY_SYMBOL, "Euro"));
+            currencies.Add(new Currency(1, "USD", "US Dollar"));
+            currencies.Add(new Currency(2, "EUR", "Euro"));
             currencies.Add(new Currency(3, "JPY", "Japanese Yen"));
             currencies.Add(new Currency(4, "GBP", "British Pound"));
             return currencies;
         }
 
+
+
         [TestMethod]
         public void constructor_new_instance_has_proper_id_and_name()
         {
             var currency = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
-
             Assert.AreEqual(DEFAULT_ID, currency.Id);
             Assert.AreEqual(DEFAULT_NAME, currency.Name);
             Assert.AreEqual(DEFAULT_SYMBOL, currency.Symbol);
-
         }
-
 
         [TestMethod]
         public void currencyFromDto_has_the_same_properties_as_dto()
@@ -68,49 +53,78 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
 
-
-
-        #region getting currencies
         [TestMethod]
-        public void getCurrency_returns_the_same_instance_each_time()
+        public void Equals_returnFalse_forObjectOfOtherType()
+        {
+            var baseObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
+            var comparedObject = new Market(1, "market");
+            Assert.IsFalse(baseObject.Equals(comparedObject));
+        }
+
+        [TestMethod]
+        public void Equals_returnFalse_ifIdDifferent()
+        {
+            var baseObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
+            var comparedObject = new Currency(DEFAULT_ID + 1, DEFAULT_SYMBOL, DEFAULT_NAME);
+            Assert.IsFalse(baseObject.Equals(comparedObject));
+        }
+
+        [TestMethod]
+        public void Equals_returnFalse_ifNameDifferent()
+        {
+            var baseObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
+            var comparedObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME + 'a');
+            Assert.IsFalse(baseObject.Equals(comparedObject));
+        }
+
+        [TestMethod]
+        public void Equals_returnFalse_ifSymbolDifferent()
+        {
+            var baseObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
+            var comparedObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL + 'a', DEFAULT_NAME);
+            Assert.IsFalse(baseObject.Equals(comparedObject));
+        }
+
+        [TestMethod]
+        public void Equals_returnTrue_ifCurrenciesEqual()
+        {
+            var baseObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
+            var comparedObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
+            Assert.IsTrue(baseObject.Equals(comparedObject));
+        }
+
+
+
+        [TestMethod]
+        public void ById_returnsTheSameInstance_eachTime()
         {
 
             //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
+            mockService.Setup(c => c.GetCurrencyById(DEFAULT_ID)).Returns(new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL));
             Currency.injectService(mockService.Object);
 
             //Act
-            var eur1 = Currency.GetCurrencyById(2);
-            var usd1 = Currency.GetCurrencyById(1);
-            var jpy1 = Currency.GetCurrencyById(3);
-            var gbp1 = Currency.GetCurrencyById(4);
-            var eur2 = Currency.GetCurrencyByName("Euro");
-            var usd2 = Currency.GetCurrencyBySymbol("USD");
-            var eur3 = Currency.GetCurrencyBySymbol("EUR");
-            var jpy2 = Currency.GetCurrencyBySymbol("JPY");
-            var eur4 = Currency.GetCurrencyById(2);
+            var usd1 = Currency.ById(DEFAULT_ID);
+            var usd2 = Currency.BySymbol(DEFAULT_SYMBOL);
 
-            Assert.IsTrue(eur1 == eur2);
-            Assert.IsTrue(eur1 == eur3);
-            Assert.IsTrue(eur1 == eur4);
-            Assert.IsTrue(usd1 == usd2);
-            Assert.IsTrue(jpy1 == jpy2);
+            //Assert
+            Assert.AreSame(usd1, usd2);
 
         }
 
         [TestMethod]
-        public void getCurrency_returns_null_if_not_exist_in_repository()
+        public void ById_returnsNull_ifNotExistInRepository()
         {
 
-            const int NOT_EXISTING_ID = 20;
-
             //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
+            Currency nullCurrency = null;
+            mockService.Setup(c => c.GetCurrencyById(DEFAULT_ID)).Returns(nullCurrency);
             Currency.injectService(mockService.Object);
 
             //Act.
-            Currency currency = Currency.GetCurrencyById(NOT_EXISTING_ID);
+            Currency currency = Currency.ById(DEFAULT_ID);
 
             //Assert.
             Assert.IsNull(currency);
@@ -118,130 +132,97 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
         [TestMethod]
-        public void getCurrency_returns_existing_instance_by_id()
+        public void ById_returnsExistingInstance()
         {
 
             //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
+            Currency expectedCurrency = new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL);
+            mockService.Setup(c => c.GetCurrencyById(DEFAULT_ID)).Returns(expectedCurrency);
             Currency.injectService(mockService.Object);
 
             //Act.
-            Currency currency = Currency.GetCurrencyById(DEFAULT_ID);
+            Currency currency = Currency.ById(DEFAULT_ID);
 
             //Assert.
-            Assert.IsNotNull(currency);
-            Assert.AreEqual(DEFAULT_ID, currency.Id);
-            Assert.AreEqual(DEFAULT_NAME, currency.Name);
-            Assert.AreEqual(DEFAULT_SYMBOL, currency.Symbol);
+            Assert.AreSame(currency, expectedCurrency);
 
         }
 
         [TestMethod]
-        public void getCurrency_returns_existing_instance_by_name()
+        public void ByName_returnsExistingInstance()
         {
 
             //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
+            Currency expectedCurrency = new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL);
+            mockService.Setup(c => c.GetCurrencyByName(DEFAULT_NAME)).Returns(expectedCurrency);
             Currency.injectService(mockService.Object);
 
             //Act.
-            Currency currency = Currency.GetCurrencyByName(DEFAULT_NAME);
+            Currency currency = Currency.ByName(DEFAULT_NAME);
 
             //Assert.
-            Assert.IsNotNull(currency);
-            Assert.AreEqual(DEFAULT_ID, currency.Id);
-            Assert.AreEqual(DEFAULT_NAME, currency.Name);
-            Assert.AreEqual(DEFAULT_SYMBOL, currency.Symbol);
+            Assert.AreSame(currency, expectedCurrency);
 
         }
 
         [TestMethod]
-        public void getCurrency_returns_existing_instance_by_symbol()
+        public void BySymbol_returnsExistingInstance()
         {
 
             //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
+            Currency expectedCurrency = new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL);
+            mockService.Setup(c => c.GetCurrencyBySymbol(DEFAULT_SYMBOL)).Returns(expectedCurrency);
             Currency.injectService(mockService.Object);
 
             //Act.
-            Currency currency = Currency.GetCurrencyBySymbol(DEFAULT_SYMBOL);
+            Currency currency = Currency.BySymbol(DEFAULT_SYMBOL);
 
             //Assert.
-            Assert.IsNotNull(currency);
-            Assert.AreEqual(DEFAULT_ID, currency.Id);
-            Assert.AreEqual(DEFAULT_NAME, currency.Name);
-            Assert.AreEqual(DEFAULT_SYMBOL, currency.Symbol);
+            Assert.AreSame(currency, expectedCurrency);
 
         }
 
         [TestMethod]
-        public void getCurrency_after_adding_new_item_returns_existing_instance()
+        public void ById_returnsExistingInstance_afterAddingNewItem()
         {
 
             //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
+            mockService.Setup(c => c.GetCurrencyById(1)).Returns(new Currency(1, "USD", "US Dollar"));
+            mockService.Setup(c => c.GetCurrencyById(2)).Returns(new Currency(2, "EUR", "Euro"));
             Currency.injectService(mockService.Object);
 
-            //Act.
-            Currency eur = Currency.GetCurrencyById(1);
-            Currency usd = Currency.GetCurrencyById(2);
-            Currency eurAgain = Currency.GetCurrencyById(1);
+            //Act
+            Currency eur = Currency.ById(2);
+            Currency usd = Currency.ById(1);
+            Currency eurAgain = Currency.ById(2);
 
-            //Assert.
+            //Assert
             Assert.AreSame(eur, eurAgain);
 
         }
 
         [TestMethod]
-        public void getAllCurrencies_returns_existing_instances()
+        public void GetAllCurrencies_returnsProperCollection()
         {
 
             //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencies()).Returns(currenciesCollection());
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
+            var expectedCurrencies = getCurrenciesCollection();
+            mockService.Setup(c => c.GetAllCurrencies()).Returns(expectedCurrencies);
             Currency.injectService(mockService.Object);
 
             //Act.
-            var usd = Currency.GetCurrencyById(1);
-            var eur = Currency.GetCurrencyById(2);
             var currencies = Currency.GetAllCurrencies();
 
             //Assert.
-            Assert.IsTrue(eur == currencies.SingleOrDefault(c => c.Symbol.Equals("EUR")));
-            Assert.IsTrue(usd == currencies.SingleOrDefault(c => c.Symbol.Equals("USD")));
+            bool areEquivalent = currencies.ScrambledEquals(expectedCurrencies);
+            Assert.IsTrue(areEquivalent);
 
         }
-
-
-        [TestMethod]
-        public void getAllCurrencies_returns_proper_number_of_items()
-        {
-
-            //Arrange
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
-            mockService.Setup(c => c.GetCurrencies()).Returns(currenciesCollection());
-            mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
-            Currency.injectService(mockService.Object);
-
-            //Act.
-            var usd = Currency.GetCurrencyById(1);
-            var eur = Currency.GetCurrencyById(2);
-            var currencies = Currency.GetAllCurrencies();
-
-            //Asssert.
-            Assert.AreEqual(4, currencies.Count());
-
-        }
-
-        #endregion getting currencies
-
-
-
 
     }
 }

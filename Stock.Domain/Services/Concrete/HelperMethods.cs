@@ -191,33 +191,6 @@ namespace Stock.Domain.Services
             return (type == TrendlineType.Resistance ? 1 : -1);
         }
 
-        public static bool isInRange(this double value, double low, double up)
-        {
-            return false;
-        }
-
-        public static bool isInRange(this int value, int low, int up)
-        {
-
-            int min;
-            int max;
-
-            if (low < up)
-            {
-                min = low;
-                max = up;
-            }
-            else
-            {
-                min = low;
-                max = up;
-            }
-
-
-            return (value >= min && value <= max);
-
-        }
-
 
 
 

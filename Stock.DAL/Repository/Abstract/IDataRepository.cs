@@ -38,9 +38,6 @@ namespace Stock.DAL.Repositories
         void AddAdx(AdxDto adx, string symbol);
         void UpdateAdx(AdxDto adx, string symbol);
         void AddAnalysisInfo(AnalysisDto analysis);
-        
-        bool CheckIfTableExists(string tableName);
-        bool CreateTable(string tableName, string template);
 
         object GetDataSetProperties(string symbol);
         LastDates GetSymbolLastItems(string symbol, string analysisType);

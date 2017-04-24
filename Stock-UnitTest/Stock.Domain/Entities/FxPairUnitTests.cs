@@ -57,7 +57,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         private IEnumerable<FxPair> pairsCollection()
         {
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
             Currency.injectService(mockService.Object);
 
@@ -80,22 +80,22 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
 
             //Arrange.
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
             mockService.Setup(c => c.GetCurrencyBySymbol(It.IsAny<string>())).Returns((string a) => getCurrencyBySymbol(a));
-            mockService.Setup(c => c.GetCurrencies()).Returns(currenciesCollection());
+            mockService.Setup(c => c.GetAllCurrencies()).Returns(currenciesCollection());
             Currency.injectService(mockService.Object);
 
             //Act.
-            var baseCurrency = Currency.GetCurrencyBySymbol(DEFAULT_BASE_CURRENCY_SYMBOL);
-            var quoteCurrency = Currency.GetCurrencyBySymbol(DEFAULT_QUOTE_CURRENCY_SYMBOL);
+            var baseCurrency = Currency.BySymbol(DEFAULT_BASE_CURRENCY_SYMBOL);
+            var quoteCurrency = Currency.BySymbol(DEFAULT_QUOTE_CURRENCY_SYMBOL);
             var pair = new FxPair(DEFAULT_ID, DEFAULT_NAME, baseCurrency, quoteCurrency);
 
             //Assert.
             Assert.AreEqual(DEFAULT_ID, pair.Id);
             Assert.AreEqual(DEFAULT_NAME, pair.Name);
-            Assert.IsTrue(Currency.GetCurrencyById(DEFAULT_BASE_CURRENCY_ID) == pair.BaseCurrency);
-            Assert.IsTrue(Currency.GetCurrencyBySymbol(DEFAULT_QUOTE_CURRENCY_SYMBOL) == pair.QuoteCurrency);
+            Assert.IsTrue(Currency.ById(DEFAULT_BASE_CURRENCY_ID) == pair.BaseCurrency);
+            Assert.IsTrue(Currency.BySymbol(DEFAULT_QUOTE_CURRENCY_SYMBOL) == pair.QuoteCurrency);
 
         }
 
@@ -105,17 +105,17 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
 
             //Arrange.
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
-            mockService.Setup(c => c.GetCurrencies()).Returns(currenciesCollection());
+            mockService.Setup(c => c.GetAllCurrencies()).Returns(currenciesCollection());
             Currency.injectService(mockService.Object);
 
             //Act.
             var pair = new FxPair(DEFAULT_ID, DEFAULT_NAME, DEFAULT_BASE_CURRENCY_ID, DEFAULT_QUOTE_CURRENCY_ID);
 
             //Assert.
-            Assert.IsTrue(Currency.GetCurrencyById(DEFAULT_BASE_CURRENCY_ID) == pair.BaseCurrency);
-            Assert.IsTrue(Currency.GetCurrencyById(DEFAULT_QUOTE_CURRENCY_ID) == pair.QuoteCurrency);
+            Assert.IsTrue(Currency.ById(DEFAULT_BASE_CURRENCY_ID) == pair.BaseCurrency);
+            Assert.IsTrue(Currency.ById(DEFAULT_QUOTE_CURRENCY_ID) == pair.QuoteCurrency);
 
         }
 
@@ -125,9 +125,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
 
             //Arrange.
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
-            mockService.Setup(c => c.GetCurrencies()).Returns(currenciesCollection());
+            mockService.Setup(c => c.GetAllCurrencies()).Returns(currenciesCollection());
             Currency.injectService(mockService.Object);
 
             //Act.
@@ -145,9 +145,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
 
             //Arrange.
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
-            mockService.Setup(c => c.GetCurrencies()).Returns(currenciesCollection());
+            mockService.Setup(c => c.GetAllCurrencies()).Returns(currenciesCollection());
             Currency.injectService(mockService.Object);
 
             //Act.
@@ -161,7 +161,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         public void constructor_throw_exception_if_given_currency_doesnt_exist()
         {
             //Arrange.
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
             Currency.injectService(mockService.Object);
 
@@ -177,12 +177,12 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
 
             //Arrange.
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
             Currency.injectService(mockService.Object);
 
             //Act.
-            Currency currency = Currency.GetCurrencyById(1);
+            Currency currency = Currency.ById(1);
             var pair = new FxPair(DEFAULT_ID, DEFAULT_NAME, currency, currency);
 
         }
@@ -193,7 +193,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
 
             //Arrange.
-            Mock<IMarketService> mockService = new Mock<IMarketService>();
+            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(It.IsAny<int>())).Returns((int a) => getCurrency(a));
             Currency.injectService(mockService.Object);
             FxPairDto dto = new FxPairDto { Id = 1, Name = "EURUSD", BaseCurrency = 1, QuoteCurrency = 2, IsActive = true };
@@ -208,8 +208,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.AreEqual(true, pair.IsActive);
             Assert.AreEqual(1, pair.BaseCurrency.Id);
             Assert.AreEqual(2, pair.QuoteCurrency.Id);
-            Assert.IsTrue(Currency.GetCurrencyById(1) == pair.BaseCurrency);
-            Assert.IsTrue(Currency.GetCurrencyById(2) == pair.QuoteCurrency);
+            Assert.IsTrue(Currency.ById(1) == pair.BaseCurrency);
+            Assert.IsTrue(Currency.ById(2) == pair.QuoteCurrency);
             
         }
 

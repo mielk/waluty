@@ -35,13 +35,5 @@ namespace Stock.DAL.Repositories
         FxPairDto GetFxPair(string symbol);
                                                 #endregion fx
 
-
-                                                #region currencies
-        IEnumerable<CurrencyDto> GetCurrencies();
-        CurrencyDto GetCurrencyById(int id);
-        CurrencyDto GetCurrencyByName(string name);
-        CurrencyDto GetCurrencyBySymbol(string symbol);
-                                                #endregion currencies
-
     }
 }

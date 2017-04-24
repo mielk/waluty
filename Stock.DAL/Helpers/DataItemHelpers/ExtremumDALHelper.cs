@@ -24,7 +24,6 @@ namespace Stock.DAL.Helpers
             return string.Empty;
         }
 
-
         public static string InsertSql(ExtremumDto dto)
         {
             var dbStringBuilder = new DbStringBuilder();

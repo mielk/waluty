@@ -12,17 +12,6 @@ namespace Stock.Web.Controllers
 {
     public class ProcessController : Controller
     {
-        //private readonly IProcessService processService;
-
-
-        //public ProcessController(IProcessService processService)
-        //{
-        //    this.processService = processService;
-        //}
-
-
-        //
-        // GET: /Categories/
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -31,13 +20,11 @@ namespace Stock.Web.Controllers
         }
 
 
-
         [HttpGet]
         [AllowAnonymous]
         public ActionResult RunProcess(string asset, string timeframe, bool fromScratch, string analysisTypes)
         {
             
-
             //Convert the given names of analysis into enumerations.
             Asset _asset = Asset.GetAssetByName(asset);
             Timeframe _timeframe = Timeframe.GetTimeframeByShortName(timeframe);
@@ -49,9 +36,6 @@ namespace Stock.Web.Controllers
             var json = new { value = result };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
-
-
-
 
     }
 }

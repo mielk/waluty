@@ -11,9 +11,9 @@ namespace Stock.Domain.Services
     public interface IAnalyzer
     {
         //Basic.
-        void injectAsset(Asset asset);
-        void injectTimeframe(Timeframe timeframe);
-        void injectAssetTimeframe(AssetTimeframe assetTimeframe);
+        //void injectAsset(Asset asset);
+        //void injectTimeframe(Timeframe timeframe);
+        //void injectAssetTimeframe(AssetTimeframe assetTimeframe);
         Asset getAsset();
         Timeframe getTimeframe();
         AssetTimeframe getAssetTimeframe();

@@ -10,6 +10,7 @@ namespace Stock.Web.Controllers
 {
     public class MarketController : Controller
     {
+
         private readonly IMarketService _service;
 
 
@@ -18,8 +19,6 @@ namespace Stock.Web.Controllers
             _service = MarketServiceFactory.CreateService();
         }
 
-        //
-        // GET: /Categories/
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -28,14 +27,12 @@ namespace Stock.Web.Controllers
         }
 
 
-
         [HttpGet]
         [AllowAnonymous]
         public ActionResult GetMarkets()
         {
             var markets = _service.GetMarkets();
             return Json(markets, JsonRequestBehavior.AllowGet);
-
         }
 
     }

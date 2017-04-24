@@ -11,100 +11,49 @@ namespace Stock.Domain.Entities
 {
     public class Currency
     {
+
+        //Static properties.
+        private static ICurrencyService service = ServiceFactory.GetCurrencyService();
+
+        //Instance properties.
         public int Id { get; set; }
         public string Symbol { get; set; }
         public string Name { get; set; }
-        //Static.
-        private static IMarketService service = MarketServiceFactory.CreateService();
-        private static IEnumerable<Currency> currencies = new List<Currency>();
 
 
 
-        #region static methods
+        #region STATIC_METHODS
 
-        public static void injectService(IMarketService _service)
+        public static void injectService(ICurrencyService _service)
         {
             service = _service;
         }
 
         public static IEnumerable<Currency> GetAllCurrencies()
         {
-            List<Currency> result = new List<Currency>();
-            var dbCurrencies = service.GetCurrencies();
-            foreach (var currency in dbCurrencies)
-            {
-                var match = currencies.SingleOrDefault(c => c.Id == currency.Id);
-                if (match == null)
-                {
-                    currencies = currencies.Concat(new[] { currency });
-                    match = currency;
-                }
-
-                result.Add(match);
-
-            }
-
-            return result;
-
+            return service.GetAllCurrencies();
         }
 
-        public static Currency GetCurrencyById(int id)
+        public static Currency ById(int id)
         {
-
-            var currency = currencies.SingleOrDefault(m => m.Id == id);
-
-            if (currency == null)
-            {
-                currency = service.GetCurrencyById(id);
-                if (currency != null)
-                {
-                    currencies = currencies.Concat(new[] { currency });
-                }
-            }
-
-            return currency;
-
+            return service.GetCurrencyById(id);
         }
 
-        public static Currency GetCurrencyByName(string name)
+        public static Currency ByName(string name)
         {
-
-            var currency = currencies.SingleOrDefault(m => m.Name.Equals(name));
-
-            if (currency == null)
-            {
-                currency = service.GetCurrencyByName(name);
-                if (currency != null)
-                {
-                    currencies = currencies.Concat(new[] { currency });
-                }
-            }
-
-            return currency;
-
+            return service.GetCurrencyByName(name);
         }
 
-        public static Currency GetCurrencyBySymbol(string symbol)
+        public static Currency BySymbol(string symbol)
         {
-
-            var currency = currencies.SingleOrDefault(m => m.Symbol.Equals(symbol));
-
-            if (currency == null)
-            {
-                currency = service.GetCurrencyBySymbol(symbol);
-                if (currency != null)
-                {
-                    currencies = currencies.Concat(new[] { currency });
-                }
-            }
-
-            return currency;
-
+            return service.GetCurrencyBySymbol(symbol);
         }
 
-        #endregion static methods
+        #endregion STATIC_METHODS
 
 
+
+        #region CONSTRUCTORS
 
         public Currency(int id, string symbol, string name)
         {
@@ -115,9 +64,23 @@ namespace Stock.Domain.Entities
 
         public static Currency FromDto(CurrencyDto dto)
         {
-
             var currency = new Currency(dto.Id, dto.Symbol, dto.Name);
             return currency;
+        }
+
+        #endregion CONSTRUCTORS
+
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(Currency)) return false;
+
+            Currency compared = (Currency)obj;
+            if ((compared.Id) != Id) return false;
+            if (!compared.Name.Equals(Name)) return false;
+            if (!compared.Symbol.Equals(Symbol)) return false;
+            return true;
 
         }
 
