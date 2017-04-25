@@ -36,12 +36,12 @@ namespace Stock.Domain.Services
 
         public Asset getAsset()
         {
-            return AssetTimeframe.asset;
+            return AssetTimeframe.Asset;
         }
 
         public Timeframe getTimeframe()
         {
-            return AssetTimeframe.timeframe;
+            return AssetTimeframe.Timeframe;
         }
 
 
@@ -60,7 +60,7 @@ namespace Stock.Domain.Services
         public bool Start(AssetTimeframe atf, AnalysisType[] types)
         {
 
-            this.Symbol = atf.Symbol();
+            this.Symbol = atf.GetSymbol();
             this.types = types;
 
             try

@@ -252,7 +252,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             IEnumerable<Asset> assets = service.GetAllAssets();
 
             //Assert
-            Asset fromResultCollection = assets.SingleOrDefault(a => a.Id == dto.Id);
+            Asset fromResultCollection = assets.SingleOrDefault(a => a.GetId() == dto.Id);
             Assert.AreSame(fromResultCollection, asset);
 
             //Clear
@@ -298,7 +298,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             IEnumerable<Asset> assets = service.GetAssets("a", 3);
 
             //Assert
-            Asset fromResultCollection = assets.SingleOrDefault(a => a.Id == dto.Id);
+            Asset fromResultCollection = assets.SingleOrDefault(a => a.GetId() == dto.Id);
             Assert.AreSame(fromResultCollection, asset);
 
             //Clear
@@ -344,7 +344,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             IEnumerable<Asset> assets = service.GetAssetsForMarket(3);
 
             //Assert
-            Asset fromResultCollection = assets.SingleOrDefault(a => a.Id == dto.Id);
+            Asset fromResultCollection = assets.SingleOrDefault(a => a.GetId() == dto.Id);
             Assert.AreSame(fromResultCollection, asset);
 
             //Clear

@@ -194,10 +194,10 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var pair = new FxPair(DEFAULT_ID, DEFAULT_SYMBOL, baseCurrency, quoteCurrency);
 
             //Assert.
-            Assert.AreEqual(DEFAULT_ID, pair.Id);
-            Assert.AreEqual(DEFAULT_SYMBOL, pair.Name);
-            Assert.AreSame(baseCurrency, pair.BaseCurrency);
-            Assert.AreSame(quoteCurrency, pair.QuoteCurrency);
+            Assert.AreEqual(DEFAULT_ID, pair.GetId());
+            Assert.AreEqual(DEFAULT_SYMBOL, pair.GetName());
+            Assert.AreSame(baseCurrency, pair.GetBaseCurrency());
+            Assert.AreSame(quoteCurrency, pair.GetQuoteCurrency());
 
             //Clear
             Currency.restoreDefaultService();
@@ -215,8 +215,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var pair = new FxPair(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_BASE_CURRENCY_ID, DEFAULT_QUOTE_CURRENCY_ID);
 
             //Assert.
-            Assert.AreSame(Currency.ById(DEFAULT_BASE_CURRENCY_ID), pair.BaseCurrency);
-            Assert.AreSame(Currency.ById(DEFAULT_QUOTE_CURRENCY_ID), pair.QuoteCurrency);
+            Assert.AreSame(Currency.ById(DEFAULT_BASE_CURRENCY_ID), pair.GetBaseCurrency());
+            Assert.AreSame(Currency.ById(DEFAULT_QUOTE_CURRENCY_ID), pair.GetQuoteCurrency());
 
             //Clear
             Currency.restoreDefaultService();
@@ -306,10 +306,10 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var pair = FxPair.FromDto(dto);
 
             //Assert.
-            Assert.AreEqual(DEFAULT_ID, pair.Id);
-            Assert.AreEqual(DEFAULT_SYMBOL, pair.Name);
-            Assert.AreSame(Currency.ById(1), pair.BaseCurrency);
-            Assert.AreSame(Currency.ById(2), pair.QuoteCurrency);
+            Assert.AreEqual(DEFAULT_ID, pair.GetId());
+            Assert.AreEqual(DEFAULT_SYMBOL, pair.GetName());
+            Assert.AreSame(Currency.ById(1), pair.GetBaseCurrency());
+            Assert.AreSame(Currency.ById(2), pair.GetQuoteCurrency());
 
             //Clear
             Currency.restoreDefaultService();

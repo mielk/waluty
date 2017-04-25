@@ -57,8 +57,8 @@ namespace Stock.Web.Controllers
         {
             return new
             {
-                id = asset.Id,
-                name = asset.Symbol,
+                id = asset.GetId(),
+                name = asset.GetSymbol(),
                 asset = asset
             };
         }

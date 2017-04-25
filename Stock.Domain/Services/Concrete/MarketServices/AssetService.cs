@@ -73,7 +73,7 @@ namespace Stock.Domain.Services
             List<Asset> result = new List<Asset>();
             foreach (var dto in dtos)
             {
-                Asset asset = assets.SingleOrDefault(a => a.Id == dto.Id);
+                Asset asset = assets.SingleOrDefault(a => a.GetId() == dto.Id);
                 if (asset == null)
                 {
                     asset = Asset.FromDto(dto);
@@ -84,11 +84,9 @@ namespace Stock.Domain.Services
             return result;
         }
 
-
-
         public Asset GetAssetById(int id)
         {
-            var asset = assets.SingleOrDefault(a => a.Id == id);
+            var asset = assets.SingleOrDefault(a => a.GetId() == id);
             if (asset == null)
             {
                 var dto = _repository.GetAssetById(id);
@@ -105,7 +103,7 @@ namespace Stock.Domain.Services
 
         public Asset GetAssetBySymbol(string symbol)
         {
-            var asset = assets.SingleOrDefault(a => a.Symbol.Equals(symbol, StringComparison.CurrentCultureIgnoreCase));
+            var asset = assets.SingleOrDefault(a => a.GetSymbol().Equals(symbol, StringComparison.CurrentCultureIgnoreCase));
             if (asset == null)
             {
                 var dto = _repository.GetAssetBySymbol(symbol);

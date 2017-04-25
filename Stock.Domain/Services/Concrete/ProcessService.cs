@@ -27,7 +27,7 @@ namespace Stock.Domain.Services
         {
             if (assetTimeframe != null)
             {
-                return assetTimeframe.asset;
+                return assetTimeframe.Asset;
             }
             else
             {
@@ -38,7 +38,7 @@ namespace Stock.Domain.Services
         {
             if (assetTimeframe != null)
             {
-                return assetTimeframe.timeframe;
+                return assetTimeframe.Timeframe;
             }
             else
             {
@@ -86,8 +86,8 @@ namespace Stock.Domain.Services
 
             private void checkProperties(){
                 if (assetTimeframe == null) throw new ArgumentNullException("AssetTimeframe is empty");
-                if (assetTimeframe.asset == null) throw new ArgumentNullException("Asset is empty");
-                if (assetTimeframe.timeframe == null) throw new ArgumentNullException("Timeframe is empty");
+                if (assetTimeframe.Asset == null) throw new ArgumentNullException("Asset is empty");
+                if (assetTimeframe.Timeframe == null) throw new ArgumentNullException("Timeframe is empty");
             }
 
         #endregion Setup

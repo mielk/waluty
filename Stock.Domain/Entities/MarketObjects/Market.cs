@@ -16,9 +16,9 @@ namespace Stock.Domain.Entities
         private static IMarketService service = ServiceFactory.GetMarketService();
         
         //Instance properties.
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Symbol { get; set; }
+        private int id { get; set; }
+        private string name { get; set; }
+        private string symbol { get; set; }
         //public DateTime StartTime { get; set; }
         //public DateTime EndTime { get; set; }
         //public bool IsAroundClock { get; set; }
@@ -64,9 +64,9 @@ namespace Stock.Domain.Entities
 
         public Market(int id, string name, string symbol)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Symbol = symbol;
+            this.id = id;
+            this.name = name;
+            this.symbol = symbol;
         }
 
         public static Market FromDto(MarketDto dto)
@@ -78,11 +78,31 @@ namespace Stock.Domain.Entities
         #endregion CONSTRUCTORS
 
 
+        #region ACCESSORS
+
+        public int GetId()
+        {
+            return id;
+        }
+
+        public string GetName()
+        {
+            return name;
+        }
+
+        public string GetSymbol()
+        {
+            return symbol;
+        }
+
+        #endregion ACCESSORS
+
+
         #region API
 
         public IEnumerable<Asset> GetAssets()
         {
-            return Asset.GetAssetsForMarket(Id);
+            return Asset.GetAssetsForMarket(id);
         }
 
         #endregion API
@@ -93,9 +113,9 @@ namespace Stock.Domain.Entities
             if (obj.GetType() != typeof(Market)) return false;
 
             Market compared = (Market)obj;
-            if ((compared.Id) != Id) return false;
-            if (!compared.Name.Equals(Name, StringComparison.CurrentCultureIgnoreCase)) return false;
-            if (!compared.Symbol.Equals(Symbol, StringComparison.CurrentCultureIgnoreCase)) return false;
+            if ((compared.id) != id) return false;
+            if (!compared.name.Equals(name, StringComparison.CurrentCultureIgnoreCase)) return false;
+            if (!compared.symbol.Equals(symbol, StringComparison.CurrentCultureIgnoreCase)) return false;
             return true;
 
         }

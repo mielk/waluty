@@ -121,7 +121,7 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Analyzing single extremu
 
                 /* Dla aktualnie procesowanego ekstremum - znajduje wszystkie wcześniejsze ekstrema, z którym to ekstremum może być sparowane. */
                 var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() &&
-                                    i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis));
+                                    i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.Timeframe.Symbol, -ItemsForAnalysis));
 
 Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Previous: " + previous.ToArray().Length);
 

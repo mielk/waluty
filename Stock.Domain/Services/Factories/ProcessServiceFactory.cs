@@ -31,7 +31,7 @@ namespace Stock.Domain.Services.Factories
 
         public IProcessService GetProcessService(AssetTimeframe atf)
         {
-            string symbol = atf.Symbol();
+            string symbol = atf.GetSymbol();
             IProcessService service = null;
             try
             {

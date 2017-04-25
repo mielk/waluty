@@ -74,12 +74,12 @@ namespace Stock.Domain.Services
 
         public Asset getAsset()
         {
-            return AssetTimeframe.asset;
+            return AssetTimeframe.Asset;
         }
 
         public Timeframe getTimeframe()
         {
-            return AssetTimeframe.timeframe;
+            return AssetTimeframe.Timeframe;
         }
 
         public AnalysisType getAnalysisType()
@@ -120,13 +120,13 @@ namespace Stock.Domain.Services
         {
             if (LastCalculationDate == null) return null;
             var d = (DateTime) LastCalculationDate;
-            return d.addTimeUnits(AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis);
+            return d.addTimeUnits(AssetTimeframe.Timeframe.Symbol, -ItemsForAnalysis);
         }
 
 
         public string getSymbol()
         {
-            return AssetTimeframe.Symbol();
+            return AssetTimeframe.GetSymbol();
         }
 
         public void injectDaysForAnalysis(int value)
@@ -171,8 +171,8 @@ namespace Stock.Domain.Services
 
             //Calculate required index numbers.
             if (LastCalculationDate != null){
-                DateTime ldc = ((DateTime)LastCalculationDate).Proper(AssetTimeframe.timeframe.Symbol);
-                DateTime lastRequiredForRightOnlyAnalysis = ldc.addTimeUnits(AssetTimeframe.timeframe.Symbol, -ItemsForAnalysis);
+                DateTime ldc = ((DateTime)LastCalculationDate).Proper(AssetTimeframe.Timeframe.Symbol);
+                DateTime lastRequiredForRightOnlyAnalysis = ldc.addTimeUnits(AssetTimeframe.Timeframe.Symbol, -ItemsForAnalysis);
                 indexAnalysisStart = findItemIndexByDate(items, lastRequiredForRightOnlyAnalysis);
                 indexLastCalculation = findItemIndexByDate(items, ldc);
             }

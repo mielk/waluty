@@ -26,7 +26,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
             Mock<IMarketService> mockService = new Mock<IMarketService>();
             var expectedMarkets = defaultMarketsCollection().ToArray();
-            var expectedMarket = expectedMarkets.SingleOrDefault(m => m.Id == DEFAULT_ID);
+            var expectedMarket = expectedMarkets.SingleOrDefault(m => m.GetId() == DEFAULT_ID);
             mockService.Setup(s => s.GetMarketById(DEFAULT_ID)).Returns(expectedMarket);
             mockService.Setup(s => s.GetMarketByName(DEFAULT_NAME)).Returns(expectedMarket);
             mockService.Setup(s => s.GetMarketBySymbol(DEFAULT_SHORT_NAME)).Returns(expectedMarket);
@@ -148,9 +148,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var market = new Market(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SHORT_NAME);
 
             //Assert.
-            Assert.AreEqual(DEFAULT_ID, market.Id);
-            Assert.AreEqual(DEFAULT_NAME, market.Name);
-            Assert.AreEqual(DEFAULT_SHORT_NAME, market.Symbol);
+            Assert.AreEqual(DEFAULT_ID, market.GetId());
+            Assert.AreEqual(DEFAULT_NAME, market.GetName());
+            Assert.AreEqual(DEFAULT_SHORT_NAME, market.GetSymbol());
 
         }
 
@@ -168,9 +168,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var market = Market.FromDto(dto);
 
             //Assert.
-            Assert.AreEqual(DEFAULT_ID, market.Id);
-            Assert.AreEqual(DEFAULT_NAME, market.Name);
-            Assert.AreEqual(DEFAULT_SHORT_NAME, market.Symbol);
+            Assert.AreEqual(DEFAULT_ID, market.GetId());
+            Assert.AreEqual(DEFAULT_NAME, market.GetName());
+            Assert.AreEqual(DEFAULT_SHORT_NAME, market.GetSymbol());
 
         }
 
@@ -359,7 +359,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             IEnumerable<Market> markets = Market.GetMarkets();
 
             //Assert.
-            Market comparedMarket = markets.SingleOrDefault(m => m.Id == DEFAULT_ID);
+            Market comparedMarket = markets.SingleOrDefault(m => m.GetId() == DEFAULT_ID);
             Assert.AreSame(market, comparedMarket);
 
         }

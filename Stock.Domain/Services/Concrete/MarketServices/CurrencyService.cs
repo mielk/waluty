@@ -60,7 +60,7 @@ namespace Stock.Domain.Services
             
             foreach (var dto in dtos)
             {
-                Currency currency = currencies.SingleOrDefault(c => c.Id == dto.Id);
+                Currency currency = currencies.SingleOrDefault(c => c.GetId() == dto.Id);
                 if (currency == null)
                 {
                     currency = Currency.FromDto(dto);
@@ -76,7 +76,7 @@ namespace Stock.Domain.Services
         public Currency GetCurrencyById(int id)
         {
 
-            var currency = currencies.SingleOrDefault(c => c.Id == id);
+            var currency = currencies.SingleOrDefault(c => c.GetId() == id);
             if (currency == null)
             {
                 var dto = _repository.GetCurrencyById(id);
@@ -94,7 +94,7 @@ namespace Stock.Domain.Services
         public Currency GetCurrencyByName(string name)
         {
 
-            var currency = currencies.SingleOrDefault(c => c.Name == name);
+            var currency = currencies.SingleOrDefault(c => c.GetName() == name);
             if (currency == null)
             {
                 var dto = _repository.GetCurrencyByName(name);
@@ -112,7 +112,7 @@ namespace Stock.Domain.Services
         public Currency GetCurrencyBySymbol(string symbol)
         {
 
-            var currency = currencies.SingleOrDefault(c => c.Symbol == symbol);
+            var currency = currencies.SingleOrDefault(c => c.GetSymbol() == symbol);
             if (currency == null)
             {
                 var dto = _repository.GetCurrencyBySymbol(symbol);
@@ -155,7 +155,7 @@ namespace Stock.Domain.Services
             List<FxPair> result = new List<FxPair>();
             foreach (var dto in dtos)
             {
-                FxPair pair = fxPairs.SingleOrDefault(p => p.Id == dto.Id);
+                FxPair pair = fxPairs.SingleOrDefault(p => p.GetId() == dto.Id);
                 if (pair == null)
                 {
                     pair = FxPair.FromDto(dto);
@@ -168,7 +168,7 @@ namespace Stock.Domain.Services
 
         public FxPair GetFxPairById(int id)
         {
-            var pair = fxPairs.SingleOrDefault(p => p.Id == id);
+            var pair = fxPairs.SingleOrDefault(p => p.GetId() == id);
             if (pair == null)
             {
                 var dto = _repository.GetFxPairById(id);
@@ -183,7 +183,7 @@ namespace Stock.Domain.Services
 
         public FxPair GetFxPairBySymbol(string symbol)
         {
-            var pair = fxPairs.SingleOrDefault(p => p.Name == symbol);
+            var pair = fxPairs.SingleOrDefault(p => p.GetName() == symbol);
             if (pair == null)
             {
                 var dto = _repository.GetFxPairBySymbol(symbol);

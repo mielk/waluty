@@ -199,7 +199,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DateTime startDate = new DateTime(2016, 8, 1);
             DateTime endDate = new DateTime(2016, 8, 14);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price, AnalysisType.MACD, AnalysisType.ADX };
-            DataItem[] items = UnitTestTools.getDataItemsArray(atf.timeframe.Symbol, startDate, endDate, UnitTestTools.createAnalysisTypeList(types));
+            DataItem[] items = UnitTestTools.getDataItemsArray(atf.Timeframe.Symbol, startDate, endDate, UnitTestTools.createAnalysisTypeList(types));
 
             var mockQuotationService = UnitTestTools.mockedQuotationService();
             mockQuotationService.Setup(q => q.fetchData(It.IsAny<Dictionary<AnalysisType, IAnalyzer>>())).Returns(items);

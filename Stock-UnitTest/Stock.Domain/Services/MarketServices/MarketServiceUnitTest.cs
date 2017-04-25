@@ -217,7 +217,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             IEnumerable<Market> markets = service.GetMarkets();
 
             //Assert
-            Market fromResultCollection = markets.SingleOrDefault(m => m.Id == dto.Id);
+            Market fromResultCollection = markets.SingleOrDefault(m => m.GetId() == dto.Id);
             Assert.AreSame(fromResultCollection, market);
 
         }

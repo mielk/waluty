@@ -61,7 +61,7 @@ namespace Stock.Domain.Services
             List<Market> result = new List<Market>();
             foreach (var dto in dtos)
             {
-                Market market = markets.SingleOrDefault(m => m.Id == dto.Id);
+                Market market = markets.SingleOrDefault(m => m.GetId() == dto.Id);
                 if (market == null)
                 {
                     market = Market.FromDto(dto);
@@ -72,10 +72,9 @@ namespace Stock.Domain.Services
             return result;
         }
 
-
         public Market GetMarketById(int id)
         {
-            var market = markets.SingleOrDefault(a => a.Id == id);
+            var market = markets.SingleOrDefault(m => m.GetId() == id);
             if (market == null)
             {
                 var dto = _repository.GetMarketById(id);
@@ -90,7 +89,7 @@ namespace Stock.Domain.Services
 
         public Market GetMarketByName(string name)
         {
-            var market = markets.SingleOrDefault(a => a.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            var market = markets.SingleOrDefault(a => a.GetName().Equals(name, StringComparison.CurrentCultureIgnoreCase));
             if (market == null)
             {
                 var dto = _repository.GetMarketByName(name);
@@ -105,7 +104,7 @@ namespace Stock.Domain.Services
 
         public Market GetMarketBySymbol(string symbol)
         {
-            var market = markets.SingleOrDefault(a => a.Symbol.Equals(symbol, StringComparison.CurrentCultureIgnoreCase));
+            var market = markets.SingleOrDefault(a => a.GetSymbol().Equals(symbol, StringComparison.CurrentCultureIgnoreCase));
             if (market == null)
             {
                 var dto = _repository.GetMarketBySymbol(symbol);

@@ -16,9 +16,9 @@ namespace Stock.Domain.Entities
         private static ICurrencyService service = ServiceFactory.GetCurrencyService();
 
         //Instance properties.
-        public int Id { get; set; }
-        public string Symbol { get; set; }
-        public string Name { get; set; }
+        private int id { get; set; }
+        private string symbol { get; set; }
+        private string name { get; set; }
 
 
         #region STATIC_METHODS
@@ -60,9 +60,9 @@ namespace Stock.Domain.Entities
 
         public Currency(int id, string symbol, string name)
         {
-            this.Id = id;
-            this.Symbol = symbol;
-            this.Name = name;
+            this.id = id;
+            this.symbol = symbol;
+            this.name = name;
         }
 
         public static Currency FromDto(CurrencyDto dto)
@@ -74,14 +74,34 @@ namespace Stock.Domain.Entities
         #endregion CONSTRUCTORS
 
 
+        #region ACCESSORS
+
+        public int GetId()
+        {
+            return id;
+        }
+
+        public string GetSymbol()
+        {
+            return symbol;
+        }
+
+        public string GetName()
+        {
+            return name;
+        }
+
+        #endregion ACCESSORS
+
+
         public override bool Equals(object obj)
         {
             if (obj.GetType() != typeof(Currency)) return false;
 
             Currency compared = (Currency)obj;
-            if ((compared.Id) != Id) return false;
-            if (!compared.Name.Equals(Name)) return false;
-            if (!compared.Symbol.Equals(Symbol)) return false;
+            if ((compared.id) != id) return false;
+            if (!compared.name.Equals(name)) return false;
+            if (!compared.symbol.Equals(symbol)) return false;
             return true;
 
         }

@@ -34,7 +34,7 @@ namespace Stock.Domain.Services
                 list.Add(at.TableName());
             }
 
-            IEnumerable<DataItemDto> dataItemsDto = _repository.GetDataItems(atf.Symbol(), startDate, endDate, list);
+            IEnumerable<DataItemDto> dataItemsDto = _repository.GetDataItems(atf.GetSymbol(), startDate, endDate, list);
             List<DataItem> dataItems = new List<DataItem>();
             foreach (var dto in dataItemsDto)
             {

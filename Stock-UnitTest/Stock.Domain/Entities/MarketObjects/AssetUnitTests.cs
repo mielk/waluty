@@ -54,9 +54,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var asset = new Asset(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_MARKET_ID);
 
             //Assert
-            Assert.AreEqual(DEFAULT_ID, asset.Id);
-            Assert.AreEqual(DEFAULT_SYMBOL, asset.Symbol);
-            Assert.AreEqual(DEFAULT_MARKET_ID, asset.Market.Id);
+            Assert.AreEqual(DEFAULT_ID, asset.GetId());
+            Assert.AreEqual(DEFAULT_SYMBOL, asset.GetSymbol());
+            Assert.AreEqual(DEFAULT_MARKET_ID, asset.GetMarketId());
 
             //Clear
             Market.restoreDefaultService();
@@ -74,7 +74,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var asset = new Asset(DEFAULT_ID, DEFAULT_SYMBOL, 0);
 
             //Assert
-            Assert.IsNull(asset.Market);
+            Assert.IsNull(asset.GetMarket());
 
             //Clear
             Market.restoreDefaultService();
@@ -93,9 +93,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Asset asset = Asset.FromDto(dto);
 
             //Assert
-            Assert.AreEqual(DEFAULT_ID, asset.Id);
-            Assert.AreEqual(DEFAULT_SYMBOL, asset.Symbol);
-            Assert.AreEqual(DEFAULT_MARKET_ID, asset.Market.Id);
+            Assert.AreEqual(DEFAULT_ID, asset.GetId());
+            Assert.AreEqual(DEFAULT_SYMBOL, asset.GetSymbol());
+            Assert.AreEqual(DEFAULT_MARKET_ID, asset.GetMarketId());
 
             //Clear
             Market.restoreDefaultService();

@@ -9,23 +9,12 @@ namespace Stock.Domain.Entities
 {
     public class AssetTimeframe
     {
+        public Asset Asset { get; set; }
+        public Timeframe Timeframe { get; set; }
+        //public DataItem[] Items { get; set; }
 
-        public Asset asset { get; set; }
-        public Timeframe timeframe { get; set; }
-        public DataItem[] Items { get; set; }
 
-
-        public string Symbol()
-        {
-            if (!isValid())
-            {
-                throw new ArgumentNullException("Asset or timeframe is null");
-            }
-
-            return asset.Symbol + "_" + timeframe.Name;
-
-        }
-
+        #region CONSTRUCTORS
 
         public AssetTimeframe(Asset asset, Timeframe timeframe)
         {
@@ -35,7 +24,6 @@ namespace Stock.Domain.Entities
         public AssetTimeframe(string asset, string timeframe)
         {
             loadParams(asset, timeframe);
-            
         }
 
         public AssetTimeframe(string symbol)
@@ -51,16 +39,30 @@ namespace Stock.Domain.Entities
 
         private void loadParams(Asset asset, Timeframe timeframe)
         {
-            this.asset = asset;
-            this.timeframe = timeframe;
+            this.Asset = asset;
+            this.Timeframe = timeframe;
         }
 
+        #endregion CONSTRUCTORS
 
 
-        public bool isValid()
+        #region API
+
+        public bool IsValid()
         {
-            return asset != null && timeframe != null;
+            return Asset != null && Timeframe != null;
         }
+
+        public string GetSymbol()
+        {
+            if (!IsValid())
+            {
+                throw new ArgumentNullException("Asset or timeframe is null");
+            }
+            return string.Concat(Asset.GetSymbol(), "_", Timeframe.GetName());
+        }
+
+        #endregion API
 
 
     }

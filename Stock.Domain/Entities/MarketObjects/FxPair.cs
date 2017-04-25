@@ -16,10 +16,10 @@ namespace Stock.Domain.Entities
         private static ICurrencyService service = ServiceFactory.GetCurrencyService();
 
         //Instance properties.
-        public int Id { get; set; }
-        public Currency BaseCurrency { get; set; }
-        public Currency QuoteCurrency { get; set; }
-        public string Name { get; set; }
+        private int id { get; set; }
+        private Currency baseCurrency { get; set; }
+        private Currency quoteCurrency { get; set; }
+        private string name { get; set; }
 
 
         #region STATIC_METHODS
@@ -61,15 +61,15 @@ namespace Stock.Domain.Entities
 
         public FxPair(int id, string name, Currency baseCurrency, Currency quoteCurrency)
         {
-            this.Id = id;
-            this.Name = name;
+            this.id = id;
+            this.name = name;
             assignCurrencies(baseCurrency, quoteCurrency);
         }
 
         public FxPair(int id, string name, int baseCurrencyId, int quoteCurrencyId)
         {
-            this.Id = id;
-            this.Name = name;
+            this.id = id;
+            this.name = name;
             assignCurrencies(Currency.ById(baseCurrencyId), Currency.ById(quoteCurrencyId));
         }
 
@@ -85,8 +85,8 @@ namespace Stock.Domain.Entities
                 throw new ArgumentException("The given currencies cannot be the same");
             }
 
-            this.BaseCurrency = baseCurrency;
-            this.QuoteCurrency = quoteCurrency;
+            this.baseCurrency = baseCurrency;
+            this.quoteCurrency = quoteCurrency;
 
         }
 
@@ -100,17 +100,72 @@ namespace Stock.Domain.Entities
         #endregion CONSTRUCTORS
 
 
+        #region ACCESSORS
+
+        public int GetId()
+        {
+            return id;
+        }
+
+        public string GetName()
+        {
+            return name;
+        }
+
+        public Currency GetBaseCurrency()
+        {
+            return baseCurrency;
+        }
+
+        public int GetBaseCurrencyId()
+        {
+            return (baseCurrency == null ? 0 : baseCurrency.GetId());
+        }
+
+        public string GetBaseCurrencyName()
+        {
+            return (baseCurrency == null ? string.Empty : baseCurrency.GetName());
+        }
+
+        public string GetBaseCurrencySymbol()
+        {
+            return (baseCurrency == null ? string.Empty : baseCurrency.GetSymbol());
+        }
+
+        public Currency GetQuoteCurrency()
+        {
+            return quoteCurrency;
+        }
+
+        public int GetQuoteCurrencyId()
+        {
+            return (quoteCurrency == null ? 0 : quoteCurrency.GetId());
+        }
+
+        public string GetQuoteCurrencyName()
+        {
+            return (quoteCurrency == null ? string.Empty : quoteCurrency.GetName());
+        }
+
+        public string GetQuoteCurrencySymbol()
+        {
+            return (quoteCurrency == null ? string.Empty : quoteCurrency.GetSymbol());
+        }
+
+        #endregion ACCESSORS
+
+
         public override bool Equals(object obj)
         {
             if (obj.GetType() != typeof(FxPair)) return false;
 
             FxPair compared = (FxPair)obj;
-            if ((compared.Id) != Id) return false;
-            if (compared.BaseCurrency == null || BaseCurrency == null) return false;
-            if (!compared.BaseCurrency.Equals(BaseCurrency)) return false;
-            if (compared.QuoteCurrency == null || QuoteCurrency == null) return false;
-            if (!compared.QuoteCurrency.Equals(QuoteCurrency)) return false;
-            if (!compared.Name.Equals(Name)) return false;
+            if ((compared.id) != id) return false;
+            if (compared.baseCurrency == null || baseCurrency == null) return false;
+            if (!compared.baseCurrency.Equals(baseCurrency)) return false;
+            if (compared.quoteCurrency == null || quoteCurrency == null) return false;
+            if (!compared.quoteCurrency.Equals(quoteCurrency)) return false;
+            if (!compared.name.Equals(name)) return false;
             return true;
 
         }

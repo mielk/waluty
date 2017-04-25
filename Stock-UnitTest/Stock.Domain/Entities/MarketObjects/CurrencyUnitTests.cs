@@ -36,9 +36,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         public void constructor_newInstanceHasProperIdAndName()
         {
             var currency = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
-            Assert.AreEqual(DEFAULT_ID, currency.Id);
-            Assert.AreEqual(DEFAULT_NAME, currency.Name);
-            Assert.AreEqual(DEFAULT_SYMBOL, currency.Symbol);
+            Assert.AreEqual(DEFAULT_ID, currency.GetId());
+            Assert.AreEqual(DEFAULT_NAME, currency.GetName());
+            Assert.AreEqual(DEFAULT_SYMBOL, currency.GetSymbol());
         }
 
         [TestMethod]
@@ -47,9 +47,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             CurrencyDto dto = new CurrencyDto { Id = DEFAULT_ID, Symbol = DEFAULT_SYMBOL, Name = DEFAULT_NAME };
             Currency currency = Currency.FromDto(dto);
 
-            Assert.AreEqual(DEFAULT_ID, currency.Id);
-            Assert.AreEqual(DEFAULT_SYMBOL, currency.Symbol);
-            Assert.AreEqual(DEFAULT_NAME, currency.Name);
+            Assert.AreEqual(DEFAULT_ID, currency.GetId());
+            Assert.AreEqual(DEFAULT_SYMBOL, currency.GetSymbol());
+            Assert.AreEqual(DEFAULT_NAME, currency.GetName());
 
         }
 

@@ -17,9 +17,9 @@ namespace Stock.Domain.Entities
         private static IAssetService service = ServiceFactory.GetAssetService();
 
         //Instance properties.
-        public int Id { get; set; }
-        public string Symbol { get; set; }
-        public Market Market { get; set; }
+        private int id { get; set; }
+        private string symbol { get; set; }
+        private Market market { get; set; }
         //public IEnumerable<AssetTimeframe> AssetTimeframes { get; set; }
 
 
@@ -47,9 +47,7 @@ namespace Stock.Domain.Entities
 
         public static IEnumerable<Asset> GetAssetsForMarket(int marketId)
         {
-            var assets = service.GetAssetsForMarket(marketId);
-            //return service.GetAssetsForMarket(marketId);
-            return assets;
+            return service.GetAssetsForMarket(marketId);
         }
 
         public static Asset ById(int id)
@@ -79,9 +77,9 @@ namespace Stock.Domain.Entities
 
         private void assignProperties(int id, string symbol, Market market)
         {
-            this.Id = id;
-            this.Symbol = symbol;
-            this.Market = market;
+            this.id = id;
+            this.symbol = symbol;
+            this.market = market;
         }
 
         public static Asset FromDto(AssetDto dto)
@@ -93,14 +91,30 @@ namespace Stock.Domain.Entities
         #endregion CONSTRUCTORS
 
 
-        #region API
+        #region ACCESSORS
 
-        public int MarketId()
+        public int GetId()
         {
-            return (Market == null ? 0 : Market.Id);
+            return id;
         }
 
-        #endregion API
+        public string GetSymbol()
+        {
+            return symbol;
+        }
+
+        public Market GetMarket()
+        {
+            return market;
+        }
+
+        public int GetMarketId()
+        {
+            return (market == null ? 0 : market.GetId());
+        }
+
+        #endregion ACCESSORS
+
 
 
         public override bool Equals(object obj)
@@ -108,9 +122,9 @@ namespace Stock.Domain.Entities
             if (obj.GetType() != typeof(Asset)) return false;
 
             Asset compared = (Asset)obj;
-            if ((compared.Id) != Id) return false;
-            if (!compared.Symbol.Equals(Symbol)) return false;
-            if (compared.MarketId() != MarketId()) return false;
+            if ((compared.id) != id) return false;
+            if (!compared.symbol.Equals(symbol)) return false;
+            if (compared.GetMarketId() != GetMarketId()) return false;
             return true;
 
         }

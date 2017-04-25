@@ -312,7 +312,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             IEnumerable<Currency> currencies = service.GetAllCurrencies();
 
             //Assert
-            Currency fromResultCollection = currencies.SingleOrDefault(c => c.Id == dto.Id);
+            Currency fromResultCollection = currencies.SingleOrDefault(c => c.GetId() == dto.Id);
             Assert.AreSame(fromResultCollection, currency);
 
         }
@@ -504,7 +504,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             IEnumerable<FxPair> pairs = service.GetFxPairs();
 
             //Assert
-            FxPair fromResultCollection = pairs.SingleOrDefault(p => p.Id == dto.Id);
+            FxPair fromResultCollection = pairs.SingleOrDefault(p => p.GetId() == dto.Id);
             Assert.AreSame(fromResultCollection, pair);
 
             //Clear
@@ -552,7 +552,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             IEnumerable<FxPair> pairs = service.GetFxPairs("a", 3);
 
             //Assert
-            FxPair fromResultCollection = pairs.SingleOrDefault(p => p.Id == dto.Id);
+            FxPair fromResultCollection = pairs.SingleOrDefault(p => p.GetId() == dto.Id);
             Assert.AreSame(fromResultCollection, pair);
 
             //Clear
