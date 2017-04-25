@@ -21,12 +21,16 @@ namespace Stock.Domain.Entities
         public string Name { get; set; }
 
 
-
         #region STATIC_METHODS
 
         public static void injectService(ICurrencyService _service)
         {
             service = _service;
+        }
+
+        public static void restoreDefaultService()
+        {
+            service = ServiceFactory.GetCurrencyService();
         }
 
         public static IEnumerable<Currency> GetAllCurrencies()
@@ -52,7 +56,6 @@ namespace Stock.Domain.Entities
         #endregion STATIC_METHODS
 
 
-
         #region CONSTRUCTORS
 
         public Currency(int id, string symbol, string name)
@@ -71,7 +74,6 @@ namespace Stock.Domain.Entities
         #endregion CONSTRUCTORS
 
 
-
         public override bool Equals(object obj)
         {
             if (obj.GetType() != typeof(Currency)) return false;
@@ -82,6 +84,11 @@ namespace Stock.Domain.Entities
             if (!compared.Symbol.Equals(Symbol)) return false;
             return true;
 
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
     }

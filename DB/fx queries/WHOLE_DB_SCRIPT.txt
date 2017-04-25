@@ -5,6 +5,8 @@ CREATE TABLE `_config` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `property_UNIQUE` (`property`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `_errors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
@@ -12,6 +14,8 @@ CREATE TABLE `_errors` (
   `module` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `adx` (
   `AdxId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `AssetId` int(11) unsigned NOT NULL,
@@ -52,6 +56,8 @@ CREATE TABLE `adx` (
   KEY `Adx_TimeframeId` (`TimeframeId`),
   KEY `Adx_AssetId` (`AssetId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+
 CREATE TABLE `analyses` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `AnalysisName` varchar(45) NOT NULL,
@@ -64,12 +70,16 @@ CREATE TABLE `analyses` (
   `AnalysisTotalTime` float DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4034 DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `analysis_types` (
   `AnalysisTypeId` int(11) NOT NULL,
   `AnalysisTypeName` varchar(45) NOT NULL,
   PRIMARY KEY (`AnalysisTypeId`),
   UNIQUE KEY `AnalysisTypeName_UNIQUE` (`AnalysisTypeName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `currencies` (
   `Id` int(10) unsigned NOT NULL,
   `CurrencyName` varchar(3) NOT NULL,
@@ -77,6 +87,8 @@ CREATE TABLE `currencies` (
   PRIMARY KEY (`Id`),
   UNIQUE KEY `CurrencyName` (`CurrencyName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `dates` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Date` datetime NOT NULL,
@@ -87,6 +99,16 @@ CREATE TABLE `dates` (
   KEY `index_Timeframe` (`TimeframeId`),
   KEY `index_IndexNumber` (`IndexNumber`)
 ) ENGINE=InnoDB AUTO_INCREMENT=539034 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `assets` (
+  `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(20) COLLATE utf8_polish_ci NOT NULL,
+  `MarketId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `FK_company_market` (`MarketId`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+
 CREATE TABLE `extrema` (
   `ExtremumId` int(11) NOT NULL AUTO_INCREMENT,
   `Symbol` varchar(45) NOT NULL,

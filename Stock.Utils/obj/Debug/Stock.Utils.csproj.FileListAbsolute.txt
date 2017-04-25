@@ -1,0 +1,4 @@
+C:\tm\aplikacje\FX3\Stock.Utils\bin\Debug\Stock.Utils.dll
+C:\tm\aplikacje\FX3\Stock.Utils\bin\Debug\Stock.Utils.pdb
+C:\tm\aplikacje\FX3\Stock.Utils\obj\Debug\Stock.Utils.dll
+C:\tm\aplikacje\FX3\Stock.Utils\obj\Debug\Stock.Utils.pdb

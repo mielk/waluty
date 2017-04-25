@@ -20,7 +20,7 @@ namespace Stock_UnitTest.tools
 
         public static Asset testAsset()
         {
-            var asset = new Asset(1, "asset");
+            var asset = new Asset(1, "asset", 1);
             return asset;
         }
 

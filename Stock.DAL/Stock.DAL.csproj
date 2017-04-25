@@ -57,12 +57,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\DataItemHelpers\AdxDALHelper.cs" />
-    <Compile Include="Helpers\DataItemHelpers\DbStringBuilder.cs" />
+    <Compile Include="Helpers\DbStringBuilder.cs" />
     <Compile Include="Helpers\DataItemHelpers\ExtremumDALHelper.cs" />
     <Compile Include="Helpers\DataItemHelpers\MacdDALHelper.cs" />
+    <Compile Include="Infrastructure\AssetContext.cs" />
+    <Compile Include="Infrastructure\MarketContext.cs" />
+    <Compile Include="Infrastructure\CurrencyContext.cs" />
     <Compile Include="Infrastructure\EfDbContext.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
-    <Compile Include="Infrastructure\RepositoryFactory.cs" />
+    <Compile Include="Repository\Abstract\IAssetRepository.cs" />
+    <Compile Include="Repository\Concrete\EFAssetRepository.cs" />
+    <Compile Include="Repository\RepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Abstract\ICurrencyRepository.cs" />
     <Compile Include="Repository\Abstract\IDataRepository.cs" />

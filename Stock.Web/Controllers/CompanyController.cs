@@ -5,19 +5,18 @@ using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
 using Stock.Domain.Entities;
-using Stock.Domain.Services.Factories;
 
 namespace Stock.Web.Controllers
 {
     public class CompanyController : Controller
     {
-        private readonly IMarketService marketService;
+        private readonly IAssetService assetService;
         private readonly IDataService dataService;
 
 
         public CompanyController(IDataService dataService)
         {
-            this.marketService = MarketServiceFactory.CreateService();
+            this.assetService = ServiceFactory.GetAssetService();
             this.dataService = dataService;
         }
 
@@ -37,7 +36,7 @@ namespace Stock.Web.Controllers
         public ActionResult FilterCompanies(string q, int limit)
         {
             //var companies = companyService.FilterCompanies(q, limit);
-            var assets = marketService.FilterPairs(q, limit);
+            var assets = assetService.GetAssets(q, limit);
             var items = assets.Select(jsonAsset).ToList();
             var json = new { total = assets.Count(), items = items };
             return Json(json, JsonRequestBehavior.AllowGet);
@@ -50,7 +49,7 @@ namespace Stock.Web.Controllers
         public ActionResult GetCompany(int id)
         {
             //var company = companyService.GetCompany(id);
-            var asset = marketService.GetFxPair(id);
+            var asset = FxPair.ById(id);
             return Json(asset, JsonRequestBehavior.AllowGet);
         }
 
@@ -59,7 +58,7 @@ namespace Stock.Web.Controllers
             return new
             {
                 id = asset.Id,
-                name = asset.Name,
+                name = asset.Symbol,
                 asset = asset
             };
         }

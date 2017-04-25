@@ -22,7 +22,7 @@ namespace Stock.Domain.Entities
                 throw new ArgumentNullException("Asset or timeframe is null");
             }
 
-            return asset.ShortName + "_" + timeframe.Name;
+            return asset.Symbol + "_" + timeframe.Name;
 
         }
 
@@ -46,7 +46,7 @@ namespace Stock.Domain.Entities
 
         private void loadParams(string asset, string timeframe)
         {
-            loadParams(FxPair.GetFxPairBySymbol(asset), Timeframe.GetTimeframeByShortName(timeframe));
+            //loadParams(FxPair.BySymbol(asset), Timeframe.GetTimeframeByShortName(timeframe));
         }
 
         private void loadParams(Asset asset, Timeframe timeframe)

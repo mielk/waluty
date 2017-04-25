@@ -17,5 +17,6 @@ namespace Stock.DAL.TransferObjects
         public string ShortName { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
+        public bool IsAroundClock { get; set; }
     }
 }

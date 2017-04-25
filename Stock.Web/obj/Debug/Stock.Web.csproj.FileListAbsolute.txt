@@ -286,5 +286,5 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\System.Web.WebPages.Razor.xml
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.dll
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.pdb
-C:\tm\aplikacje\FX3\Stock.Web\bin\adfadsfasdf.dll
-C:\tm\aplikacje\FX3\Stock.Web\bin\adfadsfasdf.pdb
+C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Utils.dll
+C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Utils.pdb

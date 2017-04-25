@@ -99,7 +99,7 @@ namespace Stock.Domain.Entities
         {
             var item = new DataItem();
             //item.AssetId = dto.AssetId;
-            item.Asset = Asset.GetAssetById(dto.AssetId);
+            item.Asset = Asset.ById(dto.AssetId);
             item.Date = dto.PriceDate;
             item.Timeframe = Timeframe.GetTimeframeByShortName(dto.Timeframe);
 

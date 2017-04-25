@@ -32,6 +32,5 @@ namespace Stock.Domain.Services.Factories
         }
 
 
-
     }
 }

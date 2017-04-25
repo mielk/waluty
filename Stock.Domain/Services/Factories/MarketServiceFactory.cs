@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services.Factories
 {
+
     public class MarketServiceFactory
     {
-
         public static IMarketService CreateService()
         {
             return MarketService.Instance();
         }
-
     }
+
 }

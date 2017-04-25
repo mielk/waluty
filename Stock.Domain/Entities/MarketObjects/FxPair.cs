@@ -9,97 +9,72 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Entities
 {
-    public class FxPair : Asset
+    public class FxPair
     {
-        public bool IsFx { get; set; }
+
+        //Static properties.
+        private static ICurrencyService service = ServiceFactory.GetCurrencyService();
+
+        //Instance properties.
+        public int Id { get; set; }
         public Currency BaseCurrency { get; set; }
         public Currency QuoteCurrency { get; set; }
-        //Static.
-        private static IMarketService service = MarketServiceFactory.CreateService();
-        private static IEnumerable<FxPair> pairs = new List<FxPair>();
+        public string Name { get; set; }
 
 
+        #region STATIC_METHODS
 
-        #region static methods
-
-        public new static void injectService(IMarketService _service)
+        public static void injectService(ICurrencyService _service)
         {
             service = _service;
         }
 
-        public static IEnumerable<FxPair> GetAllFxPairs()
+        public static void restoreDefaultService()
         {
-            List<FxPair> result = new List<FxPair>();
-            var dbPairs = service.GetFxPairs();
-            foreach (var pair in dbPairs)
-            {
-                var match = pairs.SingleOrDefault(c => c.Id == pair.Id);
-                if (match == null)
-                {
-                    pairs = pairs.Concat(new[] { pair });
-                    match = pair;
-                }
-
-                result.Add(match);
-
-            }
-
-            return result;
-
+            service = ServiceFactory.GetCurrencyService();
         }
 
-        public static FxPair GetFxPairById(int id)
+        public static IEnumerable<FxPair> GetFxPairs()
         {
-
-            var pair = pairs.SingleOrDefault(m => m.Id == id);
-
-            if (pair == null)
-            {
-                pair = service.GetFxPair(id);
-                if (pair != null)
-                {
-                    pairs = pairs.Concat(new[] { pair });
-                }
-            }
-
-            return pair;
-
+            return service.GetFxPairs();
         }
 
-        public static FxPair GetFxPairBySymbol(string symbol)
+        public static IEnumerable<FxPair> GetFxPairs(string filter, int limit)
         {
-
-            var pair = pairs.SingleOrDefault(m => m.Name.Equals(symbol));
-
-            if (pair == null)
-            {
-                pair = service.GetFxPair(symbol);
-                if (pair != null)
-                {
-                    pairs = pairs.Concat(new[] { pair });
-                }
-            }
-
-            return pair;
-
+            return service.GetFxPairs(filter, limit);
         }
 
-        #endregion static methods
-
-
-        public FxPair(int id, string name, Currency baseCurrency, Currency quoteCurrency) : base(id, name)
+        public static FxPair ById(int id)
         {
+            return service.GetFxPairById(id);
+        }
+
+        public static FxPair BySymbol(string symbol)
+        {
+            return service.GetFxPairBySymbol(symbol);
+        }
+
+        #endregion STATIC_METHODS
+
+
+        #region CONSTRUCTORS
+
+        public FxPair(int id, string name, Currency baseCurrency, Currency quoteCurrency)
+        {
+            this.Id = id;
+            this.Name = name;
             assignCurrencies(baseCurrency, quoteCurrency);
         }
 
-        public FxPair(int id, string name, int baseCurrencyId, int quoteCurrencyId) : base(id, name)
+        public FxPair(int id, string name, int baseCurrencyId, int quoteCurrencyId)
         {
+            this.Id = id;
+            this.Name = name;
             assignCurrencies(Currency.ById(baseCurrencyId), Currency.ById(quoteCurrencyId));
         }
 
         private void assignCurrencies(Currency baseCurrency, Currency quoteCurrency)
         {
-            IsFx = true;
 
             if (baseCurrency == null || quoteCurrency == null)
             {
@@ -116,19 +91,34 @@ namespace Stock.Domain.Entities
         }
 
 
-
-
         public static FxPair FromDto(FxPairDto dto)
         {
-
             var pair = new FxPair(dto.Id, dto.Name, dto.BaseCurrency, dto.QuoteCurrency);
-            pair.IsActive = dto.IsActive;
-            pair.IsFx = true;
-
             return pair;
+        }
+
+        #endregion CONSTRUCTORS
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(FxPair)) return false;
+
+            FxPair compared = (FxPair)obj;
+            if ((compared.Id) != Id) return false;
+            if (compared.BaseCurrency == null || BaseCurrency == null) return false;
+            if (!compared.BaseCurrency.Equals(BaseCurrency)) return false;
+            if (compared.QuoteCurrency == null || QuoteCurrency == null) return false;
+            if (!compared.QuoteCurrency.Equals(QuoteCurrency)) return false;
+            if (!compared.Name.Equals(Name)) return false;
+            return true;
 
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
     }
 }

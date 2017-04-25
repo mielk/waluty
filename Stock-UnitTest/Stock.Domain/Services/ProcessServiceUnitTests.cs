@@ -17,6 +17,12 @@ namespace Stock_UnitTest.Stock.Domain.Services
     {
 
 
+        private Asset assetForTest()
+        {
+            return new Asset(1, "USD", 1);
+        }
+
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException), "Asset is empty")]
         public void run_if_asset_is_empty_exception_is_thrown()
@@ -37,8 +43,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [ExpectedException(typeof(ArgumentNullException), "Timeframe is empty")]
         public void run_if_timeframe_is_empty_exception_is_thrown()
         {
-            
-            Asset asset = new Asset(1, "USD");
+
+            Asset asset = assetForTest();
             Timeframe timeframe = null;
             var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
@@ -54,7 +60,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         public void run_if_there_is_no_analyzers_assigned_exception_is_thrown()
         {
 
-            Asset asset = new Asset(1, "USD");
+            Asset asset = assetForTest();
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { };
@@ -69,7 +75,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         public void after_setup_properties_are_correctly_set()
         {
 
-            Asset asset = new Asset(1, "USD");
+            Asset asset = assetForTest();
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
 
@@ -90,7 +96,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         public void after_setup_proper_analyzers_are_assigned()
         {
 
-            Asset asset = new Asset(1, "USD");
+            Asset asset = assetForTest();
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
 
@@ -111,8 +117,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [TestMethod]
         public void quotationProcessor_is_called_once_for_loading_data()
         {
-            
-            Asset asset = new Asset(1, "USD");
+
+            Asset asset = assetForTest();
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
             ProcessService service = new ProcessService(asset, timeframe);
             var mockQuotationService = UnitTestTools.mockedQuotationService();
@@ -135,7 +141,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataItem[] items = new DataItem[] { };
             mockQuotationService.Setup(q => q.fetchData(It.IsAny<Dictionary<AnalysisType, IAnalyzer>>())).Returns(items);
 
-            Asset asset = new Asset(1, "USD");
+            Asset asset = assetForTest();
             Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
             ProcessService service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };

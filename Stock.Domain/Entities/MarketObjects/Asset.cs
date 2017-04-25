@@ -12,150 +12,113 @@ namespace Stock.Domain.Entities
 {
     public class Asset
     {
+
+        //Static properties.
+        private static IAssetService service = ServiceFactory.GetAssetService();
+
+        //Instance properties.
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string ShortName { get; set; }
+        public string Symbol { get; set; }
         public Market Market { get; set; }
-        public bool IsActive { get; set; }
-        public IEnumerable<AssetTimeframe> AssetTimeframes { get; set; }
-        //Static.
-        private static IMarketService service = MarketServiceFactory.CreateService();
-        private static IEnumerable<Asset> assets = new List<Asset>();
+        //public IEnumerable<AssetTimeframe> AssetTimeframes { get; set; }
 
 
-        #region static methods
+        #region STATIC_METHODS
 
-        public static void injectService(IMarketService _service)
+        public static void injectService(IAssetService _service)
         {
             service = _service;
         }
 
         public static IEnumerable<Asset> GetAllAssets()
         {
-            loadAllAssets();
-            return assets.ToList();
+            return service.GetAllAssets();
         }
 
-        private static void loadAllAssets()
+        public static IEnumerable<Asset> GetAssets(string filter, int limit)
         {
-
-            if (assets.Count() > 0) return;
-
-            var dbAssets = service.GetAllAssets();
-            foreach (var asset in dbAssets)
-            {
-                var match = assets.SingleOrDefault(m => m.Id == asset.Id);
-                if (match == null)
-                {
-                    assets = assets.Concat(new[] { asset });
-                }
-
-            }
-        }
-
-        public static Asset GetAssetById(int id)
-        {
-
-            loadAllAssets();
-
-            var asset = assets.SingleOrDefault(m => m.Id == id);
-            if (asset == null)
-            {
-                asset = service.GetAsset(id);
-                if (asset != null)
-                {
-                    assets = assets.Concat(new[] { asset });
-                }
-            }
-
-            return asset;
-
-        }
-
-        public static Asset GetAssetByName(string name)
-        {
-
-            loadAllAssets();
-
-            var asset = assets.SingleOrDefault(m => m.Name.Equals(name));
-            if (asset == null)
-            {
-                asset = service.GetAssetByName(name);
-                if (asset != null)
-                {
-                    assets = assets.Concat(new[] { asset });
-                }
-            }
-
-            return asset;
-
-        }
-
-        public static Asset GetAssetBySymbol(string symbol)
-        {
-
-            loadAllAssets();
-
-            var asset = assets.SingleOrDefault(m => m.ShortName.Equals(symbol));
-            if (asset == null)
-            {
-                asset = service.GetAssetBySymbol(symbol);
-                if (asset != null)
-                {
-                    assets = assets.Concat(new[] { asset });
-                }
-            }
-
-            return asset;
-
+            return service.GetAssets(filter, limit);
         }
 
         public static IEnumerable<Asset> GetAssetsForMarket(int marketId)
         {
-            loadAllAssets();
-            return assets.Where(a => a.Market.Id == marketId).ToList();
+            return service.GetAssetsForMarket(marketId);
         }
 
-        #endregion static methods
+        public static Asset ById(int id)
+        {
+            return service.GetAssetById(id);
+        }
+
+        public static Asset BySymbol(string symbol)
+        {
+            return service.GetAssetBySymbol(symbol);
+        }
+
+        #endregion STATIC_METHODS
 
 
+        #region CONSTRUCTORS
 
-
-        public Asset(int id, string name)
+        public Asset(int id, string symbol, int marketId)
         {
             this.Id = id;
-            this.Name = name;
-            this.ShortName = name;
-            AssetTimeframes = new List<AssetTimeframe>();
+            this.Symbol = symbol;
+            this.Market = Market.GetMarketById(marketId);
         }
-
 
         public static Asset FromDto(AssetDto dto)
         {
-            Asset asset = new Asset(dto.Id, dto.Name);
-            asset.ShortName = (dto.Symbol == null || dto.Symbol.Length == 0 ? dto.Name : dto.Symbol);
-            asset.setMarket(dto.IdMarket);
+            Asset asset = new Asset(dto.Id, dto.Symbol, dto.MarketId);
             return asset;
         }
 
-        public void setMarket(int id)
+        #endregion CONSTRUCTORS
+
+
+        #region API
+
+        public int MarketId()
         {
-            Market market = Market.GetMarketById(id);
-            this.Market = market;
+            return (Market == null ? 0 : Market.Id);
         }
 
-        public AssetTimeframe GetAssetTimeframe(Timeframe timeframe)
+        #endregion API
+
+
+        public override bool Equals(object obj)
         {
+            if (obj.GetType() != typeof(Asset)) return false;
 
-            var assetTimeframe = AssetTimeframes.SingleOrDefault(a => a.timeframe == timeframe);
-            if (assetTimeframe == null)
-            {
-                assetTimeframe = new AssetTimeframe(this, timeframe);
-                AssetTimeframes = AssetTimeframes.Concat(new[] { assetTimeframe });
-            }
+            Asset compared = (Asset)obj;
+            if ((compared.Id) != Id) return false;
+            if (!compared.Symbol.Equals(Symbol)) return false;
+            if (compared.MarketId() != MarketId()) return false;
+            return true;
 
-            return assetTimeframe;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+
+
+
+
+        //public AssetTimeframe GetAssetTimeframe(Timeframe timeframe)
+        //{
+
+        //    var assetTimeframe = AssetTimeframes.SingleOrDefault(a => a.timeframe == timeframe);
+        //    if (assetTimeframe == null)
+        //    {
+        //        assetTimeframe = new AssetTimeframe(this, timeframe);
+        //        AssetTimeframes = AssetTimeframes.Concat(new[] { assetTimeframe });
+        //    }
+
+        //    return assetTimeframe;
+        //}
 
     }
 }

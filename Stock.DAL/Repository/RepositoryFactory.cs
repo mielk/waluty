@@ -1,13 +1,13 @@
-﻿using Stock.DAL.Repositories;
-
-namespace Stock.DAL.Infrastructure
+﻿namespace Stock.DAL.Repositories
 {
     public class RepositoryFactory
     {
 
         private static readonly IMarketRepository MarketRepository;
-        private static readonly IDataRepository DataRepository;
         private static readonly ICurrencyRepository CurrencyRepository;
+        private static readonly IAssetRepository AssetRepository;
+        private static readonly IDataRepository DataRepository;
+
 
         static RepositoryFactory()
         {
@@ -25,6 +25,11 @@ namespace Stock.DAL.Infrastructure
         public static ICurrencyRepository GetCurrencyRepository()
         {
             return CurrencyRepository;
+        }
+
+        public static IAssetRepository GetAssetRepository()
+        {
+            return AssetRepository;
         }
 
         public static IDataRepository GetDataRepository()

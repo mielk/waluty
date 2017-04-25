@@ -1,5 +1,0 @@
-C:\tm\aplikacje\FX3\adfadsfasdf\bin\Debug\adfadsfasdf.dll
-C:\tm\aplikacje\FX3\adfadsfasdf\bin\Debug\adfadsfasdf.pdb
-C:\tm\aplikacje\FX3\adfadsfasdf\obj\Debug\adfadsfasdf.dll
-C:\tm\aplikacje\FX3\adfadsfasdf\obj\Debug\adfadsfasdf.pdb
-C:\tm\aplikacje\FX3\adfadsfasdf\obj\Debug\Stock.Utils.csprojResolveAssemblyReference.cache

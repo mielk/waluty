@@ -22,24 +22,6 @@ namespace Stock.Domain.Services
                                                                         #endregion markets
 
 
-                                                                        #region assets
-        IEnumerable<Asset> FilterAssets(string q, int limit);
-        IEnumerable<Asset> GetAllAssets();
-        IEnumerable<Asset> GetAssetsForMarket(int marketId);
-        Asset GetAsset(int id);
-        Asset GetAssetByName(string name);
-        Asset GetAssetBySymbol(string symbol);
-                                                                        #endregion assets
-
-
-                                                                        #region fx
-        IEnumerable<FxPair> FilterPairs(string q, int limit);
-        IEnumerable<FxPair> GetFxPairs();
-        FxPair GetFxPair(int id);
-        FxPair GetFxPair(string symbol);
-                                                                        #endregion fx
-
-
 
     }
 }

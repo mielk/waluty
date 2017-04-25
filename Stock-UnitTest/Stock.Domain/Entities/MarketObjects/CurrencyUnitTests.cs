@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Stock.Domain.Entities;
 using Stock.DAL.TransferObjects;
 using System.Collections.Generic;
-using Moq;
 using Stock.Domain.Services;
 using System.Linq;
 using Stock.Utils;
+using Moq;
 
 namespace Stock_UnitTest.Stock.Domain.Entities
 {
@@ -32,7 +32,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
 
         [TestMethod]
-        public void constructor_new_instance_has_proper_id_and_name()
+        public void constructor_newInstanceHasProperIdAndName()
         {
             var currency = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
             Assert.AreEqual(DEFAULT_ID, currency.Id);
@@ -41,7 +41,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
         [TestMethod]
-        public void currencyFromDto_has_the_same_properties_as_dto()
+        public void currencyFromDto_hasSamePropertiesAsDto()
         {
             CurrencyDto dto = new CurrencyDto { Id = DEFAULT_ID, Symbol = DEFAULT_SYMBOL, Name = DEFAULT_NAME };
             Currency currency = Currency.FromDto(dto);
@@ -94,25 +94,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
 
-
-        [TestMethod]
-        public void ById_returnsTheSameInstance_eachTime()
-        {
-
-            //Arrange
-            Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
-            mockService.Setup(c => c.GetCurrencyById(DEFAULT_ID)).Returns(new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL));
-            Currency.injectService(mockService.Object);
-
-            //Act
-            var usd1 = Currency.ById(DEFAULT_ID);
-            var usd2 = Currency.BySymbol(DEFAULT_SYMBOL);
-
-            //Assert
-            Assert.AreSame(usd1, usd2);
-
-        }
-
+        
         [TestMethod]
         public void ById_returnsNull_ifNotExistInRepository()
         {

@@ -18,16 +18,21 @@ namespace Stock.Domain.Entities
         public DateTime EndTime { get; set; }
         private IEnumerable<Asset> assets;
         //Static.
-        private static IMarketService service = MarketServiceFactory.CreateService();
+        private static IMarketService service = ServiceFactory.GetMarketService();
         private static IEnumerable<Market> markets = new List<Market>();
 
 
 
-        #region static methods
+        #region STATIC_METHODS
 
         public static void injectService(IMarketService _service)
         {
             service = _service;
+        }
+
+        public static void restoreDefaultService()
+        {
+            service = ServiceFactory.GetMarketService();
         }
 
         public static IEnumerable<Market> GetAllMarkets()
@@ -105,7 +110,7 @@ namespace Stock.Domain.Entities
 
         }
 
-        #endregion static methods
+        #endregion STATIC_METHODS
 
 
 
@@ -121,7 +126,7 @@ namespace Stock.Domain.Entities
             {
                 if (assets == null)
                 {
-                    assets = IsFx() ? FxPair.GetAllFxPairs() : Asset.GetAssetsForMarket(Id);
+                    //assets = IsFx() ? FxPair.GetAllFxPairs() : Asset.GetAssetsForMarket(Id);
                 }
                 return assets.ToList();
             }

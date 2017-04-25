@@ -1,21 +1,25 @@
-﻿using Stock.DAL.Infrastructure;
-using Stock.DAL.Repositories;
-using Stock.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.DAL.Infrastructure;
+using Stock.DAL.Repositories;
+using Stock.DAL.TransferObjects;
+using Stock.Domain.Entities;
 
 namespace Stock.Domain.Services
 {
     public class CurrencyService : ICurrencyService
     {
+
         private ICurrencyRepository _repository;
         private static readonly ICurrencyService instance = new CurrencyService(RepositoryFactory.GetCurrencyRepository());
         private static IEnumerable<Currency> currencies = new List<Currency>();
+        private static IEnumerable<FxPair> fxPairs = new List<FxPair>();
 
 
+        
         #region INFRASTRUCTURE
 
         public static ICurrencyService Instance()
@@ -25,7 +29,11 @@ namespace Stock.Domain.Services
 
         public static ICurrencyService Instance(bool reset)
         {
-            currencies = new List<Currency>();
+            if (reset)
+            {
+                fxPairs = new List<FxPair>();
+                currencies = new List<Currency>();
+            }
             return instance;
         }
 
@@ -42,6 +50,9 @@ namespace Stock.Domain.Services
         #endregion INFRASTRUCTURE
 
 
+
+        #region CURRENCIES
+
         public IEnumerable<Currency> GetAllCurrencies()
         {
             List<Currency> result = new List<Currency>();
@@ -53,6 +64,7 @@ namespace Stock.Domain.Services
                 if (currency == null)
                 {
                     currency = Currency.FromDto(dto);
+                    appendCurrency(currency);
                 }
                 result.Add(currency);
             }
@@ -71,7 +83,7 @@ namespace Stock.Domain.Services
                 if (dto != null)
                 {
                     currency = Currency.FromDto(dto);
-                    currencies = currencies.Concat(new[] { currency });
+                    appendCurrency(currency);
                 }
             }
 
@@ -89,7 +101,7 @@ namespace Stock.Domain.Services
                 if (dto != null)
                 {
                     currency = Currency.FromDto(dto);
-                    currencies = currencies.Concat(new[] { currency });
+                    appendCurrency(currency);
                 }
             }
 
@@ -107,13 +119,90 @@ namespace Stock.Domain.Services
                 if (dto != null)
                 {
                     currency = Currency.FromDto(dto);
-                    currencies = currencies.Concat(new[] { currency });
+                    appendCurrency(currency);
                 }
             }
 
             return currency;
 
         }
+
+        private void appendCurrency(Currency currency)
+        {
+            currencies = currencies.Concat(new[] { currency });
+        }
+
+        #endregion CURRENCIES
+
+
+
+        #region CURRENCY_PAIRS
+
+        public IEnumerable<FxPair> GetFxPairs(string filter, int limit)
+        {
+            var dtos = _repository.GetFxPairs(filter, limit);
+            return GetFxPairs_processDtos(dtos);
+        }
+
+        public IEnumerable<FxPair> GetFxPairs()
+        {
+            var dtos = _repository.GetFxPairs();
+            return GetFxPairs_processDtos(dtos);
+        }
+
+        private IEnumerable<FxPair> GetFxPairs_processDtos(IEnumerable<FxPairDto> dtos)
+        {
+            List<FxPair> result = new List<FxPair>();
+            foreach (var dto in dtos)
+            {
+                FxPair pair = fxPairs.SingleOrDefault(p => p.Id == dto.Id);
+                if (pair == null)
+                {
+                    pair = FxPair.FromDto(dto);
+                    appendFxPair(pair);
+                }
+                result.Add(pair);
+            }
+            return result;
+        }
+
+        public FxPair GetFxPairById(int id)
+        {
+            var pair = fxPairs.SingleOrDefault(p => p.Id == id);
+            if (pair == null)
+            {
+                var dto = _repository.GetFxPairById(id);
+                if (dto != null)
+                {
+                    pair = FxPair.FromDto(dto);
+                    appendFxPair(pair);
+                }
+            }
+            return pair;
+        }
+
+        public FxPair GetFxPairBySymbol(string symbol)
+        {
+            var pair = fxPairs.SingleOrDefault(p => p.Name == symbol);
+            if (pair == null)
+            {
+                var dto = _repository.GetFxPairBySymbol(symbol);
+                if (dto != null)
+                {
+                    pair = FxPair.FromDto(dto);
+                    appendFxPair(pair);
+                }
+            }
+            return pair;
+        }
+
+        private void appendFxPair(FxPair fxPair)
+        {
+            fxPairs = fxPairs.Concat(new[] { fxPair });
+        }
+
+        #endregion CURRENCY_PAIRS
+
 
     }
 }

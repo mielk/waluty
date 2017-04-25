@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace Stock.DAL.TransferObjects
 {
-
-    //[NotMapped]
     public class FxPairDto
     {
         [Key]
@@ -18,9 +16,5 @@ namespace Stock.DAL.TransferObjects
         public int BaseCurrency { get; set; }
         public int QuoteCurrency { get; set; }
         public bool IsActive { get; set; }
-
-        [NotMapped]
-        public const bool IsFx = true;
-
     }
 }

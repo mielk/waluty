@@ -10,6 +10,8 @@ namespace Stock.Domain.Services
     {
 
         private static ICurrencyService _currencyService;
+        private static IAssetService _assetService;
+        private static IMarketService _marketService;
 
 
 
@@ -29,5 +31,40 @@ namespace Stock.Domain.Services
         }
 
 
+
+        public static IAssetService GetAssetService()
+        {
+            if (_assetService == null)
+            {
+                _assetService = AssetService.Instance();
+            }
+            return _assetService;
+        }
+
+        public static IAssetService GetAssetService(IAssetService service)
+        {
+            _assetService = service;
+            return _assetService;
+        }
+
+
+
+        public static IMarketService GetMarketService()
+        {
+            if (_marketService == null)
+            {
+                _marketService = MarketService.Instance();
+            }
+            return _marketService;
+        }
+
+        public static IMarketService GetMarketService(IMarketService service)
+        {
+            _marketService = service;
+            return _marketService;
+        }
+
+
     }
+
 }

@@ -9,206 +9,46 @@ namespace Stock.DAL.Repositories
     public class EFMarketRepository : IMarketRepository
     {
 
-
-                                                                #region markets
         public IEnumerable<MarketDto> GetMarkets()
         {
-
             IEnumerable<MarketDto> markets;
-
-            using (var context = new EFDbContext())
+            using (var context = new MarketContext())
             {
                 markets = context.Markets.ToList();
             }
-
             return markets;
         }
 
-
         public MarketDto GetMarketById(int id)
         {
-
             MarketDto market;
-            using (var context = new EFDbContext())
+            using (var context = new MarketContext())
             {
                 market = context.Markets.SingleOrDefault(m => m.Id == id);
             }
-
             return market;
         }
 
         public MarketDto GetMarketByName(string name)
         {
-
             MarketDto market;
-            using (var context = new EFDbContext())
+            using (var context = new MarketContext())
             {
                 market = context.Markets.SingleOrDefault(m => m.Name.Equals(name));
             }
-
             return market;
         }
 
         public MarketDto GetMarketBySymbol(string symbol)
         {
-
             MarketDto market;
-            using (var context = new EFDbContext())
+            using (var context = new MarketContext())
             {
                 market = context.Markets.SingleOrDefault(m => m.ShortName.Equals(symbol));
             }
-
             return market;
         }
 
-                                                                #endregion markets
-
-
-                                                                #region assets
-        public IEnumerable<AssetDto> FilterAssets(string q, int limit)
-        {
-            string lower = q.ToLower();
-            IEnumerable<AssetDto> results = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                results = context.Companies.Where(c => c.Name.ToLower().Contains(lower) ||
-                                                  c.Symbol.ToLower().Contains(lower)).Take(limit).ToList();
-            }
-
-            return results;
-
-        }
-
-        public IEnumerable<AssetDto> GetAllAssets()
-        {
-            IEnumerable<AssetDto> results = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                results = context.Companies.ToList();
-            }
-
-            return results;
-
-        }
-
-
-        public IEnumerable<AssetDto> GetAssetsForMarket(int marketId)
-        {
-            IEnumerable<AssetDto> results = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                results = context.Companies.Where(c => c.IdMarket == marketId).ToList();
-            }
-
-            return results;
-
-        }
-
-        public AssetDto GetAsset(int id)
-        {
-
-            AssetDto company = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                company = context.Companies.SingleOrDefault(c => c.Id == id);
-            }
-
-            return company;
-
-        }
-
-        public AssetDto GetAssetByName(string name)
-        {
-
-            AssetDto company = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                company = context.Companies.SingleOrDefault(c => c.Name.Equals(name, System.StringComparison.CurrentCultureIgnoreCase));
-            }
-
-            return company;
-
-        }
-
-        public AssetDto GetAssetBySymbol(string symbol)
-        {
-
-            AssetDto company = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                company = context.Companies.SingleOrDefault(c => c.Symbol.Equals(symbol, System.StringComparison.CurrentCultureIgnoreCase));
-            }
-
-            return company;
-
-        }
-
-                                                                #endregion assets
-
-
-                                                                #region fx
-
-        public IEnumerable<FxPairDto> FilterPairs(string q, int limit)
-        {
-            string lower = q.ToLower();
-            IEnumerable<FxPairDto> results = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                results = context.Pairs.Where(p => p.IsActive && p.Name.ToLower().Contains(lower)).Take(limit).ToList();
-            }
-
-            return results;
-
-        }
-
-        public IEnumerable<FxPairDto> GetFxPairs()
-        {
-            IEnumerable<FxPairDto> results = null;
-            using (EFDbContext context = new EFDbContext())
-            {
-                results = context.Pairs.ToList();
-            }
-
-            return results;
-
-        }
-
-        public FxPairDto GetFxPair(int id)
-        {
-
-            FxPairDto pair = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                pair = context.Pairs.SingleOrDefault(p => p.Id == id);
-            }
-
-            return pair;
-
-        }
-
-        public FxPairDto GetFxPair(string symbol)
-        {
-
-            FxPairDto pair = null;
-
-            using (EFDbContext context = new EFDbContext())
-            {
-                pair = context.Pairs.SingleOrDefault(p => p.Name == symbol);
-            }
-
-            return pair;
-
-        }
-
-                                                                #endregion fx
-
     }
+
 }
