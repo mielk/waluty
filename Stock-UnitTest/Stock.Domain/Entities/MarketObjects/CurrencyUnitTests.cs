@@ -18,6 +18,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         private const string DEFAULT_NAME = "US Dollar";
         private const string DEFAULT_SYMBOL = "USD";
 
+
         //Arrange.
         private IEnumerable<Currency> getCurrenciesCollection()
         {
@@ -57,7 +58,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         public void Equals_returnFalse_forObjectOfOtherType()
         {
             var baseObject = new Currency(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_NAME);
-            var comparedObject = new Market(1, "market");
+            var comparedObject = new { Id = 1, Value = 2 };
             Assert.IsFalse(baseObject.Equals(comparedObject));
         }
 

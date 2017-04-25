@@ -7,6 +7,7 @@ using Stock.DAL.Infrastructure;
 using Stock.DAL.Repositories;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Stock.Domain.Services
 {
@@ -52,22 +53,22 @@ namespace Stock.Domain.Services
         public IEnumerable<Asset> GetAssets(string filter, int limit)
         {
             var dtos = _repository.GetAssets(filter, limit);
-            return GetAssets_processDtos(dtos);
+            return GetAssets(dtos);
         }
 
         public IEnumerable<Asset> GetAllAssets()
         {
             var dtos = _repository.GetAllAssets();
-            return GetAssets_processDtos(dtos);
+            return GetAssets(dtos);
         }
 
         public IEnumerable<Asset> GetAssetsForMarket(int marketId)
         {
             var dtos = _repository.GetAssetsForMarket(marketId);
-            return GetAssets_processDtos(dtos);
+            return GetAssets(dtos);
         }
 
-        private IEnumerable<Asset> GetAssets_processDtos(IEnumerable<AssetDto> dtos)
+        private IEnumerable<Asset> GetAssets(IEnumerable<AssetDto> dtos)
         {
             List<Asset> result = new List<Asset>();
             foreach (var dto in dtos)
@@ -87,7 +88,6 @@ namespace Stock.Domain.Services
 
         public Asset GetAssetById(int id)
         {
-
             var asset = assets.SingleOrDefault(a => a.Id == id);
             if (asset == null)
             {

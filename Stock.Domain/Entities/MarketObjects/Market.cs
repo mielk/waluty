@@ -11,15 +11,17 @@ namespace Stock.Domain.Entities
 {
     public class Market
     {
+
+        //Static properties.
+        private static IMarketService service = ServiceFactory.GetMarketService();
+        
+        //Instance properties.
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ShortName { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        private IEnumerable<Asset> assets;
-        //Static.
-        private static IMarketService service = ServiceFactory.GetMarketService();
-        private static IEnumerable<Market> markets = new List<Market>();
+        public string Symbol { get; set; }
+        //public DateTime StartTime { get; set; }
+        //public DateTime EndTime { get; set; }
+        //public bool IsAroundClock { get; set; }
 
 
 
@@ -35,132 +37,72 @@ namespace Stock.Domain.Entities
             service = ServiceFactory.GetMarketService();
         }
 
-        public static IEnumerable<Market> GetAllMarkets()
+        public static IEnumerable<Market> GetMarkets()
         {
-            List<Market> result = new List<Market>();
-            var dbMarkets = service.GetMarkets();
-            foreach (var market in dbMarkets)
-            {
-                var match = markets.SingleOrDefault(m => m.Id == market.Id);
-                if (match == null)
-                {
-                    markets = markets.Concat(new[] { market });
-                    match = market;
-                }
-
-                result.Add(match);
-
-            }
-
-            return result;
-
+            return service.GetMarkets();
         }
 
-        public static Market GetMarketById(int id)
+        public static Market ById(int id)
         {
-
-            var market = markets.SingleOrDefault(m => m.Id == id);
-
-            if (market == null)
-            {
-                market = service.GetMarketById(id);
-                if (market != null)
-                {
-                    markets = markets.Concat(new[] { market });
-                }
-            }
-
-            return market;
-
+            return service.GetMarketById(id);
         }
 
-        public static Market GetMarketByName(string name)
+        public static Market ByName(string name)
         {
-            
-            var market = markets.SingleOrDefault(m => m.Name.Equals(name));
-
-            if (market == null)
-            {
-                market = service.GetMarketByName(name);
-                if (market != null)
-                {
-                    markets = markets.Concat(new[] { market });
-                }
-            }
-
-            return market;
-
+            return service.GetMarketByName(name);
         }
 
-        public static Market GetMarketBySymbol(string symbol)
+        public static Market BySymbol(string symbol)
         {
-
-            var market = markets.SingleOrDefault(m => m.ShortName.Equals(symbol));
-
-            if (market == null)
-            {
-                market = service.GetMarketBySymbol(symbol);
-                if (market != null)
-                {
-                    markets = markets.Concat(new[] { market });
-                }
-            }
-
-            return market;
-
+            return service.GetMarketBySymbol(symbol);
         }
 
         #endregion STATIC_METHODS
 
 
+        #region CONSTRUCTORS
 
-        public Market(int id, string name)
+        public Market(int id, string name, string symbol)
         {
             this.Id = id;
             this.Name = name;
+            this.Symbol = symbol;
         }
-
-        public IEnumerable<Asset> Assets
-        {
-            get
-            {
-                if (assets == null)
-                {
-                    //assets = IsFx() ? FxPair.GetAllFxPairs() : Asset.GetAssetsForMarket(Id);
-                }
-                return assets.ToList();
-            }
-            set
-            {
-                assets = value;
-            }
-        }
-
-        public bool IsFx()
-        {
-            return Name.Equals("fx", StringComparison.CurrentCultureIgnoreCase);
-        }
-
-        public void setTimes(string startTime, string endTime)
-        {
-
-        }
-
-        public void setTimes(DateTime startTime, DateTime endTime)
-        {
-            this.StartTime = startTime;
-            this.EndTime = EndTime;
-        }
-
 
         public static Market FromDto(MarketDto dto)
         {
-
-            var market = new Market(dto.Id, dto.Name);
-            market.ShortName = dto.ShortName;
-            market.setTimes(dto.StartTime, dto.EndTime);
+            var market = new Market(dto.Id, dto.Name, dto.ShortName);
             return market;
+        }
 
+        #endregion CONSTRUCTORS
+
+
+        #region API
+
+        public IEnumerable<Asset> GetAssets()
+        {
+            return Asset.GetAssetsForMarket(Id);
+        }
+
+        #endregion API
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(Market)) return false;
+
+            Market compared = (Market)obj;
+            if ((compared.Id) != Id) return false;
+            if (!compared.Name.Equals(Name, StringComparison.CurrentCultureIgnoreCase)) return false;
+            if (!compared.Symbol.Equals(Symbol, StringComparison.CurrentCultureIgnoreCase)) return false;
+            return true;
+
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
     }

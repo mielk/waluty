@@ -6,7 +6,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Stock.DAL.Infrastructure;
 using Stock.Domain.Entities;
-using Stock.Web.Binders;
+//using Stock.Web.Binders;
 
 
 namespace Stock.Web
@@ -25,7 +25,7 @@ namespace Stock.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer<EFDbContext>(null);
-            ModelBinders.Binders.Add(typeof(User), new UserModelBinder());
+            //ModelBinders.Binders.Add(typeof(User), new UserModelBinder());
         }
     }
 }

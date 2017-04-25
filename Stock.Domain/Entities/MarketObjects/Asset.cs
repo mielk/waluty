@@ -30,6 +30,11 @@ namespace Stock.Domain.Entities
             service = _service;
         }
 
+        public static void restoreDefaultService()
+        {
+            service = ServiceFactory.GetAssetService();
+        }
+
         public static IEnumerable<Asset> GetAllAssets()
         {
             return service.GetAllAssets();
@@ -42,7 +47,9 @@ namespace Stock.Domain.Entities
 
         public static IEnumerable<Asset> GetAssetsForMarket(int marketId)
         {
-            return service.GetAssetsForMarket(marketId);
+            var assets = service.GetAssetsForMarket(marketId);
+            //return service.GetAssetsForMarket(marketId);
+            return assets;
         }
 
         public static Asset ById(int id)
@@ -60,11 +67,21 @@ namespace Stock.Domain.Entities
 
         #region CONSTRUCTORS
 
+        public Asset(int id, string symbol, Market market)
+        {
+            assignProperties(id, symbol, market);
+        }
+
         public Asset(int id, string symbol, int marketId)
+        {
+            assignProperties(id, symbol, Market.ById(marketId));
+        }
+
+        private void assignProperties(int id, string symbol, Market market)
         {
             this.Id = id;
             this.Symbol = symbol;
-            this.Market = Market.GetMarketById(marketId);
+            this.Market = market;
         }
 
         public static Asset FromDto(AssetDto dto)

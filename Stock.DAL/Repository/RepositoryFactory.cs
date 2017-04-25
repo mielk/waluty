@@ -14,6 +14,7 @@
             MarketRepository = new EFMarketRepository();
             DataRepository = new EFDataRepository();
             CurrencyRepository = new EFCurrencyRepository();
+            AssetRepository = new EFAssetRepository();
         }
 
 

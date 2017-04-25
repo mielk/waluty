@@ -11,17 +11,14 @@ namespace Stock.Domain.Services
     public interface IMarketService
     {
 
-        void injectRepository(IMarketRepository repository);
+        //Infrastructure.
+        void InjectRepository(IMarketRepository repository);
 
-
-                                                                        #region markets
+        //Markets.
         IEnumerable<Market> GetMarkets();
         Market GetMarketById(int id);
         Market GetMarketByName(string name);
         Market GetMarketBySymbol(string symbol);
-                                                                        #endregion markets
-
-
 
     }
 }

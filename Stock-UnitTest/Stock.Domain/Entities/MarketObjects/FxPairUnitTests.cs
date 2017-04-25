@@ -67,7 +67,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             //Act
             var baseObject = new FxPair(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_BASE_CURRENCY_ID, DEFAULT_QUOTE_CURRENCY_ID);
-            var comparedObject = new Market(1, "market");
+            var comparedObject = new { Id = 1, Value = 2 };
             bool areEqual = baseObject.Equals(comparedObject);
 
             //Assert

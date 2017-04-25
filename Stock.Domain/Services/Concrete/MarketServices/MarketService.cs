@@ -10,55 +10,122 @@ using Stock.DAL.TransferObjects;
 
 namespace Stock.Domain.Services
 {
+
     public class MarketService : IMarketService
     {
 
         private IMarketRepository _repository;
         private static readonly MarketService instance = new MarketService(RepositoryFactory.GetMarketRepository());
+        private static IEnumerable<Market> markets = new List<Market>();
 
 
-        public static MarketService Instance()
+        #region INFRASTRUCTURE
+
+        public static IMarketService Instance()
         {
             return instance;
         }
+
+        public static IMarketService Instance(bool reset)
+        {
+            if (reset)
+            {
+                markets = new List<Market>();
+            }
+            return instance;
+        }
+
         private MarketService(IMarketRepository repository)
         {
             _repository = repository;
         }
 
-
-        public void injectRepository(IMarketRepository repository)
+        public void InjectRepository(IMarketRepository repository)
         {
             _repository = repository;
         }
 
+        #endregion INFRASTRUCTURE
 
-                                                                        #region markets
+
+        #region MARKETS
+
         public IEnumerable<Market> GetMarkets()
         {
             var dtos = _repository.GetMarkets();
-            return dtos.Select(Market.FromDto).ToList();
+            return GetMarkets(dtos);
         }
+
+        private IEnumerable<Market> GetMarkets(IEnumerable<MarketDto> dtos)
+        {
+            List<Market> result = new List<Market>();
+            foreach (var dto in dtos)
+            {
+                Market market = markets.SingleOrDefault(m => m.Id == dto.Id);
+                if (market == null)
+                {
+                    market = Market.FromDto(dto);
+                    appendMarket(market);
+                }
+                result.Add(market);
+            }
+            return result;
+        }
+
 
         public Market GetMarketById(int id)
         {
-            var dto = _repository.GetMarketById(id);
-            return Market.FromDto(dto);
+            var market = markets.SingleOrDefault(a => a.Id == id);
+            if (market == null)
+            {
+                var dto = _repository.GetMarketById(id);
+                if (dto != null)
+                {
+                    market = Market.FromDto(dto);
+                    appendMarket(market);
+                }
+            }
+            return market;
         }
 
         public Market GetMarketByName(string name)
         {
-            var dto = _repository.GetMarketByName(name);
-            return Market.FromDto(dto);
+            var market = markets.SingleOrDefault(a => a.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            if (market == null)
+            {
+                var dto = _repository.GetMarketByName(name);
+                if (dto != null)
+                {
+                    market = Market.FromDto(dto);
+                    appendMarket(market);
+                }
+            }
+            return market;
         }
 
         public Market GetMarketBySymbol(string symbol)
         {
-            var dto = _repository.GetMarketBySymbol(symbol);
-            return Market.FromDto(dto);
+            var market = markets.SingleOrDefault(a => a.Symbol.Equals(symbol, StringComparison.CurrentCultureIgnoreCase));
+            if (market == null)
+            {
+                var dto = _repository.GetMarketBySymbol(symbol);
+                if (dto != null)
+                {
+                    market = Market.FromDto(dto);
+                    appendMarket(market);
+                }
+            }
+            return market;
         }
-                                                                        #endregion markets
+
+        private void appendMarket(Market market)
+        {
+            markets = markets.Concat(new[] { market });
+        }
+
+        #endregion MARKETS
 
 
     }
+
 }

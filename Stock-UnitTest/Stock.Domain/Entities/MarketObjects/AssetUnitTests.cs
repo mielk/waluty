@@ -33,8 +33,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         private void injectMockedServiceToMarketClass()
         {
             Mock<IMarketService> mockedService = new Mock<IMarketService>();
-            mockedService.Setup(s => s.GetMarketById(1)).Returns(new Market(1, "FX"));
-            mockedService.Setup(s => s.GetMarketById(2)).Returns(new Market(2, "unknown"));
+            mockedService.Setup(s => s.GetMarketById(1)).Returns(new Market(1, "Forex", "FX"));
+            mockedService.Setup(s => s.GetMarketById(2)).Returns(new Market(2, "unknown", "unknown"));
             Market.injectService(mockedService.Object);
         }
 
@@ -125,7 +125,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             //Act
             var baseObject = new Asset(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_MARKET_ID);
-            var comparedObject = new Market(1, "market");
+            var comparedObject = new { Id = 1, Value = 2 };
 
             //Assert
             Assert.IsFalse(baseObject.Equals(comparedObject));

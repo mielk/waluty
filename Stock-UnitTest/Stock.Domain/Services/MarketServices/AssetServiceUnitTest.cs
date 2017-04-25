@@ -60,8 +60,8 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
         private void injectMockedServiceToMarketClass()
         {
             Mock<IMarketService> mockedService = new Mock<IMarketService>();
-            mockedService.Setup(s => s.GetMarketById(1)).Returns(new Market(1, "FX"));
-            mockedService.Setup(s => s.GetMarketById(2)).Returns(new Market(2, "unknown"));
+            mockedService.Setup(s => s.GetMarketById(1)).Returns(new Market(1, "Forex", "FX"));
+            mockedService.Setup(s => s.GetMarketById(2)).Returns(new Market(2, "unknown", "unknown"));
             Market.injectService(mockedService.Object);
         }
 

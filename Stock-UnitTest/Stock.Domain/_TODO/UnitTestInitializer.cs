@@ -10,7 +10,6 @@ namespace Stock_UnitTest.Stock.Services
     public class UnitTestInitializer
     {
 
-
         public static DataItem[] GetData()
         {
 
@@ -1986,7 +1985,6 @@ namespace Stock_UnitTest.Stock.Services
             return results;
 
         }
-
 
     }
 }

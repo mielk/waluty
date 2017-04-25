@@ -10,14 +10,9 @@ namespace Stock.DAL.Infrastructure
 
         private static EFDbContext _instance;
 
-        public DbSet<AssetDto> Companies { get; set; }
-        
-        public DbSet<MarketDto> Markets { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AssetDto>().ToTable("companies");
-            modelBuilder.Entity<MarketDto>().ToTable("markets");
+            
         }
 
         public EFDbContext()
