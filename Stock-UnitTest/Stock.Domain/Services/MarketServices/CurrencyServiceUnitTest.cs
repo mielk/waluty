@@ -100,7 +100,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Currency currency = service.GetCurrencyById(DEFAULT_ID);
 
             //Assert
-            Assert.AreEqual(currency, expectedCurrency);
+            Assert.AreEqual(expectedCurrency, currency);
 
         }
 
@@ -158,7 +158,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Currency currency = service.GetCurrencyByName(DEFAULT_NAME);
 
             //Assert
-            Assert.AreEqual(currency, expectedCurrency);
+            Assert.AreEqual(expectedCurrency, currency);
 
         }
 
@@ -216,7 +216,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Currency currency = service.GetCurrencyBySymbol(DEFAULT_SYMBOL);
 
             //Assert
-            Assert.AreEqual(currency, expectedCurrency);
+            Assert.AreEqual(expectedCurrency, currency);
 
         }
 
@@ -335,7 +335,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             FxPair pair = service.GetFxPairById(DEFAULT_ID);
 
             //Assert
-            Assert.AreEqual(pair, expectedPair);
+            Assert.AreEqual(expectedPair, pair);
 
             //Clear
             Currency.restoreDefaultService();
@@ -397,7 +397,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             FxPair pair = service.GetFxPairBySymbol(DEFAULT_PAIR_SYMBOL);
 
             //Assert
-            Assert.AreEqual(pair, expectedPair);
+            Assert.AreEqual(expectedPair, pair);
 
             //Clear
             Currency.restoreDefaultService();

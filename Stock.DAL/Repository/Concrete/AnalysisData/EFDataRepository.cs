@@ -720,11 +720,7 @@ namespace Stock.DAL.Repositories
                 }
 
                 //Max price.
-                foreach (var i in context.Database.SqlQuery<String>(sqlMaxPrice))
-                {
-                    maxPrice = double.Parse(i);
-                    break;
-                }
+                maxPrice = double.Parse(context.Database.SqlQuery<String>(sqlMaxPrice).First());
 
                 return new 
                 {

@@ -34,7 +34,7 @@ namespace Stock.Domain.Services
                 return null;
             }
         }
-        public Timeframe getTimeframe()
+        public TimeframeOld getTimeframe()
         {
             if (assetTimeframe != null)
             {
@@ -50,7 +50,7 @@ namespace Stock.Domain.Services
         }
 
 
-        public ProcessService(Asset asset, Timeframe timeframe)
+        public ProcessService(Asset asset, TimeframeOld timeframe)
         {
             this.assetTimeframe = new AssetTimeframe(asset, timeframe);
         }

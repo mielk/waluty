@@ -1,0 +1,267 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using Stock.Utils;
+
+namespace Stock_UnitTest.Stock.Utils.HelperMethods
+{
+    [TestClass]
+    public class DateTimeHelperMethodsUnitTest
+    {
+
+        #region MODIFIED_DAY_OF_WEEK
+
+        [TestMethod]
+        public void DayOfWeekTm_Returns7_ForSunday()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 5, 7, 11, 0, 0);
+
+            //Act
+            int dayOfWeek = date.DayOfWeekTm();
+
+            //Assert
+            int expectedValue = 7;
+            Assert.AreEqual(expectedValue, dayOfWeek);
+        }
+
+        [TestMethod]
+        public void DayOfWeekTm_ReturnsProperValue_ForOtherThanSunday()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 5, 4, 0, 0, 0);
+
+            //Act
+            int dayOfWeek = date.DayOfWeekTm();
+
+            //Assert
+            int expectedValue = 4;
+            Assert.AreEqual(expectedValue, dayOfWeek);
+        }
+
+
+        #endregion MODIFIED_DAY_OF_WEEK
+
+
+        #region MIDNIGHT
+
+        [TestMethod]
+        public void Midnight_ReturnsProperValue()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 5, 7, 11, 12, 13);
+
+            //Act
+            DateTime midnight = date.Midnight();
+
+            //Assert
+            DateTime expectedValue = new DateTime(2017, 5, 7, 0, 0, 0);
+            Assert.AreEqual(expectedValue, midnight);
+        }
+
+
+        #endregion MIDNIGHT
+
+
+        #region IS_WEEKEND
+
+        [TestMethod]
+        public void IsWeekend_ReturnsTrue_ForSaturdayMidnight()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 4, 29, 0, 0, 0);
+
+            //Assert
+            Assert.IsTrue(date.IsWeekend());
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsFalse_ForFriday235959()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 4, 28, 23, 59, 59);
+
+            //Assert
+            Assert.IsFalse(date.IsWeekend());
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsTrue_ForSunday235959()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 4, 30, 23, 59, 59);
+
+            //Assert
+            Assert.IsTrue(date.IsWeekend());
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsFalse_ForMondayMidnight()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 5, 1, 0, 0, 0);
+
+            //Assert
+            Assert.IsFalse(date.IsWeekend());
+
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsFalse_ForTuesdayDate()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 5, 2, 11, 0, 0);
+
+            //Assert
+            Assert.IsFalse(date.IsWeekend());
+
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsFalse_ForWednesdayDate()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 5, 3, 2, 0, 0);
+
+            //Assert
+            Assert.IsFalse(date.IsWeekend());
+
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsFalse_ForThursdayDate()
+        {
+
+            //Arrange
+            DateTime date = new DateTime(2017, 5, 4, 11, 0, 0);
+
+            //Assert
+            Assert.IsFalse(date.IsWeekend());
+
+        }
+
+        #endregion IS_WEEKEND
+
+
+        #region GET_WEEKEND_START
+
+        [TestMethod]
+        public void GetWeekendStart_ReturnsProperValue_ForMidweekValue()
+        {
+
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 3, 11, 15, 0);
+
+            //Act
+            DateTime result = baseDate.GetWeekendStart();
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 6, 0, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+        }
+
+        [TestMethod]
+        public void GetWeekendStart_ReturnsProperValue_ForWeekendValue()
+        {
+
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 6, 14, 0, 0);
+
+            //Act
+            DateTime result = baseDate.GetWeekendStart();
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 6, 0, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+        }
+
+
+        [TestMethod]
+        public void GetWeekendStart_ReturnsProperValue_ForSunday235959()
+        {
+
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 7, 23, 59, 59);
+
+            //Act
+            DateTime result = baseDate.GetWeekendStart();
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 6, 0, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+        }
+
+
+        [TestMethod]
+        public void GetWeekendStart_ReturnsProperValue_ForMonday000000()
+        {
+
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 0, 0, 0);
+
+            //Act
+            DateTime result = baseDate.GetWeekendStart();
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 6, 0, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+        }
+
+
+
+        #endregion GET_WEEKEND_START
+
+
+        #region DAY_BEFORE
+
+        [TestMethod]
+        public void DayBefore_ReturnsProperDate()
+        {
+            
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 4, 30, 15, 30, 12);
+
+            //Act
+            DateTime result = baseDate.DayBefore();
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 4, 29, 15, 30, 12);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        #endregion DAY_BEFORE
+
+
+        #region SET_TIME
+        
+        [TestMethod]
+        public void SetTime_ReturnProperValue()
+        {
+
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 4, 30, 15, 30, 12);
+            TimeSpan span = new TimeSpan(12, 43, 18);
+
+            //Act
+            DateTime result = baseDate.SetTime(span);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 4, 30, 12, 43, 18);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        #endregion SET_TIME
+
+    }
+}

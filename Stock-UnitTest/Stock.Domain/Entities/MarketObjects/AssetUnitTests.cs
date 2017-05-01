@@ -82,7 +82,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
         [TestMethod]
-        public void currencyFromDto_hasSamePropertiesAsDto()
+        public void assetFromDto_hasSamePropertiesAsDto()
         {
 
             //Arrange

@@ -12,7 +12,7 @@ namespace Stock.Domain.Entities
     {
         public int AssetId { get; set; }
         public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
+        public TimeframeOld Timeframe { get; set; }
         public DateTime Date { get; set; }
         public Quotation Quotation { get; set; }
         public Price Price { get; set; }
@@ -101,7 +101,7 @@ namespace Stock.Domain.Entities
             //item.AssetId = dto.AssetId;
             item.Asset = Asset.ById(dto.AssetId);
             item.Date = dto.PriceDate;
-            item.Timeframe = Timeframe.GetTimeframeByShortName(dto.Timeframe);
+            item.Timeframe = TimeframeOld.GetTimeframeByShortName(dto.Timeframe);
 
             if (dto.QuotationId > 0)
             {

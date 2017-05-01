@@ -12,7 +12,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         private const int DEFAULT_ASSET_ID = 1;
         private const string DEFAULT_ASSET_SYMBOL = "EURUSD";
         private const int DEFAULT_ASSET_MARKET_ID = 1;
-        private const TimeframeSymbol DEFAULT_TIMEFRAME_SYMBOL = TimeframeSymbol.M30;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
 
 
         #region INFRASTRUCTURE
@@ -25,7 +25,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         private Timeframe defaultTimeframe()
         {
-            return Timeframe.GetTimeframe(DEFAULT_TIMEFRAME_SYMBOL);
+            return Timeframe.ById(DEFAULT_TIMEFRAME_ID);
         }
 
         #endregion INFRASTRUCTURE

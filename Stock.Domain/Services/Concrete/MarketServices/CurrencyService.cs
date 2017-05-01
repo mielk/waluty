@@ -73,58 +73,36 @@ namespace Stock.Domain.Services
 
         }
 
-        public Currency GetCurrencyById(int id)
+        private Currency GetCurrency(Func<CurrencyDto> func, Currency currency)
         {
-
-            var currency = currencies.SingleOrDefault(c => c.GetId() == id);
             if (currency == null)
             {
-                var dto = _repository.GetCurrencyById(id);
-                if (dto != null)
+                CurrencyDto result = func();
+                if (result != null)
                 {
-                    currency = Currency.FromDto(dto);
+                    currency = Currency.FromDto(result);
                     appendCurrency(currency);
                 }
             }
-
             return currency;
-
         }
 
-        public Currency GetCurrencyByName(string name)
+        public Currency GetCurrencyById(int id)
         {
-
-            var currency = currencies.SingleOrDefault(c => c.GetName() == name);
-            if (currency == null)
-            {
-                var dto = _repository.GetCurrencyByName(name);
-                if (dto != null)
-                {
-                    currency = Currency.FromDto(dto);
-                    appendCurrency(currency);
-                }
-            }
-
-            return currency;
-
+            var currency = currencies.SingleOrDefault(c => c.GetId() == id);
+            return GetCurrency(delegate { return _repository.GetCurrencyById(id); }, currency);
         }
 
         public Currency GetCurrencyBySymbol(string symbol)
         {
-
             var currency = currencies.SingleOrDefault(c => c.GetSymbol() == symbol);
-            if (currency == null)
-            {
-                var dto = _repository.GetCurrencyBySymbol(symbol);
-                if (dto != null)
-                {
-                    currency = Currency.FromDto(dto);
-                    appendCurrency(currency);
-                }
-            }
+            return GetCurrency(delegate { return _repository.GetCurrencyBySymbol(symbol); }, currency);
+        }
 
-            return currency;
-
+        public Currency GetCurrencyByName(string name)
+        {
+            var currency = currencies.SingleOrDefault(c => c.GetName() == name);
+            return GetCurrency(delegate { return _repository.GetCurrencyByName(name); }, currency);
         }
 
         private void appendCurrency(Currency currency)

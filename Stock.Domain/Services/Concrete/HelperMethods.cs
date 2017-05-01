@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
 using Stock.Domain.Services.Factories;
+using Stock.Utils;
 
 namespace Stock.Domain.Services
 {
@@ -237,12 +238,12 @@ namespace Stock.Domain.Services
         public static DateTime addTimeUnits(this DateTime date, TimeframeSymbol timeframe, int units)
         {
             if (units == 0) return date.AddMilliseconds(0);
-            return Timeframe.addTimeUnits(date, timeframe, units);
+            return TimeframeOld.addTimeUnits(date, timeframe, units);
         }
 
         public static int countTimeUnits(this DateTime date, DateTime compared, TimeframeSymbol timeframe)
         {
-            return Timeframe.countTimeUnits(date, compared, timeframe);
+            return TimeframeOld.countTimeUnits(date, compared, timeframe);
         }
 
         public static int countNewYearBreaks(this DateTime date, DateTime compared, bool includeWeekends)
@@ -358,7 +359,7 @@ namespace Stock.Domain.Services
 
         private static DateTime ProperWeek(this DateTime d)
         {
-            return d.AddDays(-1 * (int)d.DayOfWeek).midnight();
+            return d.AddDays(-1 * (int)d.DayOfWeek).Midnight();
         }
 
         private static DateTime ProperDay(this DateTime d)
@@ -366,28 +367,28 @@ namespace Stock.Domain.Services
 
             if (d.DayOfWeek == DayOfWeek.Saturday)
             {
-                return d.AddDays(-1).ProperDay().midnight();
+                return d.AddDays(-1).ProperDay().Midnight();
             }
             else if (d.DayOfWeek == DayOfWeek.Sunday)
             {
-                return d.AddDays(-2).ProperDay().midnight();
+                return d.AddDays(-2).ProperDay().Midnight();
             }
             else if (d.DayOfYear == 1)
             {
-                return d.AddDays(-1).ProperDay().midnight();
+                return d.AddDays(-1).ProperDay().Midnight();
             }
 
-            return new DateTime(d.Ticks).midnight();
+            return new DateTime(d.Ticks).Midnight();
 
         }
 
         private static DateTime ProperShortTime(this DateTime d, TimeframeSymbol timeframe)
         {
             //To full time period.
-            TimeSpan span = Timeframe.getTimespan(timeframe, 1);
+            TimeSpan span = TimeframeOld.getTimespan(timeframe, 1);
 
             //include weekends
-            if (d.isWeekend())
+            if (d.IsWeekend())
             {
                 var dt = (d.DayOfWeek == DayOfWeek.Sunday ? d.AddDays(-1) : d.AddDays(0));
                 var saturdayMidnight = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
@@ -398,12 +399,12 @@ namespace Stock.Domain.Services
             //include christmas & new year
             if (d.IsChristmas())
             {
-                return Timeframe.getChristmasProperDate(d, timeframe).ProperShortTime(timeframe);
+                return TimeframeOld.getChristmasProperDate(d, timeframe).ProperShortTime(timeframe);
             }
             
             if (d.IsNewYear())
             {
-                return Timeframe.getNewYearProperDate(d, timeframe).ProperShortTime(timeframe);
+                return TimeframeOld.getNewYearProperDate(d, timeframe).ProperShortTime(timeframe);
             }
 
             //To full time format.
@@ -427,21 +428,10 @@ namespace Stock.Domain.Services
         {
             return new TimeSpan(span.Hours * multiplier, span.Minutes * multiplier, span.Seconds * multiplier);
         }
-
-
-        public static DateTime midnight(this DateTime date)
-        {
-            return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
-        }
-
-        public static bool isWeekend(this DateTime date)
-        {
-            return (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday ? true : false);
-        }
-
+        
         public static bool isOpenMarketTime(this DateTime date)
         {
-            if (date.isWeekend() || date.IsChristmas() || date.IsNewYear())
+            if (date.IsWeekend() || date.IsChristmas() || date.IsNewYear())
             {
                 return false;
             }
@@ -478,9 +468,9 @@ namespace Stock.Domain.Services
                 {
                     return ifNotOpenMarketGetNext(date.getNewYearExactDate().AddDays(1));
                 } 
-                else if (date.isWeekend())
+                else if (date.IsWeekend())
                 {
-                    return ifNotOpenMarketGetNext(date.AddDays(date.DayOfWeek == DayOfWeek.Saturday ? 2 : 1).midnight());
+                    return ifNotOpenMarketGetNext(date.AddDays(date.DayOfWeek == DayOfWeek.Saturday ? 2 : 1).Midnight());
                 }
 
                 return date;
@@ -498,7 +488,7 @@ namespace Stock.Domain.Services
                 case TimeframeSymbol.D1:
                     return d.AddDays(1).ifNotOpenMarketGetNext();
                 default:
-                    return d.Add(Timeframe.getTimespan(timeframe)).ifNotOpenMarketGetNext();
+                    return d.Add(TimeframeOld.getTimespan(timeframe)).ifNotOpenMarketGetNext();
             }
 
         }

@@ -61,11 +61,14 @@
     <Compile Include="Helpers\DataItemHelpers\ExtremumDALHelper.cs" />
     <Compile Include="Helpers\DataItemHelpers\MacdDALHelper.cs" />
     <Compile Include="Infrastructure\AssetContext.cs" />
+    <Compile Include="Infrastructure\TimeframeContext.cs" />
     <Compile Include="Infrastructure\MarketContext.cs" />
     <Compile Include="Infrastructure\CurrencyContext.cs" />
     <Compile Include="Infrastructure\EfDbContext.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
+    <Compile Include="Repository\Abstract\MarketEntities\ITimeframeRepository.cs" />
     <Compile Include="Repository\Abstract\MarketEntities\IAssetRepository.cs" />
+    <Compile Include="Repository\Concrete\MarketEntities\EFTimeframeRepository.cs" />
     <Compile Include="Repository\Concrete\MarketEntities\EFAssetRepository.cs" />
     <Compile Include="Repository\RepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="TransferObjects\DataDto\DataItemsDto\CandlestickDto.cs" />
     <Compile Include="TransferObjects\MarketObjectsDto\AssetDto.cs" />
     <Compile Include="TransferObjects\DataDto\DataItemsDto\AdxDto.cs" />
+    <Compile Include="TransferObjects\MarketObjectsDto\TimeframeDto.cs" />
     <Compile Include="TransferObjects\MarketObjectsDto\CurrencyDto.cs" />
     <Compile Include="TransferObjects\DataDto\DataItemsDto\DataItemDto.cs" />
     <Compile Include="TransferObjects\DataDto\DataItemsDto\ExtremumDto.cs" />

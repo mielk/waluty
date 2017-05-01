@@ -64,7 +64,7 @@ namespace Stock.Domain.Entities
             return this.AssetTimeframe.Asset;
         }
 
-        public Timeframe timeframe()
+        public TimeframeOld timeframe()
         {
             return this.AssetTimeframe.Timeframe;
         }

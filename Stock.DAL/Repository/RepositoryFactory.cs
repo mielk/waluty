@@ -7,6 +7,7 @@
         private static readonly ICurrencyRepository CurrencyRepository;
         private static readonly IAssetRepository AssetRepository;
         private static readonly IDataRepository DataRepository;
+        private static readonly ITimeframeRepository TimeframeRepository;
 
 
         static RepositoryFactory()
@@ -15,6 +16,7 @@
             DataRepository = new EFDataRepository();
             CurrencyRepository = new EFCurrencyRepository();
             AssetRepository = new EFAssetRepository();
+            TimeframeRepository = new EFTimeframeRepository();
         }
 
 
@@ -31,6 +33,11 @@
         public static IAssetRepository GetAssetRepository()
         {
             return AssetRepository;
+        }
+
+        public static ITimeframeRepository GetTimeframeRepository()
+        {
+            return TimeframeRepository;
         }
 
         public static IDataRepository GetDataRepository()

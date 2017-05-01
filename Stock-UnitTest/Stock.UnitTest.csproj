@@ -68,11 +68,18 @@
     <Compile Include="Stock.DAL\Helpers\HelperMethodUnitTest.cs" />
     <Compile Include="Stock.DAL\Infrastructure\RepositoryFactoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\EFCurrencyRepositoryUnitTest.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\MonthsProcessorUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\WeeksProcessorUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\DaysProcessorUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\HoursProcessorUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\TimeframeProcessorFactoryUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\MinutesProcessorUnitTests.cs" />
+    <Compile Include="Stock.Domain\Enums\HelperMethodsUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\AssetUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\CurrencyUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\FxPairUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\todo\AnalysisTypeUnitTests.cs" />
-    <Compile Include="Stock.Domain\Entities\todo\TimeframeUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\MarketUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\todo\DataItemUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\AssetTimeframeUnitTest.cs" />
@@ -80,13 +87,13 @@
     <Compile Include="Stock.Domain\Services\AnalysisServices\PriceAnalyzerUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Factories\AnalyzerFactoryUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\MarketServices\AssetServiceUnitTest.cs" />
+    <Compile Include="Stock.Domain\Services\MarketServices\TimeframeServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\MarketServices\MarketServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\MarketServices\CurrencyServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\QuotationServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\EfficiencyTests.cs" />
     <Compile Include="Stock.Domain\_TODO\PriceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\ProcessServiceUnitTests.cs" />
-    <Compile Include="Stock.Domain\_TODO\TimeframeUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\DataItemUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendlineUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\PriceAnalyzerUnitTests.cs" />
@@ -95,6 +102,7 @@
     <Compile Include="Stock.Domain\_TODO\UnitTestInitializer.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendlineAnalyzerUnitTests.cs" />
     <Compile Include="Stock.Utils\HelperMethods\ContainerHelperMethodsUnitTest.cs" />
+    <Compile Include="Stock.Utils\HelperMethods\DateTimeHelperMethodsUnitTest.cs" />
     <Compile Include="Stock.Utils\HelperMethods\NumericHelperMethodsUnitTest.cs" />
     <Compile Include="tools\UnitTestTools.cs" />
   </ItemGroup>

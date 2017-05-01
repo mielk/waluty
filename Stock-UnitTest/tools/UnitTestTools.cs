@@ -24,9 +24,9 @@ namespace Stock_UnitTest.tools
             return asset;
         }
 
-        public static Timeframe testTimeframe()
+        public static TimeframeOld testTimeframe()
         {
-            return Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            return TimeframeOld.GetTimeframe(TimeframeSymbol.M5);
         }
 
         public static AssetTimeframe testAssetTimeframe()

@@ -91,7 +91,7 @@ namespace Stock.Domain.Entities
         #endregion CONSTRUCTORS
 
 
-        #region ACCESSORS
+        #region GETTERS
 
         public int GetId()
         {
@@ -113,7 +113,7 @@ namespace Stock.Domain.Entities
             return (market == null ? 0 : market.GetId());
         }
 
-        #endregion ACCESSORS
+        #endregion GETTERS
 
 
 
@@ -122,8 +122,8 @@ namespace Stock.Domain.Entities
             if (obj.GetType() != typeof(Asset)) return false;
 
             Asset compared = (Asset)obj;
-            if ((compared.id) != id) return false;
-            if (!compared.symbol.Equals(symbol)) return false;
+            if ((compared.GetId()) != id) return false;
+            if (!compared.GetSymbol().Equals(symbol)) return false;
             if (compared.GetMarketId() != GetMarketId()) return false;
             return true;
 

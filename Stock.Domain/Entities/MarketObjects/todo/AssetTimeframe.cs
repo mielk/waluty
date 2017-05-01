@@ -10,11 +10,16 @@ namespace Stock.Domain.Entities
     public class AssetTimeframe
     {
         public Asset Asset { get; set; }
-        public Timeframe Timeframe { get; set; }
+        public TimeframeOld Timeframe { get; set; }
         //public DataItem[] Items { get; set; }
 
 
         #region CONSTRUCTORS
+
+        public AssetTimeframe(Asset asset, TimeframeOld timeframe)
+        {
+            //loadParams(asset, timeframe);
+        }
 
         public AssetTimeframe(Asset asset, Timeframe timeframe)
         {
@@ -40,7 +45,7 @@ namespace Stock.Domain.Entities
         private void loadParams(Asset asset, Timeframe timeframe)
         {
             this.Asset = asset;
-            this.Timeframe = timeframe;
+            //this.Timeframe = timeframe;
         }
 
         #endregion CONSTRUCTORS

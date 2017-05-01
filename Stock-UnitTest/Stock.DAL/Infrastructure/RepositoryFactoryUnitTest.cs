@@ -33,5 +33,14 @@ namespace Stock_UnitTest.Stock.DAL.Infrastructure
             Assert.AreSame(repository, repository2);
         }
 
+        [TestMethod]
+        public void GetTimeframeRepository_alwaysReturnsSingletonInstance()
+        {
+            ITimeframeRepository repository = RepositoryFactory.GetTimeframeRepository();
+            ITimeframeRepository repository2 = RepositoryFactory.GetTimeframeRepository();
+            Assert.AreSame(repository, repository2);
+        }
+
+
     }
 }

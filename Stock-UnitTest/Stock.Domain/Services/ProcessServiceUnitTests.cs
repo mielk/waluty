@@ -29,7 +29,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
 
             Asset asset = null;
-            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            TimeframeOld timeframe = TimeframeOld.GetTimeframe(TimeframeSymbol.M15);
             var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
             service.Setup(types);
@@ -45,7 +45,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
 
             Asset asset = assetForTest();
-            Timeframe timeframe = null;
+            TimeframeOld timeframe = null;
             var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.MACD, AnalysisType.Price };
             service.Setup(types);
@@ -61,7 +61,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
 
             Asset asset = assetForTest();
-            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            TimeframeOld timeframe = TimeframeOld.GetTimeframe(TimeframeSymbol.M5);
             var service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { };
             service.Setup(types);
@@ -76,7 +76,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
 
             Asset asset = assetForTest();
-            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            TimeframeOld timeframe = TimeframeOld.GetTimeframe(TimeframeSymbol.M5);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
 
             Mock<IQuotationService> mockQuotationService = UnitTestTools.mockedQuotationService();
@@ -97,7 +97,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
 
             Asset asset = assetForTest();
-            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            TimeframeOld timeframe = TimeframeOld.GetTimeframe(TimeframeSymbol.M5);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
 
             Mock<IQuotationService> mockQuotationService = UnitTestTools.mockedQuotationService();
@@ -119,7 +119,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
 
             Asset asset = assetForTest();
-            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            TimeframeOld timeframe = TimeframeOld.GetTimeframe(TimeframeSymbol.M15);
             ProcessService service = new ProcessService(asset, timeframe);
             var mockQuotationService = UnitTestTools.mockedQuotationService();
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
@@ -142,7 +142,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             mockQuotationService.Setup(q => q.fetchData(It.IsAny<Dictionary<AnalysisType, IAnalyzer>>())).Returns(items);
 
             Asset asset = assetForTest();
-            Timeframe timeframe = Timeframe.GetTimeframe(TimeframeSymbol.M15);
+            TimeframeOld timeframe = TimeframeOld.GetTimeframe(TimeframeSymbol.M15);
             ProcessService service = new ProcessService(asset, timeframe);
             AnalysisType[] types = new AnalysisType[] { AnalysisType.Price };
             service.Setup(types);

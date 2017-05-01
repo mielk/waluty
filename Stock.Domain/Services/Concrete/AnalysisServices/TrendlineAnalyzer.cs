@@ -123,6 +123,7 @@ Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Analyzing single extremu
                 var previous = this.extremaGroups.Where(i => i.getDate() < extremum.getDate() &&
                                     i.getDate() > extremum.getDate().addTimeUnits(this.AssetTimeframe.Timeframe.Symbol, -ItemsForAnalysis));
 
+
 Debug.WriteLine("+;TrendlineAnalyzer.getNewTrendlines | Previous: " + previous.ToArray().Length);
 
 

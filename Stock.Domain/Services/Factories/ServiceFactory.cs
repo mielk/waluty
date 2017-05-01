@@ -12,6 +12,7 @@ namespace Stock.Domain.Services
         private static ICurrencyService _currencyService;
         private static IAssetService _assetService;
         private static IMarketService _marketService;
+        private static ITimeframeService _timeframeService;
 
 
 
@@ -62,6 +63,23 @@ namespace Stock.Domain.Services
         {
             _marketService = service;
             return _marketService;
+        }
+
+
+
+        public static ITimeframeService GetTimeframeService()
+        {
+            if (_timeframeService == null)
+            {
+                _timeframeService = TimeframeService.Instance();
+            }
+            return _timeframeService;
+        }
+
+        public static ITimeframeService GetTimeframeService(ITimeframeService service)
+        {
+            _timeframeService = service;
+            return _timeframeService;
         }
 
 
