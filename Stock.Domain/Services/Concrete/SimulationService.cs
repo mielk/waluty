@@ -36,12 +36,12 @@ namespace Stock.Domain.Services
 
         public Asset getAsset()
         {
-            return AssetTimeframe.Asset;
+            return AssetTimeframe.GetAsset();
         }
 
         public Timeframe getTimeframe()
         {
-            return AssetTimeframe.Timeframe;
+            return AssetTimeframe.GetTimeframe();
         }
 
 

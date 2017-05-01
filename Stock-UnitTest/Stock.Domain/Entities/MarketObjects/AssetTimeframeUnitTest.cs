@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Stock.Domain.Entities;
 using Moq;
+using Stock.Domain.Enums;
 
 namespace Stock_UnitTest.Stock.Domain.Entities
 {
@@ -13,6 +14,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         private const string DEFAULT_ASSET_SYMBOL = "EURUSD";
         private const int DEFAULT_ASSET_MARKET_ID = 1;
         private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const string DEFAULT_TIMEFRAME_NAME = "M5";
+        private const TimeframeUnit DEFAULT_TIMEFRAME_UNIT_TYPE = TimeframeUnit.Minutes;
+        private const int DEFAULT_TIMEFRAME_UNIT_COUNT = 5;
 
 
         #region INFRASTRUCTURE
@@ -25,7 +29,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         private Timeframe defaultTimeframe()
         {
-            return Timeframe.ById(DEFAULT_TIMEFRAME_ID);
+            return new Timeframe(DEFAULT_TIMEFRAME_ID, DEFAULT_TIMEFRAME_NAME, DEFAULT_TIMEFRAME_UNIT_TYPE, DEFAULT_TIMEFRAME_UNIT_COUNT); 
         }
 
         #endregion INFRASTRUCTURE
@@ -33,7 +37,6 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         #region IS.VALID
 
-        [Ignore]
         [TestMethod]
         public void IsValid_ReturnsTrue_IfBothAssetAndTimeframeAreSet()
         {
@@ -120,7 +123,6 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
-        [Ignore]
         [TestMethod]
         public void GetSymbol_ReturnsProperSymbol_IfAssetAndTimeframeAreSet()
         {
@@ -134,7 +136,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             string actualSymbol = assetTimeframe.GetSymbol();
 
             //Assert
-            string expectedSymbol = "EURUSD_M30";
+            string expectedSymbol = "EURUSD_M5";
             Assert.AreEqual(expectedSymbol, actualSymbol);
 
         }

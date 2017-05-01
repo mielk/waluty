@@ -71,25 +71,6 @@ namespace Stock_UnitTest.tools
             return new DataItem[] { };
         }
 
-        public static DataItem[] getDataItemsArray(TimeframeSymbol timeframe, DateTime startDate, DateTime endDate, List<AnalysisType> types)
-        {
-            //DateTime minDate = startDate.CompareTo(endDate) < 0 ? startDate : endDate;
-            //DateTime d = new DateTime(minDate.Ticks);
-            //List<DataItem> items = new List<DataItem>();
-
-            //while (d.CompareTo(endDate) <= 0)
-            //{
-            //    var item = generateDataItem(d, types);
-            //    d = d.getNext(timeframe);
-            //    items.Add(item);
-            //}
-
-            //var array = items.ToArray();
-            //array.AppendIndexNumbers();
-            //return array;
-            return null;
-
-        }
 
         public static DataItem generateDataItem(DateTime d, List<AnalysisType> types)
         {

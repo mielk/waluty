@@ -61,7 +61,7 @@
     <Compile Include="Enums\HelperMethods.cs" />
     <Compile Include="Entities\MarketObjects\Asset.cs" />
     <Compile Include="Entities\MarketObjects\Timeframe.cs" />
-    <Compile Include="Entities\MarketObjects\todo\AssetTimeframe.cs" />
+    <Compile Include="Entities\MarketObjects\AssetTimeframe.cs" />
     <Compile Include="Entities\Analysis\Adx.cs" />
     <Compile Include="Entities\MarketObjects\Currency.cs" />
     <Compile Include="Entities\Analysis\DataItem.cs" />
@@ -71,7 +71,6 @@
     <Compile Include="Entities\Analysis\Price.cs" />
     <Compile Include="Entities\Analysis\Quotation.cs" />
     <Compile Include="Entities\MarketObjects\Market.cs" />
-    <Compile Include="Entities\MarketObjects\todo\TimeframeOld.cs" />
     <Compile Include="Entities\Trendlines\TrendBreak.cs" />
     <Compile Include="Entities\Trendlines\TrendBounce.cs" />
     <Compile Include="Entities\Trendlines\TrendHit.cs" />

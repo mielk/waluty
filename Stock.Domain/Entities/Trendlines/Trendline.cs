@@ -61,12 +61,12 @@ namespace Stock.Domain.Entities
 
         public Asset asset()
         {
-            return this.AssetTimeframe.Asset;
+            return this.AssetTimeframe.GetAsset();
         }
 
         public Timeframe timeframe()
         {
-            return this.AssetTimeframe.Timeframe;
+            return this.AssetTimeframe.GetTimeframe();
         }
 
 

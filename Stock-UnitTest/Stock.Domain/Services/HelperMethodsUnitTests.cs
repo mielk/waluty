@@ -14,38 +14,6 @@ namespace Stock_UnitTest.Stock.Services
     {
 
 
-
-
-        //[TestCategory("AppendIndexNumbers")]
-        //public void AppendIndexNumbers_appends_numbers_for_all_items()
-        //{
-
-        //    //given
-        //    DataItem[] items = new DataItem[5];
-        //    for (var i = 0; i < items.Length; i++)
-        //    {
-        //        items[i] = new DataItem { Date = DateTime.Now.AddDays(i), AssetId = 1 };
-        //    }
-
-
-        //    //when
-        //    items.AppendIndexNumbers();
-
-        //    //then
-        //    for (var i = 0; i < items.Length; i++)
-        //    {
-        //        var item = items[i];
-        //        Assert.AreEqual(i, item.Index);
-        //    }
-
-
-        //}
-
-
-
-
-
-
         #region getEarliestDate
         [TestMethod]
         [TestCategory("getEarliestDate")]
@@ -76,8 +44,6 @@ namespace Stock_UnitTest.Stock.Services
             Assert.AreEqual(earliest, new DateTime(2015, 1, 1, 0, 0, 0));
         }
         #endregion getEarliestDate
-
-
 
 
     }
