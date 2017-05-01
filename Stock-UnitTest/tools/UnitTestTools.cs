@@ -24,9 +24,10 @@ namespace Stock_UnitTest.tools
             return asset;
         }
 
-        public static TimeframeOld testTimeframe()
+        public static Timeframe testTimeframe()
         {
-            return TimeframeOld.GetTimeframe(TimeframeSymbol.M5);
+            //return Timeframe.GetTimeframe(TimeframeSymbol.M5);
+            return null;
         }
 
         public static AssetTimeframe testAssetTimeframe()
@@ -72,20 +73,21 @@ namespace Stock_UnitTest.tools
 
         public static DataItem[] getDataItemsArray(TimeframeSymbol timeframe, DateTime startDate, DateTime endDate, List<AnalysisType> types)
         {
-            DateTime minDate = startDate.CompareTo(endDate) < 0 ? startDate : endDate;
-            DateTime d = new DateTime(minDate.Ticks);
-            List<DataItem> items = new List<DataItem>();
+            //DateTime minDate = startDate.CompareTo(endDate) < 0 ? startDate : endDate;
+            //DateTime d = new DateTime(minDate.Ticks);
+            //List<DataItem> items = new List<DataItem>();
 
-            while (d.CompareTo(endDate) <= 0)
-            {
-                var item = generateDataItem(d, types);
-                d = d.getNext(timeframe);
-                items.Add(item);
-            }
+            //while (d.CompareTo(endDate) <= 0)
+            //{
+            //    var item = generateDataItem(d, types);
+            //    d = d.getNext(timeframe);
+            //    items.Add(item);
+            //}
 
-            var array = items.ToArray();
-            array.AppendIndexNumbers();
-            return array;
+            //var array = items.ToArray();
+            //array.AppendIndexNumbers();
+            //return array;
+            return null;
 
         }
 

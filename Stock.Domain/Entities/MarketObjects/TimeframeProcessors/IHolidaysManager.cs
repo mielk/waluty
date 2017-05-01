@@ -20,6 +20,8 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         DateTime GetNextWorkingDay(DateTime datetime);
         bool IsHolidayEveAfterMarketClose(DateTime datetime);
         DateTime? GetNextHoliday(DateTime datetime);
+        DateTime? GetNextHoliday(DateTime startDate, DateTime endDate);
         DateTime GetNextTimeOff(DateTime datetime);
+        DateTime GetPreviousTimeOff(DateTime datetime);
     }
 }

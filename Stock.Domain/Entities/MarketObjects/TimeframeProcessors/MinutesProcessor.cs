@@ -108,18 +108,53 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         public DateTime AddTimeUnits(DateTime baseDate, int periodLength, int units)
         {
             DateTime datetime = GetProperDateTime(baseDate, periodLength);
-            DateTime nextTimeOff = holidaysManager.GetNextTimeOff(datetime);
-            DateTime dateAfterAdd = datetime.AddMinutes(periodLength * units);
-
-            if (dateAfterAdd.IsEarlierThan(nextTimeOff))
+            if (units >= 0)
             {
-                return dateAfterAdd;
+                return addTimeUnits_properItemPositiveUnits(datetime, periodLength, units);
             }
             else
             {
-                return dateAfterAdd;
+                return addTimeUnits_properItemNegativeUnits(datetime, periodLength, units);
             }
 
+        }
+
+        private DateTime addTimeUnits_properItemPositiveUnits(DateTime baseDate, int periodLength, int units)
+        {
+            DateTime nextTimeOff = holidaysManager.GetNextTimeOff(baseDate);
+            DateTime firstWorkingAfterTimeOff = holidaysManager.GetNextWorkingDay(nextTimeOff);
+            DateTime dateAfterPlainAdd = baseDate.AddMinutes(periodLength * units);
+
+            if (dateAfterPlainAdd.IsEarlierThan(nextTimeOff))
+            {
+                return dateAfterPlainAdd;
+            }
+            else
+            {
+                int itemsBeforeFirstDayOff = CountTimeUnits(baseDate, firstWorkingAfterTimeOff, periodLength);
+                int remainingItems = units - itemsBeforeFirstDayOff;
+                return AddTimeUnits(firstWorkingAfterTimeOff, periodLength, remainingItems);
+            }
+
+        }
+
+        private DateTime addTimeUnits_properItemNegativeUnits(DateTime baseDate, int periodLength, int units)
+        {
+            DateTime previousTimeOff = holidaysManager.GetPreviousTimeOff(baseDate);
+            DateTime previousTimeOffEnd = holidaysManager.GetNextWorkingDay(previousTimeOff);
+            DateTime lastWorkingBeforeTimeOff = GetProperDateTime(previousTimeOff, periodLength);
+            DateTime dateAfterPlainSubtract = baseDate.AddMinutes(periodLength * units);
+
+            if (dateAfterPlainSubtract.IsNotEarlierThan(previousTimeOffEnd))
+            {
+                return dateAfterPlainSubtract;
+            }
+            else
+            {
+                int itemsAfterLastDayOff = CountTimeUnits(baseDate, lastWorkingBeforeTimeOff, periodLength);
+                int remainingItems = units - itemsAfterLastDayOff;
+                return AddTimeUnits(lastWorkingBeforeTimeOff, periodLength, remainingItems);
+            }
         }
 
 
@@ -128,31 +163,34 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
             bool isProperOrder = baseDate.IsEarlierThan(comparedDate);
             DateTime startDate = GetProperDateTime(isProperOrder ? baseDate : comparedDate, periodLength);
             DateTime endDate = GetProperDateTime(isProperOrder ? comparedDate : baseDate, periodLength);
+            int counter = countTimeUnits_inProperOrder(startDate, endDate, periodLength);
+            return counter * (isProperOrder ? 1 : -1);
+        }
 
-            int part = 0;
+        private int countTimeUnits_inProperOrder(DateTime startDate, DateTime endDate, int periodLength)
+        {
 
-            while (startDate.IsEarlierThan(endDate)){
-                DateTime nextTimeOff = holidaysManager.GetNextTimeOff(startDate);
-                if (nextTimeOff.IsEarlierThan(endDate))
+                DateTime? nextHolidayNullSafe = holidaysManager.GetNextHoliday(startDate, endDate);
+                if (nextHolidayNullSafe != null)
                 {
-                    DateTime nextWorkingTimestamp = holidaysManager.GetNextWorkingDay(nextTimeOff);
-                    TimeSpan difference = nextTimeOff - startDate;
-                    int units = ((int)difference.TotalMinutes / periodLength);
-                    startDate = nextWorkingTimestamp;
-                    part += units;
+                    DateTime nextHoliday = (DateTime) nextHolidayNullSafe;
+                    DateTime lastBeforeHoliday = GetProperDateTime(nextHoliday, periodLength);
+                    DateTime firstAfterHoliday = holidaysManager.GetNextWorkingDay(nextHoliday);
+                    int itemsToNextHoliday = countTimeUnits_inProperOrder(startDate, lastBeforeHoliday, periodLength);
+                    int itemsFromNextHoliday = countTimeUnits_inProperOrder(firstAfterHoliday, endDate, periodLength);                    
+                    return itemsToNextHoliday + 1 + itemsFromNextHoliday;
                 }
                 else
                 {
-                    TimeSpan difference = endDate - startDate;
-                    int units = ((int)difference.TotalMinutes / periodLength);
-                    part += units;
-                    startDate = endDate;
+                    int weeksDifference = startDate.GetWeeksDifferenceTo(endDate);
+                    int periodPerWeekend = (int)TimeSpan.FromDays(2).TotalMinutes / periodLength;
+                    int totalWeekendPeriods = weeksDifference * periodPerWeekend;
+                    int totalUnitsDifference = (int)(endDate - startDate).TotalMinutes / periodLength;
+                    return totalUnitsDifference - totalWeekendPeriods;
                 }
-            }
-
-            return part;
 
         }
 
     }
+
 }

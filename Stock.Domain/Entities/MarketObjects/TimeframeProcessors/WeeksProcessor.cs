@@ -39,27 +39,13 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
         public DateTime AddTimeUnits(DateTime baseDate, int periodLength, int units)
         {
-            return new DateTime();
+            return baseDate.AddDays(units * periodLength * 7);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         public int CountTimeUnits(DateTime baseDate, DateTime comparedDate, int periodLength)
         {
-            return 0;
-
+            return baseDate.GetWeeksDifferenceTo(comparedDate);
         }
 
 

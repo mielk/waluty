@@ -619,698 +619,886 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
         }
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_two_weeks_later_with_dayOfWeek_earlier_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 23, 8, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(2544, result);
-        //}
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_two_weeks_later_with_dayOfWeek_later_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 25, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(3216, result);
-        //}
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateTwoWeeksLaterWithDayOfWeekEarlierThanBaseDate()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_later_in_the_same_week_after_new_year()
-        //{
-        //    DateTime d1 = new DateTime(2013, 12, 30, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 1, 3, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(781, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 10, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 23, 8, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_later_after_weekend_and_after_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 30, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2015, 1, 6, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(1069, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_later_after_weekend_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2011, 12, 28, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2012, 1, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(1200, result);
-        //}
+            //Assert
+            int expected = 2544;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_later_in_the_same_week_after_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 26, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(589, result);
-        //}
+        }
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_later_after_weekend_and_after_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 29, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(829, result);
-        //}
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateTwoWeeksLaterWithDayOfWeekEarlierThanBaseDate()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_later_after_weekend_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 27, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(624, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 10, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 23, 8, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_newYears_later()
-        //{
-        //    DateTime d1 = new DateTime(2013, 10, 15, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 11, 11, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(229374, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_earlier_in_the_same_week()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 10, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-528, result);
-        //}
+            //Assert
+            int expected = 848;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_earlier_before_weekend()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 17, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 11, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-1152, result);
-        //}
+        }
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_two_weeks_earlier_with_dayOfWeek_later_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 16, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-2544, result);
-        //}
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateTwoWeeksLaterWithDayOfWeekEarlierThanBaseDate()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_two_weeks_earlier_with_dayOfWeek_earlier_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 19, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-3408, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 10, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 23, 8, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_weekends_earlier()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 11, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 7, 21, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-4272, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_earlier_in_the_same_week_before_new_year()
-        //{
-        //    DateTime d1 = new DateTime(2015, 1, 2, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 31, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-301, result);
-        //}
+            //Assert
+            int expected = 424;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_earlier_before_weekend_and_before_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2014, 1, 2, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2013, 12, 27, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-781, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_countTimeUnits_days_returns_proper_value_for_date_few_days_earlier_before_weekend_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2017, 1, 3, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 29, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-864, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_earlier_in_the_same_week_before_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 26, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 24, 20, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-157, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_earlier_before_weekend_and_before_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2015, 12, 29, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2015, 12, 24, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-541, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_days_earlier_before_weekend_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 26, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 23, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-240, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M5")]
-        //public void countTimeUnits_m5_returns_proper_value_for_date_few_newYears_earlier()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 26, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2012, 10, 23, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M5);
-        //    Assert.AreEqual(-311048, result);
-        //}
+        }
 
 
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateTwoWeeksLaterWithDayOfWeekLaterThanBaseDate()
+        {
 
-        //#endregion M5
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 10, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 25, 16, 0, 0);
 
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
 
+            //Assert
+            int expected = 3216;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //#region M15
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateTwoWeeksLaterWithDayOfWeekLaterThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 10, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 25, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = 1072;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateTwoWeeksLaterWithDayOfWeekLaterThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 10, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 25, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = 536;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
         
+        
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateLaterInTheSameWeekButAfterHoliday()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_later_after_weekend()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 16, 20, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(224, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2013, 12, 30, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 1, 3, 12, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_weekends_later()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 22, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(752, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_two_weeks_later_with_dayOfWeek_earlier_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 23, 8, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(848, result);
-        //}
+            //Assert
+            int expected = 781;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_two_weeks_later_with_dayOfWeek_later_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 25, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(1072, result);
-        //}
+        }
+        
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateLaterInTheSameWeekButAfterHoliday()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_later_in_the_same_week_after_new_year()
-        //{
-        //    DateTime d1 = new DateTime(2013, 12, 30, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 1, 3, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(261, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2013, 12, 30, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 1, 3, 12, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_later_after_weekend_and_after_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 30, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2015, 1, 6, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(357, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_later_after_weekend_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2011, 12, 28, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2012, 1, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(400, result);
-        //}
+            //Assert
+            int expected = 261;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_later_in_the_same_week_after_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 26, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(197, result);
-        //}
+        }
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_later_after_weekend_and_after_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 29, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(277, result);
-        //}
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateLaterInTheSameWeekButAfterHoliday()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_later_after_weekend_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 27, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(208, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2013, 12, 30, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 1, 3, 12, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_newYears_later()
-        //{
-        //    DateTime d1 = new DateTime(2013, 10, 15, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 11, 11, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(76462, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_earlier_in_the_same_week()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 10, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-176, result);
-        //}
+            //Assert
+            int expected = 131;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_earlier_before_weekend()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 17, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 11, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-384, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_two_weeks_earlier_with_dayOfWeek_later_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 16, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-848, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_two_weeks_earlier_with_dayOfWeek_earlier_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 19, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-1136, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_weekends_earlier()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 11, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 7, 21, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-1424, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_earlier_in_the_same_week_before_new_year()
-        //{
-        //    DateTime d1 = new DateTime(2015, 1, 2, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 31, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-101, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_earlier_before_weekend_and_before_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2014, 1, 2, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2013, 12, 27, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-261, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_countTimeUnits_days_returns_proper_value_for_date_few_days_earlier_before_weekend_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2017, 1, 3, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 29, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-288, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_earlier_in_the_same_week_before_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 26, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 24, 20, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-53, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_earlier_before_weekend_and_before_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2015, 12, 29, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2015, 12, 24, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-181, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_days_earlier_before_weekend_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 26, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 23, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-80, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M15")]
-        //public void countTimeUnits_m15_returns_proper_value_for_date_few_newYears_earlier()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 26, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2012, 10, 23, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M15);
-        //    Assert.AreEqual(-103688, result);
-        //}
-
-        //#endregion M15
+        }
 
 
 
-        //#region M30
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateAfterHolidayAndAfterWeekend()
+        {
 
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2013, 12, 30, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 1, 6, 12, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_later_after_weekend()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 16, 20, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(112, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_weekends_later()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 22, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(376, result);
-        //}
+            //Assert
+            int expected = 1069;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_two_weeks_later_with_dayOfWeek_earlier_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 23, 8, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(424, result);
-        //}
+        }
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_two_weeks_later_with_dayOfWeek_later_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 10, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 25, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(536, result);
-        //}
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateAfterHolidayAndAfterWeekend()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_later_in_the_same_week_after_new_year()
-        //{
-        //    DateTime d1 = new DateTime(2013, 12, 30, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 1, 3, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(131, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2013, 12, 30, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 1, 6, 12, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_later_after_weekend_and_after_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 30, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2015, 1, 6, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(179, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_later_after_weekend_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2011, 12, 28, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2012, 1, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(200, result);
-        //}
+            //Assert
+            int expected = 357;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_later_in_the_same_week_after_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 26, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(99, result);
-        //}
+        }
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_later_after_weekend_and_after_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 29, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(139, result);
-        //}
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateAfterHolidayAndAfterWeekend()
+        {
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_later_after_weekend_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 23, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 27, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(104, result);
-        //}
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2013, 12, 30, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 1, 6, 12, 0, 0);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_newYears_later()
-        //{
-        //    DateTime d1 = new DateTime(2013, 10, 15, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 11, 11, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(38234, result);
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_earlier_in_the_same_week()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 10, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-88, result);
-        //}
+            //Assert
+            int expected = 179;
+            Assert.AreEqual(expected, unitsBetween);
 
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_earlier_before_weekend()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 17, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 11, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-192, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_two_weeks_earlier_with_dayOfWeek_later_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 16, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-424, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_two_weeks_earlier_with_dayOfWeek_earlier_than_base_date()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 19, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 8, 3, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-568, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_weekends_earlier()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 11, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 7, 21, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-712, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_earlier_in_the_same_week_before_new_year()
-        //{
-        //    DateTime d1 = new DateTime(2015, 1, 2, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 31, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-51, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_earlier_before_weekend_and_before_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2014, 1, 2, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2013, 12, 27, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-131, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_countTimeUnits_days_returns_proper_value_for_date_few_days_earlier_before_weekend_newYear()
-        //{
-        //    DateTime d1 = new DateTime(2017, 1, 3, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 29, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-144, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_earlier_in_the_same_week_before_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2014, 12, 26, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2014, 12, 24, 20, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-27, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_earlier_before_weekend_and_before_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2015, 12, 29, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2015, 12, 24, 12, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-91, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_days_earlier_before_weekend_christmas()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 26, 12, 0, 0);
-        //    DateTime d2 = new DateTime(2016, 12, 23, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-40, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("countTimeUnits.M30")]
-        //public void countTimeUnits_m30_returns_proper_value_for_date_few_newYears_earlier()
-        //{
-        //    DateTime d1 = new DateTime(2016, 12, 26, 16, 0, 0);
-        //    DateTime d2 = new DateTime(2012, 10, 23, 16, 0, 0);
-        //    int result = d1.countTimeUnits(d2, TimeframeSymbol.M30);
-        //    Assert.AreEqual(-51848, result);
-        //}
+        }
 
 
 
-        //#endregion M30
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateAfterHolidayInWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2012, 1, 1));
+            DateTime baseDate = new DateTime(2011, 12, 28, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2012, 1, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = 1200;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateAfterHolidayInWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2012, 1, 1));
+            DateTime baseDate = new DateTime(2011, 12, 28, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2012, 1, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = 400;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateAfterHolidayInWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2012, 1, 1));
+            DateTime baseDate = new DateTime(2011, 12, 28, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2012, 1, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = 200;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        private MinutesProcessor getProcessorForAfterManyHolidaysInDifferentYears()
+        {
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2011, 1, 1));
+            processor.AddHoliday(new DateTime(2011, 12, 25));
+            processor.AddHoliday(new DateTime(2012, 1, 1));
+            processor.AddHoliday(new DateTime(2012, 12, 25));
+            processor.AddHoliday(new DateTime(2013, 1, 1));
+            processor.AddHoliday(new DateTime(2013, 12, 25));
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            processor.AddHoliday(new DateTime(2014, 12, 25));
+            processor.AddHoliday(new DateTime(2015, 1, 1));
+            processor.AddHoliday(new DateTime(2015, 12, 25));
+            processor.AddHoliday(new DateTime(2016, 1, 1));
+            processor.AddHoliday(new DateTime(2016, 12, 25));
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            processor.AddHoliday(new DateTime(2017, 12, 25));
+            return processor;
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_AfterManyHolidaysInDifferentYears()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2013, 10, 15, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 11, 11, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = 229374;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_AfterManyHolidaysInDifferentYears()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2013, 10, 15, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 11, 11, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = 76462;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_AfterManyHolidaysInDifferentYears()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2013, 10, 15, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 11, 11, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = 38234;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateFewDaysEarlierInTheSameWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 12, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 10, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -528;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateFewDaysEarlierInTheSameWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 12, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 10, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -176;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateFewDaysEarlierInTheSameWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 12, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 10, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -88;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateFewDaysEarlierBeforeWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 17, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 11, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -1152;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateFewDaysEarlierBeforeWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 17, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 11, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -384;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateFewDaysEarlierBeforeWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 17, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 11, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -192;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateTwoWeeksEarlierWithDayOfWeekLaterThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 16, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -2544;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateTwoWeeksEarlierWithDayOfWeekLaterThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 16, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -848;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateTwoWeeksEarlierWithDayOfWeekLaterThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 16, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -424;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateTwoWeeksEarlierWithDayOfWeekEarlierThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 19, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -3408;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateTwoWeeksEarlierWithDayOfWeekEarlierThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 19, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -1136;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateTwoWeeksEarlierWithDayOfWeekEarlierThanBaseDate()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 19, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 8, 3, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -568;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateFewWeekendsEarlier()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 11, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 7, 21, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -4272;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateFewWeekendsEarlier()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 11, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 7, 21, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -1424;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateFewWeekendsEarlier()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 11, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 7, 21, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -712;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateEarlierInTheSameWeekBeforeHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2015, 1, 1));
+            DateTime baseDate = new DateTime(2015, 1, 2, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 12, 31, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -301;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateEarlierInTheSameWeekBeforeHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2015, 1, 1));
+            DateTime baseDate = new DateTime(2015, 1, 2, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 12, 31, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -101;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateEarlierInTheSameWeekBeforeHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2015, 1, 1));
+            DateTime baseDate = new DateTime(2015, 1, 2, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2014, 12, 31, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -51;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateBeforeWeekendAndBeforeHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2014, 1, 2, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2013, 12, 27, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -781;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateBeforeWeekendAndBeforeHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2014, 1, 2, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2013, 12, 27, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -261;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateBeforeWeekendAndBeforeHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2014, 1, 1));
+            DateTime baseDate = new DateTime(2014, 1, 2, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2013, 12, 27, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -131;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateBeforeHolidayInWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 1, 3, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 12, 29, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -864;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateBeforeHolidayInWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 1, 3, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 12, 29, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -288;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateBeforeHolidayInWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 1, 3, 12, 0, 0);
+            DateTime comparedDate = new DateTime(2016, 12, 29, 12, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -144;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+
+
+        [TestMethod]
+        public void CountTimeUnits_M5_ReturnsProperValue_ForDateFewHolidaysEarlier()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 12, 26, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2012, 10, 23, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 5);
+
+            //Assert
+            int expected = -311048;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M15_ReturnsProperValue_ForDateFewHolidaysEarlier()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 12, 26, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2012, 10, 23, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 15);
+
+            //Assert
+            int expected = -103688;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_M30_ReturnsProperValue_ForDateFewHolidaysEarlier()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 12, 26, 16, 0, 0);
+            DateTime comparedDate = new DateTime(2012, 10, 23, 16, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 30);
+
+            //Assert
+            int expected = -51848;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
 
 
         #endregion COUNT_TIME_UNITS
+
 
 
         #region ADD_TIME_UNITS
@@ -1334,58 +1522,6 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         }
 
         [TestMethod]
-        public void AddTimeUnits_M5_ReturnsNormalizedDate_IfUnitsIsZeroAndDateBetweenPeriods()
-        {
-
-            //Arrange
-            MinutesProcessor processor = new MinutesProcessor();
-            DateTime baseDate = new DateTime(2017, 5, 4, 15, 8, 0);
-
-            //Act
-            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 0);
-
-            //Assert
-            DateTime expectedDateTime = new DateTime(2017, 5, 4, 15, 5, 0);
-            Assert.AreEqual(expectedDateTime, actualDateTime);
-
-        }
-
-        [TestMethod]
-        public void AddTimeUnits_M5_ReturnsProperValue_ForRangeInTheMiddleOfWeek()
-        {
-
-            //Arrange
-            MinutesProcessor processor = new MinutesProcessor();
-            DateTime baseDate = new DateTime(2016, 8, 9, 8, 0, 0);
-
-            //Act
-            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 912);
-
-            //Assert
-            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
-            Assert.AreEqual(expectedDateTime, actualDateTime);
-
-        }
-
-        [TestMethod]
-        public void AddTimeUnits_M5_ReturnsProperValue_ForPositiveNumberOfItemsWithWeekBreak()
-        {
-
-            //Arrange
-            MinutesProcessor processor = new MinutesProcessor();
-            DateTime baseDate = new DateTime(2016, 8, 2, 8, 0, 0);
-
-            //Act
-            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 2352);
-
-            //Assert
-            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
-            Assert.AreEqual(expectedDateTime, actualDateTime);
-
-        }
-
-
-        [TestMethod]
         public void AddTimeUnits_M15_ReturnsTheSameDate_IfUnitsIsZero()
         {
 
@@ -1403,59 +1539,6 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         }
 
         [TestMethod]
-        public void AddTimeUnits_M15_ReturnsNormalizedDate_IfUnitsIsZeroAndDateBetweenPeriods()
-        {
-
-            //Arrange
-            MinutesProcessor processor = new MinutesProcessor();
-            DateTime baseDate = new DateTime(2016, 4, 21, 12, 11, 34);
-
-            //Act
-            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 0);
-
-            //Assert
-            DateTime expectedDateTime = new DateTime(2016, 4, 21, 12, 0, 0);
-            Assert.AreEqual(expectedDateTime, actualDateTime);
-
-        }
-
-        [TestMethod]
-        public void AddTimeUnits_M15_ReturnsProperValue_ForRangeInTheMiddleOfWeek()
-        {
-
-            //Arrange
-            MinutesProcessor processor = new MinutesProcessor();
-            DateTime baseDate = new DateTime(2016, 8, 9, 8, 0, 0);
-
-            //Act
-            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 304);
-
-            //Assert
-            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
-            Assert.AreEqual(expectedDateTime, actualDateTime);
-
-        }
-
-        [TestMethod]
-        public void AddTimeUnits_M15_ReturnsProperValue_ForPositiveNumberOfItemsWithWeekBreak()
-        {
-
-            //Arrange
-            MinutesProcessor processor = new MinutesProcessor();
-            DateTime baseDate = new DateTime(2016, 8, 2, 8, 0, 0);
-
-            //Act
-            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 784);
-
-            //Assert
-            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
-            Assert.AreEqual(expectedDateTime, actualDateTime);
-
-        }
-
-
-
-        [TestMethod]
         public void AddTimeUnits_M30_ReturnsTheSameDate_IfUnitsIsZero()
         {
 
@@ -1465,6 +1548,42 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
             //Act
             DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, 0);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 4, 21, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsNormalizedDate_IfUnitsIsZeroAndDateBetweenPeriods()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 4, 15, 8, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 0);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 4, 15, 5, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsNormalizedDate_IfUnitsIsZeroAndDateBetweenPeriods()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 21, 12, 11, 34);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 0);
 
             //Assert
             DateTime expectedDateTime = new DateTime(2016, 4, 21, 12, 0, 0);
@@ -1489,8 +1608,44 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
         }
 
+
+
         [TestMethod]
-        public void AddTimeUnits_M30_ReturnsProperValue_ForRangeInTheMiddleOfWeek()
+        public void AddTimeUnits_M5_ReturnsProperValue_ForPositiveNumberOfItemsInTheMiddleOfWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 9, 8, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 912);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForPositiveNumberOfItemsInTheMiddleOfWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 9, 8, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 304);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForPositiveNumberOfItemsInTheMiddleOfWeek()
         {
 
             //Arrange
@@ -1499,6 +1654,42 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
             //Act
             DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, 152);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForPositiveNumberOfItemsWithWeekBreak()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 2, 8, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 2352);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForPositiveNumberOfItemsWithWeekBreak()
+        {
+
+            //Arrange
+            MinutesProcessor processor = new MinutesProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 2, 8, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 784);
 
             //Assert
             DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
@@ -1515,7 +1706,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
             DateTime baseDate = new DateTime(2016, 8, 2, 8, 0, 0);
 
             //Act
-            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 392);
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, 392);
 
             //Assert
             DateTime expectedDateTime = new DateTime(2016, 8, 12, 12, 0, 0);
@@ -1524,630 +1715,660 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         }
 
 
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_with_newYear_at_week()
-        //{
-        //    DateTime d = new DateTime(2014, 12, 29, 8, 0, 0);
-        //    DateTime expected = new DateTime(2015, 1, 7, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 1789);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_with_newYear_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2016, 12, 28, 8, 0, 0);
-        //    DateTime expected = new DateTime(2017, 1, 5, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 1824);
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForPositiveNumberOfItemsWithHolidayAtWeek()
+        {
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_with_christmas_at_week()
-        //{
-        //    DateTime d = new DateTime(2014, 12, 23, 16, 0, 0);
-        //    DateTime expected = new DateTime(2014, 12, 30, 13, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 1081);
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2014, 12, 29, 8, 0, 0);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_with_christmas_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2016, 12, 22, 12, 0, 0);
-        //    DateTime expected = new DateTime(2016, 12, 28, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 1200);
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 1789);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_with_christmas_and_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 22, 16, 0, 0);
-        //    DateTime expected = new DateTime(2016, 1, 5, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 2186);
+            //Assert
+            DateTime expectedDateTime = new DateTime(2015, 1, 7, 16, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_omit_weekend_after_skip_christmas()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 24, 20, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 28, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 61);
+        }
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_omit_weekend_after_skip_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 31, 20, 0, 0);
-        //    DateTime expected = new DateTime(2016, 1, 4, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 61);
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForPositiveNumberOfItemsWithHolidayAtWeek()
+        {
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_omit_christmas_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 22, 20, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 26, 0, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 48);
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2014, 12, 29, 8, 0, 0);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_positive_omit_newYear_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 29, 20, 0, 0);
-        //    DateTime expected = new DateTime(2018, 1, 2, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, 96);
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 597);
 
-        //    Assert.AreEqual(expected, result);
-        //}
+            //Assert
+            DateTime expectedDateTime = new DateTime(2015, 1, 7, 16, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
 
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_without_new_year_not_week_break()
-        //{
-        //    DateTime d = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime expected = new DateTime(2016, 8, 9, 8, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -912);
+        }
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_with_week_break()
-        //{
-        //    DateTime d = new DateTime(2016, 7, 26, 4, 0, 0);
-        //    DateTime expected = new DateTime(2016, 7, 15, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -2016);
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForPositiveNumberOfItemsWithHolidayAtWeek()
+        {
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_with_newYear_at_week()
-        //{
-        //    DateTime d = new DateTime(2015, 1, 6, 12, 0, 0);
-        //    DateTime expected = new DateTime(2014, 12, 30, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -1213);
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2014, 12, 29, 8, 0, 0);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_with_newYear_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 1, 6, 16, 0, 0);
-        //    DateTime expected = new DateTime(2016, 12, 27, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -2352);
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, 299);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_with_christmas_at_week()
-        //{
-        //    DateTime d = new DateTime(2013, 12, 27, 12, 0, 0);
-        //    DateTime expected = new DateTime(2013, 12, 23, 13, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -817);
+            //Assert
+            DateTime expectedDateTime = new DateTime(2015, 1, 7, 16, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_with_christmas_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2011, 12, 28, 16, 0, 0);
-        //    DateTime expected = new DateTime(2011, 12, 22, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -1200);
+        }
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_with_christmas_and_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 1, 7, 12, 0, 0);
-        //    DateTime expected = new DateTime(2013, 12, 23, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -77044);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_omit_weekend_after_skip_christmas()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 28, 4, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 24, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -61);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_omit_weekend_after_skip_newYear()
-        //{
-        //    DateTime d = new DateTime(2016, 1, 4, 4, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 31, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -61);
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForPositiveNumberOfItemsWithHolidayAtWeekend()
+        {
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_omit_christmas_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 26, 0, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 22, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -48);
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 12, 28, 8, 0, 0);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M5_if_units_negative_omit_newYear_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2018, 1, 2, 4, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 29, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M5, -96);
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 1824);
 
-        //    Assert.AreEqual(expected, result);
-        //}
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 1, 5, 16, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForPositiveNumberOfItemsWithHolidayAtWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 12, 28, 8, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 608);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 1, 5, 16, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForPositiveNumberOfItemsWithHolidayAtWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 12, 28, 8, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, 304);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 1, 5, 16, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForPositiveNumberOfItemsWithTwoHolidays()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 12, 22, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, 2186);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 1, 5, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForPositiveNumberOfItemsWithTwoHolidays()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 12, 22, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, 730);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 1, 5, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForPositiveNumberOfItemsWithTwoHolidays()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 12, 22, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, 366);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 1, 5, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperDate_PositiveAfterFridayHolidayAndWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 12, 24, 20, 0, 0);
+            
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 5, 61);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2015, 12, 28, 4, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperDate_PositiveAfterFridayHolidayAndWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 12, 24, 20, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 15, 21);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2015, 12, 28, 4, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperDate_PositiveAfterFridayHolidayAndWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 12, 24, 20, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 30, 11);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2015, 12, 28, 4, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperDate_PositiveAfterWeekendAndMondayHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 12, 22, 20, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 5, 48);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 12, 26, 0, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperDate_PositiveAfterWeekendAndMondayHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 12, 22, 20, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 15, 16);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 12, 26, 0, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperDate_PositiveAfterWeekendAndMondayHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 12, 22, 20, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 30, 8);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 12, 26, 0, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForNegativeNumberOfItemsInTheMiddleOfWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 8, 12, 12, 0, 0);
+            
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, -912);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 8, 9, 8, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForNegativeNumberOfItemsInTheMiddleOfWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 8, 12, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, -304);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 8, 9, 8, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForNegativeNumberOfItemsInTheMiddleOfWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 8, 12, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, -152);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 8, 9, 8, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForNegativeNumberOfItemsWithWeekBreak()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 7, 26, 4, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, -2016);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 7, 15, 4, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForNegativeNumberOfItemsWithWeekBreak()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 7, 26, 4, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, -672);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 7, 15, 4, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForNegativeNumberOfItemsWithWeekBreak()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2016, 7, 26, 4, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, -336);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 7, 15, 4, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForNegativeNumberOfItemsWithHolidayAtWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2015, 1, 1));
+            DateTime baseDate = new DateTime(2015, 1, 6, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, -1213);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2014, 12, 30, 4, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForNegativeNumberOfItemsWithHolidayAtWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2015, 1, 1));
+            DateTime baseDate = new DateTime(2015, 1, 6, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, -405);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2014, 12, 30, 4, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForNegativeNumberOfItemsWithHolidayAtWeek()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2015, 1, 1));
+            DateTime baseDate = new DateTime(2015, 1, 6, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, -203);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2014, 12, 30, 4, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForNegativeNumberOfItemsWithHolidayAtWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 1, 6, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, -2352);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 12, 27, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForNegativeNumberOfItemsWithHolidayAtWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 1, 6, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, -784);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 12, 27, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForNegativeNumberOfItemsWithHolidayAtWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 1, 6, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, -392);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 12, 27, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperValue_ForNegativeNumberOfItemsWithTwoHolidays()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 1, 7, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 5, -77044);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2013, 12, 23, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperValue_ForNegativeNumberOfItemsWithTwoHolidays()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 1, 7, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 15, -25684);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2013, 12, 23, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperValue_ForNegativeNumberOfItemsWithTwoHolidays()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2015, 1, 7, 12, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.AddTimeUnits(baseDate, 30, -12844);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2013, 12, 23, 12, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperDate_NegativeBeforeWeekendAndFridayHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 5, 5));
+            DateTime baseDate = new DateTime(2015, 12, 28, 4, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 5, -61);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2015, 12, 24, 20, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperDate_NegativeBeforeWeekendAndFridayHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 5, 5));
+            DateTime baseDate = new DateTime(2015, 12, 28, 4, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 15, -21);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2015, 12, 24, 20, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperDate_NegativeBeforeWeekendAndFridayHoliday()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 5, 5));
+            DateTime baseDate = new DateTime(2015, 12, 28, 4, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate,30, -11);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2015, 12, 24, 20, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+
+
+        [TestMethod]
+        public void AddTimeUnits_M5_ReturnsProperDate_NegativeBeforeMondayHolidayAndWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            DateTime baseDate = new DateTime(2017, 12, 26, 0, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 5, -48);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 12, 22, 20, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M15_ReturnsProperDate_NegativeBeforeMondayHolidayAndWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 12, 26, 0, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 15, -16);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 12, 22, 20, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_M30_ReturnsProperDate_NegativeBeforeMondayHolidayAndWeekend()
+        {
+
+            //Arrange
+            MinutesProcessor processor = getProcessorForAfterManyHolidaysInDifferentYears();
+            processor.AddHoliday(new DateTime(2017, 1, 1));
+            DateTime baseDate = new DateTime(2017, 12, 26, 0, 0, 0);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 30, -8);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 12, 22, 20, 0, 0);
+            Assert.AreEqual(expectedDate, result);
+
+        }
+
 
         #endregion ADD_TIME_UNITS
-
-
-
-        #region M15
-
-
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_with_newYear_at_week()
-        //{
-        //    DateTime d = new DateTime(2014, 12, 29, 8, 0, 0);
-        //    DateTime expected = new DateTime(2015, 1, 7, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 597);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_with_newYear_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2016, 12, 28, 8, 0, 0);
-        //    DateTime expected = new DateTime(2017, 1, 5, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 608);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_with_christmas_at_week()
-        //{
-        //    DateTime d = new DateTime(2014, 12, 23, 16, 0, 0);
-        //    DateTime expected = new DateTime(2014, 12, 30, 13, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 361);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_with_christmas_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2016, 12, 22, 12, 0, 0);
-        //    DateTime expected = new DateTime(2016, 12, 28, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 400);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_with_christmas_and_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 22, 16, 0, 0);
-        //    DateTime expected = new DateTime(2016, 1, 5, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 730);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_omit_weekend_after_skip_christmas()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 24, 20, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 28, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 21);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_omit_weekend_after_skip_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 31, 20, 0, 0);
-        //    DateTime expected = new DateTime(2016, 1, 4, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 21);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_omit_christmas_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 22, 20, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 26, 0, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 16);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_positive_omit_newYear_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 29, 20, 0, 0);
-        //    DateTime expected = new DateTime(2018, 1, 2, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, 32);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_without_new_year_not_week_break()
-        //{
-        //    DateTime d = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime expected = new DateTime(2016, 8, 9, 8, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -304);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_with_week_break()
-        //{
-        //    DateTime d = new DateTime(2016, 7, 26, 4, 0, 0);
-        //    DateTime expected = new DateTime(2016, 7, 15, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -672);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_with_newYear_at_week()
-        //{
-        //    DateTime d = new DateTime(2015, 1, 6, 12, 0, 0);
-        //    DateTime expected = new DateTime(2014, 12, 30, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -405);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_with_newYear_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 1, 6, 16, 0, 0);
-        //    DateTime expected = new DateTime(2016, 12, 27, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -784);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_with_christmas_at_week()
-        //{
-        //    DateTime d = new DateTime(2013, 12, 27, 12, 0, 0);
-        //    DateTime expected = new DateTime(2013, 12, 23, 13, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -273);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_with_christmas_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2011, 12, 28, 16, 0, 0);
-        //    DateTime expected = new DateTime(2011, 12, 22, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -400);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_with_christmas_and_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 1, 7, 12, 0, 0);
-        //    DateTime expected = new DateTime(2013, 12, 23, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -25684);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_omit_weekend_after_skip_christmas()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 28, 4, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 24, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -21);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_omit_weekend_after_skip_newYear()
-        //{
-        //    DateTime d = new DateTime(2016, 1, 4, 4, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 31, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -21);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_omit_christmas_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 26, 0, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 22, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -16);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M15_if_units_negative_omit_newYear_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2018, 1, 2, 4, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 29, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M15, -32);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-
-
-        #endregion M15
-
-
-
-        #region M30
-
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_with_newYear_at_week()
-        //{
-        //    DateTime d = new DateTime(2014, 12, 29, 8, 0, 0);
-        //    DateTime expected = new DateTime(2015, 1, 7, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 299);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_with_newYear_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2016, 12, 28, 8, 0, 0);
-        //    DateTime expected = new DateTime(2017, 1, 5, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 304);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_with_christmas_at_week()
-        //{
-        //    DateTime d = new DateTime(2014, 12, 23, 16, 0, 0);
-        //    DateTime expected = new DateTime(2014, 12, 30, 13, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 181);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_with_christmas_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2016, 12, 22, 12, 0, 0);
-        //    DateTime expected = new DateTime(2016, 12, 28, 16, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 200);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_with_christmas_and_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 22, 16, 0, 0);
-        //    DateTime expected = new DateTime(2016, 1, 5, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 366);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_omit_weekend_after_skip_christmas()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 24, 20, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 28, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 11);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_omit_weekend_after_skip_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 31, 20, 0, 0);
-        //    DateTime expected = new DateTime(2016, 1, 4, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 11);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_omit_christmas_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 22, 20, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 26, 0, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 8);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_positive_omit_newYear_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 29, 20, 0, 0);
-        //    DateTime expected = new DateTime(2018, 1, 2, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, 16);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_without_new_year_not_week_break()
-        //{
-        //    DateTime d = new DateTime(2016, 8, 12, 12, 0, 0);
-        //    DateTime expected = new DateTime(2016, 8, 9, 8, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -152);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_with_week_break()
-        //{
-        //    DateTime d = new DateTime(2016, 7, 26, 4, 0, 0);
-        //    DateTime expected = new DateTime(2016, 7, 15, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -336);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_with_newYear_at_week()
-        //{
-        //    DateTime d = new DateTime(2015, 1, 6, 12, 0, 0);
-        //    DateTime expected = new DateTime(2014, 12, 30, 4, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -203);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_with_newYear_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 1, 6, 16, 0, 0);
-        //    DateTime expected = new DateTime(2016, 12, 27, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -392);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_with_christmas_at_week()
-        //{
-        //    DateTime d = new DateTime(2013, 12, 27, 12, 0, 0);
-        //    DateTime expected = new DateTime(2013, 12, 23, 13, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -137);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_with_christmas_at_weekend()
-        //{
-        //    DateTime d = new DateTime(2011, 12, 28, 16, 0, 0);
-        //    DateTime expected = new DateTime(2011, 12, 22, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -200);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_with_christmas_and_newYear()
-        //{
-        //    DateTime d = new DateTime(2015, 1, 7, 12, 0, 0);
-        //    DateTime expected = new DateTime(2013, 12, 23, 12, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -12844);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_omit_weekend_after_skip_christmas()
-        //{
-        //    DateTime d = new DateTime(2015, 12, 28, 4, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 24, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -11);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_omit_weekend_after_skip_newYear()
-        //{
-        //    DateTime d = new DateTime(2016, 1, 4, 4, 0, 0);
-        //    DateTime expected = new DateTime(2015, 12, 31, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -11);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_omit_christmas_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2017, 12, 26, 0, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 22, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -8);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-        //[TestMethod]
-        //[TestCategory("addTimeUnits")]
-        //public void addTimeUnits_M30_if_units_negative_omit_newYear_after_skip_weekend()
-        //{
-        //    DateTime d = new DateTime(2018, 1, 2, 4, 0, 0);
-        //    DateTime expected = new DateTime(2017, 12, 29, 20, 0, 0);
-        //    DateTime result = d.addTimeUnits(TimeframeSymbol.M30, -16);
-
-        //    Assert.AreEqual(expected, result);
-        //}
-
-
-
-        #endregion M30
-
 
 
 

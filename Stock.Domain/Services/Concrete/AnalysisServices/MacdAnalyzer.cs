@@ -171,7 +171,8 @@ namespace Stock.Domain.Services
         {
             Symbol = symbol;
             var pairSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
-            var timeframe = TimeframeOld.GetTimeframe(symbol.GetTimeframeSymbol());
+            var timeframeSymbol = Symbol.Substring(0, Symbol.IndexOf('_'));
+            var timeframe = Timeframe.ByName(timeframeSymbol);
             FxPair pair = null;// _marketRepository.GetFxPair(pairSymbol);
             Asset asset = null;// Asset.GetAssetById(pair.Id);
             this.AssetTimeframe = new AssetTimeframe(asset, timeframe);

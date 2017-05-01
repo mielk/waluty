@@ -118,6 +118,33 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
                 return null;
             }
         }
+        
+        public DateTime? GetNextHoliday(DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<DateTime> futureHolidays = holidays.Where(d => d.CompareTo(startDate) > 0 && d.CompareTo(endDate) <= 0).OrderBy(d => d.Date);
+            if (futureHolidays.Count() > 0)
+            {
+                return futureHolidays.First();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private DateTime? GetPreviousHoliday(DateTime datetime)
+        {
+            IEnumerable<DateTime> pastHolidays = holidays.Where(d => d.CompareTo(datetime) < 0).OrderByDescending(d => d.Date);
+            if (pastHolidays.Count() > 0)
+            {
+                return pastHolidays.First();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        
 
         public DateTime GetNextTimeOff(DateTime datetime)
         {
@@ -133,6 +160,30 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
             {
                 return nextWeekend;
             }
+        }
+
+        public DateTime GetPreviousTimeOff(DateTime datetime)
+        {
+            DateTime? previousHolidayStartNullSafe = GetPreviousHoliday(datetime);
+            DateTime previousWeekendStart = datetime.AddDays(-7).GetWeekendStart();
+
+            if (previousHolidayStartNullSafe != null)
+            {
+                DateTime previousHolidayStart = (DateTime)previousHolidayStartNullSafe;
+                if (previousWeekendStart.IsEarlierThan(previousHolidayStart))
+                {
+                    return previousHolidayStart.Subtract(holidayEveBreak);
+                }
+                else
+                {
+                    return previousWeekendStart;
+                }
+            }
+            else
+            {
+                return previousWeekendStart;
+            }
+
         }
 
     }

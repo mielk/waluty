@@ -583,6 +583,64 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
         }
 
+
+        [TestMethod]
+        public void GetNextHolidayWithEndDate_ReturnsClosestRegisteredHoliday()
+        {
+
+            //Arrange
+            HolidaysManager manager = new HolidaysManager();
+            manager.AddHoliday(new DateTime(2017, 5, 1));
+            manager.AddHoliday(new DateTime(2017, 5, 3));
+            manager.AddHoliday(new DateTime(2017, 11, 11));
+            DateTime startDate = new DateTime(2017, 5, 2);
+            DateTime endDate = new DateTime(2017, 5, 8);
+
+            //Act
+            DateTime? date = manager.GetNextHoliday(startDate, endDate);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 3);
+            Assert.AreEqual(expectedDate, date);
+
+        }
+
+        [TestMethod]
+        public void GetNextHolidayWithEndDate_ReturnsNull_IfThereIsNoMoreHolidays()
+        {
+
+            //Arrange
+            HolidaysManager manager = new HolidaysManager();
+            manager.AddHoliday(new DateTime(2017, 5, 3));
+            DateTime startDate = new DateTime(2017, 5, 4);
+            DateTime endDate = new DateTime(2017, 5, 8);
+
+            //Act
+            DateTime? result = manager.GetNextHoliday(startDate, endDate);
+
+            //Assert
+            Assert.IsNull(result);
+
+        }
+
+        [TestMethod]
+        public void GetNextHolidayWithEndDate_ReturnsNull_IfThereAreHolidaysOnlyAfterEndDate()
+        {
+
+            //Arrange
+            HolidaysManager manager = new HolidaysManager();
+            manager.AddHoliday(new DateTime(2017, 5, 3));
+            DateTime startDate = new DateTime(2017, 4, 2);
+            DateTime endDate = new DateTime(2017, 4, 21);
+
+            //Act
+            DateTime? result = manager.GetNextHoliday(startDate, endDate);
+
+            //Assert
+            Assert.IsNull(result);
+
+        }
+
         #endregion GET_NEXT_HOLIDAY
 
 
@@ -645,6 +703,68 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         }
 
         #endregion GET_NEXT_TIME_OFF
+
+
+
+        #region GET_PREVIOUS_TIME_OFF
+
+        [TestMethod]
+        public void GetPreviousTimeOff_ReturnsClosestRegisteredHoliday_IfItIsLaterThanPreviousWeekend()
+        {
+
+            //Arrange
+            HolidaysManager manager = new HolidaysManager();
+            manager.AddHoliday(new DateTime(2017, 5, 1));
+            manager.AddHoliday(new DateTime(2017, 5, 3));
+            manager.AddHoliday(new DateTime(2017, 11, 11));
+            DateTime baseDate = new DateTime(2017, 5, 4, 16, 0, 0);
+
+            //Act
+            DateTime date = manager.GetPreviousTimeOff(baseDate);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 2, 21, 0, 0);
+            Assert.AreEqual(expectedDate, date);
+
+        }
+
+        [TestMethod]
+        public void GetPreviousTimeOff_ReturnsPreviousWeekendStart_IfItIsLaterThanPreviousHoliday()
+        {
+
+            //Arrange
+            HolidaysManager manager = new HolidaysManager();
+            manager.AddHoliday(new DateTime(2017, 5, 4));
+            DateTime baseDate = new DateTime(2017, 5, 8);
+
+            //Act
+            DateTime date = manager.GetPreviousTimeOff(baseDate);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 6, 0, 0, 0);
+            Assert.AreEqual(expectedDate, date);
+
+        }
+
+        [TestMethod]
+        public void GetPreviousTimeOff_ReturnsPreviousWeekendStart_IfThereIsNoPreviousHoliday()
+        {
+
+            //Arrange
+            HolidaysManager manager = new HolidaysManager();
+            DateTime baseDate = new DateTime(2017, 5, 9);
+
+            //Act
+            DateTime date = manager.GetPreviousTimeOff(baseDate);
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 6, 0, 0, 0);
+            Assert.AreEqual(expectedDate, date);
+
+        }
+
+        #endregion GET_PREVIOUS_TIME_OFF
+
 
     }
 }

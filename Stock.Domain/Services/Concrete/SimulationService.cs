@@ -39,7 +39,7 @@ namespace Stock.Domain.Services
             return AssetTimeframe.Asset;
         }
 
-        public TimeframeOld getTimeframe()
+        public Timeframe getTimeframe()
         {
             return AssetTimeframe.Timeframe;
         }

@@ -110,120 +110,246 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
 
 
-        #region weeksDifference
+        #region COUNT_TIME_UNITS
 
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_compared_date_few_weeks_earlier_returns_proper_value()
-        //{
-        //    DateTime d1 = new DateTime(2016, 4, 20);
-        //    DateTime d2 = new DateTime(2016, 3, 7);
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfTheSameDateIsGiven()
+        {
 
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(-6, result);
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 4, 0, 0, 0);
+            DateTime comparedDate = new DateTime(2017, 5, 4, 0, 0, 0);
 
-        //}
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfDateInTheSameWeekIsGiven()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 9);
+            DateTime comparedDate = new DateTime(2016, 8, 11);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfLaterDateIsGiven()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+            DateTime comparedDate = new DateTime(2016, 8, 1);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 18;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfComparedDateIsNotMonday()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 1);
+            DateTime comparedDate = new DateTime(2016, 8, 11);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 1;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfBaseDateIsNotMonday()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 15);
+            DateTime comparedDate = new DateTime(2016, 4, 20);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 1;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfBothDatesInTheSameWeekButBaseDateIsEarlier()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 19);
+            DateTime comparedDate = new DateTime(2016, 4, 21);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfBothDatesInTheSameWeekButBaseDateIsLater()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 21);
+            DateTime comparedDate = new DateTime(2016, 4, 19);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfBaseDateIsEarlier()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+            DateTime comparedDate = new DateTime(2016, 4, 21);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 3;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfComparedDateIsFromNextYear()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2015, 12, 5);
+            DateTime comparedDate = new DateTime(2016, 4, 21);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 20;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfComparedDateIsFromPreviousYear()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 21);
+            DateTime comparedDate = new DateTime(2015, 12, 5);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = -20;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        #endregion COUNT_TIME_UNITS
 
 
 
+        #region ADD_TIME_UNITS
 
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_compared_date_one_week_earlier_and_dayOfWeek_later_returns_proper_value()
-        //{
-        //    DateTime d1 = new DateTime(2016, 4, 20);
-        //    DateTime d2 = new DateTime(2016, 4, 16);
+        [TestMethod]
+        public void AddTimeUnits_ReturnsTheSameDate_ForZeroUnits()
+        {
 
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(-1, result);
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 17);
 
-        //}
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 1, 0);
 
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 4, 17);
+            Assert.AreEqual(expectedDateTime, result);
 
+        }
 
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_compared_date_one_week_earlier_and_dayOfWeek_earlier_returns_proper_value()
-        //{
-        //    DateTime d1 = new DateTime(2016, 4, 20);
-        //    DateTime d2 = new DateTime(2016, 4, 11);
+        [TestMethod]
+        public void AddTimeUnits_ReturnsTheSameDate_ForUnitsOverZero()
+        {
 
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(-1, result);
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 17);
 
-        //}
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 1, 5);
 
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 5, 22);
+            Assert.AreEqual(expectedDateTime, result);
 
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_compared_date_one_week_later_dayOfWeek_earlier_returns_proper_value()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 11);
-        //    DateTime d2 = new DateTime(2016, 8, 16);
+        }
 
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(1, result);
+        [TestMethod]
+        public void AddTimeUnits_ReturnsTheSameDate_ForUnitsUnderZero()
+        {
 
-        //}
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 17);
 
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 1, -2);
 
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_compared_date_one_week_later_dayOfWeek_later_returns_proper_value()
-        //{
-        //    DateTime d1 = new DateTime(2016, 8, 11);
-        //    DateTime d2 = new DateTime(2016, 8, 19);
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 4, 3);
+            Assert.AreEqual(expectedDateTime, result);
 
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(1, result);
+        }
 
-        //}
-
-
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_compared_date_few_weeks_later_returns_proper_value()
-        //{
-        //    DateTime d1 = new DateTime(2016, 4, 20);
-        //    DateTime d2 = new DateTime(2016, 6, 20);
-
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(9, result);
-
-        //}
-
-
-
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_from_the_same_week_compared_date_is_earlier_zero_is_returned()
-        //{
-        //    DateTime d1 = new DateTime(2016, 4, 20);
-        //    DateTime d2 = new DateTime(2016, 4, 18);
-
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(0, result);
-
-        //}
-
-
-
-        //[TestMethod]
-        //[TestCategory("weeksDifference")]
-        //public void weeksDifference_if_from_the_same_week_compared_date_is_later_zero_is_returned()
-        //{
-        //    DateTime d1 = new DateTime(2016, 4, 18);
-        //    DateTime d2 = new DateTime(2016, 4, 21);
-
-        //    var result = d1.WeeksDifference(d2);
-        //    Assert.AreEqual(0, result);
-
-        //}
-
-
-        #endregion weeksDifference
-
-
+        #endregion ADD_TIME_UNITS
 
     }
 }

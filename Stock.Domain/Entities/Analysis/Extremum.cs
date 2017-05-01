@@ -62,8 +62,26 @@ namespace Stock.Domain.Entities
         {
 
             //Timeframe
-            var timeframeSymbol = assetTimeframe.Timeframe.Symbol;// Symbol.GetTimeframeSymbol();
-            var timeframeFactor = timeframeSymbol.GetExtremumEvaluationFactor();
+            var timeframeSymbol = assetTimeframe.Timeframe.GetName();// Symbol.GetTimeframeSymbol();
+            var timeframeFactor = 1;// timeframeSymbol.GetExtremumEvaluationFactor();
+
+                //public static double GetExtremumEvaluationFactor(this TimeframeSymbol value)
+                //{
+                //    switch (value)
+                //    {
+                //        case TimeframeSymbol.M5: return 30d;
+                //        case TimeframeSymbol.M15: return 24d;
+                //        case TimeframeSymbol.M30: return 12d;
+                //        case TimeframeSymbol.H1: return 12d;
+                //        case TimeframeSymbol.H4: return 6d;
+                //        case TimeframeSymbol.D1: return 2d;
+                //        case TimeframeSymbol.W1: return 1d;
+                //        case TimeframeSymbol.MN1: return 0.5d;
+                //    }
+
+                //    return 1d;
+
+                //}
 
             if (LaterCounter < MinLaterCounter) return 0d;
 

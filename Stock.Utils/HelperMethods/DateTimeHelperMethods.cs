@@ -49,6 +49,27 @@ namespace Stock.Utils
             return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
         }
 
+        public static bool AreTheSameWeek(this DateTime date, DateTime comparedDate)
+        {
+            DateTime baseDateWeekStart = date.WeekStart();
+            DateTime comparedDateWeekStart = comparedDate.WeekStart();
+            return (baseDateWeekStart.Date == comparedDateWeekStart.Date);
+        }
+
+        public static DateTime WeekStart(this DateTime date)
+        {
+            int weekDay = date.DayOfWeekTm();
+            int days = weekDay - 1;
+            return date.AddDays(-days).Midnight();
+        }
+
+        public static int GetWeeksDifferenceTo(this DateTime date, DateTime endDate)
+        {
+            DateTime baseDateWeekStart = date.WeekStart();
+            DateTime comparedDateWeekStart = endDate.WeekStart();
+            return (comparedDateWeekStart - baseDateWeekStart).Days / 7;
+        }
+
         public static bool IsWeekend(this DateTime value)
         {
             return (value.DayOfWeek == DayOfWeek.Saturday || value.DayOfWeek == DayOfWeek.Sunday);
@@ -60,6 +81,8 @@ namespace Stock.Utils
             TimeSpan timeSpan = new TimeSpan(daysToAdd, 0, 0, 0);
             return value.Add(timeSpan).Midnight();
         }
+
+
 
     }
 }

@@ -15,7 +15,7 @@ namespace Stock.Domain.Services
         //void injectTimeframe(Timeframe timeframe);
         //void injectAssetTimeframe(AssetTimeframe assetTimeframe);
         Asset getAsset();
-        TimeframeOld getTimeframe();
+        Timeframe getTimeframe();
         AssetTimeframe getAssetTimeframe();
         AnalysisType getAnalysisType();
 

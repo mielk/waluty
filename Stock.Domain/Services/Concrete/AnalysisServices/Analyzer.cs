@@ -77,7 +77,7 @@ namespace Stock.Domain.Services
             return AssetTimeframe.Asset;
         }
 
-        public TimeframeOld getTimeframe()
+        public Timeframe getTimeframe()
         {
             return AssetTimeframe.Timeframe;
         }
@@ -120,7 +120,9 @@ namespace Stock.Domain.Services
         {
             if (LastCalculationDate == null) return null;
             var d = (DateTime) LastCalculationDate;
-            return d.addTimeUnits(AssetTimeframe.Timeframe.Symbol, -ItemsForAnalysis);
+
+            //return d.addTimeUnits(AssetTimeframe.Timeframe.GetName(), -ItemsForAnalysis);
+            return d;
         }
 
 
@@ -171,8 +173,12 @@ namespace Stock.Domain.Services
 
             //Calculate required index numbers.
             if (LastCalculationDate != null){
-                DateTime ldc = ((DateTime)LastCalculationDate).Proper(AssetTimeframe.Timeframe.Symbol);
-                DateTime lastRequiredForRightOnlyAnalysis = ldc.addTimeUnits(AssetTimeframe.Timeframe.Symbol, -ItemsForAnalysis);
+                
+                DateTime ldc = new DateTime();
+                DateTime lastRequiredForRightOnlyAnalysis = new DateTime();
+                //DateTime ldc = ((DateTime)LastCalculationDate).Proper(AssetTimeframe.Timeframe.GetName());
+                //DateTime lastRequiredForRightOnlyAnalysis = ldc.addTimeUnits(AssetTimeframe.Timeframe.GetName(), -ItemsForAnalysis);
+
                 indexAnalysisStart = findItemIndexByDate(items, lastRequiredForRightOnlyAnalysis);
                 indexLastCalculation = findItemIndexByDate(items, ldc);
             }

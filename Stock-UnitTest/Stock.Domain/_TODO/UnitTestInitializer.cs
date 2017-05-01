@@ -14,7 +14,7 @@ namespace Stock_UnitTest.Stock.Services
         {
 
             List<DataItem> items = new List<DataItem>();
-            var timeframe = TimeframeOld.GetTimeframe(TimeframeSymbol.D1);
+            var timeframe = Timeframe.ByName("D1");
             items.Add(new DataItem { Index = 0, Date = new DateTime(2007, 10, 10), AssetId = 1, Timeframe = timeframe, Quotation = new Quotation { Date = new DateTime(2007, 10, 10), AssetId = 1, Id = 2701, Open = 105.47, High = 105.61, Low = 104.71, Close = 105.27, Volume = 11339 }, Price = new Price { Id = 4122, AssetId = 1, Date = new DateTime(2007, 10, 10), CloseDelta = 0, Direction2D = 0, Direction3D = 0, PeakByClose = 0, PeakByHigh = 0, TroughByClose = 0, TroughByLow = 0, PriceGap = 0 } });
             items.Add(new DataItem { Index = 1, Date = new DateTime(2007, 10, 11), AssetId = 1, Timeframe = timeframe, Quotation = new Quotation { Date = new DateTime(2007, 10, 11), AssetId = 1, Id = 2702, Open = 105.26, High = 106.64, Low = 104.96, Close = 105.61, Volume = 14814 }, Price = new Price { Id = 4123, AssetId = 1, Date = new DateTime(2007, 10, 11), CloseDelta = 0.34, Direction2D = 0, Direction3D = 0, PeakByClose = 0, PeakByHigh = 0, TroughByClose = 0, TroughByLow = 0, PriceGap = 0 } });
             items.Add(new DataItem { Index = 2, Date = new DateTime(2007, 10, 12), AssetId = 1, Timeframe = timeframe, Quotation = new Quotation { Date = new DateTime(2007, 10, 12), AssetId = 1, Id = 2703, Open = 105.6, High = 106.45, Low = 104.93, Close = 106.35, Volume = 13506 }, Price = new Price { Id = 4124, AssetId = 1, Date = new DateTime(2007, 10, 12), CloseDelta = 0.74, Direction2D = 0, Direction3D = 0, PeakByClose = 0, PeakByHigh = 0, TroughByClose = 0, TroughByLow = 0, PriceGap = 0 } });

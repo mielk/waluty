@@ -84,68 +84,6 @@ namespace Stock.Domain.Services
             return ExtremumType.PeakByClose;
         }
 
-        public static double GetExtremumEvaluationFactor(this TimeframeSymbol value)
-        {
-            switch (value)
-            {
-                case TimeframeSymbol.M5: return 30d;
-                case TimeframeSymbol.M15: return 24d;
-                case TimeframeSymbol.M30: return 12d;
-                case TimeframeSymbol.H1: return 12d;
-                case TimeframeSymbol.H4: return 6d;
-                case TimeframeSymbol.D1: return 2d;
-                case TimeframeSymbol.W1: return 1d;
-                case TimeframeSymbol.MN1: return 0.5d;
-            }
-
-            return 1d;
-
-        }
-
-        public static TimeframeSymbol GetTimeframeSymbol(this string value)
-        {
-
-            var timeframeSymbol = value.Substring(value.IndexOf('_') + 1);
-
-            if (timeframeSymbol.Equals("M5"))
-            {
-                return TimeframeSymbol.M5;
-            }
-            else if (timeframeSymbol.Equals("M15"))
-            {
-                return TimeframeSymbol.M15;
-            }
-            else if (timeframeSymbol.Equals("M30"))
-            {
-                return TimeframeSymbol.M30;
-            }
-            else if (timeframeSymbol.Equals("H1"))
-            {
-                return TimeframeSymbol.H1;
-            }
-            else if (timeframeSymbol.Equals("H4"))
-            {
-                return TimeframeSymbol.H4;
-            }
-            else if (timeframeSymbol.Equals("D1"))
-            {
-                return TimeframeSymbol.D1;
-            }
-            else if (timeframeSymbol.Equals("W1"))
-            {
-                return TimeframeSymbol.W1;
-            }
-            else if (timeframeSymbol.Equals("MN1"))
-            {
-                return TimeframeSymbol.MN1;
-            } 
-            else 
-            {
-                return TimeframeSymbol.MN1;
-            }
-
-        }
-
 
 
         public static string TableName(this AnalysisType type)
@@ -235,85 +173,6 @@ namespace Stock.Domain.Services
         }
 
 
-        public static DateTime addTimeUnits(this DateTime date, TimeframeSymbol timeframe, int units)
-        {
-            if (units == 0) return date.AddMilliseconds(0);
-            return TimeframeOld.addTimeUnits(date, timeframe, units);
-        }
-
-        public static int countTimeUnits(this DateTime date, DateTime compared, TimeframeSymbol timeframe)
-        {
-            return TimeframeOld.countTimeUnits(date, compared, timeframe);
-        }
-
-        public static int countNewYearBreaks(this DateTime date, DateTime compared, bool includeWeekends)
-        {
-            return date.countSpecialDays(compared, includeWeekends, 1, 1);
-        }
-
-        public static int countChristmas(this DateTime date, DateTime compared, bool includeWeekends)
-        {
-            return date.countSpecialDays(compared, includeWeekends, 12, 25);
-        }
-
-        public static int countSpecialDays(this DateTime date, DateTime compared, bool includeWeekends, int month, int day)
-        {
-
-            DateTime earlier, later;
-            int counter = 0;
-
-
-            if (date.CompareTo(compared) > 0)
-            {
-                earlier = compared;
-                later = date;
-            }
-            else
-            {
-                earlier = date;
-                later = compared;
-            }
-
-
-            int startYear = (earlier.Month < month || earlier.Month == month && earlier.Day < day ? earlier.Year : earlier.Year + 1);
-            int endYear = (later.Month > month || later.Month == month && later.Day >= day ? later.Year : later.Year - 1);
-
-
-            if (includeWeekends)
-            {
-                return endYear - startYear + 1;
-            }
-            else
-            {
-                for (var i = startYear; i <= endYear; i++)
-                {
-                    DateTime specialDay = new DateTime(i, month, day);
-                    if (specialDay.DayOfWeek != DayOfWeek.Sunday && specialDay.DayOfWeek != DayOfWeek.Saturday)
-                    {
-                        counter++;
-                    }
-                }
-
-            }
-
-
-            return counter;
-
-        }
-
-
-
-        public static int DaysBetween(this DateTime d1, DateTime d2) {
-            return (d2 - d1).Days;
-        }
-
-        public static int WeeksDifference(this DateTime d1, DateTime d2)
-        {
-            DateTime real1 = d1.ProperWeek();
-            DateTime real2 = d2.ProperWeek();
-            return (real2 - real1).Days / 7;
-        }
-
         public static bool IsChristmas(this DateTime d)
         {
             if (d.Month == 12 && d.Day == 25)
@@ -342,79 +201,7 @@ namespace Stock.Domain.Services
 
         public static DateTime Proper(this DateTime d, TimeframeSymbol timeframe)
         {
-            switch (timeframe)
-            {
-                case TimeframeSymbol.MN1: return d.ProperMonth();
-                case TimeframeSymbol.W1:  return d.ProperWeek();
-                case TimeframeSymbol.D1:  return d.ProperDay();
-                default: return d.ProperShortTime(timeframe);
-            }
-
-        }
-
-        private static DateTime ProperMonth(this DateTime d)
-        {
-            return new DateTime(d.Year, d.Month, 1);
-        }
-
-        private static DateTime ProperWeek(this DateTime d)
-        {
-            return d.AddDays(-1 * (int)d.DayOfWeek).Midnight();
-        }
-
-        private static DateTime ProperDay(this DateTime d)
-        {
-
-            if (d.DayOfWeek == DayOfWeek.Saturday)
-            {
-                return d.AddDays(-1).ProperDay().Midnight();
-            }
-            else if (d.DayOfWeek == DayOfWeek.Sunday)
-            {
-                return d.AddDays(-2).ProperDay().Midnight();
-            }
-            else if (d.DayOfYear == 1)
-            {
-                return d.AddDays(-1).ProperDay().Midnight();
-            }
-
-            return new DateTime(d.Ticks).Midnight();
-
-        }
-
-        private static DateTime ProperShortTime(this DateTime d, TimeframeSymbol timeframe)
-        {
-            //To full time period.
-            TimeSpan span = TimeframeOld.getTimespan(timeframe, 1);
-
-            //include weekends
-            if (d.IsWeekend())
-            {
-                var dt = (d.DayOfWeek == DayOfWeek.Sunday ? d.AddDays(-1) : d.AddDays(0));
-                var saturdayMidnight = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
-                return saturdayMidnight.Add(span.invert()).ProperShortTime(timeframe);
-
-            }
-
-            //include christmas & new year
-            if (d.IsChristmas())
-            {
-                return TimeframeOld.getChristmasProperDate(d, timeframe).ProperShortTime(timeframe);
-            }
-            
-            if (d.IsNewYear())
-            {
-                return TimeframeOld.getNewYearProperDate(d, timeframe).ProperShortTime(timeframe);
-            }
-
-            //To full time format.
-            var hours = -1 * (span.Hours == 0 && span.Minutes == 0 ? d.Hour : (span.Minutes == 0 ? d.Hour % span.Hours : 0));
-            var minutes = -1 * (span.Minutes == 0 ? d.Minute : d.Minute % span.Minutes);
-            var seconds = -1 * (span.Seconds == 0 ? d.Second : d.Second % span.Seconds);
-            TimeSpan toAdd = new TimeSpan(hours, minutes, seconds);
-
-            return d.Add(toAdd);
-
+            return new DateTime();
 
         }
 
@@ -480,16 +267,7 @@ namespace Stock.Domain.Services
 
         public static DateTime getNext(this DateTime date, TimeframeSymbol timeframe)
         {
-            DateTime d = date.Proper(timeframe);
-            switch (timeframe)
-            {
-                case TimeframeSymbol.MN1: return new DateTime(d.Year, d.Month + 1, 1, 0, 0, 0);
-                case TimeframeSymbol.W1: return d.AddDays(7);
-                case TimeframeSymbol.D1:
-                    return d.AddDays(1).ifNotOpenMarketGetNext();
-                default:
-                    return d.Add(TimeframeOld.getTimespan(timeframe)).ifNotOpenMarketGetNext();
-            }
+            return new DateTime();
 
         }
 

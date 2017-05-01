@@ -88,7 +88,247 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         }
 
         #endregion GET_NEXT
+        
 
+        #region COUNT_TIME_UNITS
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfTheSameDateIsGiven()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 4, 0, 0, 0);
+            DateTime comparedDate = new DateTime(2017, 5, 4, 0, 0, 0);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfDateInTheSameMonthIsGiven()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 8, 9);
+            DateTime comparedDate = new DateTime(2016, 8, 11);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfLaterDateIsGiven()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+            DateTime comparedDate = new DateTime(2016, 11, 1);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 7;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfComparedDateIsNotFirstDayOfMonth()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+            DateTime comparedDate = new DateTime(2016, 11, 16);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 7;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfBaseDateIsNotFirstDayOfMonth()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 15);
+            DateTime comparedDate = new DateTime(2016, 11, 20);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 7;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfBothDatesInTheSameMonthButBaseDateIsEarlier()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 15);
+            DateTime comparedDate = new DateTime(2016, 4, 30);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsZero_IfBothDatesInTheSameWeekButBaseDateIsLater()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 15);
+            DateTime comparedDate = new DateTime(2016, 4, 2);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfBaseDateIsEarlier()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+            DateTime comparedDate = new DateTime(2016, 4, 21);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 0;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfComparedDateIsFromNextYear()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2013, 7, 15);
+            DateTime comparedDate = new DateTime(2016, 4, 21);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = 33;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        [TestMethod]
+        public void CountTimeUnits_ReturnsProperValue_IfComparedDateIsFromPreviousYear()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 20);
+            DateTime comparedDate = new DateTime(2012, 6, 21);
+
+            //Act
+            int unitsBetween = processor.CountTimeUnits(baseDate, comparedDate, 1);
+
+            //Assert
+            int expected = -46;
+            Assert.AreEqual(expected, unitsBetween);
+
+        }
+
+        #endregion COUNT_TIME_UNITS
+
+
+        #region ADD_TIME_UNITS
+
+        [TestMethod]
+        public void AddTimeUnits_ReturnsTheSameDate_ForZeroUnits()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 1, 0);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 4, 1);
+            Assert.AreEqual(expectedDateTime, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_ReturnsTheSameDate_ForUnitsOverZero()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 1, 5);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2016, 9, 1);
+            Assert.AreEqual(expectedDateTime, result);
+
+        }
+
+        [TestMethod]
+        public void AddTimeUnits_ReturnsTheSameDate_ForUnitsUnderZero()
+        {
+
+            //Arrange
+            MonthsProcessor processor = new MonthsProcessor();
+            DateTime baseDate = new DateTime(2016, 4, 1);
+
+            //Act
+            DateTime result = processor.AddTimeUnits(baseDate, 1, -5);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2015, 11, 1);
+            Assert.AreEqual(expectedDateTime, result);
+
+        }
+
+        #endregion ADD_TIME_UNITS
 
 
     }

@@ -431,5 +431,244 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         #endregion LATER & EARLIER
 
+
+        #region ARE_THE_SAME_WEEK
+
+        [TestMethod]
+        public void AreTheSameWeek_ReturnsTrue_IfFirstDateIsEarlierInTheSameWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 2, 13, 14, 0);
+
+            //Assert
+            bool isInTheSameWeek = baseDate.AreTheSameWeek(comparedDate);
+            Assert.IsTrue(isInTheSameWeek);
+
+        }
+
+        [TestMethod]
+        public void AreTheSameWeek_ReturnsTrue_IfFirstDateIsLaterInTheSameWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 6, 21, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 2, 13, 14, 0);
+
+            //Assert
+            bool isInTheSameWeek = baseDate.AreTheSameWeek(comparedDate);
+            Assert.IsTrue(isInTheSameWeek);
+
+        }
+
+        [TestMethod]
+        public void AreTheSameWeek_ReturnsTrue_ForMonday000000AndSunday235959()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 0, 0, 0);
+            DateTime comparedDate = new DateTime(2017, 5, 7, 23, 59, 59);
+
+            //Assert
+            bool isInTheSameWeek = baseDate.AreTheSameWeek(comparedDate);
+            Assert.IsTrue(isInTheSameWeek);
+
+        }
+
+        [TestMethod]
+        public void AreTheSameWeek_ReturnsFalse_IfFirstDateIsInEarlierWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 4, 30, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 2, 13, 14, 0);
+
+            //Assert
+            bool isInTheSameWeek = baseDate.AreTheSameWeek(comparedDate);
+            Assert.IsFalse(isInTheSameWeek);
+
+        }
+
+        [TestMethod]
+        public void AreTheSameWeek_ReturnsTrue_IfFirstDateIsInLaterWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 8, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 2, 13, 14, 0);
+
+            //Assert
+            bool isInTheSameWeek = baseDate.AreTheSameWeek(comparedDate);
+            Assert.IsFalse(isInTheSameWeek);
+
+        }
+
+
+        #endregion ARE_THE_SAME_WEEK
+
+
+        #region WEEK_START
+
+        [TestMethod]
+        public void WeekStart_ReturnsEarlierMonday000000_ForSunday235959()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 7, 23, 59, 59);
+
+            //Act
+            DateTime startWeek = baseDate.WeekStart();
+
+            //Assert
+            DateTime expectedDate = new DateTime(2017, 5, 1);
+            Assert.AreEqual(expectedDate, startWeek);
+
+        }
+
+        [TestMethod]
+        public void WeekStart_ReturnsMonday000000_ForMonday000000()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 0, 0, 0);
+
+            //Act
+            DateTime startWeek = baseDate.WeekStart();
+
+            //Assert
+            DateTime expectedDate = new DateTime(baseDate.Ticks);
+            Assert.AreEqual(expectedDate, startWeek);
+
+        }
+
+        #endregion WEEK_START
+
+
+        #region GET_WEEKS_DIFFERENCE
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsZero_IfDatesIsEarlierInTheSameWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 7, 23, 59, 59);
+            DateTime comparedDate = new DateTime(2017, 5, 6, 12, 23, 12);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = 0;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsZero_IfDatesIsLaterInTheSameWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 4, 23, 59, 59);
+            DateTime comparedDate = new DateTime(2017, 5, 6, 12, 23, 12);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = 0;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsProperValue_IfComparedDateIsFewWeeksEarlier()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2016, 4, 20);
+            DateTime comparedDate = new DateTime(2016, 3, 7);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = -6;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsProperValue_IfComparedDateIsOneWeekEarlierAndOnLaterDayOfWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2016, 4, 20);
+            DateTime comparedDate = new DateTime(2016, 4, 16);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = -1;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsProperValue_IfComparedDateIsOneWeekEarlierAndOnEarlierDayOfWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2016, 4, 20);
+            DateTime comparedDate = new DateTime(2016, 4, 11);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = -1;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsProperValue_IfComparedDateIsOneWeekLaterAndOnEarlierDayOfWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2016, 8, 11);
+            DateTime comparedDate = new DateTime(2016, 8, 16);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = 1;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsProperValue_IfComparedDateIsOneWeekLaterAndOnLaterDayOfWeek()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2016, 8, 11);
+            DateTime comparedDate = new DateTime(2016, 8, 19);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = 1;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        [TestMethod]
+        public void GetWeeksDifference_ReturnsProperValue_IfComparedDateIsFewWeeksLater()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2016, 4, 20);
+            DateTime comparedDate = new DateTime(2016, 6, 20);
+
+            //Act
+            int weeksDifference = baseDate.GetWeeksDifferenceTo(comparedDate);
+
+            //Assert
+            int expectedDifference = 9;
+            Assert.AreEqual(expectedDifference, weeksDifference);
+
+        }
+
+        #endregion GET_WEEKS_DIFFERENCE
+
     }
 }

@@ -11,6 +11,6 @@ namespace Stock.Domain.Services
     {
         bool Run(bool fromScratch);
         Asset getAsset();
-        TimeframeOld getTimeframe();
+        Timeframe getTimeframe();
     }
 }
