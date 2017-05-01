@@ -207,7 +207,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             //Arrange
             Mock<ITimeframeProcessor> mockProcessor = new Mock<ITimeframeProcessor>();
-            mockProcessor.Setup(p => p.GetDifferenceBetweenDates(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(10);
+            mockProcessor.Setup(p => p.CountTimeUnits(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>())).Returns(10);
             Timeframe timeframe = defaultTimeframe();
             timeframe.InjectTimeframeProcessor(mockProcessor.Object);
 
@@ -226,7 +226,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             //Arrange
             Mock<ITimeframeProcessor> mockProcessor = new Mock<ITimeframeProcessor>();
             DateTime expectedDateTime = new DateTime();
-            mockProcessor.Setup(p => p.AddTimeUnits(It.IsAny<DateTime>(), It.IsAny<int>())).Returns(expectedDateTime);
+            mockProcessor.Setup(p => p.AddTimeUnits(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDateTime);
             Timeframe timeframe = defaultTimeframe();
             timeframe.InjectTimeframeProcessor(mockProcessor.Object);
 

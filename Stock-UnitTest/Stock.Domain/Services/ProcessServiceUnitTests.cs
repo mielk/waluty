@@ -70,7 +70,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
 
-
+        [Ignore]
         [TestMethod]
         public void after_setup_properties_are_correctly_set()
         {
@@ -91,7 +91,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
 
-
+        [Ignore]
         [TestMethod]
         public void after_setup_proper_analyzers_are_assigned()
         {
@@ -113,7 +113,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
 
-
+        [Ignore]
         [TestMethod]
         public void quotationProcessor_is_called_once_for_loading_data()
         {
@@ -132,7 +132,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
 
-
+        [Ignore]
         [TestMethod]
         public void if_quotationService_returns_empty_array_of_data_items_Run_returns_false()
         {
@@ -152,7 +152,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
 
-
+        [Ignore]
         [TestMethod]
         public void if_quotationService_returns_empty_array_of_data_items_analyzers_are_not_run()
         {
@@ -188,7 +188,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
 
-
+        [Ignore]
         [TestMethod]
         public void if_quotationService_returns_non_empty_array_of_data_items_analyzers_are_run()
         {

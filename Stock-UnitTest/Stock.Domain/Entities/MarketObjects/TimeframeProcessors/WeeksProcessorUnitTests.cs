@@ -18,7 +18,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         {
 
             //Arrange
-            DaysProcessor processor = new DaysProcessor();
+            WeeksProcessor processor = new WeeksProcessor();
             DateTime baseDate = new DateTime(2016, 4, 17);
 
             //Act
@@ -37,7 +37,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         {
 
             //Arrange
-            DaysProcessor processor = new DaysProcessor();
+            WeeksProcessor processor = new WeeksProcessor();
             DateTime baseDate = new DateTime(2016, 4, 21, 15, 14, 52);
 
             //Act
@@ -51,6 +51,62 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         
         #endregion GET_PROPER_DATETIME
 
+
+
+        #region GET_NEXT
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForMiddleWeekTimestamp()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 4, 15, 13, 21);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 7, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForSunday()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 7, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 14, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForSaturday()
+        {
+
+            //Arrange
+            WeeksProcessor processor = new WeeksProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 6, 23, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 7, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        #endregion GET_NEXT
 
 
 

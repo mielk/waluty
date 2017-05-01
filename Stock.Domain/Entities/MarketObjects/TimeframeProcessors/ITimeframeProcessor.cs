@@ -8,8 +8,8 @@ namespace Stock.Domain.Entities
     {
         TimeframeUnit GetTimeframeUnit();
         DateTime GetProperDateTime(DateTime baseDate, int periodLength);
-        int GetDifferenceBetweenDates(DateTime baseDate, DateTime comparedDate);
-        DateTime AddTimeUnits(DateTime baseDate, int units);
+        int CountTimeUnits(DateTime baseDate, DateTime comparedDate, int periodLength);
+        DateTime AddTimeUnits(DateTime baseDate, int periodLength, int units);
         DateTime GetNext(DateTime baseDate, int periodLength);
     }
 

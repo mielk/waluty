@@ -12,76 +12,50 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
     {
 
         private const TimeframeUnit TIMEFRAME_UNIT = TimeframeUnit.Hours;
-        private List<DateTime> holidays = new List<DateTime>();
-        private TimeSpan beforeHolidayLastValue = new TimeSpan(21, 0, 0);
+        private IHolidaysManager holidaysManager = new HolidaysManager();
 
         public TimeframeUnit GetTimeframeUnit()
         {
             return TIMEFRAME_UNIT;
         }
 
+        private TimeSpan getTimeSpan(int units)
+        {
+            return new TimeSpan(units, 0, 0);
+        }
+
 
         #region MANAGE_HOLIDAYS
 
+        public void SetHolidaysManager(IHolidaysManager manager)
+        {
+            this.holidaysManager = manager;
+        }
+
         public void AddHoliday(DateTime holiday)
         {
-            holidays.Add(holiday);
+            this.holidaysManager.AddHoliday(holiday);
         }
 
         public void LoadHolidays(List<DateTime> holidays)
         {
-            this.holidays = holidays;
-        }
-
-        private bool IsHoliday(DateTime datetime)
-        {
-            foreach (var holiday in holidays)
-            {
-                if (holiday.Date == datetime.Date)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool IsDayBeforeHoliday(DateTime datetime)
-        {
-            return IsHoliday(datetime.Add(TimeSpan.FromDays(1)));
-        }
-
-        private bool IsWorkingDay(DateTime datetime)
-        {
-            if (datetime.IsWeekend())
-            {
-                return false;
-            }
-            else
-            {
-                return !IsHoliday(datetime);
-            }
-        }
-
-        private bool IsDayOff(DateTime datetime)
-        {
-            return !IsWorkingDay(datetime);
+            this.holidaysManager.LoadHolidays(holidays);
         }
 
         #endregion MANAGE_HOLIDAYS
 
 
+
         public DateTime GetProperDateTime(DateTime baseDate, int periodLength)
         {
-
-            if (IsHoliday(baseDate))
+            if (holidaysManager.IsHoliday(baseDate))
             {
-                DateTime dayBefore = baseDate.DayBefore().SetTime(beforeHolidayLastValue);
+                DateTime dayBefore = getDateWithLastBeforeHolidayTime(baseDate.DayBefore());
                 return GetProperDateTime(dayBefore, periodLength);
             }
             else if (baseDate.IsWeekend())
             {
-                TimeSpan timeSpan = GetTimeSpan(-periodLength);
-                DateTime dayBefore = baseDate.GetWeekendStart().Add(timeSpan);
+                DateTime dayBefore = getDateWithLastBeforeWeekendTime(baseDate, periodLength);
                 return GetProperDateTime(dayBefore, periodLength);
             }
             else
@@ -93,76 +67,44 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
         }
 
-        private TimeSpan GetTimeSpan(int units)
+        private DateTime getDateWithLastBeforeHolidayTime(DateTime datetime)
         {
-            return new TimeSpan(units, 0, 0);
+            return datetime.AddDays(1).Midnight().Subtract(holidaysManager.GetHolidayEveBreak());
+        }
+
+        private DateTime getDateWithLastBeforeWeekendTime(DateTime datetime, int periodLength)
+        {
+            TimeSpan timeSpan = getTimeSpan(-periodLength);
+            return datetime.GetWeekendStart().Add(timeSpan);
         }
 
         public DateTime GetNext(DateTime baseDate, int periodLength)
         {
+            DateTime currentProperTimestamp = GetProperDateTime(baseDate, periodLength);
+            DateTime nextTimestamp = currentProperTimestamp.AddHours(periodLength);
+            if (!holidaysManager.IsWorkingTime(nextTimestamp))
+            {
+                return holidaysManager.GetNextWorkingDay(nextTimestamp);
+            }
+            else
+            {
+                return nextTimestamp;
+            }
+        }
+
+
+        public DateTime AddTimeUnits(DateTime baseDate, int periodLength, int units)
+        {
             return new DateTime();
         }
 
 
 
-
-            //DateTime startDate = new DateTime(date.Ticks).Proper(timeframe);
-            //TimeSpan span = (Math.Sign(units) == 1 ? getTimespan(timeframe) : getTimespan(timeframe).invert());
-            //int sign = Math.Sign(units);
-
-            //for(var i = 1; i <= Math.Abs(units); i++){
-            //    startDate = startDate.Add(span);
-
-            //    if (!startDate.isOpenMarketTime())
-            //    {
-            //        DateTime nextOpenMarketTime = startDate.ifNotOpenMarketGetNext();
-            //        DateTime proper = startDate.Proper(timeframe);
-            //        startDate = (sign > 0 ? startDate.ifNotOpenMarketGetNext() : startDate.Proper(timeframe));   
-            //    }
-            //}
-
-            //return startDate;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public int GetDifferenceBetweenDates(DateTime baseDate, DateTime comparedDate)
+        public int CountTimeUnits(DateTime baseDate, DateTime comparedDate, int periodLength)
         {
             return 0;
-
-
-        //private static int countTimeUnits_shortPeriod(DateTime baseDate, DateTime comparedDate, TimeframeSymbol timeframe)
-        //{
-        //    DateTime properBaseDate = baseDate.Proper(timeframe);
-        //    DateTime properComparedDate = comparedDate.Proper(timeframe);
-        //    TimeSpan span = getTimespan(timeframe);
-        //    int spanMinutes = span.Hours * 60 + span.Minutes;
-
-        //    long datesMinutesDifference = (properComparedDate - properBaseDate).Ticks / 600000000;
-        //    int result = (int) datesMinutesDifference / spanMinutes;
-        //    int excluded = countExcludedItems(baseDate, comparedDate, timeframe);
-        //    return result - countExcludedItems(baseDate, comparedDate, timeframe);
-
-        //}
-
-
         }
 
-        public DateTime AddTimeUnits(DateTime baseDate, int units)
-        {
-            return new DateTime();
-        }
 
     }
 }

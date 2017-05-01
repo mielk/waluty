@@ -117,12 +117,12 @@ namespace Stock.Domain.Entities
 
         public int GetDifferenceBetweenDates(DateTime baseDate, DateTime comparedDate)
         {
-            return GetTimeframeProcessor().GetDifferenceBetweenDates(baseDate, comparedDate);
+            return GetTimeframeProcessor().CountTimeUnits(baseDate, comparedDate, unitsCounter);
         }
 
         public DateTime AddTimeUnits(DateTime baseDate, int units)
         {
-            return GetTimeframeProcessor().AddTimeUnits(baseDate, units);
+            return GetTimeframeProcessor().AddTimeUnits(baseDate, unitsCounter, units);
         }
 
         public DateTime GetProperDateTime(DateTime datetime)

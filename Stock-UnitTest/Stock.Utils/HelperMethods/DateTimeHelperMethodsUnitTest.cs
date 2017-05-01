@@ -263,5 +263,173 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         #endregion SET_TIME
 
+
+        #region LATER & EARLIER
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsTrue_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 13, 14, 0);
+
+            //Assert
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.IsTrue(isLater);
+
+        }
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsFalse_IfComparedDateIsEqual()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.IsFalse(isLater);
+
+        }
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsFalse_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 15, 14, 0);
+
+            //Assert
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.IsFalse(isLater);
+
+        }
+
+
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsTrue_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 15, 14, 0);
+
+            //Assert
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.IsTrue(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsFalse_IfComparedDateIsEqual()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsFalse_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 13, 14, 0);
+
+            //Assert
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+
+        }
+
+
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsTrue_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 13, 14, 0);
+
+            //Assert
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsTrue(isNotEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsTrue_IfComparedDateIsEqual()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsTrue(isNotEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsFalse_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 15, 14, 0);
+
+            //Assert
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsFalse(isNotEarlier);
+
+        }
+
+
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsTrue_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 15, 14, 0);
+
+            //Assert
+            bool isNotLater = baseDate.IsNotLaterThan(comparedDate);
+            Assert.IsTrue(isNotLater);
+
+        }
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsTrue_IfComparedDateIsEqual()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isNotLater = baseDate.IsNotLaterThan(comparedDate);
+            Assert.IsTrue(isNotLater);
+
+        }
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsFalse_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = new DateTime(2017, 5, 1, 13, 14, 0);
+
+            //Assert
+            bool isNotLater = baseDate.IsNotLaterThan(comparedDate);
+            Assert.IsFalse(isNotLater);
+
+        }
+
+
+        #endregion LATER & EARLIER
+
     }
 }

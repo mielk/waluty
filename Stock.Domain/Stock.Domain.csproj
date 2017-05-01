@@ -49,6 +49,8 @@
     <Compile Include="Entities\Analysis\Analysis.cs" />
     <Compile Include="Entities\Analysis\ExtremumGroup.cs" />
     <Compile Include="Entities\Analysis\ValuePoint.cs" />
+    <Compile Include="Entities\MarketObjects\TimeframeProcessors\HolidaysManager.cs" />
+    <Compile Include="Entities\MarketObjects\TimeframeProcessors\IHolidaysManager.cs" />
     <Compile Include="Entities\MarketObjects\TimeframeProcessors\MonthsProcessor.cs" />
     <Compile Include="Entities\MarketObjects\TimeframeProcessors\WeeksProcessor.cs" />
     <Compile Include="Entities\MarketObjects\TimeframeProcessors\DaysProcessor.cs" />

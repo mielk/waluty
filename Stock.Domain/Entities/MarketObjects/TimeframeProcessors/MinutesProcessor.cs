@@ -12,8 +12,7 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
     {
 
         private const TimeframeUnit TIMEFRAME_UNIT = TimeframeUnit.Minutes;
-        private List<DateTime> holidays = new List<DateTime>();
-        private TimeSpan beforeHolidayLastValue = new TimeSpan(21, 0, 0);
+        private IHolidaysManager holidaysManager = new HolidaysManager();
 
         public TimeframeUnit GetTimeframeUnit()
         {
@@ -28,77 +27,19 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
         #region MANAGE_HOLIDAYS
 
+        public void SetHolidaysManager(IHolidaysManager manager)
+        {
+            this.holidaysManager = manager;
+        }
+
         public void AddHoliday(DateTime holiday)
         {
-            holidays.Add(holiday);
+            this.holidaysManager.AddHoliday(holiday);
         }
 
         public void LoadHolidays(List<DateTime> holidays)
         {
-            this.holidays = holidays;
-        }
-
-        private bool IsHoliday(DateTime datetime)
-        {
-            foreach (var holiday in holidays)
-            {
-                if (holiday.Date == datetime.Date)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool IsDayBeforeHoliday(DateTime datetime)
-        {
-            return IsHoliday(datetime.Add(TimeSpan.FromDays(1)));
-        }
-
-        private bool IsWorkingDay(DateTime datetime)
-        {
-            if (datetime.IsWeekend())
-            {
-                return false;
-            }
-            else
-            {
-                return !IsHoliday(datetime);
-            }
-        }
-
-        private bool IsWorkingTime(DateTime datetime)
-        {
-            if (IsWorkingDay(datetime))
-            {
-                if (IsDayBeforeHoliday(datetime))
-                {
-                    return !isTimeAfterHolidayEveMarketClose(datetime);
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool IsDayOff(DateTime datetime)
-        {
-            return !IsWorkingDay(datetime);
-        }
-
-        private DateTime getNextWorkingDay(DateTime datetime)
-        {
-            DateTime tempDatetime = datetime.AddDays(1);
-            while (!IsWorkingDay(tempDatetime))
-            {
-                tempDatetime.AddDays(tempDatetime.DayOfWeek == DayOfWeek.Saturday ? 2 : 1);
-            }
-            return tempDatetime.Midnight();
+            this.holidaysManager.LoadHolidays(holidays);
         }
 
         #endregion MANAGE_HOLIDAYS
@@ -107,9 +48,9 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         public DateTime GetProperDateTime(DateTime baseDate, int periodLength)
         {
 
-            if (IsHoliday(baseDate))
+            if (holidaysManager.IsHoliday(baseDate))
             {
-                DateTime dayBefore = baseDate.DayBefore().SetTime(beforeHolidayLastValue);
+                DateTime dayBefore = getDateWithLastBeforeHolidayTime(baseDate.DayBefore());
                 return GetProperDateTime(dayBefore, periodLength);
             }
             else if (baseDate.IsWeekend())
@@ -119,7 +60,7 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
             }
             else
             {
-                if (isTimeAfterHolidayEveMarketClose(baseDate) && IsDayBeforeHoliday(baseDate))
+                if (holidaysManager.IsHolidayEveAfterMarketClose(baseDate))
                 {
                     return getDateWithLastBeforeHolidayTime(baseDate);
                 }
@@ -131,25 +72,9 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
 
         }
         
-        private bool isTimeAfterHolidayEveMarketClose(DateTime datetime)
-        {
-            if (datetime.Hour > beforeHolidayLastValue.Hours)
-            {
-                return true;
-            }
-            else if (datetime.Hour == beforeHolidayLastValue.Hours)
-            {
-                return (datetime.Minute > beforeHolidayLastValue.Minutes);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         private DateTime getDateWithLastBeforeHolidayTime(DateTime datetime)
         {
-            return datetime.Midnight().Add(beforeHolidayLastValue);
+            return datetime.AddDays(1).Midnight().Subtract(holidaysManager.GetHolidayEveBreak());
         }
 
         private DateTime getDateWithLastBeforeWeekendTime(DateTime datetime, int periodLength)
@@ -166,53 +91,67 @@ namespace Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         }
 
 
-
         public DateTime GetNext(DateTime baseDate, int periodLength)
         {
-            DateTime properDateTime = GetProperDateTime(baseDate, periodLength);
-            DateTime nextDateTime = properDateTime.AddMinutes(periodLength);
-            if (!IsWorkingTime(nextDateTime)){
-                return getNextWorkingDay(nextDateTime);
+            DateTime currentProperTimestamp = GetProperDateTime(baseDate, periodLength);
+            DateTime nextTimestamp = currentProperTimestamp.AddMinutes(periodLength);
+            if (!holidaysManager.IsWorkingTime(nextTimestamp)){
+                return holidaysManager.GetNextWorkingDay(nextTimestamp);
             }
             else 
             {
-                return nextDateTime;
+                return nextTimestamp;
             }
         }
 
 
-
-
-
-
-
-
-
-        public int GetDifferenceBetweenDates(DateTime baseDate, DateTime comparedDate)
+        public DateTime AddTimeUnits(DateTime baseDate, int periodLength, int units)
         {
-            return 0;
+            DateTime datetime = GetProperDateTime(baseDate, periodLength);
+            DateTime nextTimeOff = holidaysManager.GetNextTimeOff(datetime);
+            DateTime dateAfterAdd = datetime.AddMinutes(periodLength * units);
 
-
-        //private static int countTimeUnits_shortPeriod(DateTime baseDate, DateTime comparedDate, TimeframeSymbol timeframe)
-        //{
-        //    DateTime properBaseDate = baseDate.Proper(timeframe);
-        //    DateTime properComparedDate = comparedDate.Proper(timeframe);
-        //    TimeSpan span = getTimespan(timeframe);
-        //    int spanMinutes = span.Hours * 60 + span.Minutes;
-
-        //    long datesMinutesDifference = (properComparedDate - properBaseDate).Ticks / 600000000;
-        //    int result = (int) datesMinutesDifference / spanMinutes;
-        //    int excluded = countExcludedItems(baseDate, comparedDate, timeframe);
-        //    return result - countExcludedItems(baseDate, comparedDate, timeframe);
-
-        //}
-
+            if (dateAfterAdd.IsEarlierThan(nextTimeOff))
+            {
+                return dateAfterAdd;
+            }
+            else
+            {
+                return dateAfterAdd;
+            }
 
         }
 
-        public DateTime AddTimeUnits(DateTime baseDate, int units)
+
+        public int CountTimeUnits(DateTime baseDate, DateTime comparedDate, int periodLength)
         {
-            return new DateTime();
+            bool isProperOrder = baseDate.IsEarlierThan(comparedDate);
+            DateTime startDate = GetProperDateTime(isProperOrder ? baseDate : comparedDate, periodLength);
+            DateTime endDate = GetProperDateTime(isProperOrder ? comparedDate : baseDate, periodLength);
+
+            int part = 0;
+
+            while (startDate.IsEarlierThan(endDate)){
+                DateTime nextTimeOff = holidaysManager.GetNextTimeOff(startDate);
+                if (nextTimeOff.IsEarlierThan(endDate))
+                {
+                    DateTime nextWorkingTimestamp = holidaysManager.GetNextWorkingDay(nextTimeOff);
+                    TimeSpan difference = nextTimeOff - startDate;
+                    int units = ((int)difference.TotalMinutes / periodLength);
+                    startDate = nextWorkingTimestamp;
+                    part += units;
+                }
+                else
+                {
+                    TimeSpan difference = endDate - startDate;
+                    int units = ((int)difference.TotalMinutes / periodLength);
+                    part += units;
+                    startDate = endDate;
+                }
+            }
+
+            return part;
+
         }
 
     }

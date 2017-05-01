@@ -146,7 +146,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         {
 
             //Arrange
-            HoursProcessor processor = new HoursProcessor();
+            DaysProcessor processor = new DaysProcessor();
             DateTime baseDate = new DateTime(2017, 5, 8, 0, 0, 0);
 
             //Act
@@ -159,6 +159,135 @@ namespace Stock_UnitTest.Stock.Domain.Entities.MarketObjects.TimeframeProcessors
         }
 
         #endregion GET_PROPER_DATETIME
+
+
+
+        #region GET_NEXT
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForTimestampBetweenFullPeriods()
+        {
+
+            //Arrange
+            DaysProcessor processor = new DaysProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 4, 15, 13, 21);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 5, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForTimestampOnPeriodEdge()
+        {
+
+            //Arrange
+            DaysProcessor processor = new DaysProcessor();
+            DateTime baseDate = new DateTime(2017, 5, 3, 0, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 4, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForLastQuotationBeforeWeekend()
+        {
+
+            //Arrange
+            DaysProcessor processor = new DaysProcessor();
+            DateTime baseDate = new DateTime(2017, 4, 28, 0, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 1, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForWeekendValue()
+        {
+
+            //Arrange
+            DaysProcessor processor = new DaysProcessor();
+            DateTime baseDate = new DateTime(2017, 4, 30, 16, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 1, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForLastQuotationBeforeHoliday()
+        {
+
+            //Arrange
+            DaysProcessor processor = new DaysProcessor();
+            processor.AddHoliday(new DateTime(2017, 5, 3));
+            DateTime baseDate = new DateTime(2017, 5, 2, 0, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 4, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForLastQuotationBeforeHolidayInFriday()
+        {
+
+            //Arrange
+            DaysProcessor processor = new DaysProcessor();
+            processor.AddHoliday(new DateTime(2017, 5, 5));
+            DateTime baseDate = new DateTime(2017, 5, 4, 0, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 8, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        [TestMethod]
+        public void GetNext_ReturnsProperValue_ForLastWeekQuotationIfMondayIsHoliday()
+        {
+
+            //Arrange
+            DaysProcessor processor = new DaysProcessor();
+            processor.AddHoliday(new DateTime(2017, 5, 8, 0, 0, 0));
+            DateTime baseDate = new DateTime(2017, 5, 5, 0, 0, 0);
+
+            //Act
+            DateTime actualDateTime = processor.GetNext(baseDate, 1);
+
+            //Assert
+            DateTime expectedDateTime = new DateTime(2017, 5, 9, 0, 0, 0);
+            Assert.AreEqual(expectedDateTime, actualDateTime);
+
+        }
+
+        #endregion GET_NEXT
+
 
 
     }

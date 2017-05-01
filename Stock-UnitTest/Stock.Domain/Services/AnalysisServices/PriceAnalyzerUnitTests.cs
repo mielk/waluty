@@ -24,6 +24,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analyzers
         }
 
 
+        [Ignore]
         [TestMethod]
         public void run_proper_items_are_only_right_calculated()
         {
@@ -67,7 +68,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analyzers
         }
 
 
-
+        [Ignore]
         [TestMethod]
         public void run_proper_items_are_full_calculated()
         {

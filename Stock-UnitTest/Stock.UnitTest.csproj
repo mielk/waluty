@@ -69,6 +69,7 @@
     <Compile Include="Stock.DAL\Infrastructure\RepositoryFactoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\EFCurrencyRepositoryUnitTest.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\MonthsProcessorUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\HolidaysManagerUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\WeeksProcessorUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\DaysProcessorUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\HoursProcessorUnitTests.cs" />

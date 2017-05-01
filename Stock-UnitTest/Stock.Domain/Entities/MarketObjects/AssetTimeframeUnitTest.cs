@@ -33,6 +33,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         #region IS.VALID
 
+        [Ignore]
         [TestMethod]
         public void IsValid_ReturnsTrue_IfBothAssetAndTimeframeAreSet()
         {
@@ -119,6 +120,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
+        [Ignore]
         [TestMethod]
         public void GetSymbol_ReturnsProperSymbol_IfAssetAndTimeframeAreSet()
         {
