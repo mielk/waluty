@@ -69,6 +69,8 @@
     <Compile Include="Helpers\DataItemHelpers\ExtremumDALHelper.cs" />
     <Compile Include="Helpers\DataItemHelpers\MacdDALHelper.cs" />
     <Compile Include="Infrastructure\AssetContext.cs" />
+    <Compile Include="Infrastructure\UnitTestsDbContext.cs" />
+    <Compile Include="Infrastructure\OriginalDbContext.cs" />
     <Compile Include="Infrastructure\TimeframeContext.cs" />
     <Compile Include="Infrastructure\MarketContext.cs" />
     <Compile Include="Infrastructure\CurrencyContext.cs" />

@@ -13,11 +13,34 @@ namespace Stock.DAL.TransferObjects
         [Key]
         public int Id { get; set; }
 
-        [Column("CurrencyName")]
+        [Column("CurrencySymbol")]
         public string Symbol { get; set; }
 
         [Column("CurrencyFullName")]
         public string Name { get; set; }
+
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(CurrencyDto)) return false;
+
+            CurrencyDto compared = (CurrencyDto)obj;
+            if ((compared.Id) != Id) return false;
+            if (!compared.Name.Equals(Name)) return false;
+            if (!compared.Symbol.Equals(Symbol)) return false;
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} ({1})", Name, Symbol);
+        }
 
     }
 }

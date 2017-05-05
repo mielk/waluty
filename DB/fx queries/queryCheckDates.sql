@@ -11,7 +11,7 @@ CREATE FUNCTION getLastDateInDatesTable(timeframeId INT) RETURNS DATETIME
         RETURN result;
     END //
 
-    
+
 DROP FUNCTION IF EXISTS getLastIndexInDatesTable //
 CREATE FUNCTION getLastIndexInDatesTable(timeframeId INT) RETURNS INT
 	BEGIN
@@ -23,7 +23,7 @@ CREATE FUNCTION getLastIndexInDatesTable(timeframeId INT) RETURNS INT
         
         RETURN result;
     END //    
-    
+
 
 DROP FUNCTION IF EXISTS getPeriodUnitForTimeframe //
 CREATE FUNCTION getPeriodUnitForTimeframe(timeframeId INT) RETURNS NVARCHAR(45)
@@ -57,8 +57,8 @@ CREATE PROCEDURE createIdsTable(counter INT)
 		CREATE TEMPORARY TABLE tIds (Id INT PRIMARY KEY AUTO_INCREMENT, Fake INT(1) NULL);
 		INSERT INTO tIds(Fake) SELECT NULL FROM quotations LIMIT counter;
     END //
-    
-    
+
+
 DROP PROCEDURE IF EXISTS createDatesTable //
 CREATE PROCEDURE createDatesTable()
 	BEGIN
