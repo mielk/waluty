@@ -260,7 +260,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IAssetService> mockService = new Mock<IAssetService>();
             Asset nullAsset = null;
             mockService.Setup(s => s.GetAssetById(DEFAULT_ID)).Returns(nullAsset);
-            Asset.injectService(mockService.Object);
+            Asset.InjectService(mockService.Object);
 
             //Act.
             Asset asset = Asset.ById(DEFAULT_ID);
@@ -279,7 +279,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IAssetService> mockService = new Mock<IAssetService>();
             Asset expectedAsset = new Asset(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_MARKET_ID);
             mockService.Setup(s => s.GetAssetById(DEFAULT_ID)).Returns(expectedAsset);
-            Asset.injectService(mockService.Object);
+            Asset.InjectService(mockService.Object);
 
             //Act.
             Asset asset = Asset.ById(DEFAULT_ID);
@@ -301,7 +301,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IAssetService> mockService = new Mock<IAssetService>();
             Asset expectedAsset = new Asset(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_MARKET_ID);
             mockService.Setup(s => s.GetAssetBySymbol(DEFAULT_SYMBOL)).Returns(expectedAsset);
-            Asset.injectService(mockService.Object);
+            Asset.InjectService(mockService.Object);
 
             //Act.
             Asset asset = Asset.BySymbol(DEFAULT_SYMBOL);
@@ -323,7 +323,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IAssetService> mockService = new Mock<IAssetService>();
             mockService.Setup(s => s.GetAssetById(1)).Returns(new Asset(1, "EURUSD", 1));
             mockService.Setup(s => s.GetAssetById(2)).Returns(new Asset(2, "USDJPY", 1));
-            Asset.injectService(mockService.Object);
+            Asset.InjectService(mockService.Object);
 
             //Act
             Asset eurusd = Asset.ById(1);
@@ -347,7 +347,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IAssetService> mockService = new Mock<IAssetService>();
             var expectedAssets = getAssetsCollection();
             mockService.Setup(s => s.GetAllAssets()).Returns(expectedAssets);
-            Asset.injectService(mockService.Object);
+            Asset.InjectService(mockService.Object);
 
             //Act.
             var assets = Asset.GetAllAssets();
@@ -370,7 +370,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IAssetService> mockService = new Mock<IAssetService>();
             var expectedAssets = getAssetsCollection();
             mockService.Setup(s => s.GetAssets(It.IsAny<string>(), It.IsAny<int>())).Returns(expectedAssets);
-            Asset.injectService(mockService.Object);
+            Asset.InjectService(mockService.Object);
 
             //Act.
             var assets = Asset.GetAssets("a", 1);
@@ -393,7 +393,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<IAssetService> mockService = new Mock<IAssetService>();
             var expectedAssets = getAssetsCollection();
             mockService.Setup(s => s.GetAssetsForMarket(It.IsAny<int>())).Returns(expectedAssets);
-            Asset.injectService(mockService.Object);
+            Asset.InjectService(mockService.Object);
 
             //Act.
             var assets = Asset.GetAssetsForMarket(1);

@@ -7,6 +7,7 @@
         private static readonly ICurrencyRepository CurrencyRepository;
         private static readonly IAssetRepository AssetRepository;
         private static readonly IDataRepository DataRepository;
+        private static readonly IDataRepository2 DataRepository2;
         private static readonly ITimeframeRepository TimeframeRepository;
 
 
@@ -14,6 +15,7 @@
         {
             MarketRepository = new EFMarketRepository();
             DataRepository = new EFDataRepository();
+            DataRepository2 = new EFDataRepository2();
             CurrencyRepository = new EFCurrencyRepository();
             AssetRepository = new EFAssetRepository();
             TimeframeRepository = new EFTimeframeRepository();
@@ -43,6 +45,11 @@
         public static IDataRepository GetDataRepository()
         {
             return DataRepository;
+        }
+
+        public static IDataRepository2 GetDataRepository2()
+        {
+            return DataRepository2;
         }
 
 

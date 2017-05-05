@@ -16,7 +16,7 @@ namespace Stock.Domain.Services
     public class SimulationService : ISimulationService, IAnalysisDataService
     {
 
-        private readonly IDataService _dataService;
+        private readonly IDataService2 _dataService;
         private IPriceAnalyzer _priceAnalyzer;
         //private IMacdAnalyzer _macdAnalyzer;
         private ITrendlineAnalyzer _trendAnalyzer;
@@ -45,7 +45,7 @@ namespace Stock.Domain.Services
         }
 
 
-        public SimulationService(IDataService dataService)
+        public SimulationService(IDataService2 dataService)
         {
             _dataService = dataService ?? DataServiceFactory.Instance().GetService();
             quotationService = new SimulationQuotationService(this);

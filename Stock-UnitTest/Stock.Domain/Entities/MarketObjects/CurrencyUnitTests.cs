@@ -104,7 +104,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             Currency nullCurrency = null;
             mockService.Setup(c => c.GetCurrencyById(DEFAULT_ID)).Returns(nullCurrency);
-            Currency.injectService(mockService.Object);
+            Currency.InjectService(mockService.Object);
 
             //Act.
             Currency currency = Currency.ById(DEFAULT_ID);
@@ -122,7 +122,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             Currency expectedCurrency = new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL);
             mockService.Setup(c => c.GetCurrencyById(DEFAULT_ID)).Returns(expectedCurrency);
-            Currency.injectService(mockService.Object);
+            Currency.InjectService(mockService.Object);
 
             //Act.
             Currency currency = Currency.ById(DEFAULT_ID);
@@ -140,7 +140,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             Currency expectedCurrency = new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL);
             mockService.Setup(c => c.GetCurrencyByName(DEFAULT_NAME)).Returns(expectedCurrency);
-            Currency.injectService(mockService.Object);
+            Currency.InjectService(mockService.Object);
 
             //Act.
             Currency currency = Currency.ByName(DEFAULT_NAME);
@@ -158,7 +158,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             Currency expectedCurrency = new Currency(DEFAULT_ID, DEFAULT_NAME, DEFAULT_SYMBOL);
             mockService.Setup(c => c.GetCurrencyBySymbol(DEFAULT_SYMBOL)).Returns(expectedCurrency);
-            Currency.injectService(mockService.Object);
+            Currency.InjectService(mockService.Object);
 
             //Act.
             Currency currency = Currency.BySymbol(DEFAULT_SYMBOL);
@@ -176,7 +176,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             mockService.Setup(c => c.GetCurrencyById(1)).Returns(new Currency(1, "USD", "US Dollar"));
             mockService.Setup(c => c.GetCurrencyById(2)).Returns(new Currency(2, "EUR", "Euro"));
-            Currency.injectService(mockService.Object);
+            Currency.InjectService(mockService.Object);
 
             //Act
             Currency eur = Currency.ById(2);
@@ -196,7 +196,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Mock<ICurrencyService> mockService = new Mock<ICurrencyService>();
             var expectedCurrencies = getCurrenciesCollection();
             mockService.Setup(c => c.GetAllCurrencies()).Returns(expectedCurrencies);
-            Currency.injectService(mockService.Object);
+            Currency.InjectService(mockService.Object);
 
             //Act.
             var currencies = Currency.GetAllCurrencies();

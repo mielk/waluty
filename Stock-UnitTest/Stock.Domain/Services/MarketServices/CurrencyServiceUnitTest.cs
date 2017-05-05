@@ -78,7 +78,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             mockedService.Setup(s => s.GetCurrencyById(1)).Returns(new Currency(1, "USD", "US Dollar"));
             mockedService.Setup(s => s.GetCurrencyById(2)).Returns(new Currency(2, "EUR", "Euro"));
             mockedService.Setup(s => s.GetCurrencyById(3)).Returns(new Currency(3, "JPY", "Japanese Yen"));
-            Currency.injectService(mockedService.Object);
+            Currency.InjectService(mockedService.Object);
         }
 
         #endregion INFRASTRUCTURE
@@ -338,7 +338,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreEqual(expectedPair, pair);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -377,7 +377,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreSame(pair1, pair2);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -400,7 +400,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreEqual(expectedPair, pair);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -439,7 +439,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreSame(pair1, pair2);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -460,7 +460,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreSame(pair1, pair2);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -483,7 +483,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreEqual(dtos.Length, ((List<FxPair>)currencies).Count);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -508,7 +508,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreSame(fromResultCollection, pair);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -531,7 +531,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreEqual(dtos.Length, ((List<FxPair>)currencies).Count);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -556,7 +556,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             Assert.AreSame(fromResultCollection, pair);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 

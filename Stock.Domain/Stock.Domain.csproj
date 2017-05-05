@@ -84,6 +84,7 @@
     <Compile Include="Services\Abstract\AnalysisServices\IAdxAnalyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IAnalyzer.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ITrendlineProcessor.cs" />
+    <Compile Include="Services\Abstract\DataServices\IDataService.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
     <Compile Include="Services\Abstract\IAnalyzerProcessor.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\IPriceProcessor.cs" />
@@ -99,7 +100,7 @@
     <Compile Include="Services\Abstract\AnalysisServices\IPriceAnalyzer.cs" />
     <Compile Include="Services\Abstract\IPriceTrendComparer.cs" />
     <Compile Include="Services\Abstract\IProcessService.cs" />
-    <Compile Include="Services\Abstract\IDataService.cs" />
+    <Compile Include="Services\Abstract\DataServices\IDataService2.cs" />
     <Compile Include="Services\Abstract\MarketServices\IMarketService.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ITrendlineAnalyzer.cs" />
     <Compile Include="Services\Abstract\ITrendService.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Services\Concrete\AnalysisServices\CandlestickAnalyzer.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\PriceProcessor.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\TrendlineProcessor.cs" />
+    <Compile Include="Services\Concrete\DataServices\SimulationDataService.cs" />
     <Compile Include="Services\Concrete\MarketServices\AssetService.cs" />
     <Compile Include="Services\Concrete\MarketServices\TimeframeService.cs" />
     <Compile Include="Services\Concrete\MarketServices\CurrencyService.cs" />
@@ -122,11 +124,10 @@
     <Compile Include="Services\Concrete\ProcessService.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\TrendlineAnalyzer.cs" />
     <Compile Include="Services\Concrete\TrendService.cs" />
-    <Compile Include="Services\Concrete\DataService.cs" />
+    <Compile Include="Services\Concrete\DataServices\DataService2.cs" />
     <Compile Include="Services\Concrete\MarketServices\MarketService.cs" />
     <Compile Include="Services\Factories\AnalysisDataServiceFactory.cs" />
     <Compile Include="Services\Factories\AnalyzerFactory.cs" />
-    <Compile Include="Services\Factories\MarketServiceFactory.cs" />
     <Compile Include="Services\Factories\ServiceFactory.cs" />
     <Compile Include="Services\Factories\SimulationServiceFactory.cs" />
     <Compile Include="Services\Factories\ProcessServiceFactory.cs" />

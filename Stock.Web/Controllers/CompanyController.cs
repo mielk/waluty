@@ -11,10 +11,10 @@ namespace Stock.Web.Controllers
     public class CompanyController : Controller
     {
         private readonly IAssetService assetService;
-        private readonly IDataService dataService;
+        private readonly IDataService2 dataService;
 
 
-        public CompanyController(IDataService dataService)
+        public CompanyController(IDataService2 dataService)
         {
             this.assetService = ServiceFactory.GetAssetService();
             this.dataService = dataService;
@@ -28,7 +28,6 @@ namespace Stock.Web.Controllers
         {
             return View();
         }
-
 
 
         [HttpGet]
@@ -64,7 +63,6 @@ namespace Stock.Web.Controllers
         }
 
 
-
         [HttpGet]
         [AllowAnonymous]
         public ActionResult GetQuotations(int companyId, int timeframe, int count)
@@ -86,8 +84,6 @@ namespace Stock.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-
-
 
 
         [HttpGet]
@@ -130,8 +126,6 @@ namespace Stock.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-
-
 
 
         [HttpGet]

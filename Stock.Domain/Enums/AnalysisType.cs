@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 namespace Stock.Domain.Enums
 {
 
-    public enum AnalysisType{
-    
+    public enum AnalysisType{    
         Unknown = 0,
-        Price = 1,
-        Trendline = 2,
+        Quotation = 1,
+        Price = 2,
         MACD = 3,
         ADX = 4,
-        Candlestick = 5
+        Candlestick = 5,
+        Trendline = 6
     }
 
 

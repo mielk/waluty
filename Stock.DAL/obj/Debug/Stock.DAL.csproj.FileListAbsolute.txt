@@ -92,3 +92,7 @@ C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\Ninject.pdb
 C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\Ninject.xml
 C:\tm\aplikacje\FX3\Stock.DAL\obj\Debug\Stock.DAL.dll
 C:\tm\aplikacje\FX3\Stock.DAL\obj\Debug\Stock.DAL.pdb
+C:\tm\aplikacje\FX3\Stock.DAL\obj\Debug\Stock.DAL.csprojResolveAssemblyReference.cache
+C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\MySql.Data.Entity.EF6.dll

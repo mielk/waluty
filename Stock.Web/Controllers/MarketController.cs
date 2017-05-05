@@ -8,6 +8,7 @@ using Stock.Domain.Services.Factories;
 
 namespace Stock.Web.Controllers
 {
+
     public class MarketController : Controller
     {
 
@@ -16,7 +17,7 @@ namespace Stock.Web.Controllers
 
         public MarketController()
         {
-            _service = MarketServiceFactory.CreateService();
+            _service = ServiceFactory.GetMarketService();
         }
 
 
@@ -36,4 +37,5 @@ namespace Stock.Web.Controllers
         }
 
     }
+
 }

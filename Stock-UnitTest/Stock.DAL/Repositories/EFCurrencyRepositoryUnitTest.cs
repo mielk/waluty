@@ -14,7 +14,6 @@ namespace Stock_UnitTest.Stock.DAL.Repositories
         private const string DEFAULT_SYMBOL = "USD";
 
 
-        [Ignore]
         [TestCategory("DB")]
         [TestMethod]
         public void GetCurrencyById_returnProperDto_forExistingItem()
@@ -33,7 +32,6 @@ namespace Stock_UnitTest.Stock.DAL.Repositories
 
         }
 
-        [Ignore]
         [TestCategory("DB")]
         [TestMethod]
         public void GetCurrencyById_returnNull_forNonExistingItem()
@@ -43,6 +41,11 @@ namespace Stock_UnitTest.Stock.DAL.Repositories
             EFCurrencyRepository repository = new EFCurrencyRepository();
 
             //Act
+            if (repository == null)
+            {
+                var x = 1;
+            }
+
             CurrencyDto dto = repository.GetCurrencyById(0);
 
             //Assert

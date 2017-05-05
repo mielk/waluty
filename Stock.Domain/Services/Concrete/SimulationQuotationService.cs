@@ -18,7 +18,7 @@ namespace Stock.Domain.Services
             this.simulationService = simulationService;
         }
 
-        public void injectDataService(IDataService dataService)
+        public void injectDataService(IDataService2 dataService)
         {
         }
 

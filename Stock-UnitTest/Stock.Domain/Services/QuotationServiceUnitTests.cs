@@ -38,7 +38,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             analyzers.Add(AnalysisType.MACD, UnitTestTools.generateMockAnalyzer(atf, AnalysisType.MACD, null).Object);
             analyzers.Add(AnalysisType.ADX, UnitTestTools.generateMockAnalyzer(atf, AnalysisType.ADX, firstRequired).Object);
 
-            Mock<IDataService> mockedDataService = new Mock<IDataService>();
+            Mock<IDataService2> mockedDataService = new Mock<IDataService2>();
             QuotationService qService = new QuotationService();
             qService.injectDataService(mockedDataService.Object);
 
@@ -59,7 +59,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             analyzers.Add(AnalysisType.MACD, UnitTestTools.generateMockAnalyzer(atf, AnalysisType.MACD, earlierDate).Object);
             analyzers.Add(AnalysisType.ADX, UnitTestTools.generateMockAnalyzer(atf, AnalysisType.ADX, laterDate).Object);
 
-            Mock<IDataService> mockedDataService = new Mock<IDataService>();
+            Mock<IDataService2> mockedDataService = new Mock<IDataService2>();
             QuotationService qService = new QuotationService();
             qService.injectDataService(mockedDataService.Object);
 

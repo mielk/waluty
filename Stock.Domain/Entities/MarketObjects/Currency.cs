@@ -23,12 +23,12 @@ namespace Stock.Domain.Entities
 
         #region STATIC_METHODS
 
-        public static void injectService(ICurrencyService _service)
+        public static void InjectService(ICurrencyService _service)
         {
             service = _service;
         }
 
-        public static void restoreDefaultService()
+        public static void RestoreDefaultService()
         {
             service = ServiceFactory.GetCurrencyService();
         }

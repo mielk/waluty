@@ -379,7 +379,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             Mock<IAssetService> mockedService = new Mock<IAssetService>();
             mockedService.Setup(s => s.GetAssetsForMarket(DEFAULT_ID)).Returns(expectedAssets);
-            Asset.injectService(mockedService.Object);
+            Asset.InjectService(mockedService.Object);
 
             //Act
             IEnumerable<Asset> assets = market.GetAssets();
@@ -389,7 +389,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsTrue(areEqual);
 
             //Clear
-            Asset.restoreDefaultService();
+            Asset.RestoreDefaultService();
 
         }
 

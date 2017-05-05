@@ -51,7 +51,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             mockedService.Setup(s => s.GetCurrencyById(1)).Returns(new Currency(1, "USD", "US Dollar"));
             mockedService.Setup(s => s.GetCurrencyById(2)).Returns(new Currency(2, "EUR", "Euro"));
             mockedService.Setup(s => s.GetCurrencyById(3)).Returns(new Currency(3, "JPY", "Japanese Yen"));
-            Currency.injectService(mockedService.Object);
+            Currency.InjectService(mockedService.Object);
         }
 
         #endregion INFRASTRUCTURE
@@ -74,7 +74,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsFalse(areEqual);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -94,7 +94,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsFalse(areEqual);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -114,7 +114,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsFalse(areEqual);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -134,7 +134,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsFalse(areEqual);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -154,7 +154,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsFalse(areEqual);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -174,7 +174,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsTrue(areEqual);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -200,7 +200,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.AreSame(quoteCurrency, pair.GetQuoteCurrency());
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -219,7 +219,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.AreSame(Currency.ById(DEFAULT_QUOTE_CURRENCY_ID), pair.GetQuoteCurrency());
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -235,7 +235,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var pair = new FxPair(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_BASE_CURRENCY_ID, DEFAULT_BASE_CURRENCY_ID);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -252,7 +252,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var pair = new FxPair(DEFAULT_ID, DEFAULT_SYMBOL, currency, currency);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -268,7 +268,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var pair = new FxPair(DEFAULT_ID, DEFAULT_SYMBOL, 0, DEFAULT_QUOTE_CURRENCY_ID);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -284,7 +284,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var pair = new FxPair(DEFAULT_ID, DEFAULT_SYMBOL, DEFAULT_BASE_CURRENCY_ID, 0);
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 
@@ -312,7 +312,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.AreSame(Currency.ById(2), pair.GetQuoteCurrency());
 
             //Clear
-            Currency.restoreDefaultService();
+            Currency.RestoreDefaultService();
 
         }
 

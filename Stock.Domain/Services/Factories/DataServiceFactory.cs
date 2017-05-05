@@ -11,12 +11,12 @@ namespace Stock.Domain.Services.Factories
 
         private static DataServiceFactory _instance;
 
-        private readonly IDataService _service;
+        private readonly IDataService2 _service;
 
 
         private DataServiceFactory()
         {
-            _service = new DataService(null);
+            _service = new DataService2(null);
         }
 
 
@@ -26,7 +26,7 @@ namespace Stock.Domain.Services.Factories
         }
 
 
-        public IDataService GetService()
+        public IDataService2 GetService()
         {
             return _service;
         }

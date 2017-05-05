@@ -16,7 +16,7 @@ namespace Stock.Domain.Services.Factories
 
         private AnalysisDataServiceFactory()
         {
-            _service = new DataService(null);
+            _service = new DataService2(null);
         }
 
 

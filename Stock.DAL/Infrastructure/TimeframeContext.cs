@@ -8,7 +8,7 @@ namespace Stock.DAL.Infrastructure
     public class TimeframeContext : DbContext
     {
         private static TimeframeContext _instance;
-        public DbSet<TimeframeDto> Timeframes { get; set; }
+        public DbSet<TimeframeDto> Timeframes { get; set; } 
 
         public TimeframeContext()
         {

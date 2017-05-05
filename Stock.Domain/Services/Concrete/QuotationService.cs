@@ -15,10 +15,10 @@ namespace Stock.Domain.Services.Concrete
     public class QuotationService : IQuotationService
     {
 
-        private IDataService service = DataServiceFactory.Instance().GetService();
+        private IDataService2 service = DataServiceFactory.Instance().GetService();
 
 
-        public void injectDataService(IDataService dataService)
+        public void injectDataService(IDataService2 dataService)
         {
             this.service = dataService;
         }

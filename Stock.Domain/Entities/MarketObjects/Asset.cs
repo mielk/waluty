@@ -10,6 +10,7 @@ using Stock.Domain.Services.Factories;
 
 namespace Stock.Domain.Entities
 {
+
     public class Asset
     {
 
@@ -25,12 +26,12 @@ namespace Stock.Domain.Entities
 
         #region STATIC_METHODS
 
-        public static void injectService(IAssetService _service)
+        public static void InjectService(IAssetService _service)
         {
             service = _service;
         }
 
-        public static void restoreDefaultService()
+        public static void RestoreDefaultService()
         {
             service = ServiceFactory.GetAssetService();
         }
@@ -152,4 +153,5 @@ namespace Stock.Domain.Entities
         //}
 
     }
+
 }

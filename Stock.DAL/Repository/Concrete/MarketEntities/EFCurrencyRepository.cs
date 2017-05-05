@@ -12,7 +12,6 @@ namespace Stock.DAL.Repositories
     public class EFCurrencyRepository : ICurrencyRepository
     {
 
-
         public IEnumerable<CurrencyDto> GetCurrencies()
         {
             IEnumerable<CurrencyDto> currencies;

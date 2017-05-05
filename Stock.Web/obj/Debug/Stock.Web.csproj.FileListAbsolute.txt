@@ -251,8 +251,6 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Web.pdb
 C:\tm\aplikacje\FX3\Stock.Web\bin\Antlr3.Runtime.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\EntityFramework.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Microsoft.Web.Infrastructure.dll
-C:\tm\aplikacje\FX3\Stock.Web\bin\MySql.Data.dll
-C:\tm\aplikacje\FX3\Stock.Web\bin\mysql.data.entity.EF6.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Newtonsoft.Json.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Ninject.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Ninject.Web.Common.dll
@@ -288,3 +286,7 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Utils.pdb
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.dll
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.pdb
+C:\tm\aplikacje\FX3\Stock.Web\bin\EntityFramework.SqlServer.dll
+C:\tm\aplikacje\FX3\Stock.Web\bin\EntityFramework.SqlServer.xml
+C:\tm\aplikacje\FX3\Stock.Web\bin\MySql.Data.dll
+C:\tm\aplikacje\FX3\Stock.Web\bin\MySql.Data.Entity.EF6.dll
