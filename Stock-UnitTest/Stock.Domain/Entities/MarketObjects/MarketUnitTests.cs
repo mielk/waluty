@@ -342,7 +342,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             IEnumerable<Market> markets = Market.GetMarkets();
 
             //Assert.
-            bool areEqual = markets.ScrambledEquals(expectedMarkets);
+            bool areEqual = markets.HasTheSameItems(expectedMarkets);
             Assert.IsTrue(areEqual);
 
         }
@@ -385,7 +385,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             IEnumerable<Asset> assets = market.GetAssets();
 
             //Assert
-            bool areEqual = assets.ScrambledEquals(expectedAssets);
+            bool areEqual = assets.HasTheSameItems(expectedAssets);
             Assert.IsTrue(areEqual);
 
             //Clear

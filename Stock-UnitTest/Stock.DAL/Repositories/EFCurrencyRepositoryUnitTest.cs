@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Data.Entity;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Stock.DAL.Repositories;
 using Stock.DAL.TransferObjects;
-using System.Data.Entity;
 using Stock.DAL.Infrastructure;
-using System.Collections.Generic;
+using Stock.DAL.Helpers;
 using Stock.Utils;
+
 
 namespace Stock_UnitTest.Stock.DAL.Repositories
 {
@@ -32,16 +34,14 @@ namespace Stock_UnitTest.Stock.DAL.Repositories
 
         private void insertCurrencyToTestDb(int id, string name, string fullName)
         {
-            const string DELETE_SQL_PATTERN = "DELETE FROM {0}.{1}";
             const string INSERT_SQL_PATTERN = "INSERT INTO {0}.{1}(Id, CurrencySymbol, CurrencyFullName) VALUES({2}, '{3}', '{4}');";
             string insertSql = string.Format(INSERT_SQL_PATTERN, UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME, id, name, fullName);
-            string deleteSql = string.Format(DELETE_SQL_PATTERN, UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME);
 
             DbContext context = new UnitTestsDbContext();
             try
             {
                 context.Database.BeginTransaction();
-                context.Database.ExecuteSqlCommand(deleteSql);
+                context.ClearTable(UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME);
                 context.Database.ExecuteSqlCommand(insertSql);
                 context.Database.CurrentTransaction.Commit();
             }
@@ -54,15 +54,56 @@ namespace Stock_UnitTest.Stock.DAL.Repositories
 
         private void insertCurrenciesToTestDb(IEnumerable<CurrencyDto> currencies)
         {
-            const string DELETE_SQL_PATTERN = "DELETE FROM {0}.{1}";
             const string INSERT_SQL_PATTERN = "INSERT INTO {0}.{1}(Id, CurrencySymbol, CurrencyFullName) VALUES({2}, '{3}', '{4}');";
-            string deleteSql = string.Format(DELETE_SQL_PATTERN, UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME);
 
             DbContext context = new UnitTestsDbContext();
             try
             {
                 context.Database.BeginTransaction();
-                context.Database.ExecuteSqlCommand(deleteSql);
+                context.ClearTable(UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME);
+                foreach (var currency in currencies)
+                {
+                    string insertSql = string.Format(INSERT_SQL_PATTERN, UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME, currency.Id, currency.Symbol, currency.Name);
+                    context.Database.ExecuteSqlCommand(insertSql);
+                }
+                context.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                context.Database.CurrentTransaction.Rollback();
+            }
+
+        }
+
+        private void insertFxPairToTestDb(int id, string name, string fullName)
+        {
+            const string INSERT_SQL_PATTERN = "INSERT INTO {0}.{1}(Id, CurrencySymbol, CurrencyFullName) VALUES({2}, '{3}', '{4}');";
+            string insertSql = string.Format(INSERT_SQL_PATTERN, UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME, id, name, fullName);
+
+            DbContext context = new UnitTestsDbContext();
+            try
+            {
+                context.Database.BeginTransaction();
+                context.ClearTable(UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME);
+                context.Database.ExecuteSqlCommand(insertSql);
+                context.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                context.Database.CurrentTransaction.Rollback();
+            }
+
+        }
+
+        private void insertFxPairsToTestDb(IEnumerable<CurrencyDto> currencies)
+        {
+            const string INSERT_SQL_PATTERN = "INSERT INTO {0}.{1}(Id, CurrencySymbol, CurrencyFullName) VALUES({2}, '{3}', '{4}');";
+
+            DbContext context = new UnitTestsDbContext();
+            try
+            {
+                context.Database.BeginTransaction();
+                context.ClearTable(UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME);
                 foreach (var currency in currencies)
                 {
                     string insertSql = string.Format(INSERT_SQL_PATTERN, UNIT_TEST_DB_NAME, CURRENCIES_TABLE_NAME, currency.Id, currency.Symbol, currency.Name);
@@ -224,6 +265,53 @@ namespace Stock_UnitTest.Stock.DAL.Repositories
         }
 
         #endregion GET_CURRENCY_BY_SYMBOL
+
+
+
+
+        private IEnumerable<FxPairDto> GetFxPairDtosCollectionForTests()
+        {
+            return null;
+        }
+
+        #region GET_FX_PAIRS
+
+        [TestMethod]
+        public void GetFxPairs_returnProperDtoCollection()
+        {
+            ////Arrange
+            //EFCurrencyRepository repository = new EFCurrencyRepository();
+            //FxPairDto eurusd = new FxPairDto() { Id = 1, Name = "EURUSD", BaseCurrency = 1, QuoteCurrency = 2, IsActive = true };
+            //FxPairDto eur = new FxPairDto() { Id = 2, Name = "Euro", Symbol = "EUR" };
+            //FxPairDto gbp = new FxPairDto() { Id = 3, Name = "British Pound", Symbol = "GBP" };
+            //FxPairDto jpy = new FxPairDto() { Id = 4, Name = "Japanese Yen", Symbol = "JPY" };
+            //insertCurrenciesToTestDb(new FxPairDto[] { usd, eur, gbp, jpy });
+
+            ////Act
+            //CurrencyDto[] dtos = repository.GetCurrencies().ToArray();
+
+            ////Assert
+            //Assert.AreEqual(4, dtos.Count());
+            //Assert.AreEqual(usd, dtos[0]);
+            //Assert.AreEqual(eur, dtos[1]);
+            //Assert.AreEqual(gbp, dtos[2]);
+            //Assert.AreEqual(jpy, dtos[3]);
+
+        }
+
+        #endregion GET_FX_PAIRS
+
+
+        #region FILTER_FX_PAIRS
+        #endregion FILTER_FX_PAIRS
+
+
+        #region GET_FX_PAIR_BY_ID
+        #endregion GET_FX_PAIR_BY_ID
+
+
+        #region GET_FX_PAIR_BY_SYMBOL
+        #endregion GET_FX_PAIR_BY_SYMBOL
 
 
         #region TEST_CLASS_TERMINATION

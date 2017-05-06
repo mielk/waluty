@@ -353,7 +353,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var assets = Asset.GetAllAssets();
 
             //Assert.
-            bool areEquivalent = assets.ScrambledEquals(expectedAssets);
+            bool areEquivalent = assets.HasTheSameItems(expectedAssets);
             Assert.IsTrue(areEquivalent);
 
             //Clear.
@@ -376,7 +376,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var assets = Asset.GetAssets("a", 1);
 
             //Assert.
-            bool areEquivalent = assets.ScrambledEquals(expectedAssets);
+            bool areEquivalent = assets.HasTheSameItems(expectedAssets);
             Assert.IsTrue(areEquivalent);
 
             //Clear.
@@ -399,7 +399,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var assets = Asset.GetAssetsForMarket(1);
 
             //Assert.
-            bool areEquivalent = assets.ScrambledEquals(expectedAssets);
+            bool areEquivalent = assets.HasTheSameItems(expectedAssets);
             Assert.IsTrue(areEquivalent);
 
             //Clear.

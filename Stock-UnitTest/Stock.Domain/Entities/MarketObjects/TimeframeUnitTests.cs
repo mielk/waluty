@@ -191,7 +191,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var timeframes = Timeframe.GetAllTimeframes();
 
             //Assert.
-            bool areEquivalent = timeframes.ScrambledEquals(expectedTimeframes);
+            bool areEquivalent = timeframes.HasTheSameItems(expectedTimeframes);
             Assert.IsTrue(areEquivalent);
 
         }

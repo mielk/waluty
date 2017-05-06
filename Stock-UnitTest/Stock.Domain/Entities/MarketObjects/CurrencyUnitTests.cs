@@ -202,7 +202,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var currencies = Currency.GetAllCurrencies();
 
             //Assert.
-            bool areEquivalent = currencies.ScrambledEquals(expectedCurrencies);
+            bool areEquivalent = currencies.HasTheSameItems(expectedCurrencies);
             Assert.IsTrue(areEquivalent);
 
         }

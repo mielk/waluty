@@ -405,7 +405,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             IEnumerable<FxPair> pairs = FxPair.GetFxPairs();
 
             //Assert.
-            bool areEqual = pairs.ScrambledEquals(expectedPairs);
+            bool areEqual = pairs.HasTheSameItems(expectedPairs);
             Assert.IsTrue(areEqual);
 
         }
@@ -424,7 +424,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             IEnumerable<FxPair> pairs = FxPair.GetFxPairs("a", 1);
 
             //Assert.
-            bool areEqual = pairs.ScrambledEquals(expectedPairs);
+            bool areEqual = pairs.HasTheSameItems(expectedPairs);
             Assert.IsTrue(areEqual);
 
         }
