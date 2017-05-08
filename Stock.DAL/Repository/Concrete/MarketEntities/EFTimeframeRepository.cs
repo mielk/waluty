@@ -36,7 +36,7 @@ namespace Stock.DAL.Repositories
             TimeframeDto dto;
             using (var context = new TimeframeContext())
             {
-                dto = context.Timeframes.SingleOrDefault(t => t.Name.Equals(name, System.StringComparison.CurrentCultureIgnoreCase));
+                dto = context.Timeframes.SingleOrDefault(t => t.Symbol.Equals(name, System.StringComparison.CurrentCultureIgnoreCase));
             }
             return dto;
         }

@@ -62,7 +62,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         {
 
             //Act
-            TimeframeDto dto = new TimeframeDto { Id = DEFAULT_ID, Name = DEFAULT_NAME, PeriodUnit = DEFAULT_UNIT_TYPE.ToString(), PeriodCounter = DEFAULT_UNITS_COUNTER };
+            TimeframeDto dto = new TimeframeDto { Id = DEFAULT_ID, Symbol = DEFAULT_NAME, PeriodUnit = DEFAULT_UNIT_TYPE.ToString(), PeriodCounter = DEFAULT_UNITS_COUNTER };
             Timeframe timeframe = Timeframe.FromDto(dto);
 
             //Assert

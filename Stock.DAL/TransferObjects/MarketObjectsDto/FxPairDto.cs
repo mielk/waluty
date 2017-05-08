@@ -16,5 +16,31 @@ namespace Stock.DAL.TransferObjects
         public int BaseCurrency { get; set; }
         public int QuoteCurrency { get; set; }
         public bool IsActive { get; set; }
+    
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(FxPairDto)) return false;
+
+            FxPairDto compared = (FxPairDto)obj;
+            if ((compared.Id) != Id) return false;
+            if (!compared.Name.Equals(Name)) return false;
+            if (compared.BaseCurrency != BaseCurrency) return false;
+            if (compared.QuoteCurrency != QuoteCurrency) return false;
+            if (compared.IsActive != IsActive) return false;
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
+
 }

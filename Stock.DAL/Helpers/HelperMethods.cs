@@ -86,4 +86,5 @@ namespace Stock.DAL.Helpers
 
 
     }
+
 }

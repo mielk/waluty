@@ -11,60 +11,67 @@ namespace Stock.Utils
 
         public static bool HasTheSameItems<T>(this IEnumerable<T> list1, IEnumerable<T> list2)
         {
-            var cnt = new Dictionary<T, int>();
-            foreach (T s in list1)
+            List<T> removableList2 = list2.ToList();
+            foreach (T baseObject in list1)
             {
-                if (cnt.ContainsKey(s))
+                bool isFound = false;
+                foreach (T comparedObject in removableList2)
                 {
-                    cnt[s]++;
+                    Type comparedObjectType = comparedObject.GetType();
+                    if (comparedObjectType.IsPrimitive || comparedObjectType == typeof(Decimal) || comparedObjectType == typeof(String))
+                    {
+                        isFound = (baseObject.Equals(comparedObject));
+                    }
+                    else
+                    {
+                        isFound = (Object.ReferenceEquals(baseObject, comparedObject));
+                    }
+
+                    if (isFound)
+                    {
+                        removableList2.Remove(comparedObject);
+                        break;
+                    }
+
                 }
-                else
-                {
-                    cnt.Add(s, 1);
-                }
-            }
-            foreach (T s in list2)
-            {
-                if (cnt.ContainsKey(s))
-                {
-                    cnt[s]--;
-                }
-                else
+
+                if (!isFound)
                 {
                     return false;
                 }
+
             }
-            return cnt.Values.All(c => c == 0);
+
+            return (removableList2.Count == 0);
+
         }
 
         public static bool HasEqualItems<T>(this IEnumerable<T> list1, IEnumerable<T> list2)
         {
-            var cnt = new Dictionary<T, int>();
-            foreach (T s in list1)
+            List<T> removableList2 = list2.ToList();
+            foreach (T baseObject in list1)
             {
-                if (cnt.ContainsKey(s))
+                bool isFound = false;
+                foreach (T comparedObject in removableList2)
                 {
-                    cnt[s]++;
+                    if (baseObject.Equals(comparedObject))
+                    {
+                        removableList2.Remove(comparedObject);
+                        isFound = true;
+                        break;
+                    }
                 }
-                else
-                {
-                    cnt.Add(s, 1);
-                }
-            }
-            foreach (T s in list2)
-            {
-                if (cnt.ContainsKey(s))
-                {
-                    cnt[s]--;
-                }
-                else
+
+                if (!isFound)
                 {
                     return false;
                 }
-            }
-            return cnt.Values.All(c => c == 0);
-        }
 
+            }
+
+            return (removableList2.Count == 0);
+
+        }
 
     }
 }

@@ -68,7 +68,7 @@ namespace Stock.Domain.Entities
 
         public static Timeframe FromDto(TimeframeDto dto)
         {
-            return new Timeframe(dto.Id, dto.Name, dto.PeriodUnit.ToTimeframeUnit(), dto.PeriodCounter);
+            return new Timeframe(dto.Id, dto.Symbol, dto.PeriodUnit.ToTimeframeUnit(), dto.PeriodCounter);
         }
 
         #endregion CONSTRUCTORS

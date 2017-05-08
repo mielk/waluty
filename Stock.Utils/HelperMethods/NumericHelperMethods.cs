@@ -34,6 +34,12 @@ namespace Stock.Utils
             }
         }
 
+        public static bool CompareForTest(this double value, double compared, double maxDifference)
+        {
+            double absDifference = Math.Abs(value - compared);
+            return (absDifference <= maxDifference);
+        }
+
     }
 
 }

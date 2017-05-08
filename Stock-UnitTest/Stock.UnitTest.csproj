@@ -80,7 +80,12 @@
     <Compile Include="Stock.DAL\Helpers\DbStringBuilderUnitTest.cs" />
     <Compile Include="Stock.DAL\Helpers\HelperMethodUnitTest.cs" />
     <Compile Include="Stock.DAL\Infrastructure\RepositoryFactoryUnitTest.cs" />
-    <Compile Include="Stock.DAL\Repositories\EFCurrencyRepositoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Data\EFAnalysisRepositoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Data\EFQuotationRepositoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Market\EFTimeframeRepositoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Market\EFMarketRepositoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Market\EFAssetRepositoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Market\EFCurrencyRepositoryUnitTest.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\MonthsProcessorUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\HolidaysManagerUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\MarketObjects\TimeframeProcessors\WeeksProcessorUnitTests.cs" />

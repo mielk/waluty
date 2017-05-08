@@ -95,7 +95,6 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
         #endregion HAS_THE_SAME_ITEMS
 
 
-
         #region HAS_EQUAL_ITEMS
 
         [TestMethod]
@@ -224,7 +223,10 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            int hash = 13;
+            hash = (hash * 7) + Id.GetHashCode();
+            hash = (hash * 7) + Value.GetHashCode();
+            return hash;
         }
 
     }

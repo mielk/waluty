@@ -34,9 +34,9 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
         private TimeframeDto[] getTimeframeDtos()
         {
             List<TimeframeDto> list = new List<TimeframeDto>();
-            list.Add(new TimeframeDto { Id = 1, Name = "M5", PeriodUnit = "MINUTES", PeriodCounter = 5 });
-            list.Add(new TimeframeDto { Id = 2, Name = "H1", PeriodUnit = "HOURS", PeriodCounter = 1 });
-            list.Add(new TimeframeDto { Id = 3, Name = "D1", PeriodUnit = "DAYS", PeriodCounter = 1 });
+            list.Add(new TimeframeDto { Id = 1, Symbol = "M5", PeriodUnit = "MINUTES", PeriodCounter = 5 });
+            list.Add(new TimeframeDto { Id = 2, Symbol = "H1", PeriodUnit = "HOURS", PeriodCounter = 1 });
+            list.Add(new TimeframeDto { Id = 3, Symbol = "D1", PeriodUnit = "DAYS", PeriodCounter = 1 });
             return list.ToArray();
         }
 
@@ -45,7 +45,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
             return new TimeframeDto
             {
                 Id = DEFAULT_ID,
-                Name = DEFAULT_NAME,
+                Symbol = DEFAULT_NAME,
                 PeriodCounter = DEFAULT_UNITS_COUNTER,
                 PeriodUnit = DEFAULT_UNIT_TYPE.ToString()
             };

@@ -10,5 +10,7 @@ namespace Stock.DAL.Repositories
     public interface IAnalysisRepository
     {
         IEnumerable<AnalysisTypeDto> GetAnalysisTypes();
+        AnalysisTypeDto GetAnalysisTypeById(int id);
+        AnalysisTypeDto GetAnalysisTypeByName(string name);
     }
 }

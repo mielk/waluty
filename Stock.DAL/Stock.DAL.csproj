@@ -69,6 +69,8 @@
     <Compile Include="Helpers\DataItemHelpers\ExtremumDALHelper.cs" />
     <Compile Include="Helpers\DataItemHelpers\MacdDALHelper.cs" />
     <Compile Include="Infrastructure\AssetContext.cs" />
+    <Compile Include="Infrastructure\AnalysisContext.cs" />
+    <Compile Include="Infrastructure\DataContext.cs" />
     <Compile Include="Infrastructure\UnitTestsDbContext.cs" />
     <Compile Include="Infrastructure\OriginalDbContext.cs" />
     <Compile Include="Infrastructure\TimeframeContext.cs" />
@@ -76,12 +78,15 @@
     <Compile Include="Infrastructure\CurrencyContext.cs" />
     <Compile Include="Infrastructure\EfDbContext.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
+    <Compile Include="Repository\Abstract\AnalysisData\AnalysisDataQueryDefinition.cs" />
     <Compile Include="Repository\Abstract\AnalysisData\IAnalysisRepository.cs" />
     <Compile Include="Repository\Abstract\AnalysisData\IDataRepository.cs" />
+    <Compile Include="Repository\Abstract\AnalysisData\IQuotationRepository.cs" />
     <Compile Include="Repository\Abstract\MarketEntities\ITimeframeRepository.cs" />
     <Compile Include="Repository\Abstract\MarketEntities\IAssetRepository.cs" />
     <Compile Include="Repository\Concrete\AnalysisData\EFAnalysisRepository.cs" />
     <Compile Include="Repository\Concrete\AnalysisData\EFDataRepository.cs" />
+    <Compile Include="Repository\Concrete\AnalysisData\QuotationRepository.cs" />
     <Compile Include="Repository\Concrete\MarketEntities\EFTimeframeRepository.cs" />
     <Compile Include="Repository\Concrete\MarketEntities\EFAssetRepository.cs" />
     <Compile Include="Repository\RepositoryFactory.cs" />
@@ -92,23 +97,23 @@
     <Compile Include="Repository\Concrete\MarketEntities\EFCurrencyRepository.cs" />
     <Compile Include="Repository\Concrete\AnalysisData\EFDataRepository2.cs" />
     <Compile Include="Repository\Concrete\MarketEntities\EFMarketRepository.cs" />
-    <Compile Include="TransferObjects\DataDto\AnalysisDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\AnalysisDto.cs" />
     <Compile Include="TransferObjects\DataDto\AnalysisTypeDto.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\CandlestickDto.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\DataTypeEnum.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\DataItemsDto\CandlestickDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\DataItemsDto\DataTypeEnum.cs" />
     <Compile Include="TransferObjects\MarketObjectsDto\AssetDto.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\AdxDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\DataItemsDto\AdxDto.cs" />
     <Compile Include="TransferObjects\MarketObjectsDto\TimeframeDto.cs" />
     <Compile Include="TransferObjects\MarketObjectsDto\CurrencyDto.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\DataItemDto.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\ExtremumDto.cs" />
-    <Compile Include="TransferObjects\DataDto\IDateItemDto.cs" />
-    <Compile Include="TransferObjects\DataDto\LastDates.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\MacdDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\DataItemsDto\DataItemDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\DataItemsDto\ExtremumDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\IDateItemDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\LastDates.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\DataItemsDto\MacdDto.cs" />
     <Compile Include="TransferObjects\MarketObjectsDto\FxPairDto.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\PriceDto.cs" />
+    <Compile Include="TransferObjects\DataDto\todo\DataItemsDto\PriceDto.cs" />
     <Compile Include="TransferObjects\MarketObjectsDto\MarketDto.cs" />
-    <Compile Include="TransferObjects\DataDto\DataItemsDto\QuotationDto.cs" />
+    <Compile Include="TransferObjects\DataDto\QuotationDto.cs" />
     <Compile Include="TransferObjects\TrendlineDto\TrendHitDto.cs" />
     <Compile Include="TransferObjects\TrendlineDto\TrendBounceDto.cs" />
     <Compile Include="TransferObjects\TrendlineDto\TrendBreakDto.cs" />
@@ -120,7 +125,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Stock.Utils\Stock.Utils.csproj">
+      <Project>{5ab038a9-9b44-4bbf-b8a8-f4c8f2ca0de6}</Project>
+      <Name>Stock.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
