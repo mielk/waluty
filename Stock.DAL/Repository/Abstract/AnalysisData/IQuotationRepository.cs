@@ -9,6 +9,7 @@ namespace Stock.DAL.Repositories
 {
     public interface IQuotationRepository
     {
+        void UpdateQuotations(IEnumerable<QuotationDto> quotations);
         IEnumerable<QuotationDto> GetQuotations(int assetId, int timeframe);
         IEnumerable<QuotationDto> GetQuotations(AnalysisDataQueryDefinition queryDef);
     }

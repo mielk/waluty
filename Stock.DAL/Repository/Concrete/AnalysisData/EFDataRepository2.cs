@@ -746,7 +746,7 @@ namespace Stock.DAL.Repositories
                     ", LowPrice = " + quotation.LowPrice.ToDbString() +
                     ", ClosePrice = " + quotation.ClosePrice.ToDbString() +
                     ", Volume = " + quotation.Volume.ToDbString() +
-                " WHERE QuotationId = " + quotation.Id;
+                " WHERE QuotationId = " + quotation.QuotationId;
 
             using (var context = new EFDbContext())
             {

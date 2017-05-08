@@ -12,7 +12,7 @@ namespace Stock.DAL.TransferObjects
     public class QuotationDto : IDateItemDto
     {
         [Key]
-        public int Id { get; set; }
+        public int QuotationId { get; set; }
         public DateTime PriceDate { get; set; }
         public int AssetId { get; set; }
         public int TimeframeId { get; set; }
@@ -21,6 +21,7 @@ namespace Stock.DAL.TransferObjects
         public double LowPrice { get; set; }
         public double ClosePrice { get; set; }
         public double Volume { get; set; }
+        public double IndexNumber { get; set; }
 
         public DateTime GetDate()
         {
@@ -35,7 +36,8 @@ namespace Stock.DAL.TransferObjects
             if (obj.GetType() != typeof(QuotationDto)) return false;
 
             QuotationDto compared = (QuotationDto)obj;
-            if ((compared.Id) != Id) return false;
+            if ((compared.QuotationId) != QuotationId) return false;
+            if ((compared.IndexNumber) != IndexNumber) return false;
             if (compared.PriceDate.CompareTo(PriceDate) != 0) return false;
             if ((compared.AssetId) != AssetId) return false;
             if ((compared.TimeframeId) != TimeframeId) return false;

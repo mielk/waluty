@@ -75,7 +75,7 @@ namespace Stock.Domain.Entities
         {
 
             var quotation = new Quotation();
-            quotation.Id = dto.Id;
+            quotation.Id = dto.QuotationId;
             quotation.Date = dto.PriceDate;
             quotation.AssetId = dto.AssetId;
             quotation.Open = dto.OpenPrice;
@@ -94,7 +94,7 @@ namespace Stock.Domain.Entities
             var dto = new QuotationDto
             {
                 
-                Id = this.Id,
+                QuotationId = this.Id,
                 AssetId = this.AssetId,
                 PriceDate = this.Date,
                 OpenPrice = this.Open,

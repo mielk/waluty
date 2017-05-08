@@ -1,104 +1,109 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Stock.DAL.Infrastructure;
+using Stock.DAL.TransferObjects;
+using Stock.DAL.Repositories;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.DAL.Helpers;
+using Stock.Utils;
 
 namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 {
+    [TestClass]
     public class EFQuotationRepositoryUnitTest
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
         private const string QUOTATIONS_TABLE_NAME = "quotations";
-        //private const int DEFAULT_ID = 1;
-        //private const string DEFAULT_NAME = "quotations";
+        //public int Id { get; set; }
+        //public DateTime PriceDate { get; set; }
+        //public int AssetId { get; set; }
+        //public int TimeframeId { get; set; }
+        //public double OpenPrice { get; set; }
+        //public double HighPrice { get; set; }
+        //public double LowPrice { get; set; }
+        //public double ClosePrice { get; set; }
+        //public double Volume { get; set; }
 
 
-        //#region INFRASTRUCTURE
+        #region INFRASTRUCTURE
 
-        //[ClassInitialize()]
-        //public static void InitTestSuite(TestContext testContext)
-        //{
-        //    DbContext context = new OriginalDbContext();
-        //    context.Database.ExecuteSqlCommand("recreateDb");
-        //}
+        [ClassInitialize()]
+        public static void InitTestSuite(TestContext testContext)
+        {
+            DbContext context = new OriginalDbContext();
+            context.Database.ExecuteSqlCommand("recreateDb");
+        }
 
-        //[ClassCleanup()]
-        //public static void CleanupTestSuite()
-        //{
-        //    DbContext context = new OriginalDbContext();
-        //    context.Database.ExecuteSqlCommand("DROP DATABASE fx_unittests");
-        //}
+        [ClassCleanup()]
+        public static void CleanupTestSuite()
+        {
+            DbContext context = new OriginalDbContext();
+            context.Database.ExecuteSqlCommand("DROP DATABASE fx_unittests");
+        }
+
+        private void clearQuotationsTable()
+        {
+            DbContext context = new UnitTestsDbContext();
+            context.ClearTable(UNIT_TEST_DB_NAME, QUOTATIONS_TABLE_NAME);
+        }
+
+        #endregion INFRASTRUCTURE
 
 
+        #region UPDATE_QUOTATIONS
 
-        //private QuotationDto getDefaultQuotationDto()
-        //{
-        //    return new QuotationDto()
-        //    {
-        //        Id = DEFAULT_ID,
-        //        Name = DEFAULT_NAME
-        //    };
-        //}
+        [TestMethod]
+        public void UpdateQuotations_WorksProperly_IfItemsAreOnlyAdded()
+        {
 
-        //private IEnumerable<QuotationDto> getDefaultQuotationDtos()
-        //{
-        //    List<QuotationDto> list = new List<QuotationDto>();
-        //    list.Add(new QuotationDto() { Id = 1, Name = "quotations" });
-        //    list.Add(new QuotationDto() { Id = 2, Name = "prices" });
-        //    list.Add(new QuotationDto() { Id = 3, Name = "macd" });
-        //    list.Add(new QuotationDto() { Id = 4, Name = "adx" });
-        //    list.Add(new QuotationDto() { Id = 5, Name = "trendlines" });
-        //    list.Add(new QuotationDto() { Id = 6, Name = "candlesticks" });
-        //    return list;
-        //}
+            //Arrange
+            EFQuotationRepository repository = new EFQuotationRepository();
+            List<QuotationDto> quotations = new List<QuotationDto>();
+            quotations.Add(new QuotationDto() { QuotationId = 2, PriceDate =  new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, OpenPrice =  1.09191, HighPrice =  1.09218, LowPrice =  1.09186, ClosePrice =  1.09194, Volume = 1411, IndexNumber = 2,  });
+            quotations.Add(new QuotationDto() { QuotationId = 3, PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 3, });
 
-        //private void insertQuotationToTestDb(QuotationDto dto)
-        //{
-        //    const string INSERT_SQL_PATTERN = "INSERT INTO {0}.{1}(QuotationId, QuotationName) VALUES({2}, {3});";
-        //    string insertSql = string.Format(INSERT_SQL_PATTERN, UNIT_TEST_DB_NAME, QUOTATIONS_TABLE_NAME, dto.Id, dto.Name.ToDbString());
+            //Act
+            clearQuotationsTable();
+            IEnumerable<QuotationDto> recordsBefore = repository.GetQuotations(1, 1);
+            repository.UpdateQuotations(quotations);
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(1, 1);
 
-        //    DbContext context = new UnitTestsDbContext();
-        //    try
-        //    {
-        //        context.Database.BeginTransaction();
-        //        context.ClearTable(UNIT_TEST_DB_NAME, QUOTATIONS_TABLE_NAME);
-        //        context.Database.ExecuteSqlCommand(insertSql);
-        //        context.Database.CurrentTransaction.Commit();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        context.Database.CurrentTransaction.Rollback();
-        //    }
+            //Assert
+            bool areEqual = quotations.HasEqualItems(actualRecords);
+            Assert.IsTrue(areEqual);
 
-        //}
+        }
 
-        //private void insertQuotationsToTestDb(IEnumerable<QuotationDto> quotations)
-        //{
-        //    const string INSERT_SQL_PATTERN = "INSERT INTO {0}.{1}(QuotationId, QuotationName) VALUES({2}, {3});";
+        [TestMethod]
+        public void UpdateQuotations_WorksProperly_IfItemsAreOnlyUpdated()
+        {
 
-        //    DbContext context = new UnitTestsDbContext();
-        //    try
-        //    {
-        //        context.Database.BeginTransaction();
-        //        context.ClearTable(UNIT_TEST_DB_NAME, QUOTATIONS_TABLE_NAME);
-        //        foreach (var quotation in quotations)
-        //        {
-        //            string insertSql = string.Format(INSERT_SQL_PATTERN, UNIT_TEST_DB_NAME, QUOTATIONS_TABLE_NAME, quotation.Id, quotation.Name.ToDbString());
-        //            context.Database.ExecuteSqlCommand(insertSql);
-        //        }
-        //        context.Database.CurrentTransaction.Commit();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        context.Database.CurrentTransaction.Rollback();
-        //    }
+            //Arrange
 
-        //}
 
-        //#endregion INFRASTRUCTURE
+            //Act
 
+            //Assert
+        }
+
+        [TestMethod]
+        public void UpdateQuotations_WorksProperly_IfItemsAreAddedAndUpdated()
+        {
+
+            //Arrange
+
+
+            //Act
+
+            //Assert
+        }
+
+        #endregion UPDATE_QUOTATIONS
 
         //#region GET_QUOTATIONS
 

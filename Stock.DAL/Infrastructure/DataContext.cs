@@ -22,7 +22,7 @@ namespace Stock.DAL.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<QuotationDto>().ToTable("v_quotations_with_index");
+            modelBuilder.Entity<QuotationDto>().ToTable("quotations");
         }
 
     }

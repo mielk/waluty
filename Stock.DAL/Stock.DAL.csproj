@@ -86,7 +86,7 @@
     <Compile Include="Repository\Abstract\MarketEntities\IAssetRepository.cs" />
     <Compile Include="Repository\Concrete\AnalysisData\EFAnalysisRepository.cs" />
     <Compile Include="Repository\Concrete\AnalysisData\EFDataRepository.cs" />
-    <Compile Include="Repository\Concrete\AnalysisData\QuotationRepository.cs" />
+    <Compile Include="Repository\Concrete\AnalysisData\EFQuotationRepository.cs" />
     <Compile Include="Repository\Concrete\MarketEntities\EFTimeframeRepository.cs" />
     <Compile Include="Repository\Concrete\MarketEntities\EFAssetRepository.cs" />
     <Compile Include="Repository\RepositoryFactory.cs" />
