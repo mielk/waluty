@@ -82,7 +82,7 @@ namespace Stock.Domain.Entities
             quotation.High = dto.HighPrice;
             quotation.Low = dto.LowPrice;
             quotation.Close = dto.ClosePrice;
-            quotation.Volume = dto.Volume;
+            quotation.Volume = dto.Volume ?? 0;
 
 
             return quotation;

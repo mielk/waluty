@@ -98,3 +98,5 @@ C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\Ninject.xml
 C:\tm\aplikacje\FX3\Stock.DAL\obj\Debug\Stock.DAL.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.DAL\obj\Debug\Stock.DAL.dll
 C:\tm\aplikacje\FX3\Stock.DAL\obj\Debug\Stock.DAL.pdb
+C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\Stock.Core.dll
+C:\tm\aplikacje\FX3\Stock.DAL\bin\Debug\Stock.Core.pdb

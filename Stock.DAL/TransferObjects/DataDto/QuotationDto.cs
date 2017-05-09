@@ -20,14 +20,30 @@ namespace Stock.DAL.TransferObjects
         public double HighPrice { get; set; }
         public double LowPrice { get; set; }
         public double ClosePrice { get; set; }
-        public double Volume { get; set; }
-        public double IndexNumber { get; set; }
+        public double? RealClosePrice { get; set; }
+        public double? Volume { get; set; }
+        public int IndexNumber { get; set; }
 
         public DateTime GetDate()
         {
             return PriceDate;
         }
 
+
+        public void CopyProperties(QuotationDto dto)
+        {
+            QuotationId = dto.QuotationId;
+            PriceDate = dto.PriceDate;
+            AssetId = dto.AssetId;
+            TimeframeId = dto.TimeframeId;
+            OpenPrice = dto.OpenPrice;
+            HighPrice = dto.HighPrice;
+            LowPrice = dto.LowPrice;
+            ClosePrice = dto.ClosePrice;
+            RealClosePrice = dto.RealClosePrice;
+            Volume = dto.Volume;
+            IndexNumber = dto.IndexNumber;
+        }
 
 
         public override bool Equals(object obj)
@@ -45,7 +61,7 @@ namespace Stock.DAL.TransferObjects
             if (compared.HighPrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
             if (compared.LowPrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
             if (compared.ClosePrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
-            if (compared.Volume.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
+            if (((double)compared.Volume).CompareForTest((double)Volume, MAX_VALUE_DIFFERENCE));
             return true;
         }
 

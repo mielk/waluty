@@ -126,6 +126,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Stock.Core\Stock.Core.csproj">
+      <Project>{a92e05b9-8032-44e9-8add-7a6f58268d35}</Project>
+      <Name>Stock.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stock.Utils\Stock.Utils.csproj">
       <Project>{5ab038a9-9b44-4bbf-b8a8-f4c8f2ca0de6}</Project>
       <Name>Stock.Utils</Name>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.DAL.TransferObjects;
 using Stock.DAL.Infrastructure;
+using Stock.Core;
 
 namespace Stock.DAL.Repositories
 {
@@ -25,7 +26,31 @@ namespace Stock.DAL.Repositories
 
         public IEnumerable<QuotationDto> GetQuotations(AnalysisDataQueryDefinition queryDef)
         {
-            return null;
+            DateTime MIN_DATE = new DateTime(1900, 1, 1, 0, 0, 0);
+            DateTime MAX_DATE = new DateTime(2100, 1, 1, 0, 0, 0);
+            IEnumerable<QuotationDto> results;
+            using (var context = new DataContext())
+            {
+                results = context.Quotations.Where(q => q.TimeframeId == queryDef.TimeframeId &&
+                                                        q.AssetId == queryDef.AssetId &&
+                                                        (q.PriceDate.CompareTo(queryDef.StartDate ?? MIN_DATE) >= 0) &&
+                                                        (q.PriceDate.CompareTo(queryDef.EndDate ?? MAX_DATE) <= 0)).ToList();
+            }
+
+            if (queryDef.Limit > 0)
+            {
+                if (queryDef.StartDate != null || queryDef.EndDate == null)
+                {
+                    return results.OrderBy(q => q.PriceDate).Take(queryDef.Limit);
+                }
+                else if (queryDef.EndDate != null)
+                {
+                    return results.OrderByDescending(q => q.PriceDate).Take(queryDef.Limit).OrderBy(q => q.PriceDate);
+                }
+            }
+
+            return results;
+
         }
 
         public void UpdateQuotations(IEnumerable<QuotationDto> quotations)
@@ -39,7 +64,7 @@ namespace Stock.DAL.Repositories
                     var record = db.Quotations.SingleOrDefault(d => d.QuotationId == dto.QuotationId);
                     if (record != null)
                     {
-                        record = dto;
+                        record.CopyProperties(dto);
                     }
                     else
                     {
@@ -50,32 +75,6 @@ namespace Stock.DAL.Repositories
 
             }
 
-        }
-
-        private string getInsertSql(QuotationDto quotation)
-        {
-            string sql = "INSERT INTO {0} ({1}) VALUES ({2});";
-            string propertyNames = "QuotationId, PriceDate, AssetId, TimeframeId, OpenPrice, HighPrice, LowPrice, ClosePrice, RealClosePrice, Volume, IndexNumber";
-            string propertyValues = quotation.QuotationId + ", " + quotation.PriceDate + ", " + quotation.AssetId + ", " + quotation.TimeframeId + ", " + quotation.OpenPrice + ", " +
-                                quotation.HighPrice + ", " + quotation.LowPrice + ", " + quotation.ClosePrice + ", NULL, " + quotation.Volume + ", " + quotation.IndexNumber;
-            return string.Format(sql, QUOTATIONS_TABLE_NAME, propertyNames, propertyValues);
-
-        }
-
-        private string getUpdateSql(QuotationDto quotation)
-        {
-            string sql = "UPDATE {0} SET {1} WHERE {2}";
-            string settingValues = "PriceDate = " + quotation.PriceDate + ", " + 
-                                   "AssetId = " + quotation.AssetId + ", " + 
-                                   "TimeframeId = " + quotation.TimeframeId + ", " + 
-                                   "OpenPrice = " + quotation.OpenPrice + ", " + 
-                                   "HighPrice = " + quotation.HighPrice + ", " + 
-                                   "LowPrice = " + quotation.LowPrice + ", " + 
-                                   "ClosePrice = " + quotation.ClosePrice + ", " + 
-                                   "Volume = " + quotation.Volume + ", " + 
-                                   "IndexNumber = " + quotation.IndexNumber;
-            string wherePart = "QuotationId = " + quotation.QuotationId;
-            return string.Format(sql,QUOTATIONS_TABLE_NAME, settingValues, wherePart);
         }
 
     }

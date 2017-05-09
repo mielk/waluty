@@ -135,6 +135,10 @@
     <Compile Include="Services\IService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Stock.Core\Stock.Core.csproj">
+      <Project>{a92e05b9-8032-44e9-8add-7a6f58268d35}</Project>
+      <Name>Stock.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stock.DAL\Stock.DAL.csproj">
       <Project>{3eb97661-0497-42ef-88ba-67642bdc8175}</Project>
       <Name>Stock.DAL</Name>

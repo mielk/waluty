@@ -65,3 +65,5 @@ C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Moq.xml
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock.UnitTest.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.pdb
+C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Core.dll
+C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Core.pdb
