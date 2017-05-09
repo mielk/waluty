@@ -58,19 +58,19 @@ namespace Stock.Domain.Services
 
         private void runLeftSide(IAnalyzer analyzer, DataItem item, AssetTimeframe atf)
         {
-            //Check if quotation is missing (but only in the middle of not-missing quotations, 
-            //because missing quotations at the end of array was excluded one line above).
-            //If it is copy data from the previous quotation.
-            if (!item.Quotation.IsComplete())
-            {
-                var previousQuotation = (item.Index > 0 ? analyzer.getDataItem(item.Index - 1).Quotation : null);
-                if (previousQuotation != null)
-                {
-                    item.Quotation.CompleteMissing(previousQuotation);
-                    //_dataService.UpdateQuotation(item.Quotation, Symbol);
-                }
+            ////Check if quotation is missing (but only in the middle of not-missing quotations, 
+            ////because missing quotations at the end of array was excluded one line above).
+            ////If it is copy data from the previous quotation.
+            //if (!item.Quotation.IsComplete())
+            //{
+            //    var previousQuotation = (item.Index > 0 ? analyzer.getDataItem(item.Index - 1).Quotation : null);
+            //    if (previousQuotation != null)
+            //    {
+            //        item.Quotation.CompleteMissing(previousQuotation);
+            //        //_dataService.UpdateQuotation(item.Quotation, Symbol);
+            //    }
 
-            }
+            //}
 
 
             //Ensure that [Price] object is appended to this [DataItem].
@@ -308,7 +308,7 @@ namespace Stock.Domain.Services
             double oppositeValue = (type.IsPeak() ?
                                         itemsRange.Min(i => i.Quotation.Low) :
                                         itemsRange.Max(i => i.Quotation.High));
-            double baseValue = item.Quotation.ProperValue(type);
+            double baseValue = item.Quotation.GetProperValue(type);
 
             return Math.Abs(oppositeValue - baseValue) / Math.Max(oppositeValue, baseValue);
 
@@ -328,7 +328,7 @@ namespace Stock.Domain.Services
             double oppositeValue = (type.IsPeak() ?
                                         itemsRange.Min(i => i.Quotation.Low) :
                                         itemsRange.Max(i => i.Quotation.High));
-            double baseValue = item.Quotation.ProperValue(type);
+            double baseValue = item.Quotation.GetProperValue(type);
 
             return Math.Abs(oppositeValue - baseValue) / Math.Max(oppositeValue, baseValue);
 
@@ -343,8 +343,8 @@ namespace Stock.Domain.Services
                 Math.Max(0, item.Index - counter) :
                 Math.Min(item.Index + counter, analyzer.getDataItemsLength() - 1);
 
-            double comparedValue = analyzer.getDataItem(index).Quotation.ProperValue(extremum.Type);
-            double baseValue = item.Quotation.ProperValue(extremum.Type);
+            double comparedValue = analyzer.getDataItem(index).Quotation.GetProperValue(extremum.Type);
+            double baseValue = item.Quotation.GetProperValue(extremum.Type);
             double difference = (baseValue - comparedValue) / Math.Max(comparedValue, baseValue);
             return difference * (extremum.Type.IsPeak() ? 1 : -1);
         }
@@ -399,7 +399,7 @@ namespace Stock.Domain.Services
                 extremum.EarlierChange3 = GetPriceChange(item, extremum, true, 3);
                 extremum.EarlierChange5 = GetPriceChange(item, extremum, true, 5);
                 extremum.EarlierChange10 = GetPriceChange(item, extremum, true, 10);
-                extremum.Volatility = item.Quotation.Volatility();
+                extremum.Volatility = item.Quotation.GetVolatility();
 
                 //Calculate [LaterAmplitude] for previous extremum.
                 var prevExtremumDataItem = getCurrentExtremum(type);

@@ -145,7 +145,7 @@ namespace Stock.Domain.Entities
 
         public bool IsMinimumForHit(DataItem item)
         {
-            var properValue = item.Quotation.ProperValue(this.CurrentType);
+            var properValue = item.Quotation.GetProperValue(this.CurrentType);
             var level = GetLevel(item.Index);
             var distance = properValue - level;
             var ratio = distance / level;

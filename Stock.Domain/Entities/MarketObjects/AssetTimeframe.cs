@@ -28,7 +28,9 @@ namespace Stock.Domain.Entities
         public AssetTimeframe(string symbol)
         {
             var partSymbols = symbol.Split('_');
-            loadParams(partSymbols[0], partSymbols[1]);
+            var assetSymbol = partSymbols[0];
+            var timeframeSymbol = partSymbols[1];
+            loadParams(assetSymbol, timeframeSymbol);
         }
 
         private void loadParams(string asset, string timeframe)

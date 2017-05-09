@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stock.Core
+namespace Stock.Domain.Entities
 {
-    public class Class1
+    public interface IDataUnit
     {
+        DateTime GetDate();
     }
 }

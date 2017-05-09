@@ -249,22 +249,22 @@ namespace Stock.Domain.Services
             if (item.Quotation == null) return;
             //If this item nor any later item has complete quotation, it means the previous one
             //was the last real quotation and analysis should finish here.
-            if (!item.Quotation.IsComplete() && !LaterQuotationsExists(index)) return;
+            //if (!item.Quotation.IsComplete() && !LaterQuotationsExists(index)) return;
 
 
-            //Check if quotation is missing (but only in the middle of not-missing quotations, 
-            //because missing quotations at the end of array was excluded one line above).
-            //If it is copy data from the previous quotation.
-            if (!item.Quotation.IsComplete())
-            {
-                var previousQuotation = (index > 0 ? Items[index - 1].Quotation : null);
-                if (previousQuotation != null)
-                {
-                    item.Quotation.CompleteMissing(previousQuotation);
-                    _dataService.UpdateQuotation(item.Quotation, Symbol);
-                }
+            ////Check if quotation is missing (but only in the middle of not-missing quotations, 
+            ////because missing quotations at the end of array was excluded one line above).
+            ////If it is copy data from the previous quotation.
+            //if (!item.Quotation.IsComplete())
+            //{
+            //    var previousQuotation = (index > 0 ? Items[index - 1].Quotation : null);
+            //    if (previousQuotation != null)
+            //    {
+            //        item.Quotation.CompleteMissing(previousQuotation);
+            //        _dataService.UpdateQuotation(item.Quotation, Symbol);
+            //    }
                 
-            }
+            //}
 
 
             //Ensure that [Macd] object is appended to this [DataItem].
@@ -331,7 +331,7 @@ namespace Stock.Domain.Services
         {
             for (var i = index; i < Items.Length; i++)
             {
-                if (Items[i].Quotation.IsComplete()) return true;
+                //if (Items[i].Quotation.IsComplete()) return true;
             }
             return false;
         }

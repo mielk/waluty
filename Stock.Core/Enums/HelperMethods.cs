@@ -23,5 +23,34 @@ namespace Stock.Core
 
         }
 
+        public static IEnumerable<AnalysisType> ToAnalysisTypes(this IEnumerable<string> values)
+        {
+
+            List<AnalysisType> analysisTypes = new List<AnalysisType>();
+
+            foreach (var value in values)
+            {
+                bool isFound = false;
+                foreach (AnalysisType type in AnalysisType.GetValues(typeof(AnalysisType)))
+                {
+                    if (value.Equals(type.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        isFound = true;
+                        analysisTypes.Add(type);
+                        break;
+                    }
+                }
+
+                if (!isFound)
+                {
+                    throw new Exception("Unknown analysis type: " + value);
+                }
+
+            }
+
+            return analysisTypes;
+
+        }
+
     }
 }

@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace Stock.Domain.Enums
 {
 
-    public enum AnalysisType{    
+    public enum AnalysisType
+    {
         Unknown = 0,
         Quotation = 1,
         Price = 2,
@@ -57,7 +58,7 @@ namespace Stock.Domain.Enums
             loadType(AnalysisType.Price, new string[] { "prices", "price", "Prices", "Price" });
             loadType(AnalysisType.Trendline, new string[] { "trendlines", "trendline", "Trendlines", "Trendline" });
             loadType(AnalysisType.MACD, new string[] { "macd", "MACD", "Macd" });
-            loadType(AnalysisType.ADX, new string[] {"adx", "ADX", "Adx" });
+            loadType(AnalysisType.ADX, new string[] { "adx", "ADX", "Adx" });
             loadType(AnalysisType.Candlestick, new string[] { "candlestick", "Candlestick" });
 
         }
