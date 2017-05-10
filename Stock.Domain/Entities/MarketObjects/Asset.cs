@@ -120,6 +120,7 @@ namespace Stock.Domain.Entities
 
         public override bool Equals(object obj)
         {
+            if (obj == null) return false;
             if (obj.GetType() != typeof(Asset)) return false;
 
             Asset compared = (Asset)obj;

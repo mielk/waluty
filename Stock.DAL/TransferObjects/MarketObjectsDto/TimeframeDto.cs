@@ -22,6 +22,7 @@ namespace Stock.DAL.TransferObjects
 
         public override bool Equals(object obj)
         {
+            if (obj == null) return false;
             if (obj.GetType() != typeof(TimeframeDto)) return false;
 
             TimeframeDto compared = (TimeframeDto)obj;

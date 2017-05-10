@@ -96,6 +96,7 @@ namespace Stock.Domain.Entities
 
         public override bool Equals(object obj)
         {
+            if (obj == null) return false;
             if (obj.GetType() != typeof(Currency)) return false;
 
             Currency compared = (Currency)obj;

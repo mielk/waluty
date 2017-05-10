@@ -78,6 +78,13 @@ namespace Stock.Domain.Entities
             return string.Concat(asset.GetSymbol(), "_", timeframe.GetName());
         }
 
+        public static string GetSymbol(Asset asset, Timeframe timeframe)
+        {
+            AssetTimeframe at = new AssetTimeframe(asset, timeframe);
+            return at.GetSymbol();
+        }
+
+
         #endregion API
 
 

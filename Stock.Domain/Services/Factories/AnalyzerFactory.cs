@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.Core;
 
 namespace Stock.Domain.Services.Factories
 {
@@ -28,12 +29,6 @@ namespace Stock.Domain.Services.Factories
 
             switch (type)
             {
-                case AnalysisType.Price: return new PriceAnalyzer(atf);
-                case AnalysisType.MACD: return new MacdAnalyzer(atf);
-                case AnalysisType.ADX: return new AdxAnalyzer(atf);
-                case AnalysisType.Candlestick: return new CandlestickAnalyzer(atf);
-                case AnalysisType.Trendline: return new TrendlineAnalyzer(atf);
-                case AnalysisType.Unknown: return null;
                 default: return null;
             }
 

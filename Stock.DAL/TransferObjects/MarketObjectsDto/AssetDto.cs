@@ -20,6 +20,7 @@ namespace Stock.DAL.TransferObjects
 
         public override bool Equals(object obj)
         {
+            if (obj == null) return false;
             if (obj.GetType() != typeof(AssetDto)) return false;
 
             AssetDto compared = (AssetDto)obj;

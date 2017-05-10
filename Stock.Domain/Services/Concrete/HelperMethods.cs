@@ -7,6 +7,7 @@ using Stock.Domain.Entities;
 using Stock.Domain.Enums;
 using Stock.Domain.Services.Factories;
 using Stock.Utils;
+using Stock.Core;
 
 namespace Stock.Domain.Services
 {
@@ -90,15 +91,15 @@ namespace Stock.Domain.Services
         {
             switch (type)
             {
-                case AnalysisType.Price:
+                case AnalysisType.Prices:
                     return "prices";
-                case AnalysisType.MACD:
+                case AnalysisType.Macd:
                     return "macd";
-                case AnalysisType.ADX:
+                case AnalysisType.Adx:
                     return "adx";
-                case AnalysisType.Candlestick:
+                case AnalysisType.Candlesticks:
                     return "candlesticks";
-                case AnalysisType.Trendline:
+                case AnalysisType.Trendlines:
                     return "trendlines";
                 default:
                     return "";
@@ -165,11 +166,6 @@ namespace Stock.Domain.Services
         public static IAnalyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
         {
             return AnalyzerFactory.Instance().getAnalyzer(type, atf);
-        }
-
-        public static string toString(this AnalysisType type)
-        {
-            return AnalysisTypeHelper.getTypeString(type);
         }
 
     }

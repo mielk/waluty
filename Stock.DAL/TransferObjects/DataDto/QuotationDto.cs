@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Utils;
+using Stock.Core;
 
 namespace Stock.DAL.TransferObjects
 {
-    public class QuotationDto : IDateItemDto
+    public class QuotationDto : IDataUnitDto
     {
+
         [Key]
         public int QuotationId { get; set; }
         public DateTime PriceDate { get; set; }
@@ -24,10 +26,35 @@ namespace Stock.DAL.TransferObjects
         public double? Volume { get; set; }
         public int IndexNumber { get; set; }
 
+
+        #region GETTERS
+
         public DateTime GetDate()
         {
             return PriceDate;
         }
+
+        public int GetIndexNumber()
+        {
+            return IndexNumber;
+        }
+
+        public int GetAssetId()
+        {
+            return AssetId;
+        }
+
+        public int GetTimeframeId()
+        {
+            return TimeframeId;
+        }
+
+        public AnalysisType GetAnalysisType()
+        {
+            return AnalysisType.Quotations;
+        }
+
+        #endregion GETTERS
 
 
         public void CopyProperties(QuotationDto dto)
@@ -46,9 +73,12 @@ namespace Stock.DAL.TransferObjects
         }
 
 
+        #region SYSTEM.OBJECT
+
         public override bool Equals(object obj)
         {
             const double MAX_VALUE_DIFFERENCE = 0.000000001d;
+            if (obj == null) return false;
             if (obj.GetType() != typeof(QuotationDto)) return false;
 
             QuotationDto compared = (QuotationDto)obj;
@@ -57,12 +87,13 @@ namespace Stock.DAL.TransferObjects
             if (compared.PriceDate.CompareTo(PriceDate) != 0) return false;
             if ((compared.AssetId) != AssetId) return false;
             if ((compared.TimeframeId) != TimeframeId) return false;
-            if (compared.OpenPrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
-            if (compared.HighPrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
-            if (compared.LowPrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
-            if (compared.ClosePrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE));
-            if (((double)compared.Volume).CompareForTest((double)Volume, MAX_VALUE_DIFFERENCE));
+            if (!compared.OpenPrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.HighPrice.CompareForTest(HighPrice, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.LowPrice.CompareForTest(LowPrice, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.ClosePrice.CompareForTest(ClosePrice, MAX_VALUE_DIFFERENCE)) return false;
+            if (!((double)compared.Volume).CompareForTest((double)Volume, MAX_VALUE_DIFFERENCE)) return false;
             return true;
+
         }
 
         public override int GetHashCode()
@@ -74,6 +105,8 @@ namespace Stock.DAL.TransferObjects
         {
             return PriceDate.ToString() + " | " + TimeframeId + " | "  + AssetId;
         }
+
+        #endregion SYSTEM.OBJECT
 
 
     }

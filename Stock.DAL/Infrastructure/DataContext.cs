@@ -9,6 +9,7 @@ namespace Stock.DAL.Infrastructure
     {
         private static DataContext _instance;
         public DbSet<QuotationDto> Quotations { get; set; }
+        public DbSet<PriceDto> Prices { get; set; }
 
         public DataContext()
         {
@@ -23,6 +24,7 @@ namespace Stock.DAL.Infrastructure
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<QuotationDto>().ToTable("quotations");
+            modelBuilder.Entity<PriceDto>().ToTable("prices");
         }
 
     }

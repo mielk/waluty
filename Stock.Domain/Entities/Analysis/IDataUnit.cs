@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stock.DAL.TransferObjects;
 
 namespace Stock.Domain.Entities
 {
     public interface IDataUnit
     {
         DateTime GetDate();
+        int GetIndexNumber();
     }
 }

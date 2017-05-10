@@ -157,6 +157,7 @@ namespace Stock.Domain.Entities
 
         public override bool Equals(object obj)
         {
+            if (obj == null) return false;
             if (obj.GetType() != typeof(FxPair)) return false;
 
             FxPair compared = (FxPair)obj;

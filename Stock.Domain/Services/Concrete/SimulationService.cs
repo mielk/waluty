@@ -10,6 +10,7 @@ using Stock.DAL.TransferObjects;
 using Stock.Domain.Services.Factories;
 using Stock.Domain.Enums;
 using System.Diagnostics;
+using Stock.Core;
 
 namespace Stock.Domain.Services
 {
@@ -26,7 +27,7 @@ namespace Stock.Domain.Services
         public int LastAnalyzed { get; set; }
         public string Symbol { get; set; }
         public AssetTimeframe AssetTimeframe { get; set; }
-        public IQuotationService quotationService;
+        public IQuotationService3 quotationService;
 
 
         public bool Run(bool fromScratch)
@@ -70,12 +71,12 @@ namespace Stock.Domain.Services
 
                 Debug.WriteLine(string.Format("+;SimulationService.Start - Data loaded (Items: {0})", Data.Length));
 
-                if (types.Contains(AnalysisType.Price)){
+                if (types.Contains(AnalysisType.Prices)){
                     _priceAnalyzer = new PriceAnalyzer(atf);
                     ((Analyzer)_priceAnalyzer).injectQuotationService(quotationService);
                 }
 
-                if (types.Contains(AnalysisType.Trendline))
+                if (types.Contains(AnalysisType.Trendlines))
                 {
                     _trendAnalyzer = new TrendlineAnalyzer(atf);
                     ((Analyzer)_trendAnalyzer).injectQuotationService(quotationService);

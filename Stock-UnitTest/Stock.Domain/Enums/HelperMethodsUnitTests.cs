@@ -15,6 +15,8 @@ namespace Stock_UnitTest.Stock.Domain.Enums
     public class HelperMethodsUnitTests
     {
 
+        #region TO_TIMEFRAME_UNIT
+
         [TestMethod]
         public void ToTimeframeUnit_ReturnTimeframeUnitMinutes_ForMinutes()
         {
@@ -96,6 +98,8 @@ namespace Stock_UnitTest.Stock.Domain.Enums
             TimeframeUnit result = value.ToTimeframeUnit();
 
         }
+
+        #endregion TO_TIMEFRAME_UNIT
 
 
     }

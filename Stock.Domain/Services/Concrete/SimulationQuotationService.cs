@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.Core;
 
 namespace Stock.Domain.Services
 {
-    public class SimulationQuotationService : IQuotationService
+    public class SimulationQuotationService : IQuotationService3
     {
 
         private ISimulationService simulationService;
@@ -24,7 +25,7 @@ namespace Stock.Domain.Services
 
         public DateTime? getLastCalculationDate(string symbol, string analysisSymbol)
         {
-            return simulationService.getLastCalculationDate(AnalysisType.Price);
+            return simulationService.getLastCalculationDate(AnalysisType.Prices);
         }
 
         public DateTime? getLastCalculationDate(AssetTimeframe atf, AnalysisType analysisType)

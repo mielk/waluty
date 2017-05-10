@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.Utils;
 
 namespace Stock.Domain.Entities
 {
@@ -65,10 +66,17 @@ namespace Stock.Domain.Entities
 
 
         #region GETTERS
+
         public DateTime GetDate()
         {
             return Date;
         }
+
+        public int GetIndexNumber()
+        {
+            return IndexNumber;
+        }
+
         #endregion GETTERS
 
 
@@ -89,7 +97,7 @@ namespace Stock.Domain.Entities
         {
             switch (extremumType)
             {
-                case ExtremumType.PeakByClose: 
+                case ExtremumType.PeakByClose:
                 case ExtremumType.TroughByClose:
                     return Close;
                 case ExtremumType.PeakByHigh:
@@ -105,6 +113,42 @@ namespace Stock.Domain.Entities
         {
             return (High - Low) / Open;
         }
+
+
+        #region OBJECT METHODS
+
+        public override bool Equals(object obj)
+        {
+            const double MAX_VALUE_DIFFERENCE = 0.000000001d;
+            if (obj == null) return false;
+            if (obj.GetType() != typeof(Quotation)) return false;
+
+            Quotation compared = (Quotation)obj;
+            if ((compared.Id) != Id) return false;
+            if ((compared.IndexNumber) != IndexNumber) return false;
+            if (compared.Date.CompareTo(Date) != 0) return false;
+            if ((compared.AssetId) != AssetId) return false;
+            if ((compared.TimeframeId) != TimeframeId) return false;
+            if (!compared.Open.CompareForTest(Open, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.High.CompareForTest(High, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.Low.CompareForTest(Low, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.Close.CompareForTest(Close, MAX_VALUE_DIFFERENCE)) return false;
+            if (!((double)compared.Volume).CompareForTest((double)Volume, MAX_VALUE_DIFFERENCE)) return false;
+            return true;
+
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Date.ToString() + " | " + TimeframeId + " | " + AssetId;
+        }
+
+        #endregion OBJECT METHODS
 
 
     }

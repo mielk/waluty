@@ -9,6 +9,7 @@ using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Enums;
 using Stock.Domain.Services.Factories;
+using Stock.Core;
 
 namespace Stock.Domain.Services
 {
@@ -18,7 +19,7 @@ namespace Stock.Domain.Services
 
         private AssetTimeframe assetTimeframe;
         private Dictionary<AnalysisType, IAnalyzer> analyzers;
-        private IQuotationService quotationService = ProcessServiceFactory.Instance().GetQuotationService();
+        private IQuotationService3 quotationService = ProcessServiceFactory.Instance().GetQuotationService();
         private DataItem[] dataItems;
 
 
@@ -79,7 +80,7 @@ namespace Stock.Domain.Services
                 this.analyzers = analyzers;
             }
 
-            public void injectQuotationService(IQuotationService instance)
+            public void injectQuotationService(IQuotationService3 instance)
             {
                 quotationService = instance;
             }

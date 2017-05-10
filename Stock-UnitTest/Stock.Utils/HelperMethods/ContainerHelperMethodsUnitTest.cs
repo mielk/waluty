@@ -204,6 +204,119 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         #endregion HAS_EQUAL_ITEMS
 
+
+        #region HAS_EQUAL_ITEMS_IN_THE_SAME_ORDER
+
+        [TestMethod]
+        public void HasEqualItemsInTheSameOrder_ReturnsFalse_IfArrayAreOfDifferentLength()
+        {
+
+            //Arrange.
+            ContainerUnitTestEntity[] a = new ContainerUnitTestEntity[3];
+            ContainerUnitTestEntity[] b = new ContainerUnitTestEntity[4];
+
+            //Act.
+            bool areEqual = a.HasEqualItemsInTheSameOrder(b);
+
+            //Assert.
+            Assert.IsFalse(areEqual);
+        }
+
+        [TestMethod]
+        public void HasEqualItemsInTheSameOrder_ReturnsFalse_IfSomeItemsAreOnDifferentPlace()
+        {
+
+            //Arrange.
+            ContainerUnitTestEntity[] a = new ContainerUnitTestEntity[3];
+            a[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            a[1] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+            a[2] = new ContainerUnitTestEntity() { Id = 3, Value = "c" };
+
+            ContainerUnitTestEntity[] b = new ContainerUnitTestEntity[3];
+            b[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            b[1] = new ContainerUnitTestEntity() { Id = 3, Value = "c" };
+            b[2] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+
+            //Act.
+            bool areEqual = a.HasEqualItemsInTheSameOrder(b);
+
+            //Assert.
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void HasEqualItemsInTheSameOrder_ReturnsFalse_IfSomeItemsAreDifferent()
+        {
+
+            //Arrange.
+            ContainerUnitTestEntity[] a = new ContainerUnitTestEntity[3];
+            a[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            a[1] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+            a[2] = new ContainerUnitTestEntity() { Id = 3, Value = "c" };
+
+            ContainerUnitTestEntity[] b = new ContainerUnitTestEntity[3];
+            b[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            b[1] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+            b[2] = new ContainerUnitTestEntity() { Id = 4, Value = "d" };
+
+            //Act.
+            bool areEqual = a.HasEqualItemsInTheSameOrder(b);
+
+            //Assert.
+            Assert.IsFalse(areEqual);
+
+        }
+
+
+        [TestMethod]
+        public void HasEqualItemsInTheSameOrder_ReturnsFalse_IfHaveAllTheSameButOneArrayHasEmptySlotAtEnd()
+        {
+
+            //Arrange.
+            ContainerUnitTestEntity[] a = new ContainerUnitTestEntity[3];
+            a[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            a[1] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+            a[2] = new ContainerUnitTestEntity() { Id = 3, Value = "c" };
+
+            ContainerUnitTestEntity[] b = new ContainerUnitTestEntity[4];
+            b[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            b[1] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+            b[2] = new ContainerUnitTestEntity() { Id = 3, Value = "c" };
+
+            //Act.
+            bool areEqual = a.HasEqualItemsInTheSameOrder(b);
+
+            //Assert.
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void HasEqualItemsInTheSameOrder_ReturnsTrue_IfAllItemsAreEqual()
+        {
+
+            //Arrange.
+            ContainerUnitTestEntity[] a = new ContainerUnitTestEntity[3];
+            a[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            a[1] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+            a[2] = new ContainerUnitTestEntity() { Id = 3, Value = "c" };
+
+            ContainerUnitTestEntity[] b = new ContainerUnitTestEntity[3];
+            b[0] = new ContainerUnitTestEntity() { Id = 1, Value = "a" };
+            b[1] = new ContainerUnitTestEntity() { Id = 2, Value = "b" };
+            b[2] = new ContainerUnitTestEntity() { Id = 3, Value = "c" };
+
+            //Act.
+            bool areEqual = a.HasEqualItemsInTheSameOrder(b);
+
+            //Assert.
+            Assert.IsTrue(areEqual);
+
+        }
+
+        #endregion HAS_EQUAL_ITEMS_IN_THE_SAME_ORDER
+
     }
 
     class ContainerUnitTestEntity
@@ -213,6 +326,7 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         public override bool Equals(object obj)
         {
+            if (obj == null) return false;
             if (obj.GetType() != typeof(ContainerUnitTestEntity)) return false;
 
             ContainerUnitTestEntity compared = (ContainerUnitTestEntity)obj;

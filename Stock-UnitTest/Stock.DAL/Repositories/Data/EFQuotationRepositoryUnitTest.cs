@@ -71,7 +71,8 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Act
             clearQuotationsTable();
             repository.UpdateQuotations(quotations);
-            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(1, 1);
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
 
             //Assert
             bool areEqual = quotations.HasEqualItems(actualRecords);
@@ -102,7 +103,8 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             dto2.LowPrice = dto2.LowPrice + 1;
             dto2.ClosePrice = dto2.ClosePrice + 1;
             repository.UpdateQuotations(new QuotationDto[] { dto1, dto2 });
-            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(1, 1);
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
 
             //Assert
             bool areEqual = quotations.HasEqualItems(actualRecords);
@@ -115,6 +117,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         {
 
             //Arrange
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFQuotationRepository repository = new EFQuotationRepository();
             List<QuotationDto> quotations = new List<QuotationDto>();
             QuotationDto dto1 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09191, HighPrice = 1.09218, LowPrice = 1.09186, ClosePrice = 1.09194, Volume = 1411, IndexNumber = 2 };
@@ -137,7 +140,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
             IEnumerable<QuotationDto> expectedRecords = new QuotationDto[] { dto1, dto2, dto3, dto4 };
             repository.UpdateQuotations(expectedRecords);
-            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(1, 1);
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
 
             //Assert
             bool areEqual = expectedRecords.HasEqualItems(actualRecords);
@@ -170,7 +173,8 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             repository.UpdateQuotations(quotations);
 
             //Act
-            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(1, 1);
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
             IEnumerable<QuotationDto> expectedRecords = new QuotationDto[] { dto1, dto2, dto3, dto4 };
 
             //Assert
@@ -199,7 +203,8 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             repository.UpdateQuotations(quotations);
 
             //Act
-            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(2, 2);
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(2, 2);
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
 
             //Assert
             bool isEmptyCollection = (actualRecords.Count() == 0);

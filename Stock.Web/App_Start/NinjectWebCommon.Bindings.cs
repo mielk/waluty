@@ -28,8 +28,9 @@ namespace Stock.Web
             kernel.Bind<ICurrencyRepository>().To<EFCurrencyRepository>();
             kernel.Bind<IAssetRepository>().To<EFAssetRepository>();
             kernel.Bind<ITimeframeRepository>().To<EFTimeframeRepository>();
-            kernel.Bind<IDataRepository>().To<EFDataRepository>();
             kernel.Bind<IDataRepository2>().To<EFDataRepository2>();
+            kernel.Bind<IQuotationRepository>().To<EFQuotationRepository>();
+            kernel.Bind<IPriceRepository>().To<EFPriceRepository>();
 
             //kernel.Bind<ICompanyRepository>().To<FakeCompanyRepository>();
             //kernel.Bind<IMarketRepository>().To<FakeMarketRepository>();

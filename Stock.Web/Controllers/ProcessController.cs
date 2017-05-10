@@ -7,6 +7,7 @@ using Stock.Domain.Services;
 using Stock.Domain.Enums;
 using Stock.Domain.Entities;
 using Stock.Domain.Services.Factories;
+using Stock.Core;
 
 namespace Stock.Web.Controllers
 {
@@ -29,7 +30,7 @@ namespace Stock.Web.Controllers
             Asset _asset = Asset.BySymbol(asset);
             Timeframe _timeframe = Timeframe.ByName(timeframe);
             ProcessService service = new ProcessService(_asset, _timeframe);
-            var types = AnalysisTypeHelper.FromStringListToTypesList(analysisTypes, ',');
+            var types = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Prices, AnalysisType.Macd };
 
             service.Setup(types);
             var result = service.Run(fromScratch);

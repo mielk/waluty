@@ -13,6 +13,9 @@ namespace Stock.Domain.Services
         private static IAssetService _assetService;
         private static IMarketService _marketService;
         private static ITimeframeService _timeframeService;
+        private static IQuotationService _quotationService;
+        private static IPriceService _priceService;
+        private static IDataSetService _dataSetService;
 
 
 
@@ -80,6 +83,57 @@ namespace Stock.Domain.Services
         {
             _timeframeService = service;
             return _timeframeService;
+        }
+
+
+
+        public static IQuotationService GetQuotationService()
+        {
+            if (_quotationService == null)
+            {
+                _quotationService = QuotationService.Instance();
+            }
+            return _quotationService;
+        }
+
+        public static IQuotationService GetQuotationService(IQuotationService service)
+        {
+            _quotationService = service;
+            return _quotationService;
+        }
+
+
+
+        public static IPriceService GetPriceService()
+        {
+            if (_priceService == null)
+            {
+                _priceService = PriceService.Instance();
+            }
+            return _priceService;
+        }
+
+        public static IPriceService GetPriceService(IPriceService service)
+        {
+            _priceService = service;
+            return _priceService;
+        }
+
+
+
+        public static IDataSetService GetDataSetService()
+        {
+            if (_dataSetService == null)
+            {
+                _dataSetService = DataSetService.Instance();
+            }
+            return _dataSetService;
+        }
+
+        public static IDataSetService GetDataSetService(IDataSetService service)
+        {
+            _dataSetService = service;
+            return _dataSetService;
         }
 
 

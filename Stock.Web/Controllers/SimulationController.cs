@@ -7,7 +7,7 @@ using Stock.Domain.Services;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
 using System.Diagnostics;
-
+using Stock.Core;
 
 namespace Stock.Web.Controllers
 {
@@ -38,7 +38,7 @@ namespace Stock.Web.Controllers
 
             //Restart simulation object.
             var service = this.ssf.GetService();
-            var types = new AnalysisType[] { AnalysisType.Price, AnalysisType.Trendline };
+            var types = new AnalysisType[] { AnalysisType.Prices, AnalysisType.Trendlines };
             var result = service.Start(pair, timeframe, types);
 
             var json = new { pair = pair, timeframe = timeframe, result = result };

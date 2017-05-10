@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
+using Stock.Core;
 
 namespace Stock.Domain.Services
 {

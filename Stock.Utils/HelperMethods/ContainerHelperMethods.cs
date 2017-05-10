@@ -48,15 +48,15 @@ namespace Stock.Utils
 
         public static bool HasEqualItems<T>(this IEnumerable<T> list1, IEnumerable<T> list2)
         {
-            List<T> removableList2 = list2.ToList();
+            List<T> removableList = list2.ToList();
             foreach (T baseObject in list1)
             {
                 bool isFound = false;
-                foreach (T comparedObject in removableList2)
+                foreach (T comparedObject in removableList)
                 {
                     if (baseObject.Equals(comparedObject))
                     {
-                        removableList2.Remove(comparedObject);
+                        removableList.Remove(comparedObject);
                         isFound = true;
                         break;
                     }
@@ -69,8 +69,29 @@ namespace Stock.Utils
 
             }
 
-            return (removableList2.Count == 0);
+            return (removableList.Count == 0);
 
+        }
+
+        public static bool HasEqualItemsInTheSameOrder<T>(this T[] array1, T[] array2)
+        {
+            if (array1.Length != array2.Length) return false;
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (array1[i] == null)
+                {
+                    if (array2[i] != null)
+                    {
+                        return false;
+                    }
+                } else if (!array1[i].Equals(array2[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
     }

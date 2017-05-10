@@ -11,7 +11,7 @@ namespace Stock.Domain.Services.Factories
     public class ProcessServiceFactory{
 
         private static ProcessServiceFactory _instance;
-        private static IQuotationService _quotationService;
+        private static IQuotationService3 _quotationService;
         private static Dictionary<string, IProcessService> services = new Dictionary<string, IProcessService>();
 
 
@@ -44,13 +44,13 @@ namespace Stock.Domain.Services.Factories
             }
         }
 
-        public IQuotationService GetQuotationService()
+        public IQuotationService3 GetQuotationService()
         {
-            if (_quotationService == null) _quotationService = new QuotationService();
+            if (_quotationService == null) _quotationService = new QuotationService3();
             return _quotationService;
         }
 
-        public IQuotationService GetQuotationService(IQuotationService inject){
+        public IQuotationService3 GetQuotationService(IQuotationService3 inject){
             if (inject != null){
                 _quotationService = inject;
             }

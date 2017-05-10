@@ -13,6 +13,7 @@ namespace Stock.Core
         Macd = 3,
         Adx = 4,
         Trendlines = 5,
-        Candlesticks = 6
+        Candlesticks = 6,
+        DataSet = 7
     }
 }

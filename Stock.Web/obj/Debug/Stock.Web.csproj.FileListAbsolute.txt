@@ -246,6 +246,7 @@ C:\tm\aplikacje\FX2\Stock.Web\bin\System.Web.WebPages.Deployment.xml
 C:\tm\aplikacje\FX2\Stock.Web\bin\System.Web.WebPages.Razor.xml
 C:\tm\aplikacje\FX2\Stock.Web\obj\Debug\Stock.Web.dll
 C:\tm\aplikacje\FX2\Stock.Web\obj\Debug\Stock.Web.pdb
+C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Web.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Web.pdb
 C:\tm\aplikacje\FX3\Stock.Web\bin\Antlr3.Runtime.dll
@@ -258,6 +259,7 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\Newtonsoft.Json.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Ninject.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Ninject.Web.Common.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Ninject.Web.Mvc.dll
+C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Core.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.DAL.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Domain.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\System.Web.Mvc.dll
@@ -270,6 +272,7 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\System.Web.WebPages.Razor.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\WebActivator.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\WebGrease.dll
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Utils.dll
+C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Core.pdb
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.DAL.pdb
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Domain.pdb
 C:\tm\aplikacje\FX3\Stock.Web\bin\EntityFramework.xml
@@ -287,8 +290,5 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\System.Web.WebPages.xml
 C:\tm\aplikacje\FX3\Stock.Web\bin\System.Web.WebPages.Deployment.xml
 C:\tm\aplikacje\FX3\Stock.Web\bin\System.Web.WebPages.Razor.xml
 C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Utils.pdb
-C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.dll
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.pdb
-C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Core.dll
-C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Core.pdb

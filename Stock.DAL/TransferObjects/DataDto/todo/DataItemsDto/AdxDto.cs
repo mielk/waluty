@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.Core;
 
 namespace Stock.DAL.TransferObjects
 {
-    public class AdxDto : IDateItemDto
+    public class AdxDto : IDataUnitDto
     {
 
         [Key]
@@ -46,14 +47,41 @@ namespace Stock.DAL.TransferObjects
         public int DiLinesCrossing { get; set; }
         public bool IsUpdated { get; set; }
         public bool IsNew { get; set; }
+        public int IndexNumber { get; set; }
 
         [NotMapped]
         public int TimeframeId { get; set; }
+
+
+        #region GETTERS
 
         public DateTime GetDate()
         {
             return PriceDate;
         }
+
+        public int GetIndexNumber()
+        {
+            return IndexNumber;
+        }
+
+        public int GetAssetId()
+        {
+            return AssetId;
+        }
+
+        public int GetTimeframeId()
+        {
+            return TimeframeId;
+        }
+
+        public AnalysisType GetAnalysisType()
+        {
+            return AnalysisType.Adx;
+        }
+
+        #endregion GETTERS
+
 
     }
 }

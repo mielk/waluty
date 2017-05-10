@@ -14,16 +14,6 @@ namespace Stock.DAL.Repositories
         
         private const string QUOTATIONS_TABLE_NAME = "quotations";
 
-        public IEnumerable<QuotationDto> GetQuotations(int assetId, int timeframe)
-        {
-            IEnumerable<QuotationDto> results;
-            using (var context = new DataContext())
-            {
-                results = context.Quotations.Where(q => q.TimeframeId == timeframe && q.AssetId == assetId).ToList();
-            }
-            return results;
-        }
-
         public IEnumerable<QuotationDto> GetQuotations(AnalysisDataQueryDefinition queryDef)
         {
             DateTime MIN_DATE = new DateTime(1900, 1, 1, 0, 0, 0);

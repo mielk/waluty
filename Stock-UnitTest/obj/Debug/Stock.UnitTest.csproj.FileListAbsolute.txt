@@ -42,6 +42,7 @@ C:\tm\aplikacje\FX2\Stock-UnitTest\bin\Debug\Stock.DAL.pdb
 C:\tm\aplikacje\FX2\Stock-UnitTest\bin\Debug\EntityFramework.xml
 C:\tm\aplikacje\FX2\Stock-UnitTest\obj\Debug\Stock-UnitTest.dll
 C:\tm\aplikacje\FX2\Stock-UnitTest\obj\Debug\Stock-UnitTest.pdb
+C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock.UnitTest.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock-UnitTest.dll.config
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock-UnitTest.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock-UnitTest.pdb
@@ -52,9 +53,11 @@ C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Microsoft.Web.XmlTransform.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Moq.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\MySql.Data.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\MySql.Data.Entity.EF6.dll
+C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Core.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.DAL.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Domain.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Utils.dll
+C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Core.pdb
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.DAL.pdb
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Domain.pdb
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Utils.pdb
@@ -62,8 +65,5 @@ C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Castle.Core.xml
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\EntityFramework.xml
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\EntityFramework.SqlServer.xml
 C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Moq.xml
-C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock.UnitTest.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.pdb
-C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Core.dll
-C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Stock.Core.pdb

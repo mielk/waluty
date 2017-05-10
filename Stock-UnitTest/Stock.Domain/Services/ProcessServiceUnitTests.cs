@@ -8,19 +8,12 @@ using Stock.Domain.Enums;
 using Stock.Domain.Services.Concrete;
 using Stock.Domain.Services.Factories;
 using System.Collections.Generic;
-using Stock_UnitTest.tools;
 
 namespace Stock_UnitTest.Stock.Domain.Services
 {
     [TestClass]
     public class ProcessServiceUnitTests
     {
-
-
-        //private Asset assetForTest()
-        //{
-        //    return new Asset(1, "USD", 1);
-        //}
 
 
         //[TestMethod]
