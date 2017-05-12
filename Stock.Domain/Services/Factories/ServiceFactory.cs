@@ -16,6 +16,7 @@ namespace Stock.Domain.Services
         private static IQuotationService _quotationService;
         private static IPriceService _priceService;
         private static IDataSetService _dataSetService;
+        private static ISimulationService _simulationService;
 
 
 
@@ -134,6 +135,22 @@ namespace Stock.Domain.Services
         {
             _dataSetService = service;
             return _dataSetService;
+        }
+
+
+        public static ISimulationService GetSimulationService()
+        {
+            if (_simulationService == null)
+            {
+                _simulationService = SimulationService.Instance();
+            }
+            return _simulationService;
+        }
+
+        public static ISimulationService GetSimulationService(ISimulationService service)
+        {
+            _simulationService = service;
+            return _simulationService;
         }
 
 

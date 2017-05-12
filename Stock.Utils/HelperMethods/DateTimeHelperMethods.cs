@@ -82,7 +82,24 @@ namespace Stock.Utils
             return value.Add(timeSpan).Midnight();
         }
 
-
+        public static bool IsEqual(this DateTime? value, DateTime? compared)
+        {
+            if (value == null)
+            {
+                return (compared == null);
+            }
+            else
+            {
+                if (compared != null)
+                {
+                    return (((DateTime)value).CompareTo((DateTime)compared) == 0);
+                }
+                else
+                {
+                    return false;
+                } 
+            }
+        }
 
     }
 }

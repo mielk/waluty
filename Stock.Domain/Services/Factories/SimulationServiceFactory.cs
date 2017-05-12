@@ -9,14 +9,14 @@ namespace Stock.Domain.Services.Factories
     public class SimulationServiceFactory : ISimulationServiceFactory{
 
         //private static SimulationServiceFactory _instance;
-        private static ISimulationService _service;
+        private static ISimulationService2 _service;
 
 
-        public ISimulationService GetService()
+        public ISimulationService2 GetService()
         {
             if (_service == null)
             {
-                _service = new SimulationService(null);
+                _service = new SimulationService2(null);
             }
 
             return _service;

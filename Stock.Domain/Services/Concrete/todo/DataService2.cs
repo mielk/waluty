@@ -9,6 +9,7 @@ using Stock.DAL.Infrastructure;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Enums;
 using Stock.Core;
+using Stock.Domain.Entities.Old;
 
 namespace Stock.Domain.Services
 {

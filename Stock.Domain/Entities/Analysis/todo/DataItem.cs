@@ -57,17 +57,18 @@ namespace Stock.Domain.Entities
 
         public double TrendlineAnalysisStep()
         {
-            var sign = (Math.Max(Price.PeakByClose, Price.PeakByHigh) > 
-                                                                Math.Max(Price.TroughByClose, Price.TroughByLow)) 
-                                                                ? 1 : -1;
-            return sign * (Quotation.High - Quotation.Close) / 10d;
+            //var sign = (Math.Max(Price.PeakByClose, Price.PeakByHigh) > 
+                                                                //Math.Max(Price.TroughByClose, Price.TroughByLow)) 
+                                                                //? 1 : -1;
+            //return sign * (Quotation.High - Quotation.Close) / 10d;
+            return 0;
         }
 
         public Extremum Extremum(ExtremumType type)
         {
             if (Price == null) return null;
             Extremum extremum = Price.GetExtremumObject(type);
-            if (extremum == null || extremum.Cancelled) return null;
+            //if (extremum == null || extremum.Cancelled) return null;
             return extremum;
         }
 
@@ -162,28 +163,29 @@ namespace Stock.Domain.Entities
         public double GetProperOpenOrClose()
         {
 
-            if (Math.Max(Price.PeakByClose, Price.PeakByHigh) > Math.Max(Price.TroughByClose, Price.TroughByLow))
-            {
-                return Math.Max(Quotation.Open, Quotation.Close);
-            }
-            else
-            {
-                return Math.Min(Quotation.Open, Quotation.Close);
-            }
-
+            //if (Math.Max(Price.PeakByClose, Price.PeakByHigh) > Math.Max(Price.TroughByClose, Price.TroughByLow))
+            //{
+            //    return Math.Max(Quotation.Open, Quotation.Close);
+            //}
+            //else
+            //{
+            //    return Math.Min(Quotation.Open, Quotation.Close);
+            //}
+            return 0;
         }
 
         public double GetProperHighOrLow()
         {
 
-            if (Math.Max(Price.PeakByClose, Price.PeakByHigh) > Math.Max(Price.TroughByClose, Price.TroughByLow))
-            {
-                return Math.Max(Quotation.High, Quotation.Low);
-            }
-            else
-            {
-                return Math.Min(Quotation.High, Quotation.Low);
-            }
+            //if (Math.Max(Price.PeakByClose, Price.PeakByHigh) > Math.Max(Price.TroughByClose, Price.TroughByLow))
+            //{
+            //    return Math.Max(Quotation.High, Quotation.Low);
+            //}
+            //else
+            //{
+            //    return Math.Min(Quotation.High, Quotation.Low);
+            //}
+            return 0;
         }
 
         public bool IsTrendlineBroken(double level, TrendlineType type)

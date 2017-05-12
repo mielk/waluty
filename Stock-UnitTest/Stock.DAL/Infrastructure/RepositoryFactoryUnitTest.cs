@@ -33,6 +33,37 @@ namespace Stock_UnitTest.Stock.DAL.Infrastructure
             Assert.AreSame(repository, repository2);
         }
 
+        [TestMethod]
+        public void GetAssetRepository_alwaysReturnsSingletonInstance()
+        {
+            IAssetRepository repository = RepositoryFactory.GetAssetRepository();
+            IAssetRepository repository2 = RepositoryFactory.GetAssetRepository();
+            Assert.AreSame(repository, repository2);
+        }
+
+        [TestMethod]
+        public void GetQuotationRepository_alwaysReturnsSingletonInstance()
+        {
+            IQuotationRepository repository = RepositoryFactory.GetQuotationRepository();
+            IQuotationRepository repository2 = RepositoryFactory.GetQuotationRepository();
+            Assert.AreSame(repository, repository2);
+        }
+
+        [TestMethod]
+        public void GetPriceRepository_alwaysReturnsSingletonInstance()
+        {
+            IPriceRepository repository = RepositoryFactory.GetPriceRepository();
+            IPriceRepository repository2 = RepositoryFactory.GetPriceRepository();
+            Assert.AreSame(repository, repository2);
+        }
+
+        [TestMethod]
+        public void GetSimulationRepository_alwaysReturnsSingletonInstance()
+        {
+            ISimulationRepository repository = RepositoryFactory.GetSimulationRepository();
+            ISimulationRepository repository2 = RepositoryFactory.GetSimulationRepository();
+            Assert.AreSame(repository, repository2);
+        }
 
     }
 }

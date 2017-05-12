@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Core;
+using Stock.Domain.Entities.Old;
 
 namespace Stock.Domain.Services
 {

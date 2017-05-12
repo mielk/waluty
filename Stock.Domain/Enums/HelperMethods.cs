@@ -23,5 +23,10 @@ namespace Stock.Domain.Enums
 
         }
 
+        public static bool IsPeak(this ExtremumType extremumType)
+        {
+            return (extremumType == ExtremumType.PeakByClose || extremumType == ExtremumType.PeakByHigh);
+        }
+
     }
 }

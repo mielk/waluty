@@ -367,7 +367,7 @@ namespace Stock.Domain.Services
                 var laterCounter = CountSerie(item.Index, type.IsPeak(), type.ByClose(), false);
                 if (laterCounter < MinRange && laterCounter < (analyzer.getDataItemsLength() - 1 - item.Index))
                 {
-                    extremum.Cancelled = true;
+                    //extremum.Cancelled = true;
                     item.Price.ApplyExtremumValue(type, null);
                     item.Price.IsUpdated = true;
                     return true;
@@ -389,16 +389,16 @@ namespace Stock.Domain.Services
                 //minimalnego poziomu, to notowanie jest dyskwalifikowane jako ekstremum i nie ma sensu go dalej sprawdzać.
                 if (earlierCounter < MinRange) return false;
                 if (laterCounter < MinRange && laterCounter < (analyzer.getDataItemsLength() - 1 - item.Index)) return false;
-
-                extremum = new Extremum(item.Date, atf, type.IsPeak(), type.ByClose());
-                extremum.EarlierCounter = earlierCounter;
+                extremum = null;
+                //extremum = new Extremum(item.Date, atf, type.IsPeak(), type.ByClose());
+                //extremum.EarlierCounter = earlierCounter;
                 extremum.LaterCounter = laterCounter;
                 extremum.EarlierAmplitude = FindEarlierPriceAmplitude(type, item, getCurrentExtremum(type));
-                extremum.EarlierChange1 = GetPriceChange(item, extremum, true, 1);
-                extremum.EarlierChange2 = GetPriceChange(item, extremum, true, 2);
-                extremum.EarlierChange3 = GetPriceChange(item, extremum, true, 3);
-                extremum.EarlierChange5 = GetPriceChange(item, extremum, true, 5);
-                extremum.EarlierChange10 = GetPriceChange(item, extremum, true, 10);
+                //extremum.EarlierChange1 = GetPriceChange(item, extremum, true, 1);
+                //extremum.EarlierChange2 = GetPriceChange(item, extremum, true, 2);
+                //extremum.EarlierChange3 = GetPriceChange(item, extremum, true, 3);
+                //extremum.EarlierChange5 = GetPriceChange(item, extremum, true, 5);
+                //extremum.EarlierChange10 = GetPriceChange(item, extremum, true, 10);
                 extremum.Volatility = item.Quotation.GetVolatility();
 
                 //Calculate [LaterAmplitude] for previous extremum.
@@ -422,16 +422,16 @@ namespace Stock.Domain.Services
             if (extremum != null)
             {
                 //extremum.LaterAmplitude = FindPriceAmplitude(item, extremum, false);
-                if (extremum.LaterChange1 == null) extremum.LaterChange1 = GetPriceChange(item, extremum, false, 1);
-                if (extremum.LaterChange2 == null) extremum.LaterChange2 = GetPriceChange(item, extremum, false, 2);
-                if (extremum.LaterChange3 == null) extremum.LaterChange3 = GetPriceChange(item, extremum, false, 3);
-                if (extremum.LaterChange5 == null) extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
-                if (extremum.LaterChange10 == null) extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
+                //if (extremum.LaterChange1 == null) extremum.LaterChange1 = GetPriceChange(item, extremum, false, 1);
+                //if (extremum.LaterChange2 == null) extremum.LaterChange2 = GetPriceChange(item, extremum, false, 2);
+                //if (extremum.LaterChange3 == null) extremum.LaterChange3 = GetPriceChange(item, extremum, false, 3);
+                //if (extremum.LaterChange5 == null) extremum.LaterChange5 = GetPriceChange(item, extremum, false, 5);
+                //if (extremum.LaterChange10 == null) extremum.LaterChange10 = GetPriceChange(item, extremum, false, 10);
                 extremum.IsOpen = (item.Index + extremum.LaterCounter == analyzer.getDataItemsLength() - 1) || quotationsLeft(item) < 10;
-                if (extremum.IsConfirmed())
-                {
-                    setCurrentExtremum(type, item);
-                }
+                //if (extremum.IsConfirmed())
+                //{
+                //    setCurrentExtremum(type, item);
+                //}
                 item.Price.ApplyExtremumValue(type, extremum);
                 item.Price.IsUpdated = true;
             }

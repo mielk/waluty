@@ -369,30 +369,30 @@ namespace Stock.Domain.Entities
         {
 
 
-            if (item == null || item.Price == null) return false;
+            //if (item == null || item.Price == null) return false;
 
 
-            if (item.Price.IsExtremum(CurrentType))
-            {
+            //if (item.Price.IsExtremum(CurrentType))
+            //{
 
-                if (PreviousHit != null && PreviousHit.Index == item.Index - 1)
-                {
-                    return false;
-                }
-                else
-                {
+            //    if (PreviousHit != null && PreviousHit.Index == item.Index - 1)
+            //    {
+            //        return false;
+            //    }
+            //    else
+            //    {
 
-                    if (nextItem == null || nextItem.Price == null) return true;
+            //        if (nextItem == null || nextItem.Price == null) return true;
 
-                    return ((CurrentType == TrendlineType.Resistance && nextItem.Price.PeakByHigh == 0) ||
-                            (CurrentType == TrendlineType.Support && nextItem.Price.TroughByLow == 0));
-                }
-            }
-            else
-            {
-                return false;
-            }
-
+            //        return ((CurrentType == TrendlineType.Resistance && nextItem.Price.PeakByHigh == 0) ||
+            //                (CurrentType == TrendlineType.Support && nextItem.Price.TroughByLow == 0));
+            //    }
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            return false;
 
         }
 

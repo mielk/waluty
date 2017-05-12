@@ -317,6 +317,100 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         #endregion HAS_EQUAL_ITEMS_IN_THE_SAME_ORDER
 
+
+        #region DICTIONARY.HAS.THE.SAME.VALUES
+
+        [TestMethod]
+        public void DictionaryHasEqualValues_ReturnsFalse_IfDictionaryHasDifferentNumberOfItems()
+        {
+
+            //Arrange.
+            Dictionary<int, ContainerUnitTestEntity> a = new Dictionary<int, ContainerUnitTestEntity>();
+            Dictionary<int, ContainerUnitTestEntity> b = new Dictionary<int, ContainerUnitTestEntity>();
+
+            //Act.
+            a.Add(1, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            a.Add(2, new ContainerUnitTestEntity() { Id = 2, Value = "b" });
+
+            b.Add(1, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            b.Add(2, new ContainerUnitTestEntity() { Id = 2, Value = "b" });
+            b.Add(3, new ContainerUnitTestEntity() { Id = 3, Value = "c" });
+
+            bool areEqual = a.HasTheSameValues(b);
+
+            //Assert.
+            Assert.IsFalse(areEqual);
+        }
+
+        [TestMethod]
+        public void DictionaryHasEqualValues_ReturnsFalse_IfSomeItemInDictionaryHasDifferentValue()
+        {
+
+            //Arrange.
+            Dictionary<int, ContainerUnitTestEntity> a = new Dictionary<int, ContainerUnitTestEntity>();
+            Dictionary<int, ContainerUnitTestEntity> b = new Dictionary<int, ContainerUnitTestEntity>();
+
+            //Act.
+            a.Add(1, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            a.Add(2, new ContainerUnitTestEntity() { Id = 2, Value = "b" });
+
+            b.Add(1, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            b.Add(2, new ContainerUnitTestEntity() { Id = 2, Value = "c" });
+
+            bool areEqual = a.HasTheSameValues(b);
+
+            //Assert.
+            Assert.IsFalse(areEqual);
+        }
+
+
+        [TestMethod]
+        public void DictionaryHasEqualValues_ReturnsFalse_IfDictionariesHaveMixedValues()
+        {
+
+            //Arrange.
+            Dictionary<int, ContainerUnitTestEntity> a = new Dictionary<int, ContainerUnitTestEntity>();
+            Dictionary<int, ContainerUnitTestEntity> b = new Dictionary<int, ContainerUnitTestEntity>();
+
+            //Act.
+            a.Add(1, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            a.Add(2, new ContainerUnitTestEntity() { Id = 2, Value = "b" });
+
+            b.Add(1, new ContainerUnitTestEntity() { Id = 2, Value = "b" });
+            b.Add(2, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            
+
+            bool areEqual = a.HasTheSameValues(b);
+
+            //Assert.
+            Assert.IsFalse(areEqual);
+        }
+
+
+        [TestMethod]
+        public void DictionaryHasEqualValues_ReturnsTrue_IfDictionariesHaveTheSameKeysWithTheSameValues()
+        {
+
+            //Arrange.
+            Dictionary<int, ContainerUnitTestEntity> a = new Dictionary<int, ContainerUnitTestEntity>();
+            Dictionary<int, ContainerUnitTestEntity> b = new Dictionary<int, ContainerUnitTestEntity>();
+
+            //Act.
+            a.Add(1, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            a.Add(2, new ContainerUnitTestEntity() { Id = 2, Value = "b" });
+
+            b.Add(1, new ContainerUnitTestEntity() { Id = 1, Value = "a" });
+            b.Add(2, new ContainerUnitTestEntity() { Id = 2, Value = "b" });
+
+            bool areEqual = a.HasTheSameValues(b);
+
+            //Assert.
+            Assert.IsTrue(areEqual);
+        }
+
+
+        #endregion DICTIONARY.HAS.THE.SAME.VALUES
+
     }
 
     class ContainerUnitTestEntity

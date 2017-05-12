@@ -670,5 +670,77 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         #endregion GET_WEEKS_DIFFERENCE
 
+
+        #region NULLABLE_DATETIME_IS_EQUAL
+
+
+        [TestMethod]
+        public void NullableDateTimeIsEqual_ReturnsTrue_IfBothDatesAreNull()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = null;
+
+            //Assert
+            var result = baseDate.IsEqual(comparedDate);
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void NullableDateTimeIsEqual_ReturnsFalse_IfOnlyBaseDateIsNull()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = new DateTime(2017, 5, 4, 12, 0, 0);
+
+            //Assert
+            var result = baseDate.IsEqual(comparedDate);
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        public void NullableDateTimeIsEqual_ReturnsFalse_IfOnlyComparedDateIsNull()
+        {
+            //Arrange
+            DateTime? baseDate = new DateTime(2017, 5, 4, 12, 0, 0);
+            DateTime? comparedDate = null;
+
+            //Assert
+            var result = baseDate.IsEqual(comparedDate);
+            Assert.IsFalse(result);
+        }
+
+
+        [TestMethod]
+        public void NullableDateTimeIsEqual_ReturnsFalse_IfGivenDatesAreDifferent()
+        {
+            //Arrange
+            DateTime? baseDate = new DateTime(2017, 5, 4, 12, 0, 0);
+            DateTime? comparedDate = new DateTime(2017, 5, 4, 13, 0, 0);
+
+            //Assert
+            var result = baseDate.IsEqual(comparedDate);
+            Assert.IsFalse(result);
+
+        }
+
+
+        [TestMethod]
+        public void NullableDateTimeIsEqual_ReturnsTrue_IfGivenDatesAreEqual()
+        {
+            //Arrange
+            DateTime? baseDate = new DateTime(2017, 5, 4, 12, 0, 0);
+            DateTime? comparedDate = new DateTime(2017, 5, 4, 12, 0, 0);
+
+            //Assert
+            var result = baseDate.IsEqual(comparedDate);
+            Assert.IsTrue(result);
+
+        }
+
+        #endregion NULLABLE_DATETIME_IS_EQUAL
+
     }
 }

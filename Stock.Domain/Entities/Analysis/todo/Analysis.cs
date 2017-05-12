@@ -8,7 +8,7 @@ using Stock.Domain.Services;
 using Stock.DAL.TransferObjects;
 using Stock.Core;
 
-namespace Stock.Domain.Entities
+namespace Stock.Domain.Entities.Old
 {
     public class Analysis
     {

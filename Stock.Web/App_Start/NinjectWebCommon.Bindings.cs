@@ -20,7 +20,7 @@ namespace Stock.Web
         {
             //kernel.Bind<IMarketService>().To<MarketService>();
             kernel.Bind<IDataService2>().To<DataService2>();
-            kernel.Bind<ISimulationService>().To<SimulationService>();
+            kernel.Bind<ISimulationService2>().To<SimulationService2>();
             kernel.Bind<ISimulationServiceFactory>().To<SimulationServiceFactory>();
             kernel.Bind<IProcessService>().To<ProcessService>();
             kernel.Bind<ITrendlineAnalyzer>().To<TrendlineAnalyzer>();

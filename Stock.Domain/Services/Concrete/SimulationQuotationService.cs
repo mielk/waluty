@@ -12,9 +12,9 @@ namespace Stock.Domain.Services
     public class SimulationQuotationService : IQuotationService3
     {
 
-        private ISimulationService simulationService;
+        private ISimulationService2 simulationService;
 
-        public SimulationQuotationService(ISimulationService simulationService)
+        public SimulationQuotationService(ISimulationService2 simulationService)
         {
             this.simulationService = simulationService;
         }

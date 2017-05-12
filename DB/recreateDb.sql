@@ -73,6 +73,7 @@ CREATE PROCEDURE createTable(tableName NVARCHAR(255))
 		PREPARE stmt FROM @sql;
 		EXECUTE stmt;
 		DEALLOCATE PREPARE stmt;
+        select "createTable:done";
     END //
     
 CREATE PROCEDURE feedData()

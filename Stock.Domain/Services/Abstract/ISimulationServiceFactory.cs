@@ -9,6 +9,6 @@ namespace Stock.Domain.Services
 {
     public interface ISimulationServiceFactory
     {
-        ISimulationService GetService();
+        ISimulationService2 GetService();
     }
 }

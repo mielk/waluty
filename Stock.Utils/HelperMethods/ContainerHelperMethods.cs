@@ -94,5 +94,34 @@ namespace Stock.Utils
             return true;
         }
 
+        public static bool HasTheSameValues<K, V>(this Dictionary<K, V> baseDict, Dictionary<K, V> comparedDict)
+        {
+
+            if (baseDict.Count != comparedDict.Count) return false;
+
+            foreach (var key in baseDict.Keys)
+            {
+                V value;
+                V comparedValue;
+
+                try
+                {
+                    baseDict.TryGetValue(key, out value);
+                    comparedDict.TryGetValue(key, out comparedValue);
+                    if (!value.Equals(comparedValue))
+                    {
+                        return false;
+                    }
+                } 
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
+
     }
 }

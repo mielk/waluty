@@ -70,26 +70,27 @@ namespace Stock.Domain.Entities
 
         public double getLower()
         {
-            if (type.IsPeak())
-            {
-                return master.Quotation.Close;
-            }
-            else
-            {
-                return getExtremePrice();
-            }
+            //if (type.IsPeak())
+            //{
+            //    return master.Quotation.Close;
+            //}
+            //else
+            //{
+            //    return getExtremePrice();
+            //}
+            return master.Quotation.Close; ;
         }
 
         public double getHigher()
         {
-            if (type.IsPeak())
-            {
-                return getExtremePrice();
-            }
-            else
-            {
+            //if (type.IsPeak())
+            //{
+            //    return getExtremePrice();
+            //}
+            //else
+            //{
                 return master.Quotation.Close;
-            }
+            //}
         }
 
         public double getStep()
@@ -101,8 +102,8 @@ namespace Stock.Domain.Entities
 
         public bool isOpposite(ExtremumGroup subextremum)
         {
-            if (type.IsPeak() && !subextremum.type.IsPeak()) return true;
-            if (!type.IsPeak() && subextremum.type.IsPeak()) return true;
+            //if (type.IsPeak() && !subextremum.type.IsPeak()) return true;
+            //if (!type.IsPeak() && subextremum.type.IsPeak()) return true;
             return false;
         }
 

@@ -62,7 +62,25 @@ namespace Stock.Domain.Services
         {
             IEnumerable<PriceDto> dtos = _repository.GetPrices(queryDef);
             IEnumerable<Price> prices = container.ProcessDtoToItems(dtos, queryDef.AssetId, queryDef.TimeframeId);
+            appendExtrema(prices, queryDef);
             return prices;
+        }
+
+        private void appendExtrema(IEnumerable<Price> prices, AnalysisDataQueryDefinition baseQueryDef)
+        {
+            DateTime minDate = prices.Min(p => p.Date);
+            DateTime maxDate = prices.Max(p => p.Date);
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(baseQueryDef.AssetId, baseQueryDef.TimeframeId) { StartDate = minDate, EndDate = maxDate };
+            IEnumerable<ExtremumDto> dtos = _repository.GetExtrema(queryDef);
+            foreach (var dto in dtos)
+            {
+                Extremum extremum = Extremum.FromDto(dto);
+                Price price = prices.SingleOrDefault(p => p.AssetId == dto.AssetId && p.TimeframeId == dto.TimeframeId && p.Date.CompareTo(dto.Date) == 0);
+                if (price != null)
+                {
+                    price.SetExtremum(extremum);
+                }
+            }
         }
 
         public IEnumerable<IDataUnit> GetUnits(AnalysisDataQueryDefinition queryDef)

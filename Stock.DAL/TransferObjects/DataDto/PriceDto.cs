@@ -24,10 +24,6 @@ namespace Stock.DAL.TransferObjects
         public int PriceDirection2D { get; set; }
         public int PriceDirection3D { get; set; }
         public double PriceGap { get; set; }
-        public double PeakByCloseEvaluation { get; set; }
-        public double PeakByHighEvaluation { get; set; }
-        public double TroughByCloseEvaluation { get; set; }
-        public double TroughByLowEvaluation { get; set; }
         public double CloseRatio { get; set; }
         public double ExtremumRatio { get; set; }
         public int IndexNumber { get; set; }
@@ -74,11 +70,6 @@ namespace Stock.DAL.TransferObjects
             PriceDirection2D = dto.PriceDirection2D;
             PriceDirection3D = dto.PriceDirection3D;
             PriceGap = dto.PriceGap;
-            PeakByCloseEvaluation = dto.PeakByCloseEvaluation;
-            PeakByHighEvaluation = dto.PeakByHighEvaluation;
-            PeakByCloseEvaluation = dto.PeakByCloseEvaluation;
-            TroughByCloseEvaluation = dto.TroughByCloseEvaluation;
-            TroughByLowEvaluation = dto.TroughByLowEvaluation;
             CloseRatio = dto.CloseRatio;
             ExtremumRatio = dto.ExtremumRatio;
         }
@@ -103,10 +94,6 @@ namespace Stock.DAL.TransferObjects
             if ((compared.PriceDirection2D) != PriceDirection2D) return false;
             if ((compared.PriceDirection3D) != PriceDirection3D) return false;
             if (!compared.PriceGap.CompareForTest(PriceGap, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.PeakByCloseEvaluation.CompareForTest(PeakByCloseEvaluation, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.PeakByHighEvaluation.CompareForTest(PeakByHighEvaluation, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.TroughByCloseEvaluation.CompareForTest(TroughByCloseEvaluation, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.TroughByLowEvaluation.CompareForTest(TroughByLowEvaluation, MAX_VALUE_DIFFERENCE)) return false;
             if (!compared.CloseRatio.CompareForTest(CloseRatio, MAX_VALUE_DIFFERENCE)) return false;
             if (!compared.ExtremumRatio.CompareForTest(ExtremumRatio, MAX_VALUE_DIFFERENCE)) return false;
             return true;

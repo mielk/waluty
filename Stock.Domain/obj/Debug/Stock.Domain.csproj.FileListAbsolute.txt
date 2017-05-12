@@ -70,7 +70,6 @@ C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\Ninject.xml
 C:\tm\aplikacje\FX2\Stock.Domain\bin\Debug\EntityFramework.xml
 C:\tm\aplikacje\FX2\Stock.Domain\obj\Debug\Stock.Domain.dll
 C:\tm\aplikacje\FX2\Stock.Domain\obj\Debug\Stock.Domain.pdb
-C:\tm\aplikacje\FX3\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Domain\bin\Debug\Stock.Domain.dll
 C:\tm\aplikacje\FX3\Stock.Domain\bin\Debug\Stock.Domain.pdb
 C:\tm\aplikacje\FX3\Stock.Domain\bin\Debug\Ninject.dll
@@ -84,5 +83,6 @@ C:\tm\aplikacje\FX3\Stock.Domain\bin\Debug\Stock.Utils.pdb
 C:\tm\aplikacje\FX3\Stock.Domain\bin\Debug\Ninject.pdb
 C:\tm\aplikacje\FX3\Stock.Domain\bin\Debug\Ninject.xml
 C:\tm\aplikacje\FX3\Stock.Domain\bin\Debug\EntityFramework.xml
+C:\tm\aplikacje\FX3\Stock.Domain\obj\Debug\Stock.Domain.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Domain\obj\Debug\Stock.Domain.dll
 C:\tm\aplikacje\FX3\Stock.Domain\obj\Debug\Stock.Domain.pdb

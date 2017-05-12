@@ -19,11 +19,13 @@ namespace Stock_UnitTest.Stock.Core.Enums
 
             //Arrange
             var actualAnalysisTypes = new AnalysisType[] { "quotations".ToAnalysisType(), "macd".ToAnalysisType(), "adx".ToAnalysisType(), 
-                                                           "candlesticks".ToAnalysisType(), "prices".ToAnalysisType(), "trendlines".ToAnalysisType() };
+                                                           "candlesticks".ToAnalysisType(), "prices".ToAnalysisType(), "trendlines".ToAnalysisType(),
+                                                            "dataset".ToAnalysisType() };
 
             //Assert
             var expectedAnalysisTypes = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Macd, AnalysisType.Adx, 
-                                                             AnalysisType.Candlesticks, AnalysisType.Prices, AnalysisType.Trendlines };
+                                                             AnalysisType.Candlesticks, AnalysisType.Prices, AnalysisType.Trendlines, 
+                                                             AnalysisType.DataSet };
             bool areEqual = expectedAnalysisTypes.HasEqualItems(actualAnalysisTypes);
             Assert.IsTrue(areEqual);
 
@@ -35,11 +37,12 @@ namespace Stock_UnitTest.Stock.Core.Enums
 
             //Arrange
             var actualAnalysisTypes = new AnalysisType[] { "QUOTATIONS".ToAnalysisType(), "Macd".ToAnalysisType(), "ADX".ToAnalysisType(), 
-                                                           "Candlesticks".ToAnalysisType(), "PRICES".ToAnalysisType(), "TreNdliNes".ToAnalysisType() };
+                                                           "Candlesticks".ToAnalysisType(), "PRICES".ToAnalysisType(), "TreNdliNes".ToAnalysisType(),
+                                                            "Dataset".ToAnalysisType() };
 
             //Assert
             var expectedAnalysisTypes = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Macd, AnalysisType.Adx, 
-                                                             AnalysisType.Candlesticks, AnalysisType.Prices, AnalysisType.Trendlines };
+                                                             AnalysisType.Candlesticks, AnalysisType.Prices, AnalysisType.Trendlines, AnalysisType.DataSet };
             bool areEqual = expectedAnalysisTypes.HasEqualItems(actualAnalysisTypes);
             Assert.IsTrue(areEqual);
 
