@@ -97,6 +97,44 @@ namespace Stock.Domain.Entities
         #endregion GETTERS
 
 
+        #region EXTREMA
+
+        public double GetProperValue(ExtremumType type)
+        {
+            switch (type)
+            {
+                case ExtremumType.PeakByClose:
+                    return Close;
+                case ExtremumType.TroughByClose:
+                    return Close;
+                case ExtremumType.PeakByHigh:
+                    return High;
+                case ExtremumType.TroughByLow:
+                    return Low;
+                default:
+                    return Close;
+            }
+        }
+
+        public double GetOppositeValue(ExtremumType type)
+        {
+            switch (type)
+            {
+                case ExtremumType.PeakByClose:
+                    return Low;
+                case ExtremumType.TroughByClose:
+                    return High;
+                case ExtremumType.PeakByHigh:
+                    return Low;
+                case ExtremumType.TroughByLow:
+                    return High;
+                default:
+                    return Close;
+            }
+        }
+
+        #endregion EXTREMA
+
 
         public double GetProperValue(TrendlineType type)
         {
@@ -107,22 +145,6 @@ namespace Stock.Domain.Entities
             else
             {
                 return Low;
-            }
-        }
-
-        public double GetProperValue(ExtremumType extremumType)
-        {
-            switch (extremumType)
-            {
-                case ExtremumType.PeakByClose:
-                case ExtremumType.TroughByClose:
-                    return Close;
-                case ExtremumType.PeakByHigh:
-                    return High;
-                case ExtremumType.TroughByLow:
-                    return Low;
-                default:
-                    return Close;
             }
         }
 

@@ -981,7 +981,8 @@
 
         function fromCSharpDateTime(date) {
             var miliseconds = parseInt(mielk.text.substring(date, "(", ")"));
-            return new Date(miliseconds);
+            var date = new Date(miliseconds);
+            return date;
         }
 
         function toString(date, withTime) {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stock.DAL.Repositories;
 
 namespace Stock.Domain.Services
 {
@@ -24,7 +25,8 @@ namespace Stock.Domain.Services
         {
             if (_currencyService == null)
             {
-                _currencyService = CurrencyService.Instance();
+                ICurrencyRepository repository = RepositoryFactory.GetCurrencyRepository();
+                _currencyService = new CurrencyService(repository);
             }
             return _currencyService;
         }
@@ -41,7 +43,8 @@ namespace Stock.Domain.Services
         {
             if (_assetService == null)
             {
-                _assetService = AssetService.Instance();
+                IAssetRepository repository = RepositoryFactory.GetAssetRepository();
+                _assetService = new AssetService(repository);
             }
             return _assetService;
         }
@@ -58,7 +61,8 @@ namespace Stock.Domain.Services
         {
             if (_marketService == null)
             {
-                _marketService = MarketService.Instance();
+                IMarketRepository repository = RepositoryFactory.GetMarketRepository();
+                _marketService = new MarketService(repository);
             }
             return _marketService;
         }
@@ -75,7 +79,8 @@ namespace Stock.Domain.Services
         {
             if (_timeframeService == null)
             {
-                _timeframeService = TimeframeService.Instance();
+                ITimeframeRepository repository = RepositoryFactory.GetTimeframeRepository();
+                _timeframeService = new TimeframeService(repository);
             }
             return _timeframeService;
         }
@@ -92,7 +97,8 @@ namespace Stock.Domain.Services
         {
             if (_quotationService == null)
             {
-                _quotationService = QuotationService.Instance();
+                IQuotationRepository repository = RepositoryFactory.GetQuotationRepository();
+                _quotationService = new QuotationService(repository);
             }
             return _quotationService;
         }
@@ -109,7 +115,8 @@ namespace Stock.Domain.Services
         {
             if (_priceService == null)
             {
-                _priceService = PriceService.Instance();
+                IPriceRepository repository = RepositoryFactory.GetPriceRepository();
+                _priceService = new PriceService(repository);
             }
             return _priceService;
         }
@@ -126,7 +133,7 @@ namespace Stock.Domain.Services
         {
             if (_dataSetService == null)
             {
-                _dataSetService = DataSetService.Instance();
+                _dataSetService = new DataSetService();
             }
             return _dataSetService;
         }
@@ -142,7 +149,8 @@ namespace Stock.Domain.Services
         {
             if (_simulationService == null)
             {
-                _simulationService = SimulationService.Instance();
+                ISimulationRepository repository = RepositoryFactory.GetSimulationRepository();
+                _simulationService = new SimulationService(repository);
             }
             return _simulationService;
         }

@@ -23,8 +23,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
 
         private IMarketService testServiceInstance(Mock<IMarketRepository> mockedRepository)
         {
-            IMarketService service = MarketService.Instance(true);
-            service.InjectRepository(mockedRepository.Object);
+            IMarketService service = new MarketService(mockedRepository.Object);
             return service;
         }
 

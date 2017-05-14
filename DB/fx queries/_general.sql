@@ -17,6 +17,7 @@ CREATE PROCEDURE _checkQuotationsConsistency()
 			CALL _feedCalendarTable();
 			CALL _deleteRedundantQuotations();
             CALL _addMissingQuotations();
+            CALL _appendIndexNumbers();
             CALL _stampQuotationsLastUpdate();
         COMMIT;
         
@@ -52,5 +53,21 @@ CREATE PROCEDURE _stampQuotationsLastUpdate()
         
     END //
 
+
+DROP PROCEDURE IF EXISTS _appendIndexNumbers //
+CREATE PROCEDURE _appendIndexNumbers()
+	BEGIN
+    
+		UPDATE quotations AS q
+		LEFT JOIN dates AS d 
+		ON q.TimeframeId = d.TimeframeId 
+		AND q.PriceDate = d.Date SET q.IndexNumber = d.IndexNumber WHERE q.IndexNumber = 0;
+				
+		UPDATE prices AS p
+		LEFT JOIN dates AS d 
+		ON p.TimeframeId = d.TimeframeId 
+		AND p.PriceDate = d.Date SET p.IndexNumber = d.IndexNumber WHERE p.IndexNumber = 0;
+        
+    END //
 
 CALL _checkQuotationsConsistency();

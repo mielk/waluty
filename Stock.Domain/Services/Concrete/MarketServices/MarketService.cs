@@ -15,27 +15,12 @@ namespace Stock.Domain.Services
     {
 
         private IMarketRepository _repository;
-        private static readonly MarketService instance = new MarketService(RepositoryFactory.GetMarketRepository());
-        private static IEnumerable<Market> markets = new List<Market>();
+        private IEnumerable<Market> markets = new List<Market>();
 
 
         #region INFRASTRUCTURE
 
-        public static IMarketService Instance()
-        {
-            return instance;
-        }
-
-        public static IMarketService Instance(bool reset)
-        {
-            if (reset)
-            {
-                markets = new List<Market>();
-            }
-            return instance;
-        }
-
-        private MarketService(IMarketRepository repository)
+        public MarketService(IMarketRepository repository)
         {
             _repository = repository;
         }

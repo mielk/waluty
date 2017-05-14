@@ -5,23 +5,21 @@ using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
 using Stock.Domain.Entities;
+using Stock.Core;
 
 namespace Stock.Web.Controllers
 {
     public class CompanyController : Controller
     {
         private readonly IAssetService assetService;
-        private readonly IDataService2 dataService;
+        private readonly IDataSetService dataService;
 
 
-        public CompanyController(IDataService2 dataService)
+        public CompanyController(IDataSetService dataService)
         {
             this.assetService = ServiceFactory.GetAssetService();
             this.dataService = dataService;
         }
-
-        //
-        // GET: /Categories/
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -34,12 +32,10 @@ namespace Stock.Web.Controllers
         [AllowAnonymous]
         public ActionResult FilterCompanies(string q, int limit)
         {
-            //var companies = companyService.FilterCompanies(q, limit);
             var assets = assetService.GetAssets(q, limit);
             var items = assets.Select(jsonAsset).ToList();
             var json = new { total = assets.Count(), items = items };
             return Json(json, JsonRequestBehavior.AllowGet);
-
         }
 
 
@@ -47,7 +43,6 @@ namespace Stock.Web.Controllers
         [AllowAnonymous]
         public ActionResult GetCompany(int id)
         {
-            //var company = companyService.GetCompany(id);
             var asset = FxPair.ById(id);
             return Json(asset, JsonRequestBehavior.AllowGet);
         }
@@ -65,77 +60,45 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetQuotations(int companyId, int timeframe, int count)
+        public ActionResult GetQuotations(int assetId, int timeframeId, int count)
         {
-
-            IEnumerable<Quotation> quotations;
-            if (count > 0)
-            {
-                quotations = dataService.GetQuotations(companyId, timeframe, count);
-            } 
-            else 
-            {
-                quotations = dataService.GetQuotations(companyId, timeframe);
-            }
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { Limit = count };
+            IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
+            IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
             IEnumerable<Trendline> trendlines = null;
-
-            var result = new { quotations = quotations, trendlines = trendlines };
-
+            var result = new { quotations = dataSets, trendlines = trendlines };
             return Json(result, JsonRequestBehavior.AllowGet);
-
         }
-
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetFxQuotations(string pairSymbol, string timeframe, int count)
-        {
-
-            //findTrendlines(pairSymbol, timeframe);
-
-            string symbol = pairSymbol + "_" + timeframe;
-            IEnumerable<DataItem> quotations = (count > 0 ? 
-                                    dataService.GetFxQuotations(symbol, count) : 
-                                    dataService.GetFxQuotations(symbol));
-            IEnumerable<Trendline> trendlines = null;
-
-            var result = new { quotations = quotations, trendlines = trendlines };
-            return Json(result, JsonRequestBehavior.AllowGet);
-
-        }
-
-
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult GetFxQuotationsByDates(string pairSymbol, string timeframe, string startDate, string endDate)
+        public ActionResult GetQuotationsByDates(int assetId, int timeframeId, string startDate, string endDate)
         {
 
             //Converts date strings to DateTime objects.
             DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
-            //findTrendlines(pairSymbol, timeframe);
-
-
-
-            string symbol = pairSymbol + "_" + timeframe;
-            IEnumerable<DataItem> quotations = dataService.GetFxQuotations(symbol, startDateTime, endDateTime);
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { StartDate = startDateTime, EndDate = endDateTime };
+            IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
             IEnumerable<Trendline> trendlines = null;
-            var result = new { quotations = quotations, trendlines = trendlines };
+            var result = new { quotations = dataSets, trendlines = trendlines };
 
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
 
-
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetDataSetProperties(string pairSymbol, string timeframe)
+        public ActionResult GetDataSetProperties(int assetId, int timeframeId)
         {
-            string symbol = pairSymbol + "_" + timeframe;
-            var properties = dataService.GetDataSetProperties(symbol);
-            return Json(properties, JsonRequestBehavior.AllowGet);
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId);
+            queryDef.StartDate = new DateTime(2017, 5, 1, 12, 0, 0);
+            DataSetInfo info = dataService.GetDataSetInfo(queryDef);
+            var result = new { firstDate = info.StartDate, lastDate = info.EndDate, minLevel = info.MinLevel, maxLevel = info.MaxLevel, counter = info.Counter};
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
     }
+
 }

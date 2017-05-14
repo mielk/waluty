@@ -14,27 +14,12 @@ namespace Stock.Domain.Services
     {
 
         private ISimulationRepository _repository;
-        private static readonly SimulationService instance = new SimulationService(RepositoryFactory.GetSimulationRepository());
-        private static IEnumerable<Simulation> simulations = new List<Simulation>();
+        private IEnumerable<Simulation> simulations = new List<Simulation>();
 
 
         #region INFRASTRUCTURE
 
-        public static SimulationService Instance()
-        {
-            return instance;
-        }
-
-        public static SimulationService Instance(bool reset)
-        {
-            if (reset)
-            {
-                simulations = new List<Simulation>();
-            }
-            return instance;
-        }
-
-        private SimulationService(ISimulationRepository repository)
+        public SimulationService(ISimulationRepository repository)
         {
             _repository = repository;
         }

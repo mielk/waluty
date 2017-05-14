@@ -55,7 +55,7 @@ CREATE PROCEDURE createIdsTable(counter INT)
 	BEGIN
 		DROP TEMPORARY TABLE IF EXISTS tIds;
 		CREATE TEMPORARY TABLE tIds (Id INT PRIMARY KEY AUTO_INCREMENT, Fake INT(1) NULL);
-		INSERT INTO tIds(Fake) SELECT NULL FROM quotations LIMIT counter;
+		INSERT INTO tIds(Fake) SELECT 1 FROM quotations LIMIT counter;
     END //
 
 
@@ -63,7 +63,7 @@ DROP PROCEDURE IF EXISTS createDatesTable //
 CREATE PROCEDURE createDatesTable()
 	BEGIN
         DROP TEMPORARY TABLE IF EXISTS tDates;
-        CREATE TEMPORARY TABLE tDates (Id INT PRIMARY KEY, Date DATETIME, TimeframeId INT, IndexNumber INT(11) NULL);
+        CREATE TEMPORARY TABLE tDates (Id INT PRIMARY KEY AUTO_INCREMENT, Date DATETIME, TimeframeId INT, IndexNumber INT(11) NULL);
     END //
 
 
@@ -72,15 +72,15 @@ CREATE PROCEDURE populateDatesTable(timeframe INT, initialDate DATETIME, periodM
 	BEGIN	
     
 		IF periodUnit = 'MINUTE' THEN
-			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier MINUTE), timeframe FROM tIds;
+			INSERT INTO tDates(Date, TimeframeId) SELECT DATE_ADD(initialDate, INTERVAL Id * periodMultiplier MINUTE), timeframe FROM tIds;
 		ELSEIF periodUnit = 'HOUR' THEN
-            INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier HOUR), timeframe FROM tIds;
+            INSERT INTO tDates(Date, TimeframeId) SELECT DATE_ADD(initialDate, INTERVAL Id * periodMultiplier HOUR), timeframe FROM tIds;
         ELSEIF periodUnit = 'DAY' THEN
-			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier DAY), timeframe FROM tIds;
+			INSERT INTO tDates(Date, TimeframeId) SELECT DATE_ADD(initialDate, INTERVAL Id * periodMultiplier DAY), timeframe FROM tIds;
 		ELSEIF periodUnit = 'WEEK' THEN
-			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier * 7 DAY), timeframe FROM tIds;
+			INSERT INTO tDates(Date, TimeframeId) SELECT DATE_ADD(initialDate, INTERVAL Id * periodMultiplier * 7 DAY), timeframe FROM tIds;
         ELSEIF periodUnit = 'MONTH' THEN
-			INSERT INTO tDates(Id, Date, TimeframeId) SELECT Id, DATE_ADD(initialDate, INTERVAL Id * periodMultiplier MONTH), timeframe FROM tIds;
+			INSERT INTO tDates(Date, TimeframeId) SELECT DATE_ADD(initialDate, INTERVAL Id * periodMultiplier MONTH), timeframe FROM tIds;
         END IF;
         
     END //
@@ -184,3 +184,5 @@ CREATE PROCEDURE _feedCalendarTable()
             CALL feedCalendarTableForSingleTimeframe(timeframeId);
 		END LOOP;
 	END //
+    
+call _feedCalendarTable();

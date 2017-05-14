@@ -46,10 +46,6 @@ namespace Stock.Domain.Services
                 return null;
             }
         }
-        public Dictionary<AnalysisType, IAnalyzer> getAnalyzers() { 
-            return analyzers; 
-        }
-
 
         public ProcessService(Asset asset, Timeframe timeframe)
         {

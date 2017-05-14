@@ -24,8 +24,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
 
         private IAssetService testServiceInstance(Mock<IAssetRepository> mockedRepository)
         {
-            IAssetService service = AssetService.Instance(true);
-            service.InjectRepository(mockedRepository.Object);
+            IAssetService service = new AssetService(mockedRepository.Object);
             return service;
         }
 

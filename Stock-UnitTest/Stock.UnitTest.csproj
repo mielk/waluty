@@ -111,6 +111,8 @@
     <Compile Include="Stock.Domain\Entities\Market\FxPairUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Market\MarketUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Market\AssetTimeframeUnitTest.cs" />
+    <Compile Include="Stock.Domain\Services\Analysis\ExtremumProcessorUnitTests.cs" />
+    <Compile Include="Stock.Domain\Services\Analysis\PriceProcessorUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Analysis\SimulationServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Data\DataSetServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Data\PriceServiceUnitTests.cs" />

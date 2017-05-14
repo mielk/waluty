@@ -110,7 +110,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(prices);
             
             //Act
-            IDataSetService service = DataSetService.Instance();
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -140,7 +140,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(prices);
 
             //Act
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -171,7 +171,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(prices);
 
             //Act
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -203,7 +203,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(prices);
 
             //Act
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -236,7 +236,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(prices);
 
             //Act
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -273,7 +273,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(prices);
 
             //Act
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -313,7 +313,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(prices);
 
             //Act
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -352,7 +352,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             DataSet[] previous = new DataSet[] { };
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.AppendAndReturnAsArray(previous, queryDef);
@@ -382,7 +382,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             baseDataSets[8] = dataSet(8);
             baseDataSets[9] = dataSet(9);
             baseDataSets[10] = dataSet(10);
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.AppendAndReturnAsArray(baseDataSets, queryDef);
@@ -404,7 +404,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Mock<IPriceService> priceService = new Mock<IPriceService>();
 
             //Act
-            IDataSetService service = DataSetService.Instance(true);
+            IDataSetService service = new DataSetService();
             quotationService.Setup(q => q.GetUnits(queryDef)).Returns(new Quotation[] { quotation(101), quotation(102), quotation(103) });
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(new Price[] { price(101), price(102), price(103) });
             service.InjectQuotationService(quotationService.Object);
@@ -434,7 +434,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             priceService.Setup(q => q.GetUnits(queryDef)).Returns(new Price[] { price(1), price(2), price(3) });
 
             //Act
-            IDataSetService service = DataSetService.Instance();
+            IDataSetService service = new DataSetService();
             service.InjectQuotationService(quotationService.Object);
             service.InjectPriceService(priceService.Object);
             var dataSets = service.GetDataSets(queryDef);
@@ -463,9 +463,26 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         #region UPDATE_DATA_SETS
 
-        //UpdateDataSets_SendUpdateCommandToAllSubservices
+        [Ignore]
+        [TestMethod]
+        public void UpdateDataSets_UnitTestsTODO()
+        {
+            //UpdateDataSets_SendUpdateCommandToAllSubservices
+        }
 
         #endregion UPDATE_DATA_SETS
+
+
+        #region DATA_SET_INFO
+
+        [Ignore]
+        [TestMethod]
+        public void GetDataSetInfo()
+        {
+            //Napisać testy dla tej metody.
+        }
+
+        #endregion DATA_SET_INFO
 
     }
 }

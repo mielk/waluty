@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services
 {
-    public interface IPriceProcessor : IAnalyzerProcessor
+    public interface IDataProcessor
     {
-        void reset();
+        void Process(DataSet dataSet);
     }
 }

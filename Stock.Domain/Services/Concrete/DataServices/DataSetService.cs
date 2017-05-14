@@ -12,40 +12,21 @@ using Stock.Core;
 
 namespace Stock.Domain.Services
 {
+
     public class DataSetService : IDataSetService
     {
-        private static readonly DataSetService instance = new DataSetService();
         private IQuotationService quotationService;
         private IPriceService priceService;
         private DataSetsContainer container;
 
 
-
         #region INFRASTRUCTURE
 
-
-        public static DataSetService Instance()
+        public DataSetService()
         {
-            return instance;
-        }
-
-        public static DataSetService Instance(bool reset)
-        {
-            if (reset)
-            {
-                instance.ResetContainer();
-            }
-            return instance;
-        }
-
-        public void ResetContainer()
-        {
-            container = new DataSetsContainer();
-        }
-
-        private DataSetService()
-        {
-            container = new DataSetsContainer();
+            this.quotationService = ServiceFactory.GetQuotationService();
+            this.priceService = ServiceFactory.GetPriceService();
+            setContainer(new DataSetsContainer());
         }
 
         public void InjectQuotationService(IQuotationService service)
@@ -60,8 +41,14 @@ namespace Stock.Domain.Services
             this.container.SetPriceService(service);
         }
 
-        #endregion INFRASTRUCTURE
+        private void setContainer(DataSetsContainer container)
+        {
+            this.container = container;
+            this.container.SetPriceService(priceService);
+            this.container.SetQuotationService(quotationService);
+        }
 
+        #endregion INFRASTRUCTURE
 
 
         #region API
@@ -106,9 +93,35 @@ namespace Stock.Domain.Services
             return array;
         }
 
-        public void UpdateDataSets(IEnumerable<DataSet> prices)
+        public DataSetInfo GetDataSetInfo(AnalysisDataQueryDefinition queryDef)
         {
-            
+            DataSetInfo info = new DataSetInfo();
+            IEnumerable<Quotation> quotations = quotationService.GetQuotations(queryDef);
+            info.StartDate = quotations.Select(q => q.Date).Min();
+            info.EndDate = quotations.Select(q => q.Date).Max();
+            info.MinLevel = quotations.Select(q => q.Low).Min();
+            info.MaxLevel = quotations.Select(q => q.High).Max();
+            info.Counter = quotations.Count();
+            return info;
+        }
+
+        public void UpdateDataSets(IEnumerable<DataSet> dataSets)
+        {
+
+            //Quotations
+            if (quotationService != null)
+            {
+                IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
+                quotationService.UpdateQuotations(quotations);
+            }
+
+            //Prices
+            if (priceService != null)
+            {
+                IEnumerable<Price> prices = dataSets.Select(ds => ds.GetPrice());
+                priceService.UpdatePrices(prices);
+            }
+
         }
 
 

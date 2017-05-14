@@ -114,6 +114,16 @@ namespace Stock.Domain.Entities
             }
         }
 
+        public IEnumerable<Extremum> GetExtrema()
+        {
+            List<Extremum> extrema = new List<Extremum>();
+            if (PeakByClose != null) extrema.Add(PeakByClose);
+            if (PeakByHigh != null) extrema.Add(PeakByHigh);
+            if (TroughByClose != null) extrema.Add(TroughByClose);
+            if (TroughByLow != null) extrema.Add(TroughByLow);
+            return extrema;
+        }
+
         #endregion GETTERS
 
 

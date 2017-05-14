@@ -36,14 +36,14 @@ namespace Stock.Domain.Services
             ItemsForAnalysis = 240;
         }
 
-        public void injectProcessor(IPriceProcessor obj)
+        public void InjectProcessor(IPriceProcessor obj)
         {
-            this.processor = obj;
+            //this.processor = obj;
         }
 
         protected override IAnalyzerProcessor getProcessor()
         {
-            if (processor == null) processor = new PriceProcessor(this);
+            //if (processor == null) processor = new PriceProcessor(this);
             return processor;
         }
 

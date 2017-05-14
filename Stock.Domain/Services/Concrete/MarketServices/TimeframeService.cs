@@ -15,27 +15,12 @@ namespace Stock.Domain.Services
     {
 
         private ITimeframeRepository _repository;
-        private static readonly ITimeframeService instance = new TimeframeService(RepositoryFactory.GetTimeframeRepository());
-        private static IEnumerable<Timeframe> timeframes = new List<Timeframe>();
+        private IEnumerable<Timeframe> timeframes = new List<Timeframe>();
 
 
         #region INFRASTRUCTURE
-
-        public static ITimeframeService Instance()
-        {
-            return instance;
-        }
-
-        public static ITimeframeService Instance(bool reset)
-        {
-            if (reset)
-            {
-                timeframes = new List<Timeframe>();
-            }
-            return instance;
-        }
-
-        private TimeframeService(ITimeframeRepository repository)
+        
+        public TimeframeService(ITimeframeRepository repository)
         {
             _repository = repository;
         }

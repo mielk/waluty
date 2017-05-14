@@ -81,6 +81,12 @@
     <Compile Include="Enums\TimeframeUnit.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IExtremumProcessor.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IProcessManager.cs" />
+    <Compile Include="Services\Concrete\AnalysisServices\ExtremumProcessor.cs" />
+    <Compile Include="Services\Concrete\AnalysisServices\ProcessManager.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IPriceProcessor.cs" />
+    <Compile Include="Services\Abstract\AnalysisServices\IDataProcessor.cs" />
     <Compile Include="Services\Abstract\AnalysisServices\ISimulationService.cs" />
     <Compile Include="Services\Abstract\DataServices\IBasicAnalysisService.cs" />
     <Compile Include="Services\Abstract\DataServices\IDataAccessService.cs" />
@@ -93,13 +99,14 @@
     <Compile Include="Services\Abstract\DataServices\todo\IDataService.cs" />
     <Compile Include="Services\Abstract\IAnalysisDataService.cs" />
     <Compile Include="Services\Abstract\IAnalyzerProcessor.cs" />
-    <Compile Include="Services\Abstract\AnalysisServices\todo\IPriceProcessor.cs" />
     <Compile Include="Services\Abstract\IQuotationService3.cs" />
     <Compile Include="Services\Abstract\MarketServices\ITimeframeService.cs" />
     <Compile Include="Services\Abstract\MarketServices\IAssetService.cs" />
     <Compile Include="Services\Abstract\MarketServices\ICurrencyService.cs" />
+    <Compile Include="Services\Concrete\AnalysisServices\PriceProcessor.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\SimulationService.cs" />
     <Compile Include="Services\Concrete\DataServices\AnalysisItemsContainer.cs" />
+    <Compile Include="Services\Concrete\DataServices\DataSetInfo.cs" />
     <Compile Include="Services\Concrete\DataServices\DataSetsContainer.cs" />
     <Compile Include="Services\Concrete\DataServices\DataSetService.cs" />
     <Compile Include="Services\Concrete\DataServices\PriceService.cs" />
@@ -118,7 +125,7 @@
     <Compile Include="Entities\Analysis\todo\ExtremaUtils.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\todo\AdxAnalyzer.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\todo\CandlestickAnalyzer.cs" />
-    <Compile Include="Services\Concrete\AnalysisServices\todo\PriceProcessor.cs" />
+    <Compile Include="Services\Concrete\AnalysisServices\PriceProcessor2.cs" />
     <Compile Include="Services\Concrete\AnalysisServices\todo\TrendlineProcessor.cs" />
     <Compile Include="Services\Concrete\todo\SimulationDataService.cs" />
     <Compile Include="Services\Concrete\MarketServices\AssetService.cs" />

@@ -16,27 +16,12 @@ namespace Stock.Domain.Services
     {
 
         private IQuotationRepository _repository;
-        private static readonly IQuotationService instance = new QuotationService(RepositoryFactory.GetQuotationRepository());
-        private static AnalysisItemsContainer<Quotation> container;
+        private AnalysisItemsContainer<Quotation> container;
 
 
         #region INFRASTRUCTURE
 
-        public static IQuotationService Instance()
-        {
-            return instance;
-        }
-
-        public static IQuotationService Instance(bool reset)
-        {
-            if (reset)
-            {
-                container = new AnalysisItemsContainer<Quotation>(instance);
-            }
-            return instance;
-        }
-
-        private QuotationService(IQuotationRepository repository)
+        public QuotationService(IQuotationRepository repository)
         {
             _repository = repository;
             container = new AnalysisItemsContainer<Quotation>(this);
@@ -71,8 +56,10 @@ namespace Stock.Domain.Services
         }
 
         public void UpdateQuotations(IEnumerable<Quotation> quotations) 
-        { 
-
+        {
+            IEnumerable<Quotation> updated = quotations.Where(q => q.IsUpdated || q.IsNew);
+            IEnumerable<QuotationDto> dtos = updated.Select(q => q.ToDto());
+            _repository.UpdateQuotations(dtos);
         }
 
 

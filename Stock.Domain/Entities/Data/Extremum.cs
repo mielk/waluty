@@ -39,6 +39,8 @@ namespace Stock.Domain.Entities
         public double LaterChange10 { get; set; }
         public double Volatility { get; set; }
         public bool IsOpen { get; set; }
+        public bool IsUpdated { get; set; }
+        public bool ToBeDeleted { get; set; }
 
 
         #region CONSTRUCTORS

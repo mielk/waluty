@@ -15,27 +15,12 @@ namespace Stock.Domain.Services
     {
 
         private IAssetRepository _repository;
-        private static readonly IAssetService instance = new AssetService(RepositoryFactory.GetAssetRepository());
-        private static IEnumerable<Asset> assets = new List<Asset>();
+        private IEnumerable<Asset> assets = new List<Asset>();
 
 
         #region INFRASTRUCTURE
 
-        public static IAssetService Instance()
-        {
-            return instance;
-        }
-
-        public static IAssetService Instance(bool reset)
-        {
-            if (reset)
-            {
-                assets = new List<Asset>();
-            }
-            return instance;
-        }
-
-        private AssetService(IAssetRepository repository)
+        public AssetService(IAssetRepository repository)
         {
             _repository = repository;
         }

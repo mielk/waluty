@@ -26,8 +26,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
 
         private ITimeframeService testServiceInstance(Mock<ITimeframeRepository> mockedRepository)
         {
-            ITimeframeService service = TimeframeService.Instance(true);
-            service.InjectRepository(mockedRepository.Object);
+            ITimeframeService service = new TimeframeService(mockedRepository.Object);
             return service;
         }
 

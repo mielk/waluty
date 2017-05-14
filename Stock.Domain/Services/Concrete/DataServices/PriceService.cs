@@ -16,27 +16,12 @@ namespace Stock.Domain.Services
     {
 
         private IPriceRepository _repository;
-        private static readonly IPriceService instance = new PriceService(RepositoryFactory.GetPriceRepository());
-        private static AnalysisItemsContainer<Price> container;
+        private AnalysisItemsContainer<Price> container;
 
 
         #region INFRASTRUCTURE
 
-        public static IPriceService Instance()
-        {
-            return instance;
-        }
-
-        public static IPriceService Instance(bool reset)
-        {
-            if (reset)
-            {
-                container = new AnalysisItemsContainer<Price>(instance);
-            }
-            return instance;
-        }
-
-        private PriceService(IPriceRepository repository)
+        public PriceService(IPriceRepository repository)
         {
             _repository = repository;
             container = new AnalysisItemsContainer<Price>(this);
@@ -90,7 +75,30 @@ namespace Stock.Domain.Services
 
         public void UpdatePrices(IEnumerable<Price> prices) 
         {
-            _repository.UpdatePrices(prices.Select(p => p.ToDto()));
+            
+            IEnumerable<Price> updatedPrices = prices.Where(p => p.IsUpdated || p.IsNew);
+            IEnumerable<PriceDto> priceDtos = updatedPrices.Select(p => p.ToDto());
+            IEnumerable<Extremum> updatedExtrema = getUpdatedExtrema(prices);
+            IEnumerable<ExtremumDto> extremumDtos = updatedExtrema.Select(p => p.ToDto());
+            _repository.UpdatePrices(priceDtos);
+            _repository.UpdateExtrema(extremumDtos);
+        }
+
+        private IEnumerable<Extremum> getUpdatedExtrema(IEnumerable<Price> prices)
+        {
+            List<Extremum> list = new List<Extremum>();
+            foreach (var price in prices)
+            {
+                IEnumerable<Extremum> priceExtrema = price.GetExtrema();
+                foreach (var extremum in priceExtrema)
+                {
+                    if (extremum.IsUpdated)
+                    {
+                        list.Add(extremum);
+                    }
+                }
+            }
+            return list;
         }
 
 

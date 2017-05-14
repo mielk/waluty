@@ -23,7 +23,5 @@ namespace Stock.Domain.Services
         //void loadAnalyzers(Dictionary<AnalysisType, IAnalyzer> analyzers);
         //void injectQuotationService(IQuotationService instance);
 
-        Dictionary<AnalysisType, IAnalyzer> getAnalyzers();
-
     }
 }

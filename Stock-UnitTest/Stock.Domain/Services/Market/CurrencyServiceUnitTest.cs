@@ -28,8 +28,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.MarketServices
 
         private ICurrencyService testServiceInstance(Mock<ICurrencyRepository> mockedRepository)
         {
-            ICurrencyService service = CurrencyService.Instance(true);
-            service.InjectRepository(mockedRepository.Object);
+            ICurrencyService service = new CurrencyService(mockedRepository.Object);
             return service;
         }
 

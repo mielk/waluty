@@ -17,6 +17,17 @@ namespace Stock.Domain.Services
         private Dictionary<int, AssetItemsContainer> dataSetsByAssets = new Dictionary<int, AssetItemsContainer>();
 
 
+        #region CONSTRUCTOR
+
+        public DataSetsContainer()
+        {
+            this.quotationService = ServiceFactory.GetQuotationService();
+            this.priceService = ServiceFactory.GetPriceService();
+        }
+
+        #endregion CONSTRUCTOR
+
+
         #region SETTERS
 
         public void SetQuotationService(IQuotationService service)

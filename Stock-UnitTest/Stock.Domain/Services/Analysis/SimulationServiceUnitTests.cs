@@ -46,8 +46,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             mockedRepository.Setup(r => r.GetAnalysisTimestampsForSimulation(2)).Returns(new AnalysisTimestampDto[] { timestamp4, timestamp5, timestamp6 });
 
             //Act
-            SimulationService service = SimulationService.Instance();
-            service.InjectRepository(mockedRepository.Object);
+            SimulationService service = new SimulationService(mockedRepository.Object);
             var actualSimultations = service.GetSimulations();
 
             //Assert
@@ -78,8 +77,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             mockedRepository.Setup(r => r.GetSimulationByNameAssetTimeframe("a", 1, 1)).Returns(returnedDto);
 
             //Act
-            SimulationService service = SimulationService.Instance(true);
-            service.InjectRepository(mockedRepository.Object);
+            SimulationService service = new SimulationService(mockedRepository.Object);
 
             //Assert
             Simulation baseSimulation = service.GetSimulationByNameAssetTimeframe("a", 1, 1);
@@ -105,8 +103,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             mockedRepository.Setup(r => r.GetAnalysisTimestampsForSimulation(1)).Returns(new AnalysisTimestampDto[] { timestamp1, timestamp2, timestamp3 });
 
             //Act
-            SimulationService service = SimulationService.Instance();
-            service.InjectRepository(mockedRepository.Object);
+            SimulationService service = new SimulationService(mockedRepository.Object);
             var actualSimulation = service.GetSimulationByNameAssetTimeframe("a", 1, 1);
 
             //Assert
@@ -139,8 +136,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             mockedRepository.Setup(r => r.GetAnalysisTimestampsForSimulation(1)).Returns(new AnalysisTimestampDto[] { timestamp1, timestamp2, timestamp3 });
 
             //Act
-            SimulationService service = SimulationService.Instance();
-            service.InjectRepository(mockedRepository.Object);
+            SimulationService service = new SimulationService(mockedRepository.Object);
 
             //Assert
             Simulation baseSimulation = service.GetSimulationByNameAssetTimeframe("a", 1, 1);

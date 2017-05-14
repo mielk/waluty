@@ -14,30 +14,14 @@ namespace Stock.Domain.Services
     {
 
         private ICurrencyRepository _repository;
-        private static readonly ICurrencyService instance = new CurrencyService(RepositoryFactory.GetCurrencyRepository());
-        private static IEnumerable<Currency> currencies = new List<Currency>();
-        private static IEnumerable<FxPair> fxPairs = new List<FxPair>();
+        private IEnumerable<Currency> currencies = new List<Currency>();
+        private IEnumerable<FxPair> fxPairs = new List<FxPair>();
 
 
         
         #region INFRASTRUCTURE
 
-        public static ICurrencyService Instance()
-        {
-            return instance;
-        }
-
-        public static ICurrencyService Instance(bool reset)
-        {
-            if (reset)
-            {
-                fxPairs = new List<FxPair>();
-                currencies = new List<Currency>();
-            }
-            return instance;
-        }
-
-        private CurrencyService(ICurrencyRepository repository)
+        public CurrencyService(ICurrencyRepository repository)
         {
             _repository = repository;
         }

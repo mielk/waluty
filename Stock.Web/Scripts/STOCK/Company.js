@@ -146,10 +146,10 @@ function QuotationSet(params) {
 
         mielk.db.fetch(
             simulation ? 'Simulation' : 'Company',
-            'GetFxQuotationsByDates',
+            'GetQuotations',
             simulation ?
                 { startDate: startDate, endDate: endDate } :
-                { pairSymbol: company.symbol, timeframe: timeframe.symbol, startDate: startDate, endDate: endDate },
+                { assetId: company.id, timeframeId: timeframe.id, startDate: startDate, endDate: endDate },
             {
                 async: true,
                 callback: function (res) {
@@ -221,19 +221,20 @@ function QuotationSet(params) {
     function loadProperties(fn) {
 
         var properties = null;
-
+        //simulation ? {} : { pairSymbol: company.id, timeframe: timeframe.id },
         mielk.db.fetch(
             simulation ? 'Simulation' : 'Company',
             'GetDataSetProperties',
-            simulation ? { } : { pairSymbol: company.symbol, timeframe: timeframe.symbol },
+            simulation ? { } : { assetId: 1, timeframeId: 3 },
             {
                 async: false,
                 callback: function (res) {
-                    firstDate = mielk.dates.fromCSharpDateTime(res.firstDate);
-                    lastDate = mielk.dates.fromCSharpDateTime(res.lastDate);
-                    minLevel = res.minPrice;
-                    maxLevel = res.maxPrice;
-                    actualQuotationsCounter = res.counter;
+                    var arr = { firstDate: res.firstDate, lastDate: res.lastDate, minLevel: res.minLevel * 1, maxLevel: res.maxLevel * 1, counter: res.counter * 1 };
+                    firstDate = mielk.dates.fromCSharpDateTime(arr.firstDate);
+                    lastDate = mielk.dates.fromCSharpDateTime(arr.lastDate);
+                    minLevel = 1.05; //arr.minLevel;
+                    maxLevel = 1.13; //arr.maxLevel;
+                    actualQuotationsCounter = arr.counter;
                     
                     //Create object for quotations (with slot for each date
                     //between [firstDate] and [lastDate].
@@ -316,185 +317,3 @@ function QuotationSet(params) {
 $(function () {
     STOCK.COMPANIES = CompanyManager();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Company.prototype = {
-//    toString: function () {
-//        return this.name + ' (' + this.id + ')';
-//    },
-//    bind: function (e) {
-//        $(this).bind(e);
-//    },
-//    trigger: function (e) {
-//        $(this).trigger(e);
-//    },
-//    load: function (timeframe, params) {
-//        var self = this;
-//        var results;
-//        if (!params) params = {};
-
-//        //Check if data are already loaded. If yes, there is no
-//        //point to re-load them. In this case only callback 
-//        //function is called.
-//        if (this.checkData(timeframe, params)) {
-//            results = this.getQuotationsSet(timeframe).getQuotations();
-//            if (mielk.objects.isFunction(params.callback)) {
-//                (params.callback)(results);
-//            }
-//            return;
-//        }
-
-
-//        //Otherwise, the data are loaded from the database.
-//        results = mielk.db.fetch('Company',
-//            self.isFx ? 'GetFxQuotations' : 'GetQuotations',
-//            {
-//                pairSymbol: self.isFx ? self.name : self.id,
-//                timeframe: self.isFx ? timeframe.symbol : timeframe.id,
-//                count: params.count || 0
-//            },
-//            {
-//                async: true,
-//                callback: function (r) {
-//                    var quotations = STOCK.QUOTATIONS.convertToQuotations(r);
-//                    self.setQuotations(timeframe, quotations);
-
-//                    //Run additional callback functions if they are given.
-//                    if (mielk.objects.isFunction(params.callback)) {
-//                        (params.callback)(quotations);
-//                    }
-
-//                }
-//            }
-//        );
-//    },
-//    checkData: function (timeframe, params) {
-//        var set = this.getQuotationsSet(timeframe);
-
-//        if (!set) return false;
-
-//        return set.containsData(params);
-
-//    },
-//    getQuotationsSet: function (timeframe) {
-//        if (this.quotations.hasOwnProperty(timeframe.id)) {
-//            return this.quotations[timeframe.id];
-//        } else {
-//            return null;
-//        }
-//    },
-//    setQuotations: function (timeframe, quotations) {
-//        var self = this;
-//        var set = this.getQuotationsSet(timeframe);
-
-//        if (set) {
-
-//            //If set already exists, it has to be checked if it
-//            //already contains the given quotations.
-//            set.appendQuotations(quotations);
-
-//        } else {
-
-//            //New quotations set is created ...
-//            set = function (tb, q) {
-//                var $timeframe = tb;
-//                var $quotations = q;
-
-//                function startDate() {
-//                    return $quotations[0].date;
-//                }
-
-//                function endDate() {
-//                    return mielk.arrays.getLastItem($quotations).date;
-//                }
-
-//                function containsData(params) {
-//                    if (!params) return false;
-
-//                    //Sprawdza pod względem liczebności.
-//                    var size = params.size || params.count || params.length || 0;
-//                    if (size) {
-//                        return $quotations.length >= size;
-//                    }
-
-//                    //Sprawdza zakres dat.
-//                    var start = params.start || params.startDate || 0;
-//                    var end = params.end || params.endDate || 0;
-
-//                    return (startDate <= start && endDate >= end);
-
-//                }
-
-//                function appendQuotations($q) {
-
-//                    //TODO zmienić implementację - zakresy dat mogą na siebie nachodzić w różny sposób - 
-//                    //niekoniecznie jeden będzie się całkowicie zawierał w drugim.
-
-//                    var start = $q[0].date;
-//                    var end = mielk.arrays.getLastItem($q).date;
-
-//                    if (start < startDate || end > endDate) {
-//                        quotations = $q;
-
-//                        //Trigger an event of data reloading.
-//                        self.trigger({ type: 'reloaded' });
-
-//                    }
-
-//                }
-
-//                function getQuotations(params) {
-
-//                    //TODO zmienić implementację, żeby uwzględniała różne zakresy dat
-//                    //oraz umożliwiała pobranie wybranej ilości ostatnich notowań.
-
-//                    return quotations;
-
-//                }
-
-//                return {
-//                    getQuotations: getQuotations,
-//                    containsData: containsData,
-//                    appendQuotations: appendQuotations
-//                };
-
-//            }(timeframe, quotations);
-
-//            //... and added to the collection of quotations sets.
-//            this.quotations[timeframe.id] = set;
-
-//            //Trigger an event of data reloading.
-//            self.trigger({ type: 'reloaded' });
-
-//        }
-
-//    },
-//    getQuotations: function (timeframe) {
-//        var set = this.getQuotationsSet(timeframe);
-//        return set ? set.getQuotations() : [];
-//    }
-
-//};
