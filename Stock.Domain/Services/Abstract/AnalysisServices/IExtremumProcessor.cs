@@ -12,5 +12,8 @@ namespace Stock.Domain.Services
     {
         bool IsExtremum(DataSet dataSet, ExtremumType type);
         void InjectProcessManager(IProcessManager manager);
+        double CalculateEarlierAmplitude(Extremum extremum);
+        int CalculateEarlierCounter(Extremum extremum);
+        double CalculateEarlierChange(Extremum extremum, int units);
     }
 }

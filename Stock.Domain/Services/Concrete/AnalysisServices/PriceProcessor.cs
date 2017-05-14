@@ -53,7 +53,7 @@ namespace Stock.Domain.Services
             {
                 createPriceObjectIfNotExist(dataSet);
                 calculateDelta(dataSet);
-                checkForExtrema(dataSet);
+                processExtrema(dataSet);
             }
         }
 
@@ -179,15 +179,15 @@ namespace Stock.Domain.Services
 
         #region CHECKING FOR EXTREMA
 
-        private void checkForExtrema(DataSet dataSet)
+        private void processExtrema(DataSet dataSet)
         {
-            checkForExtremum(dataSet, ExtremumType.PeakByClose);
-            checkForExtremum(dataSet, ExtremumType.PeakByHigh);
-            checkForExtremum(dataSet, ExtremumType.TroughByClose);
-            checkForExtremum(dataSet, ExtremumType.TroughByLow);
+            processExtremum(dataSet, ExtremumType.PeakByClose);
+            processExtremum(dataSet, ExtremumType.PeakByHigh);
+            processExtremum(dataSet, ExtremumType.TroughByClose);
+            processExtremum(dataSet, ExtremumType.TroughByLow);
         }
 
-        private void checkForExtremum(DataSet dataSet, ExtremumType type)
+        private void processExtremum(DataSet dataSet, ExtremumType type)
         {
             Price price = dataSet.GetPrice();
             if (price == null) throw new Exception("Price should not be null");
@@ -200,6 +200,13 @@ namespace Stock.Domain.Services
                 {
                     extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate());
                     price.SetExtremum(extremum);
+                    extremum.EarlierAmplitude = processor.CalculateEarlierAmplitude(extremum);
+                    extremum.EarlierCounter = processor.CalculateEarlierCounter(extremum);
+                    extremum.EarlierChange1 = processor.CalculateEarlierChange(extremum, 1);
+                    extremum.EarlierChange2 = processor.CalculateEarlierChange(extremum, 2);
+                    extremum.EarlierChange3 = processor.CalculateEarlierChange(extremum, 3);
+                    extremum.EarlierChange5 = processor.CalculateEarlierChange(extremum, 5);
+                    extremum.EarlierChange10 = processor.CalculateEarlierChange(extremum, 10);
                 }
             }
             else
@@ -212,8 +219,6 @@ namespace Stock.Domain.Services
         }
 
         #endregion CHECKING FOR EXTREMA
-
-
 
     }
 

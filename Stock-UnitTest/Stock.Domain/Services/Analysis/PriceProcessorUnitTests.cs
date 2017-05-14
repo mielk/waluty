@@ -382,7 +382,187 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         }
 
+        //Jeżeli tworzony jest nowy obiekt Extremum - ma flagę isNew = true;
+        //Jeżeli istniał już wcześniej obiekt Extremum - ma flagę isNew = false;
+
+        [TestMethod]
+        public void AfterProcessing_ExtremumObjectHasProperlyAssignedEarlierCounter()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
+            mockedProcessor.Setup(p => p.CalculateEarlierCounter(It.IsAny<Extremum>())).Returns(4);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            int expectedValue = 4;
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.TroughByLow);
+            Assert.AreEqual(expectedValue, extremum.EarlierCounter);
+
+        }
+
+        [TestMethod]
+        public void AfterProcessing_ExtremumObjectHasProperlyAssignedEarlierAmplitude()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
+            mockedProcessor.Setup(p => p.CalculateEarlierAmplitude(It.IsAny<Extremum>())).Returns(1.23);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            double expectedValue = 1.23;
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.TroughByLow);
+            var difference = (extremum.EarlierAmplitude - expectedValue);
+            Assert.IsTrue(Math.Abs(difference) < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+
+        }
+
+        [TestMethod]
+        public void AfterProcessing_ExtremumObjectHasProperlyAssignedEarlierChange1()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
+            mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 1)).Returns(1.23);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            double expectedValue = 1.23;
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.TroughByLow);
+            var difference = (extremum.EarlierChange1 - expectedValue);
+            Assert.IsTrue(Math.Abs(difference) < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+
+        }
+
+        [TestMethod]
+        public void AfterProcessing_ExtremumObjectHasProperlyAssignedEarlierChange2()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
+            mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 2)).Returns(1.23);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            double expectedValue = 1.23;
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.TroughByLow);
+            var difference = (extremum.EarlierChange2 - expectedValue);
+            Assert.IsTrue(Math.Abs(difference) < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+
+        }
+
+        [TestMethod]
+        public void AfterProcessing_ExtremumObjectHasProperlyAssignedEarlierChange3()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
+            mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 3)).Returns(1.23);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            double expectedValue = 1.23;
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.TroughByLow);
+            var difference = (extremum.EarlierChange3 - expectedValue);
+            Assert.IsTrue(Math.Abs(difference) < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+
+        }
+
+        [TestMethod]
+        public void AfterProcessing_ExtremumObjectHasProperlyAssignedEarlierChange5()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
+            mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 5)).Returns(1.23);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            double expectedValue = 1.23;
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.TroughByLow);
+            var difference = (extremum.EarlierChange5 - expectedValue);
+            Assert.IsTrue(Math.Abs(difference) < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+
+        }
+
+        [TestMethod]
+        public void AfterProcessing_ExtremumObjectHasProperlyAssignedEarlierChange10()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
+            mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 10)).Returns(1.23);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            double expectedValue = 1.23;
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.TroughByLow);
+            var difference = (extremum.EarlierChange10 - expectedValue);
+            Assert.IsTrue(Math.Abs(difference) < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+
+        }
+
         #endregion CREATING_EXTREMA_OBJECT
+
+
 
 
 
