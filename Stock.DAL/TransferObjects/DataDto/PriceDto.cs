@@ -90,12 +90,12 @@ namespace Stock.DAL.TransferObjects
             if (compared.PriceDate.CompareTo(PriceDate) != 0) return false;
             if ((compared.AssetId) != AssetId) return false;
             if ((compared.TimeframeId) != TimeframeId) return false;
-            if (!compared.DeltaClosePrice.CompareForTest(DeltaClosePrice, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.DeltaClosePrice.IsEqual(DeltaClosePrice)) return false;
             if ((compared.PriceDirection2D) != PriceDirection2D) return false;
             if ((compared.PriceDirection3D) != PriceDirection3D) return false;
-            if (!compared.PriceGap.CompareForTest(PriceGap, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.CloseRatio.CompareForTest(CloseRatio, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.ExtremumRatio.CompareForTest(ExtremumRatio, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.PriceGap.IsEqual(PriceGap)) return false;
+            if (!compared.CloseRatio.IsEqual(CloseRatio)) return false;
+            if (!compared.ExtremumRatio.IsEqual(ExtremumRatio)) return false;
             return true;
 
         }

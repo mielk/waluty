@@ -475,12 +475,40 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         #region DATA_SET_INFO
 
+        //Aktualnie zawsze zwraca najwyższy i najniższy poziom dla notowań. Zrobić, żeby podawać jako argument dla jakiego rodzaju analizy ma to wyliczać.
+
         [Ignore]
         [TestMethod]
-        public void GetDataSetInfo()
+        public void GetDataSetInfo_ReturnsProperDataSetInfo_ForEmptyCollectionOfQuotations()
+        {
+
+            ////Arrange
+
+
+            ////Act
+            //DataSetInfo expectedInfo = null;
+
+            ////Assert
+            //DataSetInfo expectedInfo = new DataSetInfo() { StartDate = null, EndDate = null, MinLevel = null, MaxLevel = null, Counter = 0 };
+            //bool isEqual = expectedInfo.Equals(actualInfo);
+            //Assert.IsTrue(isEqual);
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void GetDataSetInfo_ReturnsProperDataSetInfo_ForManyItemsCollectionOfQuotations()
         {
             //Napisać testy dla tej metody.
         }
+
+        [Ignore]
+        [TestMethod]
+        public void GetDataSetInfo_ReturnsProperDataSetInfo_ForSingleItemCollectionOfQuotations()
+        {
+            //Napisać testy dla tej metody.
+        }
+
 
         #endregion DATA_SET_INFO
 

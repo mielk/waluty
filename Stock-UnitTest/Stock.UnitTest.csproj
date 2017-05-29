@@ -94,6 +94,7 @@
     <Compile Include="Stock.DAL\TransferObjects\DataDto\PriceDtoUnitTests.cs" />
     <Compile Include="Stock.DAL\TransferObjects\DataDto\QuotationDtoUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Analysis\SimulationUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\Data\DataSetInfoUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Data\ExtremumUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Data\DataSetUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Data\QuotationUnitTests.cs" />

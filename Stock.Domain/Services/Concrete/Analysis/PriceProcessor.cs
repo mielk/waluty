@@ -194,28 +194,33 @@ namespace Stock.Domain.Services
 
             Extremum extremum = price.GetExtremum(type);
             IExtremumProcessor processor = getExtremumProcessor();
-            if (processor.IsExtremum(dataSet, type))
+            if (extremum == null)
             {
-                if (extremum == null)
+                if (processor.IsExtremum(dataSet, type))
                 {
                     extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate());
                     price.SetExtremum(extremum);
-                    extremum.EarlierAmplitude = processor.CalculateEarlierAmplitude(extremum);
-                    extremum.EarlierCounter = processor.CalculateEarlierCounter(extremum);
-                    extremum.EarlierChange1 = processor.CalculateEarlierChange(extremum, 1);
-                    extremum.EarlierChange2 = processor.CalculateEarlierChange(extremum, 2);
-                    extremum.EarlierChange3 = processor.CalculateEarlierChange(extremum, 3);
-                    extremum.EarlierChange5 = processor.CalculateEarlierChange(extremum, 5);
-                    extremum.EarlierChange10 = processor.CalculateEarlierChange(extremum, 10);
                 }
             }
-            else
+
+            if (extremum != null)
             {
-                if (extremum != null)
-                {
-                    extremum.ToBeDeleted = true;
-                }
+                extremum.EarlierAmplitude = processor.CalculateEarlierAmplitude(extremum);
+                extremum.EarlierCounter = processor.CalculateEarlierCounter(extremum);
+                extremum.EarlierChange1 = processor.CalculateEarlierChange(extremum, 1);
+                extremum.EarlierChange2 = processor.CalculateEarlierChange(extremum, 2);
+                extremum.EarlierChange3 = processor.CalculateEarlierChange(extremum, 3);
+                extremum.EarlierChange5 = processor.CalculateEarlierChange(extremum, 5);
+                extremum.EarlierChange10 = processor.CalculateEarlierChange(extremum, 10);
+                extremum.LaterAmplitude = processor.CalculateLaterAmplitude(extremum);
+                extremum.LaterCounter = processor.CalculateLaterCounter(extremum);
+                extremum.LaterChange1 = processor.CalculateLaterChange(extremum, 1);
+                extremum.LaterChange2 = processor.CalculateLaterChange(extremum, 2);
+                extremum.LaterChange3 = processor.CalculateLaterChange(extremum, 3);
+                extremum.LaterChange5 = processor.CalculateLaterChange(extremum, 5);
+                extremum.LaterChange10 = processor.CalculateLaterChange(extremum, 10);
             }
+
         }
 
         #endregion CHECKING FOR EXTREMA

@@ -332,10 +332,10 @@ namespace Stock.Domain.Entities
             if (compared.Date.CompareTo(Date) != 0) return false;
             if ((compared.AssetId) != AssetId) return false;
             if ((compared.TimeframeId) != TimeframeId) return false;
-            if (!compared.CloseDelta.CompareForTest(CloseDelta, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.CloseDelta.IsEqual(CloseDelta)) return false;
             if ((compared.Direction2D) != Direction2D) return false;
             if ((compared.Direction3D) != Direction3D) return false;
-            if (!compared.PriceGap.CompareForTest(PriceGap, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.PriceGap.IsEqual(PriceGap)) return false;
             if (PeakByClose == null && compared.GetExtremum(ExtremumType.PeakByClose) != null) return false;
             if (PeakByClose != null && !PeakByClose.Equals(compared.PeakByClose)) return false;
             if (PeakByHigh == null && compared.GetExtremum(ExtremumType.PeakByHigh) != null) return false;
@@ -344,8 +344,8 @@ namespace Stock.Domain.Entities
             if (TroughByClose != null && !TroughByClose.Equals(compared.TroughByClose)) return false;
             if (TroughByLow == null && compared.GetExtremum(ExtremumType.TroughByLow) != null) return false;
             if (TroughByLow != null && !TroughByLow.Equals(compared.TroughByLow)) return false;
-            if (!compared.CloseRatio.CompareForTest(CloseRatio, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.ExtremumRatio.CompareForTest(ExtremumRatio, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.CloseRatio.IsEqual(CloseRatio)) return false;
+            if (!compared.ExtremumRatio.IsEqual(ExtremumRatio)) return false;
             if (compared.IsUpdated != IsUpdated) return false;
             if (compared.IsNew != IsNew) return false;
             return true;

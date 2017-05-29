@@ -93,6 +93,10 @@ namespace Stock.Domain.Services
             return array;
         }
 
+
+
+        //Aktualnie zawsze zwraca najwyższy i najniższy poziom dla notowań. Zrobić, żeby podawać jako argument dla jakiego rodzaju analizy ma to wyliczać.
+
         public DataSetInfo GetDataSetInfo(AnalysisDataQueryDefinition queryDef)
         {
             DataSetInfo info = new DataSetInfo();

@@ -172,6 +172,92 @@ namespace Stock.Domain.Services
             }
         }
 
+
+
+        public double CalculateLaterAmplitude(Extremum extremum) {
+            double maxDifference = 0d;
+            int index = extremum.IndexNumber;
+            int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
+            DataSet currentDataSet = manager.GetDataSet(index);
+            Quotation quotation = currentDataSet.GetQuotation();
+            if (quotation == null) return 0d;
+
+
+            bool exit = false;
+            while (!exit)
+            {
+                if (++index > extremum.IndexNumber + MaxSerieCount) break;
+                Quotation comparedQuotation = getQuotation(index);
+                if (comparedQuotation == null) break;
+
+                if (coefficient * (quotation.GetProperValue(extremum.Type) - comparedQuotation.GetProperValue(extremum.Type)) > 0)
+                {
+                    double difference = Math.Abs(quotation.GetProperValue(extremum.Type) - comparedQuotation.GetOppositeValue(extremum.Type));
+                    if (difference > maxDifference)
+                    {
+                        maxDifference = difference;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+
+            }
+
+            return maxDifference;
+        
+        }
+
+        public int CalculateLaterCounter(Extremum extremum)
+        {
+            int index = extremum.IndexNumber;
+            int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
+            DataSet currentDataSet = manager.GetDataSet(index);
+            Quotation quotation = currentDataSet.GetQuotation();
+            int counter = 0;
+            if (quotation == null) return 0;
+
+            for (int i = index - 1; i > Math.Max(0, index - MaxSerieCount - 1); i--)
+            {
+                Quotation comparedQuotation = getQuotation(i);
+                if (comparedQuotation != null)
+                {
+                    if (coefficient * (quotation.GetProperValue(extremum.Type) - comparedQuotation.GetProperValue(extremum.Type)) > 0)
+                    {
+                        counter++;
+                    }
+                    else
+                    {
+                        return counter;
+                    }
+                }
+            }
+
+            return counter;
+        
+        }
+
+        public double CalculateLaterChange(Extremum extremum, int units)
+        {
+            int index = extremum.IndexNumber;
+            int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
+            DataSet currentDataSet = manager.GetDataSet(index);
+            Quotation quotation = currentDataSet.GetQuotation();
+            Quotation comparedQuotation = getQuotation(index - units);
+            if (comparedQuotation != null)
+            {
+                double baseValue = quotation.Close;
+                double comparedValue = comparedQuotation.Close;
+                var difference = coefficient * (baseValue - comparedValue);
+                return (difference / comparedValue);
+            }
+            else
+            {
+                return 0d;
+            }
+        }
+
     }
 
 }

@@ -168,11 +168,11 @@ namespace Stock.Domain.Entities
             if (compared.Date.CompareTo(Date) != 0) return false;
             if ((compared.AssetId) != AssetId) return false;
             if ((compared.TimeframeId) != TimeframeId) return false;
-            if (!compared.Open.CompareForTest(Open, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.High.CompareForTest(High, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.Low.CompareForTest(Low, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.Close.CompareForTest(Close, MAX_VALUE_DIFFERENCE)) return false;
-            if (!((double)compared.Volume).CompareForTest((double)Volume, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.Open.IsEqual(Open)) return false;
+            if (!compared.High.IsEqual(High)) return false;
+            if (!compared.Low.IsEqual(Low)) return false;
+            if (!compared.Close.IsEqual(Close)) return false;
+            if (!((double)compared.Volume).IsEqual((double)Volume)) return false;
             return true;
 
         }

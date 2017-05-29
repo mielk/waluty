@@ -34,10 +34,30 @@ namespace Stock.Utils
             }
         }
 
-        public static bool CompareForTest(this double value, double compared, double maxDifference)
+        public static bool IsEqual(this double value, double compared)
         {
-            double absDifference = Math.Abs(value - compared);
-            return (absDifference <= maxDifference);
+            const double MAX_DIFFERENCE = 0.00001d;
+            double absDifference = Math.Abs((double)value - (double)compared);
+            return (absDifference <= MAX_DIFFERENCE);
+        }
+
+        public static bool IsEqual(this double? value, double? compared)
+        {
+            if (value == null)
+            {
+                return (compared == null);
+            }
+            else
+            {
+                if (compared != null)
+                {
+                    return ((double)value).IsEqual((double)compared);
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
     }

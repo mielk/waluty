@@ -87,11 +87,11 @@ namespace Stock.DAL.TransferObjects
             if (compared.PriceDate.CompareTo(PriceDate) != 0) return false;
             if ((compared.AssetId) != AssetId) return false;
             if ((compared.TimeframeId) != TimeframeId) return false;
-            if (!compared.OpenPrice.CompareForTest(OpenPrice, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.HighPrice.CompareForTest(HighPrice, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.LowPrice.CompareForTest(LowPrice, MAX_VALUE_DIFFERENCE)) return false;
-            if (!compared.ClosePrice.CompareForTest(ClosePrice, MAX_VALUE_DIFFERENCE)) return false;
-            if (!((double)compared.Volume).CompareForTest((double)Volume, MAX_VALUE_DIFFERENCE)) return false;
+            if (!compared.OpenPrice.IsEqual(OpenPrice)) return false;
+            if (!compared.HighPrice.IsEqual(HighPrice)) return false;
+            if (!compared.LowPrice.IsEqual(LowPrice)) return false;
+            if (!compared.ClosePrice.IsEqual(ClosePrice)) return false;
+            if (!((double)compared.Volume).IsEqual((double)Volume)) return false;
             return true;
 
         }
