@@ -1,0 +1,339 @@
+CREATE TABLE `fx`.`_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `property` varchar(135) NOT NULL,
+  `value` varchar(135) NOT NULL,
+PRIMARY KEY `PRIMARY` (`id`),
+UNIQUE KEY `property_UNIQUE` (`property`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `fx`.`_errors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(765) DEFAULT NULL,
+  `timestamp` datetime DEFAULT NULL,
+  `module` varchar(135) DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`id`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`markets` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(765) NOT NULL,
+  `shortName` varchar(9) NOT NULL,
+  `startTime` varchar(24) DEFAULT NULL,
+  `endTime` varchar(24) DEFAULT NULL,
+  `isAroundClock` bit(1) DEFAULT NULL,
+  `isActive` bit(1) DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`id`)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE `fx`.`currencies` (
+  `Id` int(10) unsigned NOT NULL,
+  `CurrencySymbol` varchar(9) NOT NULL,
+  `CurrencyFullName` varchar(765) DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`Id`),
+UNIQUE KEY `CurrencyName` (`CurrencySymbol`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`pairs` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(18) NOT NULL,
+  `BaseCurrency` int(3) NOT NULL,
+  `QuoteCurrency` int(3) NOT NULL,
+  `IsActive` bit(1) NOT NULL,
+PRIMARY KEY `PRIMARY` (`Id`),
+UNIQUE KEY `PairName` (`Name`)
+) ENGINE=InnoDB;
+
+## !Dodać FK do BaseCurrenct i QuoteCurrency
+
+CREATE TABLE `fx`.`timeframes` (
+  `Id` int(11) NOT NULL,
+  `Symbol` varchar(18) NOT NULL,
+  `PeriodCounter` double DEFAULT NULL,
+  `IsActive` bit(1) NOT NULL,
+  `PeriodUnit` varchar(135) NOT NULL,
+PRIMARY KEY `PRIMARY` (`Id`),
+UNIQUE KEY `Symbol` (`Symbol`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`assets` (
+  `Id` int(10) unsigned NOT NULL,
+  `Symbol` varchar(60) NOT NULL,
+  `MarketId` int(10) unsigned NOT NULL,
+PRIMARY KEY `PRIMARY` (`Id`),
+KEY `FK_company_market` (`MarketId`)
+) ENGINE=InnoDB;
+
+## !Dodać FK do MarketId
+
+
+CREATE TABLE `fx`.`analyses` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `AnalysisName` varchar(135) NOT NULL,
+  `Symbol` varchar(135) NOT NULL,
+  `FirstAnalysedItemDate` datetime NOT NULL,
+  `LastAnalysedItemDate` datetime NOT NULL,
+  `AnalysedUnits` int(11) NOT NULL,
+  `AnalysisStart` datetime NOT NULL,
+  `AnalysisEnd` datetime NOT NULL,
+  `AnalysisTotalTime` float DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`Id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `fx`.`analysis_types` (
+  `AnalysisTypeId` int(11) NOT NULL,
+  `AnalysisTypeName` varchar(135) NOT NULL,
+PRIMARY KEY `PRIMARY` (`AnalysisTypeId`),
+UNIQUE KEY `AnalysisTypeName_UNIQUE` (`AnalysisTypeName`)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE `fx`.`dates` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Date` datetime NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `IndexNumber` int(11) NOT NULL,
+PRIMARY KEY `PRIMARY` (`Id`),
+KEY `index_Date` (`Date`),
+KEY `index_Timeframe` (`TimeframeId`),
+KEY `index_IndexNumber` (`IndexNumber`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`last_updates` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `SimulationId` int(11) NOT NULL,
+  `AssetId` int(11) NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `AnalysisTypeId` int(11) NOT NULL,
+  `LastDate` datetime DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`Id`),
+UNIQUE KEY `LastUpdates_Unique_SimulationAnalysisType` (`SimulationId`,`AnalysisTypeId`),
+KEY `LastUpdates_AnalysisId` (`AnalysisTypeId`),
+KEY `LastUpdates_SImulationId` (`SimulationId`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`simulations` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(765) NOT NULL,
+  `AssetId` int(11) NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+PRIMARY KEY `PRIMARY` (`Id`),
+UNIQUE KEY `NameAssetTimeframe_UNIQUE` (`Name`,`AssetId`,`TimeframeId`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`quotations` (
+  `QuotationId` int(10) NOT NULL AUTO_INCREMENT,
+  `PriceDate` datetime NOT NULL,
+  `AssetId` int(10) NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `OpenPrice` double NOT NULL,
+  `HighPrice` double NOT NULL,
+  `LowPrice` double NOT NULL,
+  `ClosePrice` double NOT NULL,
+  `RealClosePrice` double DEFAULT NULL,
+  `Volume` double DEFAULT NULL,
+  `IndexNumber` int(11) NOT NULL,
+PRIMARY KEY `PRIMARY` (`QuotationId`),
+UNIQUE KEY `Quotations_Unique_AssetTimeframeDate` (`PriceDate`,`AssetId`,`TimeframeId`),
+KEY `Quotations_PriceDate` (`PriceDate`),
+KEY `Quotations_AssetId` (`AssetId`),
+KEY `Quotations_TimeframeId` (`TimeframeId`),
+KEY `Quotations_IndexNumber` (`IndexNumber`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`prices` (
+  `PriceId` int(10) NOT NULL AUTO_INCREMENT,
+  `SimulationId` int(11) NOT NULL,
+  `AssetId` int(10) unsigned NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `PriceDate` datetime NOT NULL,
+  `DeltaClosePrice` double DEFAULT NULL,
+  `PriceDirection3D` int(10) DEFAULT NULL,
+  `PriceDirection2D` int(10) DEFAULT NULL,
+  `PriceGap` double DEFAULT NULL,
+  `CloseRatio` double DEFAULT NULL,
+  `ExtremumRatio` double DEFAULT NULL,
+  `IndexNumber` int(11) NOT NULL,
+PRIMARY KEY `PRIMARY` (`PriceId`),
+UNIQUE KEY `Prices_Unique_AssetTimeframeDate` (`TimeframeId`,`AssetId`,`PriceDate`),
+KEY `Prices_AssetId` (`AssetId`),
+KEY `Prices_TimeframeId` (`TimeframeId`),
+KEY `Prices_PriceDate` (`PriceDate`),
+KEY `Prices_IndexNumber` (`IndexNumber`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`macd` (
+  `MacdId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `SimulationId` int(11) NOT NULL,
+  `AssetId` int(11) unsigned NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `PriceDate` datetime NOT NULL,
+  `MA13` float DEFAULT NULL,
+  `EMA13` float DEFAULT NULL,
+  `MA26` float DEFAULT NULL,
+  `EMA26` float DEFAULT NULL,
+  `MACDLine` float DEFAULT NULL,
+  `SignalLine` float DEFAULT NULL,
+  `Histogram` float DEFAULT NULL,
+  `HistogramAvg` float DEFAULT NULL,
+  `HistogramExtremum` float DEFAULT NULL,
+  `DeltaHistogram` float DEFAULT NULL,
+  `DeltaHistogramPositive` int(11) DEFAULT NULL,
+  `DeltaHistogramNegative` int(11) DEFAULT NULL,
+  `DeltaHistogramZero` int(11) DEFAULT NULL,
+  `HistogramDirection2D` int(1) DEFAULT NULL,
+  `HistogramDirection3D` int(1) DEFAULT NULL,
+  `HistogramDirectionChanged` int(11) DEFAULT NULL,
+  `HistogramToOX` int(1) DEFAULT NULL,
+  `HistogramRow` int(11) DEFAULT NULL,
+  `OxCrossing` float DEFAULT NULL,
+  `MacdPeak` int(11) DEFAULT NULL,
+  `LastMACDPeak` float DEFAULT NULL,
+  `MACDPeakSlope` float DEFAULT NULL,
+  `MACDTrough` int(11) DEFAULT NULL,
+  `LastMACDTrough` float DEFAULT NULL,
+  `MACDTroughSlope` float DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`MacdId`),
+UNIQUE KEY `Macd_Unique_AssetTimeframeDate` (`AssetId`,`TimeframeId`,`PriceDate`),
+KEY `Macd_PriceDate` (`PriceDate`),
+KEY `Macd_TimeframeId` (`TimeframeId`),
+KEY `Macd_AssetId` (`AssetId`)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE `fx`.`extrema` (
+  `ExtremumId` int(11) NOT NULL AUTO_INCREMENT,
+  `Type` int(11) NOT NULL,
+  `ExtremumDate` datetime NOT NULL,
+  `EarlierCounter` int(11) NOT NULL,
+  `LaterCounter` int(11) NOT NULL,
+  `EarlierAmplitude` float DEFAULT NULL,
+  `LaterAmplitude` float DEFAULT NULL,
+  `Volatility` float NOT NULL,
+  `EarlierChange1` float DEFAULT NULL,
+  `EarlierChange2` float DEFAULT NULL,
+  `EarlierChange3` float DEFAULT NULL,
+  `EarlierChange5` float DEFAULT NULL,
+  `EarlierChange10` float DEFAULT NULL,
+  `LaterChange1` float DEFAULT NULL,
+  `LaterChange2` float DEFAULT NULL,
+  `LaterChange3` float DEFAULT NULL,
+  `LaterChange5` float DEFAULT NULL,
+  `LaterChange10` float DEFAULT NULL,
+  `Timestamp` datetime NOT NULL,
+  `IsOpen` bit(1) DEFAULT NULL,
+  `AssetId` int(11) NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `SimulationId` int(11) NOT NULL,
+  `LastCheckedDateTime` datetime NOT NULL,
+  `Value` float DEFAULT NULL,
+  `IndexNumber` int(11) DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`ExtremumId`),
+UNIQUE KEY `Unique_AssetTimeframeDateType` (`Type`,`ExtremumDate`,`AssetId`,`TimeframeId`,`SimulationId`),
+KEY `PriceDate` (`ExtremumDate`),
+KEY `Index_Extrema_IndexNumber` (`IndexNumber`),
+KEY `Index_Extrema_AssetId` (`AssetId`),
+KEY `Index_Extrema_TimeframeId` (`TimeframeId`),
+KEY `Index_Extrema_Simulation_Id` (`SimulationId`),
+KEY `Index_Extremum_Date` (`ExtremumDate`),
+KEY `Index_Extremum_Type` (`Type`)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE `fx`.`adx` (
+  `AdxId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `SimulationId` int(11) NOT NULL,
+  `AssetId` int(11) unsigned NOT NULL,
+  `TimeframeId` int(11) NOT NULL,
+  `PriceDate` datetime NOT NULL,
+  `TR` float DEFAULT NULL,
+  `DM1Pos` float DEFAULT NULL,
+  `DM1Neg` float DEFAULT NULL,
+  `TR14` float DEFAULT NULL,
+  `DM14Pos` float DEFAULT NULL,
+  `DM14Neg` float DEFAULT NULL,
+  `DI14Pos` float DEFAULT NULL,
+  `DI14Neg` float DEFAULT NULL,
+  `DI14Diff` float DEFAULT NULL,
+  `DI14Sum` float DEFAULT NULL,
+  `DX` float DEFAULT NULL,
+  `ADX` float DEFAULT NULL,
+  `DaysUnder20` int(11) DEFAULT NULL,
+  `DaysUnder15` int(11) DEFAULT NULL,
+  `Cross20` float DEFAULT NULL,
+  `DeltaDIPos` float DEFAULT NULL,
+  `DeltaDINeg` float DEFAULT NULL,
+  `DeltaADX` float DEFAULT NULL,
+  `DIPosDirection3D` int(11) DEFAULT NULL,
+  `DIPosDirection2D` int(11) DEFAULT NULL,
+  `DINegDirection3D` int(11) DEFAULT NULL,
+  `DINegDirection2D` int(11) DEFAULT NULL,
+  `ADXDirection3D` int(11) DEFAULT NULL,
+  `ADXDirection2D` int(11) DEFAULT NULL,
+  `DIPosDirectionChanged` int(11) DEFAULT NULL,
+  `DINegDirectionChanged` int(11) DEFAULT NULL,
+  `ADXDirectionChanged` int(11) DEFAULT NULL,
+  `DIDifference` float DEFAULT NULL,
+  `DILinesCrossing` int(11) DEFAULT NULL,
+PRIMARY KEY `PRIMARY` (`AdxId`),
+UNIQUE KEY `Adx_Unique_AssetTimeframeDate` (`AssetId`,`TimeframeId`,`PriceDate`),
+KEY `Adx_PriceDate` (`PriceDate`),
+KEY `Adx_TimeframeId` (`TimeframeId`),
+KEY `Adx_AssetId` (`AssetId`)
+) ENGINE=InnoDB;
+
+
+CREATE VIEW `v_all_symbols` AS 
+select `f`.`Name` AS `PairName`,`tf`.`Symbol` AS `Timeframe`,concat(`f`.`Name`, '_', `tf`.`Symbol`) AS `symbol`,`f`.`Id` AS `AssetId`,`tf`.`Id` AS `TimeframeId` from (`fx`.`pairs` `f` join `fx`.`timeframes` `tf`)
+;
+
+CREATE VIEW `v_prices_with_index` AS 
+select `p`.`PriceId` AS `PriceId`,`p`.`AssetId` AS `AssetId`,`p`.`TimeframeId` AS `TimeframeId`,`p`.`PriceDate` AS `PriceDate`,`p`.`DeltaClosePrice` AS `DeltaClosePrice`,`p`.`PriceDirection3D` AS `PriceDirection3D`,`p`.`PriceDirection2D` AS `PriceDirection2D`,`p`.`PriceGap` AS `PriceGap`,`p`.`CloseRatio` AS `CloseRatio`,`p`.`ExtremumRatio` AS `ExtremumRatio`,`d`.`IndexNumber` AS `IndexNumber` from (`fx`.`prices` `p` join `fx`.`dates` `d` on(((`p`.`PriceDate` = `d`.`Date`) and (`p`.`TimeframeId` = `d`.`TimeframeId`))))
+;
+
+CREATE VIEW `v_quotation_date_ranges` AS 
+select `fx`.`quotations`.`AssetId` AS `AssetId`,`fx`.`quotations`.`TimeframeId` AS `TimeframeId`,min(`fx`.`quotations`.`PriceDate`) AS `minDate`,max(`fx`.`quotations`.`PriceDate`) AS `maxDate` from `fx`.`quotations` where (`fx`.`quotations`.`OpenPrice` > 0) group by `fx`.`quotations`.`AssetId`,`fx`.`quotations`.`TimeframeId`
+;
+
+CREATE VIEW `v_quotations_with_index` AS 
+select `q`.`QuotationId` AS `QuotationId`,`q`.`PriceDate` AS `PriceDate`,`q`.`AssetId` AS `AssetId`,`q`.`TimeframeId` AS `TimeframeId`,`q`.`OpenPrice` AS `OpenPrice`,`q`.`HighPrice` AS `HighPrice`,`q`.`LowPrice` AS `LowPrice`,`q`.`ClosePrice` AS `ClosePrice`,`q`.`RealClosePrice` AS `RealClosePrice`,`q`.`Volume` AS `Volume`,`d`.`IndexNumber` AS `IndexNumber` from (`fx`.`quotations` `q` join `fx`.`dates` `d` on(((`q`.`PriceDate` = `d`.`Date`) and (`q`.`TimeframeId` = `d`.`TimeframeId`))))
+;
+
+CREATE VIEW `v_symbols_last_updates` AS 
+select `p`.`Id` AS `assetId`,`t`.`Id` AS `timeframeId`,concat(`p`.`Name`,'_',`t`.`Symbol`) AS `symbol`,coalesce(`v`.`maxDate`,'2001-01-01 00:00:00') AS `lastUpdate` from ((`fx`.`v_quotation_date_ranges` `v` join `fx`.`pairs` `p`) join `fx`.`timeframes` `t`) where ((`v`.`AssetId` = `p`.`Id`) and (`v`.`TimeframeId` = `t`.`Id`))
+;
+
+create function TimeframeId() returns INTEGER DETERMINISTIC NO SQL return @timeframeId;
+;
+
+create function AssetId() returns INTEGER DETERMINISTIC NO SQL return @assetId;
+;
+
+CREATE VIEW `v_dates_for_timeframe` AS 
+select `fx`.`dates`.`Id` AS `Id`,`fx`.`dates`.`Date` AS `Date`,`fx`.`dates`.`TimeframeId` AS `TimeframeId`,`fx`.`dates`.`IndexNumber` AS `IndexNumber` from `fx`.`dates` where (`fx`.`dates`.`TimeframeId` = `TIMEFRAMEID`())
+;
+
+CREATE VIEW `v_quotations_for_symbol` AS 
+select `fx`.`quotations`.`PriceDate` AS `PriceDate` from `fx`.`quotations` where ((`fx`.`quotations`.`AssetId` = `ASSETID`()) and (`fx`.`quotations`.`TimeframeId` = `TIMEFRAMEID`()))
+;
+
+CREATE VIEW `v_redundant_quotations` AS 
+select `q`.`PriceDate` AS `PriceDate`,`d`.`Id` AS `Id`,`d`.`Date` AS `Date`,`d`.`TimeframeId` AS `TimeframeId`,`d`.`IndexNumber` AS `IndexNumber` from (`fx`.`v_quotations_for_symbol` `q` left join `fx`.`v_dates_for_timeframe` `d` on((`q`.`PriceDate` = `d`.`Date`))) where isnull(`d`.`Date`)
+;

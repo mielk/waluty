@@ -3,3 +3,7 @@ C:\tm\aplikacje\FX3\Stock.Core\bin\Debug\Stock.Core.pdb
 C:\tm\aplikacje\FX3\Stock.Core\obj\Debug\Stock.Core.dll
 C:\tm\aplikacje\FX3\Stock.Core\obj\Debug\Stock.Core.pdb
 C:\tm\aplikacje\FX3\Stock.Core\obj\Debug\Stock.Core.csprojResolveAssemblyReference.cache
+C:\Tomek\aplikacje\FX\Stock.Core\bin\Debug\Stock.Core.dll
+C:\Tomek\aplikacje\FX\Stock.Core\bin\Debug\Stock.Core.pdb
+C:\Tomek\aplikacje\FX\Stock.Core\obj\Debug\Stock.Core.dll
+C:\Tomek\aplikacje\FX\Stock.Core\obj\Debug\Stock.Core.pdb
