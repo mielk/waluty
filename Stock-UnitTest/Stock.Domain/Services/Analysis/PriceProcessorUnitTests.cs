@@ -190,7 +190,6 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         }
 
-
         #endregion GET_SIMULATIONS
 
 
@@ -201,15 +200,17 @@ namespace Stock_UnitTest.Stock.Domain.Services
         #region DIRECTION_3D
         #endregion DIRECTION_3D
 
+
         #region PRICE_GAP
         #endregion PRICE_GAP
+
 
         #region CLOSE_RATIO
         #endregion CLOSE_RATIO
 
+
         #region EXTREMUM_RATIO
         #endregion EXTREMUM_RATIO
-
 
 
         #region CREATING_EXTREMA_OBJECT
@@ -739,8 +740,6 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
 
         #endregion CREATING_EXTREMA_OBJECT
-
-
 
 
 

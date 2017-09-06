@@ -46,6 +46,7 @@ namespace Stock.Domain.Services
             return null;
         }
 
+
         #endregion INFRASTRUCTURE
 
 
@@ -137,7 +138,7 @@ namespace Stock.Domain.Services
                 Quotation comparedQuotation = getQuotation(i);
                 if (comparedQuotation != null)
                 {
-                    if (coefficient * (quotation.GetProperValue(extremum.Type) - comparedQuotation.GetProperValue(extremum.Type)) > 0)
+                    if (coefficient * (quotation.GetProperValue(extremum.Type) - comparedQuotation.GetProperValue(extremum.Type)) >= 0)
                     {
                         counter++;
                     }
@@ -218,12 +219,12 @@ namespace Stock.Domain.Services
             int counter = 0;
             if (quotation == null) return 0;
 
-            for (int i = index - 1; i > Math.Max(0, index - MaxSerieCount - 1); i--)
+            for (int i = index + 1; i <= index + MaxSerieCount; i++)
             {
                 Quotation comparedQuotation = getQuotation(i);
                 if (comparedQuotation != null)
                 {
-                    if (coefficient * (quotation.GetProperValue(extremum.Type) - comparedQuotation.GetProperValue(extremum.Type)) > 0)
+                    if (coefficient * (quotation.GetProperValue(extremum.Type) - comparedQuotation.GetProperValue(extremum.Type)) >= 0)
                     {
                         counter++;
                     }
@@ -231,6 +232,10 @@ namespace Stock.Domain.Services
                     {
                         return counter;
                     }
+                }
+                else
+                {
+                    return counter;
                 }
             }
 
