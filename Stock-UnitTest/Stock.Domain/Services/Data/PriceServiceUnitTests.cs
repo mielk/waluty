@@ -188,4 +188,5 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
 
     }
+
 }

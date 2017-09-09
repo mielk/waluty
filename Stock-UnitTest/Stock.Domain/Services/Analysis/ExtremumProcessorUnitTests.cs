@@ -22,6 +22,17 @@ namespace Stock_UnitTest.Stock.Domain.Services
         private double MAX_DOUBLE_COMPARISON_DIFFERENCE = 0.00000001;
 
 
+        #region ISUPDATED_FLAG
+
+        [TestMethod]
+        public void AfterBeingProcessed_ItemExtremumHasIsUpdatedFlagSetToTrue()
+        {
+
+        }
+
+        #endregion ISUPDATED_FLAG
+
+
         #region PEAK_BY_CLOSE.IS_EXTREMUM
 
         [TestMethod]
@@ -3813,472 +3824,463 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         #region CALCULATE_LATER_CHANGE
 
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForPeakByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
-        //    dataSet8.GetPrice().SetExtremum(extremum);
-
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 2);
-        //    double expectedResult = 0.00042151;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
-
-        //}
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForPeakByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
-        //    dataSet8.GetPrice().SetExtremum(extremum);
-
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 5);
-        //    double expectedResult = -0.00015569;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
-
-        //}
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForPeakByClose_IfQuotationsForComparedIndexDoesntExist()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForPeakByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
+            DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
+            DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
+            DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
+            DataSet dataSet10 = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 10, 0) });
+            DataSet dataSet11 = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 15, 0) });
+            DataSet dataSet12 = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 20, 0) });
+            DataSet dataSet13 = new DataSet(new Quotation() { Id = 13, Date = new DateTime(2016, 1, 15, 23, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09109, High = 1.09112, Low = 1.09066, Close = 1.09068, Volume = 326, IndexNumber = 13 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 25, 0) });
+            DataSet dataSet14 = new DataSet(new Quotation() { Id = 14, Date = new DateTime(2016, 1, 15, 23, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09066, High = 1.09088, Low = 1.09052, Close = 1.09085, Volume = 476, IndexNumber = 14 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 30, 0) });
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+            mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
+            mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+            mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
+            mockedManager.Setup(m => m.GetDataSet(10)).Returns(dataSet10);
+            mockedManager.Setup(m => m.GetDataSet(11)).Returns(dataSet11);
+            mockedManager.Setup(m => m.GetDataSet(12)).Returns(dataSet12);
+            mockedManager.Setup(m => m.GetDataSet(13)).Returns(dataSet13);
+            mockedManager.Setup(m => m.GetDataSet(14)).Returns(dataSet14);
 
 
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
-        //    dataSet8.GetPrice().SetExtremum(extremum);
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            dataSet8.GetPrice().SetExtremum(extremum);
 
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 10);
-        //    double expectedResult = 0d;
-        //    Assert.AreEqual(expectedResult, result);
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 2);
+            double expectedResult = (1.09177d - 1.09148d) / 1.09177d;
+            double difference = (Math.Abs(expectedResult - result));
+            Assert.AreEqual(result, expectedResult);
 
-        //}
+        }
 
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForPeakByHigh_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-        //    mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
-
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
-        //    dataSet9.GetPrice().SetExtremum(extremum);
-
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 3);
-        //    double expectedResult = 0.00016494;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
-
-        //}
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForPeakByHigh_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-        //    mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
-
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
-        //    dataSet9.GetPrice().SetExtremum(extremum);
-
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 2);
-        //    double expectedResult = -0.00014657;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
-
-        //}
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForPeakByHigh_IfQuotationsForComparedIndexDoesntExist()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForPeakByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet18 = new DataSet(new Quotation() { Id = 18, Date = new DateTime(2016, 1, 15, 23, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09099, High = 1.09129, Low = 1.09092, Close = 1.0911, Volume = 745, IndexNumber = 18 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 50, 0) });
+            DataSet dataSet19 = new DataSet(new Quotation() { Id = 19, Date = new DateTime(2016, 1, 15, 23, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09197, Low = 1.09088, Close = 1.09142, Volume = 1140, IndexNumber = 19 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 55, 0) });
+            DataSet dataSet20 = new DataSet(new Quotation() { Id = 20, Date = new DateTime(2016, 1, 18, 0, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09151, High = 1.09257, Low = 1.09138, Close = 1.09171, Volume = 417, IndexNumber = 20 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 0, 0) });
+            DataSet dataSet21 = new DataSet(new Quotation() { Id = 21, Date = new DateTime(2016, 1, 18, 0, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09165, High = 1.09188, Low = 1.0913, Close = 1.09154, Volume = 398, IndexNumber = 21 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 5, 0) });
+            DataSet dataSet22 = new DataSet(new Quotation() { Id = 22, Date = new DateTime(2016, 1, 18, 0, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.09152, High = 1.09181, Low = 1.09129, Close = 1.09155, Volume = 518, IndexNumber = 22 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 10, 0) });
+            DataSet dataSet23 = new DataSet(new Quotation() { Id = 23, Date = new DateTime(2016, 1, 18, 0, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09153, High = 1.09171, Low = 1.091, Close = 1.09142, Volume = 438, IndexNumber = 23 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 15, 0) });
+            DataSet dataSet24 = new DataSet(new Quotation() { Id = 24, Date = new DateTime(2016, 1, 18, 0, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.0912, High = 1.09192, Low = 1.0911, Close = 1.09162, Volume = 532, IndexNumber = 24 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 20, 0) });
+            DataSet dataSet25 = new DataSet(new Quotation() { Id = 25, Date = new DateTime(2016, 1, 18, 0, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.09199, Low = 1.0915, Close = 1.09189, Volume = 681, IndexNumber = 25 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 25, 0) });
+            DataSet dataSet26 = new DataSet(new Quotation() { Id = 26, Date = new DateTime(2016, 1, 18, 0, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.0919, High = 1.09209, Low = 1.09171, Close = 1.09179, Volume = 387, IndexNumber = 26 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 30, 0) });
+            DataSet dataSet27 = new DataSet(new Quotation() { Id = 27, Date = new DateTime(2016, 1, 18, 0, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09173, High = 1.09211, Low = 1.09148, Close = 1.09181, Volume = 792, IndexNumber = 27 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 35, 0) });
+            mockedManager.Setup(m => m.GetDataSet(18)).Returns(dataSet18);
+            mockedManager.Setup(m => m.GetDataSet(19)).Returns(dataSet19);
+            mockedManager.Setup(m => m.GetDataSet(20)).Returns(dataSet20);
+            mockedManager.Setup(m => m.GetDataSet(21)).Returns(dataSet21);
+            mockedManager.Setup(m => m.GetDataSet(22)).Returns(dataSet22);
+            mockedManager.Setup(m => m.GetDataSet(23)).Returns(dataSet23);
+            mockedManager.Setup(m => m.GetDataSet(24)).Returns(dataSet24);
+            mockedManager.Setup(m => m.GetDataSet(25)).Returns(dataSet25);
+            mockedManager.Setup(m => m.GetDataSet(26)).Returns(dataSet26);
+            mockedManager.Setup(m => m.GetDataSet(27)).Returns(dataSet27);
 
 
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
-        //    dataSet8.GetPrice().SetExtremum(extremum);
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            dataSet20.GetPrice().SetExtremum(extremum);
+            
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 5);
+            double expectedResult = (1.09171d - 1.09189d) / 1.09171d;
+            Assert.AreEqual(expectedResult, result);
 
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 10);
-        //    double expectedResult = 0d;
-        //    Assert.AreEqual(expectedResult, result);
+        }
 
-        //}
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForTroughByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-        //    mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
-
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
-        //    dataSet8.GetPrice().SetExtremum(extremum);
-
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 3);
-        //    double expectedResult = -0.00016494;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
-
-        //}
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForTroughByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-        //    mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
-
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
-        //    dataSet9.GetPrice().SetExtremum(extremum);
-
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 2);
-        //    double expectedResult = 0.00014657;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
-
-        //}
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForTroughByClose_IfQuotationsForComparedIndexDoesntExist()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForPeakByClose_IfQuotationsForComparedIndexDoesntExist()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
+            DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
+            DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+            mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
+            mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
 
 
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
-        //    dataSet8.GetPrice().SetExtremum(extremum);
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            dataSet8.GetPrice().SetExtremum(extremum);
 
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 10);
-        //    double expectedResult = 0d;
-        //    Assert.AreEqual(expectedResult, result);
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 5);
+            double expectedResult = 0d;
+            Assert.AreEqual(expectedResult, result);
 
-        //}
+        }
 
-
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForTroughByLow_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
-        //    DataSet dataSet10 = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 10, 0) });
-        //    DataSet dataSet11 = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 15, 0) });
-        //    DataSet dataSet12 = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 20, 0) });
-        //    DataSet dataSet13 = new DataSet(new Quotation() { Id = 13, Date = new DateTime(2016, 1, 15, 23, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09109, High = 1.09112, Low = 1.09066, Close = 1.09068, Volume = 326, IndexNumber = 13 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 25, 0) });
-        //    DataSet dataSet14 = new DataSet(new Quotation() { Id = 14, Date = new DateTime(2016, 1, 15, 23, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09066, High = 1.09088, Low = 1.09052, Close = 1.09085, Volume = 476, IndexNumber = 14 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 30, 0) });
-        //    DataSet dataSet15 = new DataSet(new Quotation() { Id = 15, Date = new DateTime(2016, 1, 15, 23, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09086, High = 1.0909, Low = 1.09076, Close = 1.09082, Volume = 303, IndexNumber = 15 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 35, 0) });
-        //    DataSet dataSet16 = new DataSet(new Quotation() { Id = 16, Date = new DateTime(2016, 1, 15, 23, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.09081, High = 1.09089, Low = 1.09059, Close = 1.0906, Volume = 450, IndexNumber = 16 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 40, 0) });
-        //    DataSet dataSet17 = new DataSet(new Quotation() { Id = 17, Date = new DateTime(2016, 1, 15, 23, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09061, High = 1.09099, Low = 1.09041, Close = 1.09097, Volume = 660, IndexNumber = 17 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 45, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-        //    mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
-        //    mockedManager.Setup(m => m.GetDataSet(10)).Returns(dataSet10);
-        //    mockedManager.Setup(m => m.GetDataSet(11)).Returns(dataSet11);
-        //    mockedManager.Setup(m => m.GetDataSet(12)).Returns(dataSet12);
-        //    mockedManager.Setup(m => m.GetDataSet(13)).Returns(dataSet13);
-        //    mockedManager.Setup(m => m.GetDataSet(14)).Returns(dataSet14);
-        //    mockedManager.Setup(m => m.GetDataSet(15)).Returns(dataSet15);
-        //    mockedManager.Setup(m => m.GetDataSet(16)).Returns(dataSet16);
-        //    mockedManager.Setup(m => m.GetDataSet(17)).Returns(dataSet17);
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForPeakByHigh_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
+            DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
+            DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
+            DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
+            DataSet dataSet10 = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 10, 0) });
+            DataSet dataSet11 = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 15, 0) });
+            DataSet dataSet12 = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 20, 0) });
+            DataSet dataSet13 = new DataSet(new Quotation() { Id = 13, Date = new DateTime(2016, 1, 15, 23, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09109, High = 1.09112, Low = 1.09066, Close = 1.09068, Volume = 326, IndexNumber = 13 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 25, 0) });
+            DataSet dataSet14 = new DataSet(new Quotation() { Id = 14, Date = new DateTime(2016, 1, 15, 23, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09066, High = 1.09088, Low = 1.09052, Close = 1.09085, Volume = 476, IndexNumber = 14 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 30, 0) });
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+            mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
+            mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+            mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
+            mockedManager.Setup(m => m.GetDataSet(10)).Returns(dataSet10);
+            mockedManager.Setup(m => m.GetDataSet(11)).Returns(dataSet11);
+            mockedManager.Setup(m => m.GetDataSet(12)).Returns(dataSet12);
+            mockedManager.Setup(m => m.GetDataSet(13)).Returns(dataSet13);
+            mockedManager.Setup(m => m.GetDataSet(14)).Returns(dataSet14);
 
 
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 17 };
-        //    dataSet17.GetPrice().SetExtremum(extremum);
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            dataSet8.GetPrice().SetExtremum(extremum);
 
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 3);
-        //    double expectedResult = -0.00011001;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 2);
+            double expectedResult = (1.09177d - 1.09148d) / 1.09177d;
+            Assert.AreEqual(result, expectedResult);
 
-        //}
+        }
 
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForTroughByLow_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    DataSet dataSet9 = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09219, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 5, 0) });
-        //    DataSet dataSet10 = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 10, 0) });
-        //    DataSet dataSet11 = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 15, 0) });
-        //    DataSet dataSet12 = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 20, 0) });
-        //    DataSet dataSet13 = new DataSet(new Quotation() { Id = 13, Date = new DateTime(2016, 1, 15, 23, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09109, High = 1.09112, Low = 1.09066, Close = 1.09068, Volume = 326, IndexNumber = 13 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 25, 0) });
-        //    DataSet dataSet14 = new DataSet(new Quotation() { Id = 14, Date = new DateTime(2016, 1, 15, 23, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09066, High = 1.09088, Low = 1.09052, Close = 1.09085, Volume = 476, IndexNumber = 14 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 30, 0) });
-        //    DataSet dataSet15 = new DataSet(new Quotation() { Id = 15, Date = new DateTime(2016, 1, 15, 23, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09086, High = 1.0909, Low = 1.09076, Close = 1.09082, Volume = 303, IndexNumber = 15 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 35, 0) });
-        //    DataSet dataSet16 = new DataSet(new Quotation() { Id = 16, Date = new DateTime(2016, 1, 15, 23, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.09081, High = 1.09089, Low = 1.09059, Close = 1.0906, Volume = 450, IndexNumber = 16 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 40, 0) });
-        //    DataSet dataSet17 = new DataSet(new Quotation() { Id = 17, Date = new DateTime(2016, 1, 15, 23, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09061, High = 1.09099, Low = 1.09041, Close = 1.09097, Volume = 660, IndexNumber = 17 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 45, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
-        //    mockedManager.Setup(m => m.GetDataSet(9)).Returns(dataSet9);
-        //    mockedManager.Setup(m => m.GetDataSet(10)).Returns(dataSet10);
-        //    mockedManager.Setup(m => m.GetDataSet(11)).Returns(dataSet11);
-        //    mockedManager.Setup(m => m.GetDataSet(12)).Returns(dataSet12);
-        //    mockedManager.Setup(m => m.GetDataSet(13)).Returns(dataSet13);
-        //    mockedManager.Setup(m => m.GetDataSet(14)).Returns(dataSet14);
-        //    mockedManager.Setup(m => m.GetDataSet(15)).Returns(dataSet15);
-        //    mockedManager.Setup(m => m.GetDataSet(16)).Returns(dataSet16);
-        //    mockedManager.Setup(m => m.GetDataSet(17)).Returns(dataSet17);
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForPeakByHigh_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet18 = new DataSet(new Quotation() { Id = 18, Date = new DateTime(2016, 1, 15, 23, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09099, High = 1.09129, Low = 1.09092, Close = 1.0911, Volume = 745, IndexNumber = 18 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 50, 0) });
+            DataSet dataSet19 = new DataSet(new Quotation() { Id = 19, Date = new DateTime(2016, 1, 15, 23, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09197, Low = 1.09088, Close = 1.09142, Volume = 1140, IndexNumber = 19 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 55, 0) });
+            DataSet dataSet20 = new DataSet(new Quotation() { Id = 20, Date = new DateTime(2016, 1, 18, 0, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09151, High = 1.09257, Low = 1.09138, Close = 1.09171, Volume = 417, IndexNumber = 20 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 0, 0) });
+            DataSet dataSet21 = new DataSet(new Quotation() { Id = 21, Date = new DateTime(2016, 1, 18, 0, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09165, High = 1.09188, Low = 1.0913, Close = 1.09154, Volume = 398, IndexNumber = 21 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 5, 0) });
+            DataSet dataSet22 = new DataSet(new Quotation() { Id = 22, Date = new DateTime(2016, 1, 18, 0, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.09152, High = 1.09181, Low = 1.09129, Close = 1.09155, Volume = 518, IndexNumber = 22 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 10, 0) });
+            DataSet dataSet23 = new DataSet(new Quotation() { Id = 23, Date = new DateTime(2016, 1, 18, 0, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09153, High = 1.09171, Low = 1.091, Close = 1.09142, Volume = 438, IndexNumber = 23 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 15, 0) });
+            DataSet dataSet24 = new DataSet(new Quotation() { Id = 24, Date = new DateTime(2016, 1, 18, 0, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.0912, High = 1.09192, Low = 1.0911, Close = 1.09162, Volume = 532, IndexNumber = 24 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 20, 0) });
+            DataSet dataSet25 = new DataSet(new Quotation() { Id = 25, Date = new DateTime(2016, 1, 18, 0, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.09199, Low = 1.0915, Close = 1.09189, Volume = 681, IndexNumber = 25 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 25, 0) });
+            DataSet dataSet26 = new DataSet(new Quotation() { Id = 26, Date = new DateTime(2016, 1, 18, 0, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.0919, High = 1.09209, Low = 1.09171, Close = 1.09179, Volume = 387, IndexNumber = 26 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 30, 0) });
+            DataSet dataSet27 = new DataSet(new Quotation() { Id = 27, Date = new DateTime(2016, 1, 18, 0, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09173, High = 1.09211, Low = 1.09148, Close = 1.09181, Volume = 792, IndexNumber = 27 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 0, 35, 0) });
+            mockedManager.Setup(m => m.GetDataSet(18)).Returns(dataSet18);
+            mockedManager.Setup(m => m.GetDataSet(19)).Returns(dataSet19);
+            mockedManager.Setup(m => m.GetDataSet(20)).Returns(dataSet20);
+            mockedManager.Setup(m => m.GetDataSet(21)).Returns(dataSet21);
+            mockedManager.Setup(m => m.GetDataSet(22)).Returns(dataSet22);
+            mockedManager.Setup(m => m.GetDataSet(23)).Returns(dataSet23);
+            mockedManager.Setup(m => m.GetDataSet(24)).Returns(dataSet24);
+            mockedManager.Setup(m => m.GetDataSet(25)).Returns(dataSet25);
+            mockedManager.Setup(m => m.GetDataSet(26)).Returns(dataSet26);
+            mockedManager.Setup(m => m.GetDataSet(27)).Returns(dataSet27);
 
 
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 17 };
-        //    dataSet17.GetPrice().SetExtremum(extremum);
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            dataSet20.GetPrice().SetExtremum(extremum);
 
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 5);
-        //    double expectedResult = 0.00010082;
-        //    double difference = (Math.Abs(expectedResult - result));
-        //    Assert.IsTrue(difference < MAX_DOUBLE_COMPARISON_DIFFERENCE);
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 5);
+            double expectedResult = (1.09171d - 1.09189d) / 1.09171d;
+            Assert.AreEqual(expectedResult, result);
 
-        //}
+        }
 
-        //[TestMethod]
-        //public void CalculateEarlierChange_ReturnsProperValueForTroughByLow_IfQuotationsForComparedIndexDoesntExist()
-        //{
-        //    //Arrange
-        //    Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-        //    DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
-        //    DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
-        //    DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-        //    DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
-        //    DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
-        //    DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
-        //    DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
-        //    DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
-        //    mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
-        //    mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
-        //    mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
-        //    mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
-        //    mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
-        //    mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
-        //    mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
-        //    mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForPeakByHigh_IfQuotationsForComparedIndexDoesntExist()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
+            DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
+            DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+            mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
+            mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
 
 
-        //    //Act
-        //    ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-        //    Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
-        //    dataSet8.GetPrice().SetExtremum(extremum);
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            dataSet8.GetPrice().SetExtremum(extremum);
 
-        //    //Assert
-        //    var result = processor.CalculateEarlierChange(extremum, 10);
-        //    double expectedResult = 0d;
-        //    Assert.AreEqual(expectedResult, result);
+            //Assert
+            var result = processor.CalculateEarlierChange(extremum, 10);
+            double expectedResult = 0d;
+            Assert.AreEqual(expectedResult, result);
 
-        //}
+        }
+
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForTroughByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet78 = new DataSet(new Quotation() { Id = 78, Date = new DateTime(2016, 1, 18, 4, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09003, High = 1.09013, Low = 1.08976, Close = 1.08985, Volume = 905, IndexNumber = 78 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 50, 0) });
+            DataSet dataSet79 = new DataSet(new Quotation() { Id = 79, Date = new DateTime(2016, 1, 18, 4, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.08986, High = 1.08995, Low = 1.08936, Close = 1.0894, Volume = 1168, IndexNumber = 79 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 55, 0) });
+            DataSet dataSet80 = new DataSet(new Quotation() { Id = 80, Date = new DateTime(2016, 1, 18, 5, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.08941, High = 1.08954, Low = 1.08915, Close = 1.08926, Volume = 1583, IndexNumber = 80 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 0, 0) });
+            DataSet dataSet81 = new DataSet(new Quotation() { Id = 81, Date = new DateTime(2016, 1, 18, 5, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.08928, High = 1.08949, Low = 1.08912, Close = 1.08934, Volume = 1369, IndexNumber = 81 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 5, 0) });
+            DataSet dataSet82 = new DataSet(new Quotation() { Id = 82, Date = new DateTime(2016, 1, 18, 5, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.08932, High = 1.08966, Low = 1.08926, Close = 1.08954, Volume = 1208, IndexNumber = 82 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 10, 0) });
+            DataSet dataSet83 = new DataSet(new Quotation() { Id = 83, Date = new DateTime(2016, 1, 18, 5, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.08953, High = 1.08983, Low = 1.0895, Close = 1.08977, Volume = 827, IndexNumber = 83 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 15, 0) });
+            DataSet dataSet84 = new DataSet(new Quotation() { Id = 84, Date = new DateTime(2016, 1, 18, 5, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.08977, High = 1.08982, Low = 1.08947, Close = 1.08948, Volume = 689, IndexNumber = 84 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 20, 0) });
+            DataSet dataSet85 = new DataSet(new Quotation() { Id = 85, Date = new DateTime(2016, 1, 18, 5, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.08945, High = 1.08948, Low = 1.08925, Close = 1.08937, Volume = 1129, IndexNumber = 85 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 25, 0) });
+            DataSet dataSet86 = new DataSet(new Quotation() { Id = 86, Date = new DateTime(2016, 1, 18, 5, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.08936, High = 1.08938, Low = 1.08908, Close = 1.08913, Volume = 848, IndexNumber = 86 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 30, 0) });
+            DataSet dataSet87 = new DataSet(new Quotation() { Id = 87, Date = new DateTime(2016, 1, 18, 5, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.08914, High = 1.08919, Low = 1.08882, Close = 1.0889, Volume = 748, IndexNumber = 87 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 35, 0) });
+            DataSet dataSet88 = new DataSet(new Quotation() { Id = 88, Date = new DateTime(2016, 1, 18, 5, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.08893, High = 1.08916, Low = 1.08884, Close = 1.08894, Volume = 1299, IndexNumber = 88 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(78)).Returns(dataSet78);
+            mockedManager.Setup(m => m.GetDataSet(79)).Returns(dataSet79);
+            mockedManager.Setup(m => m.GetDataSet(80)).Returns(dataSet80);
+            mockedManager.Setup(m => m.GetDataSet(81)).Returns(dataSet81);
+            mockedManager.Setup(m => m.GetDataSet(82)).Returns(dataSet82);
+            mockedManager.Setup(m => m.GetDataSet(83)).Returns(dataSet83);
+            mockedManager.Setup(m => m.GetDataSet(84)).Returns(dataSet84);
+            mockedManager.Setup(m => m.GetDataSet(85)).Returns(dataSet85);
+            mockedManager.Setup(m => m.GetDataSet(86)).Returns(dataSet86);
+            mockedManager.Setup(m => m.GetDataSet(87)).Returns(dataSet87);
+            mockedManager.Setup(m => m.GetDataSet(88)).Returns(dataSet88);
+
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            dataSet80.GetPrice().SetExtremum(extremum);
+
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 6);
+            double expectedResult = (1.08913d - 1.08926d) / 1.08926d;
+            Assert.AreEqual(expectedResult, result);
+
+        }
+
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForTroughByClose_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet78 = new DataSet(new Quotation() { Id = 78, Date = new DateTime(2016, 1, 18, 4, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09003, High = 1.09013, Low = 1.08976, Close = 1.08985, Volume = 905, IndexNumber = 78 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 50, 0) });
+            DataSet dataSet79 = new DataSet(new Quotation() { Id = 79, Date = new DateTime(2016, 1, 18, 4, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.08986, High = 1.08995, Low = 1.08936, Close = 1.0894, Volume = 1168, IndexNumber = 79 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 55, 0) });
+            DataSet dataSet80 = new DataSet(new Quotation() { Id = 80, Date = new DateTime(2016, 1, 18, 5, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.08941, High = 1.08954, Low = 1.08915, Close = 1.08926, Volume = 1583, IndexNumber = 80 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 0, 0) });
+            DataSet dataSet81 = new DataSet(new Quotation() { Id = 81, Date = new DateTime(2016, 1, 18, 5, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.08928, High = 1.08949, Low = 1.08912, Close = 1.08934, Volume = 1369, IndexNumber = 81 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 5, 0) });
+            DataSet dataSet82 = new DataSet(new Quotation() { Id = 82, Date = new DateTime(2016, 1, 18, 5, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.08932, High = 1.08966, Low = 1.08926, Close = 1.08954, Volume = 1208, IndexNumber = 82 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 10, 0) });
+            DataSet dataSet83 = new DataSet(new Quotation() { Id = 83, Date = new DateTime(2016, 1, 18, 5, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.08953, High = 1.08983, Low = 1.0895, Close = 1.08977, Volume = 827, IndexNumber = 83 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 15, 0) });
+            DataSet dataSet84 = new DataSet(new Quotation() { Id = 84, Date = new DateTime(2016, 1, 18, 5, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.08977, High = 1.08982, Low = 1.08947, Close = 1.08948, Volume = 689, IndexNumber = 84 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 20, 0) });
+            DataSet dataSet85 = new DataSet(new Quotation() { Id = 85, Date = new DateTime(2016, 1, 18, 5, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.08945, High = 1.08948, Low = 1.08925, Close = 1.08937, Volume = 1129, IndexNumber = 85 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 25, 0) });
+            DataSet dataSet86 = new DataSet(new Quotation() { Id = 86, Date = new DateTime(2016, 1, 18, 5, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.08936, High = 1.08938, Low = 1.08908, Close = 1.08913, Volume = 848, IndexNumber = 86 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 30, 0) });
+            DataSet dataSet87 = new DataSet(new Quotation() { Id = 87, Date = new DateTime(2016, 1, 18, 5, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.08914, High = 1.08919, Low = 1.08882, Close = 1.0889, Volume = 748, IndexNumber = 87 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 35, 0) });
+            DataSet dataSet88 = new DataSet(new Quotation() { Id = 88, Date = new DateTime(2016, 1, 18, 5, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.08893, High = 1.08916, Low = 1.08884, Close = 1.08894, Volume = 1299, IndexNumber = 88 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(78)).Returns(dataSet78);
+            mockedManager.Setup(m => m.GetDataSet(79)).Returns(dataSet79);
+            mockedManager.Setup(m => m.GetDataSet(80)).Returns(dataSet80);
+            mockedManager.Setup(m => m.GetDataSet(81)).Returns(dataSet81);
+            mockedManager.Setup(m => m.GetDataSet(82)).Returns(dataSet82);
+            mockedManager.Setup(m => m.GetDataSet(83)).Returns(dataSet83);
+            mockedManager.Setup(m => m.GetDataSet(84)).Returns(dataSet84);
+            mockedManager.Setup(m => m.GetDataSet(85)).Returns(dataSet85);
+            mockedManager.Setup(m => m.GetDataSet(86)).Returns(dataSet86);
+            mockedManager.Setup(m => m.GetDataSet(87)).Returns(dataSet87);
+            mockedManager.Setup(m => m.GetDataSet(88)).Returns(dataSet88);
+
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            dataSet80.GetPrice().SetExtremum(extremum);
+
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 2);
+            double expectedResult = (1.08954d - 1.08926d) / 1.08926d;
+            Assert.AreEqual(expectedResult, result);
+
+        }
+
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForTroughByClose_IfQuotationsForComparedIndexDoesntExist()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
+            DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
+            DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+            mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
+            mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            dataSet8.GetPrice().SetExtremum(extremum);
+
+            //Assert
+            var result = processor.CalculateEarlierChange(extremum, 10);
+            double expectedResult = 0d;
+            Assert.AreEqual(expectedResult, result);
+
+        }
+
+
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForTroughByLow_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsLower()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet78 = new DataSet(new Quotation() { Id = 78, Date = new DateTime(2016, 1, 18, 4, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09003, High = 1.09013, Low = 1.08976, Close = 1.08985, Volume = 905, IndexNumber = 78 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 50, 0) });
+            DataSet dataSet79 = new DataSet(new Quotation() { Id = 79, Date = new DateTime(2016, 1, 18, 4, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.08986, High = 1.08995, Low = 1.08936, Close = 1.0894, Volume = 1168, IndexNumber = 79 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 55, 0) });
+            DataSet dataSet80 = new DataSet(new Quotation() { Id = 80, Date = new DateTime(2016, 1, 18, 5, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.08941, High = 1.08954, Low = 1.08915, Close = 1.08926, Volume = 1583, IndexNumber = 80 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 0, 0) });
+            DataSet dataSet81 = new DataSet(new Quotation() { Id = 81, Date = new DateTime(2016, 1, 18, 5, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.08928, High = 1.08949, Low = 1.08912, Close = 1.08934, Volume = 1369, IndexNumber = 81 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 5, 0) });
+            DataSet dataSet82 = new DataSet(new Quotation() { Id = 82, Date = new DateTime(2016, 1, 18, 5, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.08932, High = 1.08966, Low = 1.08926, Close = 1.08954, Volume = 1208, IndexNumber = 82 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 10, 0) });
+            DataSet dataSet83 = new DataSet(new Quotation() { Id = 83, Date = new DateTime(2016, 1, 18, 5, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.08953, High = 1.08983, Low = 1.0895, Close = 1.08977, Volume = 827, IndexNumber = 83 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 15, 0) });
+            DataSet dataSet84 = new DataSet(new Quotation() { Id = 84, Date = new DateTime(2016, 1, 18, 5, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.08977, High = 1.08982, Low = 1.08947, Close = 1.08948, Volume = 689, IndexNumber = 84 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 20, 0) });
+            DataSet dataSet85 = new DataSet(new Quotation() { Id = 85, Date = new DateTime(2016, 1, 18, 5, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.08945, High = 1.08948, Low = 1.08925, Close = 1.08937, Volume = 1129, IndexNumber = 85 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 25, 0) });
+            DataSet dataSet86 = new DataSet(new Quotation() { Id = 86, Date = new DateTime(2016, 1, 18, 5, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.08936, High = 1.08938, Low = 1.08908, Close = 1.08913, Volume = 848, IndexNumber = 86 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 30, 0) });
+            DataSet dataSet87 = new DataSet(new Quotation() { Id = 87, Date = new DateTime(2016, 1, 18, 5, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.08914, High = 1.08919, Low = 1.08882, Close = 1.0889, Volume = 748, IndexNumber = 87 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 35, 0) });
+            DataSet dataSet88 = new DataSet(new Quotation() { Id = 88, Date = new DateTime(2016, 1, 18, 5, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.08893, High = 1.08916, Low = 1.08884, Close = 1.08894, Volume = 1299, IndexNumber = 88 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(78)).Returns(dataSet78);
+            mockedManager.Setup(m => m.GetDataSet(79)).Returns(dataSet79);
+            mockedManager.Setup(m => m.GetDataSet(80)).Returns(dataSet80);
+            mockedManager.Setup(m => m.GetDataSet(81)).Returns(dataSet81);
+            mockedManager.Setup(m => m.GetDataSet(82)).Returns(dataSet82);
+            mockedManager.Setup(m => m.GetDataSet(83)).Returns(dataSet83);
+            mockedManager.Setup(m => m.GetDataSet(84)).Returns(dataSet84);
+            mockedManager.Setup(m => m.GetDataSet(85)).Returns(dataSet85);
+            mockedManager.Setup(m => m.GetDataSet(86)).Returns(dataSet86);
+            mockedManager.Setup(m => m.GetDataSet(87)).Returns(dataSet87);
+            mockedManager.Setup(m => m.GetDataSet(88)).Returns(dataSet88);
+
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            dataSet80.GetPrice().SetExtremum(extremum);
+
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 6);
+            double expectedResult = (1.08913d - 1.08926d) / 1.08926d;
+            Assert.AreEqual(expectedResult, result);
+
+        }
+
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForTroughByLow_IfQuotationsForComparedIndexExistsAndComparedClosePriceIsHigher()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet78 = new DataSet(new Quotation() { Id = 78, Date = new DateTime(2016, 1, 18, 4, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09003, High = 1.09013, Low = 1.08976, Close = 1.08985, Volume = 905, IndexNumber = 78 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 50, 0) });
+            DataSet dataSet79 = new DataSet(new Quotation() { Id = 79, Date = new DateTime(2016, 1, 18, 4, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.08986, High = 1.08995, Low = 1.08936, Close = 1.0894, Volume = 1168, IndexNumber = 79 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 4, 55, 0) });
+            DataSet dataSet80 = new DataSet(new Quotation() { Id = 80, Date = new DateTime(2016, 1, 18, 5, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.08941, High = 1.08954, Low = 1.08915, Close = 1.08926, Volume = 1583, IndexNumber = 80 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 0, 0) });
+            DataSet dataSet81 = new DataSet(new Quotation() { Id = 81, Date = new DateTime(2016, 1, 18, 5, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.08928, High = 1.08949, Low = 1.08912, Close = 1.08934, Volume = 1369, IndexNumber = 81 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 5, 0) });
+            DataSet dataSet82 = new DataSet(new Quotation() { Id = 82, Date = new DateTime(2016, 1, 18, 5, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.08932, High = 1.08966, Low = 1.08926, Close = 1.08954, Volume = 1208, IndexNumber = 82 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 10, 0) });
+            DataSet dataSet83 = new DataSet(new Quotation() { Id = 83, Date = new DateTime(2016, 1, 18, 5, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.08953, High = 1.08983, Low = 1.0895, Close = 1.08977, Volume = 827, IndexNumber = 83 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 15, 0) });
+            DataSet dataSet84 = new DataSet(new Quotation() { Id = 84, Date = new DateTime(2016, 1, 18, 5, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.08977, High = 1.08982, Low = 1.08947, Close = 1.08948, Volume = 689, IndexNumber = 84 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 20, 0) });
+            DataSet dataSet85 = new DataSet(new Quotation() { Id = 85, Date = new DateTime(2016, 1, 18, 5, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.08945, High = 1.08948, Low = 1.08925, Close = 1.08937, Volume = 1129, IndexNumber = 85 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 25, 0) });
+            DataSet dataSet86 = new DataSet(new Quotation() { Id = 86, Date = new DateTime(2016, 1, 18, 5, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.08936, High = 1.08938, Low = 1.08908, Close = 1.08913, Volume = 848, IndexNumber = 86 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 30, 0) });
+            DataSet dataSet87 = new DataSet(new Quotation() { Id = 87, Date = new DateTime(2016, 1, 18, 5, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.08914, High = 1.08919, Low = 1.08882, Close = 1.0889, Volume = 748, IndexNumber = 87 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 35, 0) });
+            DataSet dataSet88 = new DataSet(new Quotation() { Id = 88, Date = new DateTime(2016, 1, 18, 5, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.08893, High = 1.08916, Low = 1.08884, Close = 1.08894, Volume = 1299, IndexNumber = 88 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 18, 5, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(78)).Returns(dataSet78);
+            mockedManager.Setup(m => m.GetDataSet(79)).Returns(dataSet79);
+            mockedManager.Setup(m => m.GetDataSet(80)).Returns(dataSet80);
+            mockedManager.Setup(m => m.GetDataSet(81)).Returns(dataSet81);
+            mockedManager.Setup(m => m.GetDataSet(82)).Returns(dataSet82);
+            mockedManager.Setup(m => m.GetDataSet(83)).Returns(dataSet83);
+            mockedManager.Setup(m => m.GetDataSet(84)).Returns(dataSet84);
+            mockedManager.Setup(m => m.GetDataSet(85)).Returns(dataSet85);
+            mockedManager.Setup(m => m.GetDataSet(86)).Returns(dataSet86);
+            mockedManager.Setup(m => m.GetDataSet(87)).Returns(dataSet87);
+            mockedManager.Setup(m => m.GetDataSet(88)).Returns(dataSet88);
+
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            dataSet80.GetPrice().SetExtremum(extremum);
+
+            //Assert
+            var result = processor.CalculateLaterChange(extremum, 2);
+            double expectedResult = (1.08954d - 1.08926d) / 1.08926d;
+            Assert.AreEqual(expectedResult, result);
+
+        }
+
+        [TestMethod]
+        public void CalculateLaterChange_ReturnsProperValueForTroughByLow_IfQuotationsForComparedIndexDoesntExist()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 45, 0) });
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 50, 0) });
+            DataSet dataSet7 = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 55, 0) });
+            DataSet dataSet8 = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 23, 0, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+            mockedManager.Setup(m => m.GetDataSet(7)).Returns(dataSet7);
+            mockedManager.Setup(m => m.GetDataSet(8)).Returns(dataSet8);
+
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            dataSet8.GetPrice().SetExtremum(extremum);
+
+            //Assert
+            var result = processor.CalculateEarlierChange(extremum, 10);
+            double expectedResult = 0d;
+            Assert.AreEqual(expectedResult, result);
+
+        }
 
         #endregion CALCULATE_LATER_CHANGE
 

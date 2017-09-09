@@ -249,13 +249,13 @@ namespace Stock.Domain.Services
             int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
             DataSet currentDataSet = manager.GetDataSet(index);
             Quotation quotation = currentDataSet.GetQuotation();
-            Quotation comparedQuotation = getQuotation(index - units);
+            Quotation comparedQuotation = getQuotation(index + units);
             if (comparedQuotation != null)
             {
                 double baseValue = quotation.Close;
                 double comparedValue = comparedQuotation.Close;
                 var difference = coefficient * (baseValue - comparedValue);
-                return (difference / comparedValue);
+                return (difference / baseValue);
             }
             else
             {

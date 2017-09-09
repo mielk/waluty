@@ -53,7 +53,7 @@ namespace Stock.Domain.Services
             {
                 createPriceObjectIfNotExist(dataSet);
                 calculateDelta(dataSet);
-                processExtrema(dataSet);
+                processExtrema(dataSet, new ExtremumType[] {ExtremumType.PeakByClose, ExtremumType.PeakByHigh, ExtremumType.TroughByClose, ExtremumType.TroughByLow});
             }
         }
 
@@ -179,12 +179,12 @@ namespace Stock.Domain.Services
 
         #region CHECKING FOR EXTREMA
 
-        private void processExtrema(DataSet dataSet)
+        private void processExtrema(DataSet dataSet, IEnumerable<ExtremumType> types)
         {
-            processExtremum(dataSet, ExtremumType.PeakByClose);
-            processExtremum(dataSet, ExtremumType.PeakByHigh);
-            processExtremum(dataSet, ExtremumType.TroughByClose);
-            processExtremum(dataSet, ExtremumType.TroughByLow);
+            foreach (ExtremumType type in types)
+            {
+                processExtremum(dataSet, type);
+            }
         }
 
         private void processExtremum(DataSet dataSet, ExtremumType type)
@@ -219,6 +219,7 @@ namespace Stock.Domain.Services
                 extremum.LaterChange3 = processor.CalculateLaterChange(extremum, 3);
                 extremum.LaterChange5 = processor.CalculateLaterChange(extremum, 5);
                 extremum.LaterChange10 = processor.CalculateLaterChange(extremum, 10);
+                extremum.IsUpdated = true;
             }
 
         }

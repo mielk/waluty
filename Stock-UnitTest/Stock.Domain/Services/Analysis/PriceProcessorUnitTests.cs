@@ -383,6 +383,28 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         }
 
+        [TestMethod]
+        public void AfterProcessing_IfThereIsNewPeakByCloseExtremum_ItHasIsUpdatedFlagSetToTrue()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.PeakByClose)).Returns(true);
+
+            //Act
+            PriceProcessor processor = new PriceProcessor(mockedManager.Object);
+            processor.InjectExtremumProcessor(mockedProcessor.Object);
+            processor.Process(dataSet4);
+
+            //Assert
+            Price price = dataSet4.GetPrice();
+            Extremum extremum = price.GetExtremum(ExtremumType.PeakByClose)
+            Assert.IsTrue(extremum.IsUpdated);
+
+        }
+
         //Jeżeli tworzony jest nowy obiekt Extremum - ma flagę isNew = true;
         //Jeżeli istniał już wcześniej obiekt Extremum - ma flagę isNew = false;
 

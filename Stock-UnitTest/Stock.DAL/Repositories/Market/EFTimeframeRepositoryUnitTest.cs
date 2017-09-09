@@ -170,7 +170,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories
             insertTimeframeToTestDb(baseDto);
 
             //Act
-            TimeframeDto dto = repository.GetTimeframeById(baseDto.Id + 1);
+            TimeframeDto dto = repository.GetTimeframeById(baseDto.Id + 21);
 
             //Assert
             Assert.IsNull(dto);
