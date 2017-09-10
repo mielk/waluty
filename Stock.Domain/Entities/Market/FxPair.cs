@@ -1,6 +1,5 @@
 ﻿using Stock.DAL.TransferObjects;
 using Stock.Domain.Services;
-using Stock.Domain.Services.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

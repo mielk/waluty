@@ -400,7 +400,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Assert
             Price price = dataSet4.GetPrice();
-            Extremum extremum = price.GetExtremum(ExtremumType.PeakByClose)
+            Extremum extremum = price.GetExtremum(ExtremumType.PeakByClose);
             Assert.IsTrue(extremum.IsUpdated);
 
         }

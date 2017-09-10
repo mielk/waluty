@@ -97,7 +97,7 @@ namespace Stock.Domain.Services
 
         //Aktualnie zawsze zwraca najwyższy i najniższy poziom dla notowań. Zrobić, żeby podawać jako argument dla jakiego rodzaju analizy ma to wyliczać.
 
-        public DataSetInfo GetDataSetInfo(AnalysisDataQueryDefinition queryDef)
+        public DataSetInfo GetDataSetInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType)
         {
             DataSetInfo info = new DataSetInfo();
             IEnumerable<Quotation> quotations = quotationService.GetQuotations(queryDef);
@@ -108,7 +108,17 @@ namespace Stock.Domain.Services
             info.Counter = quotations.Count();
             return info;
         }
-
+        
+        public Dictionary<AnalysisType, DataSetInfo> GetDataSetInfos(AnalysisDataQueryDefinition queryDef)
+        {
+            Dictionary<AnalysisType, DataSetInfo> infos = new Dictionary<AnalysisType, DataSetInfo>();
+            foreach(AnalysisType type in queryDef.AnalysisTypes){
+                DataSetInfo dsi = GetDataSetInfo(queryDef, type);
+                infos.Add(type, dsi);
+            }
+            return infos;
+        }
+        
         public void UpdateDataSets(IEnumerable<DataSet> dataSets)
         {
 

@@ -94,7 +94,7 @@ namespace Stock.Web.Controllers
         {
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId);
             queryDef.StartDate = new DateTime(2017, 5, 1, 12, 0, 0);
-            DataSetInfo info = dataService.GetDataSetInfo(queryDef);
+            DataSetInfo info = dataService.GetDataSetInfo(queryDef, AnalysisType.Quotations);
             var result = new { firstDate = info.StartDate, lastDate = info.EndDate, minLevel = info.MinLevel, maxLevel = info.MaxLevel, counter = info.Counter};
             return Json(result, JsonRequestBehavior.AllowGet);
         }

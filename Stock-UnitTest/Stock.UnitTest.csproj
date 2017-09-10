@@ -112,6 +112,7 @@
     <Compile Include="Stock.Domain\Entities\Market\FxPairUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Market\MarketUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Market\AssetTimeframeUnitTest.cs" />
+    <Compile Include="Stock.Domain\Services\Analysis\AnalysisProcessControllers\PriceProcessControllerUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Analysis\ExtremumProcessorUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Analysis\PriceProcessorUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Analysis\SimulationServiceUnitTests.cs" />
@@ -123,7 +124,6 @@
     <Compile Include="Stock.Domain\Services\Market\MarketServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\Market\CurrencyServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Entities\Data\PriceUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\ProcessServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\DataItemUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendlineUnitTests.cs" />
     <Compile Include="Stock.Domain\_TODO\TrendServiceUnitTests.cs" />

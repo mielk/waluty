@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Stock.Domain.Services;
-using Stock.Domain.Services.Factories;
 
 namespace Stock.Web.Controllers
 {

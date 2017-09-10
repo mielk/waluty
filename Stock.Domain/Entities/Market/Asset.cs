@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.DAL.TransferObjects;
 using Stock.Domain.Services;
-using Stock.Domain.Services.Factories;
 
 
 namespace Stock.Domain.Entities

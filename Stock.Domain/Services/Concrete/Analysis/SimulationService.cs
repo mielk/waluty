@@ -91,6 +91,10 @@ namespace Stock.Domain.Services
             return simulation;
         }
 
+        public Simulation GetSimulationById(int id){
+            throw new Exception();
+        }
+
         private void appendSimulation(Simulation simulation)
         {
             simulations = simulations.Concat(new[] { simulation });

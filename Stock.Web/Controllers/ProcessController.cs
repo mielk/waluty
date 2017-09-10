@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Stock.Domain.Services;
 using Stock.Domain.Enums;
 using Stock.Domain.Entities;
-using Stock.Domain.Services.Factories;
 using Stock.Core;
 
 namespace Stock.Web.Controllers
@@ -23,19 +22,16 @@ namespace Stock.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RunProcess(string asset, string timeframe, bool fromScratch, string analysisTypes)
+        public ActionResult RunProcess(int simulationId)
         {
-            
-            //Convert the given names of analysis into enumerations.
-            Asset _asset = Asset.BySymbol(asset);
-            Timeframe _timeframe = Timeframe.ByName(timeframe);
-            ProcessService service = new ProcessService(_asset, _timeframe);
-            var types = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Prices, AnalysisType.Macd };
 
-            service.Setup(types);
-            var result = service.Run(fromScratch);
-            var json = new { value = result };
-            return Json(json, JsonRequestBehavior.AllowGet);
+            Simulation simulation = ServiceFactory.GetSimulationService().GetSimulationById(simulationId);
+            IProcessManager manager = new ProcessManager(simulation);
+            //service.Setup(types);
+            //var result = service.Run(fromScratch);
+            //var json = new { value = result };
+            //return Json(json, JsonRequestBehavior.AllowGet);
+            return null;
         }
 
     }

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
-using Stock.Domain.Services.Factories;
 using Stock.Utils;
 using Stock.Core;
 
@@ -15,6 +14,34 @@ namespace Stock.Domain.Services
 
     public static class HelperMethods
     {
+
+        public static DateTime? getEarliestDate(this IEnumerable<DateTime?> dates)
+        {
+
+            DateTime? d = null;
+            foreach (var dt in dates)
+            {
+                if (dt == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    if (d == null || DateTime.Compare((DateTime)dt, (DateTime)d) < 0)
+                    {
+                        d = dt;
+                    }
+                }
+            }
+
+            return d;
+
+        }
+
+
+
+
+
 
 
         public static IEnumerable<ExtremumGroup> GetExtremaGroups(this IEnumerable<DataItem> extrema){
@@ -135,38 +162,16 @@ namespace Stock.Domain.Services
 
 
 
-        public static DateTime? getEarliestDate(this IEnumerable<DateTime?> dates){
+        //public static IAnalyzer getAnalyzer(this AnalysisType type, Asset asset, Timeframe timeframe)
+        //{
+        //    AssetTimeframe atf = new AssetTimeframe(asset, timeframe);
+        //    return AnalyzerFactory.Instance().getAnalyzer(type, atf);
+        //}
 
-            DateTime? d = null;
-            foreach (var dt in dates)
-            {
-                if (dt == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    if (d == null || DateTime.Compare((DateTime)dt, (DateTime)d) < 0)
-                    {
-                        d = dt;
-                    }
-                }
-            }
-
-            return d;
-
-        }
-
-        public static IAnalyzer getAnalyzer(this AnalysisType type, Asset asset, Timeframe timeframe)
-        {
-            AssetTimeframe atf = new AssetTimeframe(asset, timeframe);
-            return AnalyzerFactory.Instance().getAnalyzer(type, atf);
-        }
-
-        public static IAnalyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
-        {
-            return AnalyzerFactory.Instance().getAnalyzer(type, atf);
-        }
+        //public static IAnalyzer getAnalyzer(this AnalysisType type, AssetTimeframe atf)
+        //{
+        //    return AnalyzerFactory.Instance().getAnalyzer(type, atf);
+        //}
 
     }
 

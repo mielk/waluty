@@ -25,7 +25,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         #region ISUPDATED_FLAG
 
         [TestMethod]
-        public void AfterBeingProcessed_ItemExtremumHasIsUpdatedFlagSetToTrue()
+        public void AfterBeingProcessed_ItemExtremumHasItsUpdatedFlagSetToTrue()
         {
 
         }

@@ -147,6 +147,14 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         }
 
+
+        [TestMethod]
+        public void GetSimulationById_TODO()
+        {
+            Assert.Fail("Not implemented yet");
+        }
+
+
         #endregion GET_SIMULATIONS
 
 

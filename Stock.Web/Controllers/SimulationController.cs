@@ -13,94 +13,92 @@ namespace Stock.Web.Controllers
 {
     public class SimulationController : Controller
     {
+        
+        //public SimulationController()
+        //{
+        //    this.ssf = null;// serviceFactory;
+        //}
 
-        private readonly ISimulationServiceFactory ssf;
-
-        public SimulationController(ISimulationServiceFactory serviceFactory)
-        {
-            this.ssf = serviceFactory;
-        }
-
-        public ActionResult Index()
-        {
-            return View();
-        }
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
 
 
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult InitializeSimulation(string pair, string timeframe)
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public ActionResult InitializeSimulation(string pair, string timeframe)
 
-            //Później dodać, żeby można było podać jako parametr wejściowy datę, od której ma się rozpoczynać
-            //symulacja. Na razie wszystkie symulacje rozpoczynają się od początku.
-            //Kolejny parametr do dodania to jakie analizy mają być wykonane. Obecnie domyślnie robi tylko PRICE.
-        {
+        //    //Później dodać, żeby można było podać jako parametr wejściowy datę, od której ma się rozpoczynać
+        //    //symulacja. Na razie wszystkie symulacje rozpoczynają się od początku.
+        //    //Kolejny parametr do dodania to jakie analizy mają być wykonane. Obecnie domyślnie robi tylko PRICE.
+        //{
 
-            //Restart simulation object.
-            var service = this.ssf.GetService();
-            var types = new AnalysisType[] { AnalysisType.Prices, AnalysisType.Trendlines };
-            var result = service.Start(pair, timeframe, types);
+        //    //Restart simulation object.
+        //    var service = this.ssf.GetService();
+        //    var types = new AnalysisType[] { AnalysisType.Prices, AnalysisType.Trendlines };
+        //    var result = service.Start(pair, timeframe, types);
 
-            var json = new { pair = pair, timeframe = timeframe, result = result };
+        //    var json = new { pair = pair, timeframe = timeframe, result = result };
 
-            Debug.WriteLine(string.Format("+;Initializing simulation [{0}, {1}]", pair, timeframe));
+        //    Debug.WriteLine(string.Format("+;Initializing simulation [{0}, {1}]", pair, timeframe));
 
-            return Json(json, JsonRequestBehavior.AllowGet);
+        //    return Json(json, JsonRequestBehavior.AllowGet);
 
-        }
+        //}
 
         
 
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult NextStep(int incrementation)
-        {
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public ActionResult NextStep(int incrementation)
+        //{
 
-            Debug.WriteLine("---------------------------------------------------------------------------");
-            Debug.WriteLine("+;<SimulationController.NextStep>");
+        //    Debug.WriteLine("---------------------------------------------------------------------------");
+        //    Debug.WriteLine("+;<SimulationController.NextStep>");
 
-            var service = this.ssf.GetService();
-            var index = service.NextStep(incrementation);            
+        //    var service = this.ssf.GetService();
+        //    var index = service.NextStep(incrementation);            
 
-            var json = new { index = index };
+        //    var json = new { index = index };
 
-            Debug.WriteLine("+;<///SimulationController.NextStep>");
+        //    Debug.WriteLine("+;<///SimulationController.NextStep>");
 
-            return Json(json, JsonRequestBehavior.AllowGet);
+        //    return Json(json, JsonRequestBehavior.AllowGet);
 
-        }
-
-
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult GetDataSetProperties()
-        {
-            var service = this.ssf.GetService();
-            var properties = service.GetDataSetProperties();
-            return Json(properties, JsonRequestBehavior.AllowGet);
-        }
+        //}
 
 
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public ActionResult GetDataSetProperties()
+        //{
+        //    var service = this.ssf.GetService();
+        //    var properties = service.GetDataSetProperties();
+        //    return Json(properties, JsonRequestBehavior.AllowGet);
+        //}
 
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult GetFxQuotationsByDates(string startDate, string endDate)
-        {
 
-            //Converts date strings to DateTime objects.
-            DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
-            //findTrendlines(pairSymbol, timeframe);
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public ActionResult GetFxQuotationsByDates(string startDate, string endDate)
+        //{
 
-            ISimulationService2 service = this.ssf.GetService();
-            IEnumerable<DataItem> quotations = service.GetQuotations(startDateTime, endDateTime);
-            IEnumerable<Trendline> trendlines = service.GetTrendlines(startDateTime, endDateTime);
-            var result = new { quotations = quotations, trendlines = trendlines };
+        //    //Converts date strings to DateTime objects.
+        //    DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+        //    DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+        //    //findTrendlines(pairSymbol, timeframe);
 
-        }
+        //    ISimulationService2 service = this.ssf.GetService();
+        //    IEnumerable<DataItem> quotations = service.GetQuotations(startDateTime, endDateTime);
+        //    IEnumerable<Trendline> trendlines = service.GetTrendlines(startDateTime, endDateTime);
+        //    var result = new { quotations = quotations, trendlines = trendlines };
+
+        //    return Json(result, JsonRequestBehavior.AllowGet);
+
+        //}
 
     }
 }

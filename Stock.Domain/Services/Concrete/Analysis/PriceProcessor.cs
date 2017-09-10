@@ -198,7 +198,7 @@ namespace Stock.Domain.Services
             {
                 if (processor.IsExtremum(dataSet, type))
                 {
-                    extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate());
+                    extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate()) { IndexNumber = dataSet.IndexNumber };
                     price.SetExtremum(extremum);
                 }
             }

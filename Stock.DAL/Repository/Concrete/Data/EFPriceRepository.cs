@@ -51,6 +51,7 @@ namespace Stock.DAL.Repositories
             {
                 results = context.Prices.Where(p => p.TimeframeId == queryDef.TimeframeId &&
                                                         p.AssetId == queryDef.AssetId &&
+                                                        (queryDef.SimulationId == 0 || queryDef.SimulationId == p.SimulationId) &&
                                                         (p.PriceDate.CompareTo(queryDef.StartDate ?? MIN_DATE) >= 0) &&
                                                         (p.PriceDate.CompareTo(queryDef.EndDate ?? MAX_DATE) <= 0)).ToList();
             }

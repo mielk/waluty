@@ -14,6 +14,7 @@ namespace Stock.Core
         public DateTime? EndDate { get; set; }
         public IEnumerable<AnalysisType> AnalysisTypes { get; set; }
         public int Limit { get; set; }
+        public int SimulationId { get; set; }
 
         public AnalysisDataQueryDefinition(int assetId, int timeframeId)
         {
@@ -23,6 +24,7 @@ namespace Stock.Core
             this.EndDate = null;
             this.AnalysisTypes = new List<AnalysisType>();
             this.Limit = 0;
+            this.SimulationId = 0;
         }
 
     }

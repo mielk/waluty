@@ -267,6 +267,97 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
         #region LATER & EARLIER
 
         [TestMethod]
+        public void IsLaterThan_ReturnsTrue_IfComparedDateIsNull()
+        {
+            //Arrange
+            DateTime? baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.IsTrue(isLater);
+
+        }
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNotNull()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.IsFalse(isLater);
+
+        }
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNullToo()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.IsFalse(isLater);
+        }
+
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 13, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isLaterNullAllowed = baseDateNullAllowed.IsLaterThan(comparedDateNullAllowed);
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.AreEqual(isLater, isLaterNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEqual()
+        {
+
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isLaterNullAllowed = baseDateNullAllowed.IsLaterThan(comparedDateNullAllowed);
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.AreEqual(isLater, isLaterNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsLaterThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 15, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isLaterNullAllowed = baseDateNullAllowed.IsLaterThan(comparedDateNullAllowed);
+            bool isLater = baseDate.IsLaterThan(comparedDate);
+            Assert.AreEqual(isLater, isLaterNullAllowed);
+
+        }
+
+
+
+
+        [TestMethod]
         public void IsLaterThan_ReturnsTrue_IfComparedDateIsEarlier()
         {
             //Arrange
@@ -305,6 +396,98 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         }
 
+
+
+
+
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsFalse_IfComparedDateIsNull()
+        {
+            //Arrange
+            DateTime? baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNotNull()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNullToo()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+        }
+
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 15, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isEarlierNullAllowed = baseDateNullAllowed.IsEarlierThan(comparedDateNullAllowed);
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.AreEqual(isEarlier, isEarlierNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEqual()
+        {
+
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isEarlierNullAllowed = baseDateNullAllowed.IsEarlierThan(comparedDateNullAllowed);
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.AreEqual(isEarlier, isEarlierNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsEarlierThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 13, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isEarlierNullAllowed = baseDateNullAllowed.IsEarlierThan(comparedDateNullAllowed);
+            bool isEarlier = baseDate.IsEarlierThan(comparedDate);
+            Assert.AreEqual(isEarlier, isEarlierNullAllowed);
+
+        }
 
 
         [TestMethod]
@@ -348,6 +531,96 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
 
 
+
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsTrue_IfComparedDateIsNull()
+        {
+            //Arrange
+            DateTime? baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsTrue(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNotNull()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNullToo()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+        }
+
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 13, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isNotEarlierNullAllowed = baseDateNullAllowed.IsNotEarlierThan(comparedDateNullAllowed);
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.AreEqual(isNotEarlier, isNotEarlierNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEqual()
+        {
+
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isNotEarlierNullAllowed = baseDateNullAllowed.IsNotEarlierThan(comparedDateNullAllowed);
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.AreEqual(isNotEarlier, isNotEarlierNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsNotEarlierThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 15, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isNotEarlierNullAllowed = baseDateNullAllowed.IsNotEarlierThan(comparedDateNullAllowed);
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.AreEqual(isNotEarlier, isNotEarlierNullAllowed);
+
+        }
+
         [TestMethod]
         public void IsNotEarlierThan_ReturnsTrue_IfComparedDateIsEarlier()
         {
@@ -387,6 +660,97 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
 
         }
 
+
+
+
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsFalse_IfComparedDateIsNull()
+        {
+            //Arrange
+            DateTime? baseDate = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNotNull()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = null;
+
+            //Assert
+            bool isEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+
+        }
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsFalse_IfBaseDateIsNullAndComparedIsNullToo()
+        {
+            //Arrange
+            DateTime? baseDate = null;
+            DateTime? comparedDate = new DateTime(2017, 5, 1, 14, 15, 9);
+
+            //Assert
+            bool isEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.IsFalse(isEarlier);
+        }
+
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsLater()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 13, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isNotEarlierNullAllowed = baseDateNullAllowed.IsNotEarlierThan(comparedDateNullAllowed);
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.AreEqual(isNotEarlier, isNotEarlierNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEqual()
+        {
+
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isNotEarlierNullAllowed = baseDateNullAllowed.IsNotEarlierThan(comparedDateNullAllowed);
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.AreEqual(isNotEarlier, isNotEarlierNullAllowed);
+
+        }
+
+        [TestMethod]
+        public void IsNotLaterThan_ReturnsTheSameValueForNullAllowedVersion_IfComparedDateIsEarlier()
+        {
+            //Arrange
+            DateTime? baseDateNullAllowed = new DateTime(2017, 5, 1, 14, 15, 9);
+            DateTime baseDate = (DateTime)baseDateNullAllowed;
+            DateTime? comparedDateNullAllowed = new DateTime(2017, 5, 1, 15, 14, 0);
+            DateTime comparedDate = (DateTime)comparedDateNullAllowed;
+
+            //Assert
+            bool isNotEarlierNullAllowed = baseDateNullAllowed.IsNotEarlierThan(comparedDateNullAllowed);
+            bool isNotEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            Assert.AreEqual(isNotEarlier, isNotEarlierNullAllowed);
+
+        }
 
 
         [TestMethod]

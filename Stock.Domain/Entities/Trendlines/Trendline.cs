@@ -36,8 +36,8 @@ namespace Stock.Domain.Entities
         public DataItem PreviousHit { get; set; }
         public DataItem PreviousBreak { get; set; }
         private double TotalOverBreak;
-        private IPriceTrendComparer extremumComparer = new ExtremumPriceTrendComparer();
-        private IPriceTrendComparer otherComparer = new PriceTrendComparer();
+        //private IPriceTrendComparer extremumComparer = new ExtremumPriceTrendComparer();
+        //private IPriceTrendComparer otherComparer = new PriceTrendComparer();
         public DataItem LastAnalyzed { get; set; }
 
         //Analyse-purpose variables.
@@ -296,45 +296,45 @@ namespace Stock.Domain.Entities
          * linia trendu. */
         public void Check(DataItem item, DataItem nextItem)
         {
-            bool isExtremum = IsProperExtremum(item, nextItem);
-            double level = GetLevel(item.Index);
-            IPriceTrendComparer comparer = isExtremum ? this.extremumComparer : this.otherComparer;
-            comparer.Compare(item, level, CurrentType, PreviousHit);
+            //bool isExtremum = IsProperExtremum(item, nextItem);
+            //double level = GetLevel(item.Index);
+            //IPriceTrendComparer comparer = isExtremum ? this.extremumComparer : this.otherComparer;
+            //comparer.Compare(item, level, CurrentType, PreviousHit);
 
-            /* Dodaj wartość wyliczoną dla tego notowania do zmiennej [TotalPriceOverBreak]. */
-            this.TotalOverBreak += comparer.GetPriceOverBreak();
+            ///* Dodaj wartość wyliczoną dla tego notowania do zmiennej [TotalPriceOverBreak]. */
+            //this.TotalOverBreak += comparer.GetPriceOverBreak();
 
-            /* Sprawdź czy jest to trafienie. */
-            if (comparer.IsHit())
-            {
-                var hit = comparer.GetHit();
-                this.Hits.Add(hit);
-                this.PreviousHit = item;
-                if (isExtremum) this.PreviousHit = item;
-            }
+            ///* Sprawdź czy jest to trafienie. */
+            //if (comparer.IsHit())
+            //{
+            //    var hit = comparer.GetHit();
+            //    this.Hits.Add(hit);
+            //    this.PreviousHit = item;
+            //    if (isExtremum) this.PreviousHit = item;
+            //}
 
 
-            /* Sprawdź czy jest to przebicie (Cena Close > linia trendu) */
-            if (comparer.IsBreak())
-            {
-                var trendBreak = comparer.GetBreak();
+            ///* Sprawdź czy jest to przebicie (Cena Close > linia trendu) */
+            //if (comparer.IsBreak())
+            //{
+            //    var trendBreak = comparer.GetBreak();
 
-                /* Sprawdź notowania pomiędzy tym przełamaniem, a poprzednim.
-                 * Jeżeli nie było w tym czasie żadnego odbicia ekstremum od linii trendu,
-                 * linia trendu otrzymuje punkty ujemne - czyli (dla linii oporu):
-                 * kurs wzrasta, przebija od dołu linię oporu, nad linią oporu wytrzymuje przez
-                 * kilka notowań, ale w tym czasie ani razu nie ma odbicia od tej linii trendu od góry.
-                 * Potem wykres wraca z powrotem pod linię oporu, nie zaliczywszzy żadnego odbicia
-                 * od linii trendu z góry.
-                 * W takiej sytuacji liczone są punkty na podstawie odległości cen zamknięcia
-                 * wszystkich notowań, które znalazły się nad linią oporu (i pod linią wsparcia). */
-                trendBreak.Score = checkBreakRange(item);
+            //    /* Sprawdź notowania pomiędzy tym przełamaniem, a poprzednim.
+            //     * Jeżeli nie było w tym czasie żadnego odbicia ekstremum od linii trendu,
+            //     * linia trendu otrzymuje punkty ujemne - czyli (dla linii oporu):
+            //     * kurs wzrasta, przebija od dołu linię oporu, nad linią oporu wytrzymuje przez
+            //     * kilka notowań, ale w tym czasie ani razu nie ma odbicia od tej linii trendu od góry.
+            //     * Potem wykres wraca z powrotem pod linię oporu, nie zaliczywszzy żadnego odbicia
+            //     * od linii trendu z góry.
+            //     * W takiej sytuacji liczone są punkty na podstawie odległości cen zamknięcia
+            //     * wszystkich notowań, które znalazły się nad linią oporu (i pod linią wsparcia). */
+            //    trendBreak.Score = checkBreakRange(item);
 
-                this.Breaks.Add(trendBreak);
-                this.PreviousBreak = item;
-                this.TotalOverBreak = 0;
-                SwitchTrendlineType();
-            }
+            //    this.Breaks.Add(trendBreak);
+            //    this.PreviousBreak = item;
+            //    this.TotalOverBreak = 0;
+            //    SwitchTrendlineType();
+            //}
 
         }
 

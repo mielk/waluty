@@ -9,6 +9,72 @@ namespace Stock.Utils
     public static class DateTimeHelperMethods
     {
 
+
+        public static bool IsLaterThan(this DateTime? value, DateTime? compared)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+            else if (compared == null)
+            {
+                return true;
+            }
+            else
+            {
+                return ((DateTime)value).IsLaterThan((DateTime)compared);
+            }
+        }
+
+        public static bool IsEarlierThan(this DateTime? value, DateTime? compared)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+            else if (compared == null)
+            {
+                return false;
+            }
+            else
+            {
+                return ((DateTime)value).IsEarlierThan((DateTime)compared);
+            }
+        }
+
+        public static bool IsNotEarlierThan(this DateTime? value, DateTime? compared)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+            else if (compared == null)
+            {
+                return false;
+            }
+            else
+            {
+                return ((DateTime)value).IsNotEarlierThan((DateTime)compared);
+            }
+        }
+
+        public static bool IsNotLaterThan(this DateTime? value, DateTime? compared)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+            else if (compared == null)
+            {
+                return false;
+            }
+            else
+            {
+                return ((DateTime)value).IsNotLaterThan((DateTime)compared);
+            }
+        }
+
+
         public static bool IsLaterThan(this DateTime value, DateTime compared)
         {
             return (value.CompareTo(compared) > 0);

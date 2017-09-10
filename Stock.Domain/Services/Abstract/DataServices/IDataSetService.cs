@@ -14,7 +14,8 @@ namespace Stock.Domain.Services
         void InjectPriceService(IPriceService service);
         IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef);
         DataSet[] AppendAndReturnAsArray(IEnumerable<DataSet> sets, AnalysisDataQueryDefinition queryDef);
-        DataSetInfo GetDataSetInfo(AnalysisDataQueryDefinition queryDef);
+        DataSetInfo GetDataSetInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType);
+        Dictionary<AnalysisType, DataSetInfo> GetDataSetInfos(AnalysisDataQueryDefinition queryDef);
         void UpdateDataSets(IEnumerable<DataSet> dataSets);
     }
 }

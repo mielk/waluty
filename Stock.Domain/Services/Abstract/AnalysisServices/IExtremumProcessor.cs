@@ -10,8 +10,8 @@ namespace Stock.Domain.Services
 {
     public interface IExtremumProcessor
     {
-        bool IsExtremum(DataSet dataSet, ExtremumType type);
         void InjectProcessManager(IProcessManager manager);
+        bool IsExtremum(DataSet dataSet, ExtremumType type);
         double CalculateEarlierAmplitude(Extremum extremum);
         int CalculateEarlierCounter(Extremum extremum);
         double CalculateEarlierChange(Extremum extremum, int units);
