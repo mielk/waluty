@@ -6,7 +6,6 @@
         private static readonly IMarketRepository marketRepository;
         private static readonly ICurrencyRepository currencyRepository;
         private static readonly IAssetRepository assetRepository;
-        private static readonly IDataRepository2 dataRepository2;
         private static readonly ITimeframeRepository timeframeRepository;
         private static readonly IQuotationRepository quotationRepository;
         private static readonly IPriceRepository priceRepository;
@@ -15,7 +14,6 @@
         static RepositoryFactory()
         {
             marketRepository = new EFMarketRepository();
-            dataRepository2 = new EFDataRepository2();
             currencyRepository = new EFCurrencyRepository();
             assetRepository = new EFAssetRepository();
             timeframeRepository = new EFTimeframeRepository();
@@ -43,11 +41,6 @@
         public static ITimeframeRepository GetTimeframeRepository()
         {
             return timeframeRepository;
-        }
-
-        public static IDataRepository2 GetDataRepository2()
-        {
-            return dataRepository2;
         }
 
         public static IQuotationRepository GetQuotationRepository()

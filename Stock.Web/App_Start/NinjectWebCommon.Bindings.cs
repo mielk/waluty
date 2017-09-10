@@ -17,6 +17,10 @@ namespace Stock.Web
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "IOC registration method")]
         private static void RegisterServices(IBindingRoot kernel)
         {
+
+            kernel.Bind<IServiceFactory>().To<ServiceFactory>();
+            kernel.Bind<IProcessorFactory>().To<ProcessorFactory>();
+
             kernel.Bind<ISimulationRepository>().To<EFSimulationRepository>();
             kernel.Bind<IPriceRepository>().To<EFPriceRepository>();
             kernel.Bind<IQuotationRepository>().To<EFQuotationRepository>();
@@ -30,12 +34,12 @@ namespace Stock.Web
             kernel.Bind<IPriceService>().To<PriceService>();
             kernel.Bind<IDataSetService>().To<DataSetService>();
 
+            kernel.Bind<IProcessManager>().To<ProcessManager>();
+
             kernel.Bind<IMarketService>().To<MarketService>();
             kernel.Bind<IAssetService>().To<AssetService>();
             kernel.Bind<ITimeframeService>().To<TimeframeService>();
             kernel.Bind<ICurrencyService>().To<CurrencyService>();
-
-            kernel.Bind<IDataRepository2>().To<EFDataRepository2>();
 
         }
 

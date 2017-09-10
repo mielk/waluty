@@ -24,8 +24,8 @@ namespace Stock.Domain.Services
 
         public DataSetService()
         {
-            this.quotationService = ServiceFactory.GetQuotationService();
-            this.priceService = ServiceFactory.GetPriceService();
+            this.quotationService = ServiceFactory.Instance().GetQuotationService();
+            this.priceService = ServiceFactory.Instance().GetPriceService();
             setContainer(new DataSetsContainer());
         }
 
@@ -91,32 +91,6 @@ namespace Stock.Domain.Services
             }
 
             return array;
-        }
-
-
-
-        //Aktualnie zawsze zwraca najwyższy i najniższy poziom dla notowań. Zrobić, żeby podawać jako argument dla jakiego rodzaju analizy ma to wyliczać.
-
-        public DataSetInfo GetDataSetInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType)
-        {
-            DataSetInfo info = new DataSetInfo();
-            IEnumerable<Quotation> quotations = quotationService.GetQuotations(queryDef);
-            info.StartDate = quotations.Select(q => q.Date).Min();
-            info.EndDate = quotations.Select(q => q.Date).Max();
-            info.MinLevel = quotations.Select(q => q.Low).Min();
-            info.MaxLevel = quotations.Select(q => q.High).Max();
-            info.Counter = quotations.Count();
-            return info;
-        }
-        
-        public Dictionary<AnalysisType, DataSetInfo> GetDataSetInfos(AnalysisDataQueryDefinition queryDef)
-        {
-            Dictionary<AnalysisType, DataSetInfo> infos = new Dictionary<AnalysisType, DataSetInfo>();
-            foreach(AnalysisType type in queryDef.AnalysisTypes){
-                DataSetInfo dsi = GetDataSetInfo(queryDef, type);
-                infos.Add(type, dsi);
-            }
-            return infos;
         }
         
         public void UpdateDataSets(IEnumerable<DataSet> dataSets)

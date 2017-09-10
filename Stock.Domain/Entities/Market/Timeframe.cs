@@ -15,7 +15,7 @@ namespace Stock.Domain.Entities
     {
 
         //Static properties.
-        private static ITimeframeService service = ServiceFactory.GetTimeframeService();
+        private static ITimeframeService service = ServiceFactory.Instance().GetTimeframeService();
 
         //Instance properties.
         private int id;
@@ -35,7 +35,7 @@ namespace Stock.Domain.Entities
 
         public static void restoreDefaultService()
         {
-            service = ServiceFactory.GetTimeframeService();
+            service = ServiceFactory.Instance().GetTimeframeService();
         }
 
         public static IEnumerable<Timeframe> GetAllTimeframes()

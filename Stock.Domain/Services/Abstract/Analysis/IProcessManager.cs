@@ -10,9 +10,9 @@ namespace Stock.Domain.Services
 {
     public interface IProcessManager
     {
-        DataSetInfo GetDataSetInfo(AnalysisType type);
         DataSet GetDataSet(int index);
         int GetDataSetIndex(DateTime? datetime);
+        int? GetAnalysisLastUpdatedIndex(AnalysisType type);
         void Run();
         int GetSimulationId();
     }

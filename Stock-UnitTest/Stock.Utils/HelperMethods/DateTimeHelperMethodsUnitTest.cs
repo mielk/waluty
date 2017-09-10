@@ -672,7 +672,7 @@ namespace Stock_UnitTest.Stock.Utils.HelperMethods
             DateTime? comparedDate = null;
 
             //Assert
-            bool isEarlier = baseDate.IsNotEarlierThan(comparedDate);
+            bool isEarlier = baseDate.IsNotLaterThan(comparedDate);
             Assert.IsFalse(isEarlier);
 
         }

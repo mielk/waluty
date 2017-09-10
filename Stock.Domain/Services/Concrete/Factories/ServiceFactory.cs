@@ -7,9 +7,9 @@ using Stock.DAL.Repositories;
 
 namespace Stock.Domain.Services
 {
-    public class ServiceFactory
+    public class ServiceFactory : IServiceFactory
     {
-
+        private static ServiceFactory instance;
         private static ICurrencyService _currencyService;
         private static IAssetService _assetService;
         private static IMarketService _marketService;
@@ -18,10 +18,28 @@ namespace Stock.Domain.Services
         private static IPriceService _priceService;
         private static IDataSetService _dataSetService;
         private static ISimulationService _simulationService;
+        private static IAnalysisTimestampService _analysisTimestampService;
 
 
 
-        public static ICurrencyService GetCurrencyService()
+
+        #region CONSTRUCTOR
+
+        public static ServiceFactory Instance()
+        {
+            if (instance == null)
+            {
+                instance = new ServiceFactory();
+            }
+            return instance;
+        }
+
+        #endregion CONSTRUCTOR
+
+
+
+
+        public ICurrencyService GetCurrencyService()
         {
             if (_currencyService == null)
             {
@@ -31,7 +49,7 @@ namespace Stock.Domain.Services
             return _currencyService;
         }
 
-        public static ICurrencyService GetCurrencyService(ICurrencyService service)
+        public ICurrencyService GetCurrencyService(ICurrencyService service)
         {
             _currencyService = service;
             return _currencyService;
@@ -39,7 +57,7 @@ namespace Stock.Domain.Services
 
 
 
-        public static IAssetService GetAssetService()
+        public IAssetService GetAssetService()
         {
             if (_assetService == null)
             {
@@ -49,7 +67,7 @@ namespace Stock.Domain.Services
             return _assetService;
         }
 
-        public static IAssetService GetAssetService(IAssetService service)
+        public IAssetService GetAssetService(IAssetService service)
         {
             _assetService = service;
             return _assetService;
@@ -57,7 +75,7 @@ namespace Stock.Domain.Services
 
 
 
-        public static IMarketService GetMarketService()
+        public IMarketService GetMarketService()
         {
             if (_marketService == null)
             {
@@ -67,7 +85,7 @@ namespace Stock.Domain.Services
             return _marketService;
         }
 
-        public static IMarketService GetMarketService(IMarketService service)
+        public IMarketService GetMarketService(IMarketService service)
         {
             _marketService = service;
             return _marketService;
@@ -75,7 +93,7 @@ namespace Stock.Domain.Services
 
 
 
-        public static ITimeframeService GetTimeframeService()
+        public ITimeframeService GetTimeframeService()
         {
             if (_timeframeService == null)
             {
@@ -85,7 +103,7 @@ namespace Stock.Domain.Services
             return _timeframeService;
         }
 
-        public static ITimeframeService GetTimeframeService(ITimeframeService service)
+        public ITimeframeService GetTimeframeService(ITimeframeService service)
         {
             _timeframeService = service;
             return _timeframeService;
@@ -93,7 +111,7 @@ namespace Stock.Domain.Services
 
 
 
-        public static IQuotationService GetQuotationService()
+        public IQuotationService GetQuotationService()
         {
             if (_quotationService == null)
             {
@@ -103,7 +121,7 @@ namespace Stock.Domain.Services
             return _quotationService;
         }
 
-        public static IQuotationService GetQuotationService(IQuotationService service)
+        public IQuotationService GetQuotationService(IQuotationService service)
         {
             _quotationService = service;
             return _quotationService;
@@ -111,7 +129,7 @@ namespace Stock.Domain.Services
 
 
 
-        public static IPriceService GetPriceService()
+        public IPriceService GetPriceService()
         {
             if (_priceService == null)
             {
@@ -121,7 +139,7 @@ namespace Stock.Domain.Services
             return _priceService;
         }
 
-        public static IPriceService GetPriceService(IPriceService service)
+        public IPriceService GetPriceService(IPriceService service)
         {
             _priceService = service;
             return _priceService;
@@ -129,7 +147,7 @@ namespace Stock.Domain.Services
 
 
 
-        public static IDataSetService GetDataSetService()
+        public IDataSetService GetDataSetService()
         {
             if (_dataSetService == null)
             {
@@ -138,14 +156,14 @@ namespace Stock.Domain.Services
             return _dataSetService;
         }
 
-        public static IDataSetService GetDataSetService(IDataSetService service)
+        public IDataSetService GetDataSetService(IDataSetService service)
         {
             _dataSetService = service;
             return _dataSetService;
         }
 
 
-        public static ISimulationService GetSimulationService()
+        public ISimulationService GetSimulationService()
         {
             if (_simulationService == null)
             {
@@ -155,12 +173,26 @@ namespace Stock.Domain.Services
             return _simulationService;
         }
 
-        public static ISimulationService GetSimulationService(ISimulationService service)
+        public ISimulationService GetSimulationService(ISimulationService service)
         {
             _simulationService = service;
             return _simulationService;
         }
 
+        public IAnalysisTimestampService GetAnalysisTimestampService()
+        {
+            if (_analysisTimestampService == null)
+            {
+                ISimulationRepository repository = RepositoryFactory.GetSimulationRepository();
+                _analysisTimestampService = new AnalysisTimestampService(repository);
+            }
+            return _analysisTimestampService;
+        }
+
+        public IAnalysisTimestampService GetAnalysisTimestampService(IAnalysisTimestampService service)
+        {
+            return _analysisTimestampService;
+        }
 
     }
 

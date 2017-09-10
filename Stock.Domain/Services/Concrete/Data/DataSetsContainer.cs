@@ -21,8 +21,8 @@ namespace Stock.Domain.Services
 
         public DataSetsContainer()
         {
-            this.quotationService = ServiceFactory.GetQuotationService();
-            this.priceService = ServiceFactory.GetPriceService();
+            this.quotationService = ServiceFactory.Instance().GetQuotationService();
+            this.priceService = ServiceFactory.Instance().GetPriceService();
         }
 
         #endregion CONSTRUCTOR

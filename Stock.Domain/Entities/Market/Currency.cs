@@ -12,7 +12,7 @@ namespace Stock.Domain.Entities
     {
 
         //Static properties.
-        private static ICurrencyService service = ServiceFactory.GetCurrencyService();
+        private static ICurrencyService service = ServiceFactory.Instance().GetCurrencyService();
 
         //Instance properties.
         private int id { get; set; }
@@ -29,7 +29,7 @@ namespace Stock.Domain.Entities
 
         public static void RestoreDefaultService()
         {
-            service = ServiceFactory.GetCurrencyService();
+            service = ServiceFactory.Instance().GetCurrencyService();
         }
 
         public static IEnumerable<Currency> GetAllCurrencies()

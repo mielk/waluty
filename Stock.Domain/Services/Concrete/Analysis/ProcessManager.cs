@@ -15,22 +15,31 @@ namespace Stock.Domain.Services
         private Simulation simulation;
         private AnalysisDataQueryDefinition queryDef;
         private IDataSetService dataSetService;
-        DataSet[] dataSetsArray;
-        Dictionary<AnalysisType, DataSetInfo> dataSetInfos;
-
+        private IAnalysisTimestampService timestampService;
+        private DataSet[] dataSetsArray;
+        private Dictionary<AnalysisType, int?> lastIndexes;
 
 
         #region CONSTRUCTOR
 
         public ProcessManager(Simulation simulation)
         {
-            this.dataSetService = ServiceFactory.GetDataSetService();
+            this.dataSetService = ServiceFactory.Instance().GetDataSetService();
+            this.timestampService = ServiceFactory.Instance().GetAnalysisTimestampService();
             setSimulation(simulation);
         }
 
         public ProcessManager(IDataSetService dataSetService, Simulation simulation)
         {
             this.dataSetService = dataSetService;
+            this.timestampService = ServiceFactory.Instance().GetAnalysisTimestampService();
+            setSimulation(simulation);
+        }
+
+        public ProcessManager(IDataSetService dataSetService, IAnalysisTimestampService timestampService, Simulation simulation)
+        {
+            this.dataSetService = dataSetService;
+            this.timestampService = timestampService;
             setSimulation(simulation);
         }
 
@@ -45,10 +54,17 @@ namespace Stock.Domain.Services
             this.dataSetService = service;
         }
 
+        public void InjectTimestampService(IAnalysisTimestampService service)
+        {
+            this.timestampService = service;
+        }
+
         #endregion CONSTRUCTOR
 
 
 
+        #region SIMULATION
+        
         public Simulation GetSimulation()
         {
             return simulation;
@@ -59,29 +75,18 @@ namespace Stock.Domain.Services
             return simulation == null ? 0 : simulation.Id;
         }
 
+        #endregion SIMULATION
 
 
 
-        public void Run()
+        #region UPDATING DATA SETS
+
+        private void loadLastIndexes()
         {
-
-            updateData(false);
-            IEnumerable<AnalysisType> analysisTypes = simulation.GetAnalysisTypes();
-
-            foreach(AnalysisType type in analysisTypes){
-                IAnalysisProcessController processController = ProcessorFactory.GetProperAnalysisProcessController(type);
-                processController.Run(this);
-            }
-
+            this.lastIndexes = timestampService.GetLastAnalyzedIndexes(simulation.Id);
         }
 
-        public void updateData(bool force)
-        {
-            loadDataSets(force);
-            loadDataSetInfos(force);
-        }
-
-        private void loadDataSets(bool force)
+        private void loadDataSets()
         {
             if (this.dataSetsArray == null)
             {
@@ -89,16 +94,22 @@ namespace Stock.Domain.Services
             }
         }
 
-        private void loadDataSetInfos(bool force)
+        #endregion UPDATING DATA SETS
+
+
+
+        public void Run()
         {
-            if (this.dataSetInfos == null)
-            {
-                dataSetInfos = dataSetService.GetDataSetInfos(queryDef);
+            IEnumerable<AnalysisType> analysisTypes = simulation.GetAnalysisTypes();
+            foreach(AnalysisType type in analysisTypes){
+                IAnalysisProcessController processController = ProcessorFactory.Instance().GetProperAnalysisProcessController(type);
+                processController.Run(this);
             }
         }
 
 
 
+        #region ACCESS TO DATA SETS
 
         public DataSet GetDataSet(int index)
         {
@@ -123,13 +134,16 @@ namespace Stock.Domain.Services
             return 1;
         }
 
-        public DataSetInfo GetDataSetInfo(AnalysisType type)
+        public int? GetAnalysisLastUpdatedIndex(AnalysisType type)
         {
-            DataSetInfo dsi;
+
+            if (lastIndexes == null) loadLastIndexes();
+
+            int? index;
             try
             {
-                dataSetInfos.TryGetValue(type, out dsi);
-                return dsi;
+                lastIndexes.TryGetValue(type, out index);
+                return index;
             }
             catch (Exception ex)
             {
@@ -137,5 +151,10 @@ namespace Stock.Domain.Services
             }
         }
 
+        #endregion ACCESS TO DATA SETS
+
+
+
     }
+
 }

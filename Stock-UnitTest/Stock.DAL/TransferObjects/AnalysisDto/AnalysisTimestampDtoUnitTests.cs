@@ -19,7 +19,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities
                 Id = 1,
                 SimulationId = 1,
                 AnalysisTypeId = 1,
-                LastAnalysedItem = new DateTime(2017, 4, 20, 19, 45, 0)
+                LastAnalysedItem = new DateTime(2017, 4, 20, 19, 45, 0),
+                LastAnalysedIndex = 100
             };
         }
 
@@ -144,6 +145,129 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             Assert.IsFalse(areEqual);
 
         }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBaseLastItemDateIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            baseItem.LastAnalysedItem = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedLastItemDateIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            comparedItem.LastAnalysedItem = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfBothLastItemDatesAreNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            baseItem.LastAnalysedItem = null;
+            comparedItem.LastAnalysedItem = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsTrue(areEqual);
+
+        }
+
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfLastItemIndexIsDifferent()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            comparedItem.LastAnalysedIndex = comparedItem.LastAnalysedIndex + 5;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBaseLastItemIndexIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            baseItem.LastAnalysedIndex = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedLastItemIndexIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            comparedItem.LastAnalysedIndex = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfBothLastItemIndexesAreNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            baseItem.LastAnalysedIndex = null;
+            comparedItem.LastAnalysedIndex = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsTrue(areEqual);
+
+        }
+
 
         #endregion EQUALS
 

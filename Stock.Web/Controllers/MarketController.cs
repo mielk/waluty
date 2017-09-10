@@ -16,7 +16,7 @@ namespace Stock.Web.Controllers
 
         public MarketController()
         {
-            _service = ServiceFactory.GetMarketService();
+            _service = ServiceFactory.Instance().GetMarketService();
         }
 
 

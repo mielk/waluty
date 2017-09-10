@@ -12,7 +12,7 @@ namespace Stock.Domain.Entities
     {
 
         //Static properties.
-        private static IMarketService service = ServiceFactory.GetMarketService();
+        private static IMarketService service = ServiceFactory.Instance().GetMarketService();
         
         //Instance properties.
         private int id { get; set; }
@@ -33,7 +33,7 @@ namespace Stock.Domain.Entities
 
         public static void restoreDefaultService()
         {
-            service = ServiceFactory.GetMarketService();
+            service = ServiceFactory.Instance().GetMarketService();
         }
 
         public static IEnumerable<Market> GetMarkets()

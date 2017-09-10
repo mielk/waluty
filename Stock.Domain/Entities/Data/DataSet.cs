@@ -43,6 +43,18 @@ namespace Stock.Domain.Entities
 
         #region GETTERS
 
+        public IDataUnit GetProperDataUnit(AnalysisType type)
+        {
+            switch (type)
+            {
+                case AnalysisType.Quotations:   return quotation;
+                case AnalysisType.Prices: return price;
+            }
+
+            return null;
+
+        }
+
         public Quotation GetQuotation()
         {
             return quotation;

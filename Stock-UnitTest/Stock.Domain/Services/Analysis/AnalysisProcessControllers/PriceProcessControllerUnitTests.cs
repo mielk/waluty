@@ -51,10 +51,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             mockedManager.Setup(m => m.GetDataSet(12)).Returns(dataSets[11]);
 
 
-            DataSetInfo priceInfo = new DataSetInfo() { StartDate = new DateTime(2016, 1, 15, 22, 25, 0), EndDate = new DateTime(2016, 1, 15, 22, 40, 0), MaxLevel = 1, MinLevel = 1, Counter = 4 };
-            DataSetInfo quotationsInfo = new DataSetInfo() { StartDate = new DateTime(2016, 1, 15, 22, 25, 0), EndDate = new DateTime(2016, 1, 15, 23, 20, 0), MaxLevel = 1, MinLevel = 1, Counter = 12 };
-            mockedManager.Setup(m => m.GetDataSetInfo(AnalysisType.Prices)).Returns(priceInfo);
-            mockedManager.Setup(m => m.GetDataSetInfo(AnalysisType.Quotations)).Returns(quotationsInfo);
+            mockedManager.Setup(m => m.GetAnalysisLastUpdatedIndex(AnalysisType.Prices)).Returns(4);
+            mockedManager.Setup(m => m.GetAnalysisLastUpdatedIndex(AnalysisType.Quotations)).Returns(12);
 
             Mock<IPriceProcessor> mockedProcessor = new Mock<IPriceProcessor>();
             mockedProcessor.Setup(m => m.Process(It.IsAny<DataSet>())).Verifiable();

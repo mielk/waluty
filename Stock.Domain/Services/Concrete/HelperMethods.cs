@@ -44,42 +44,42 @@ namespace Stock.Domain.Services
 
 
 
-        public static IEnumerable<ExtremumGroup> GetExtremaGroups(this IEnumerable<DataItem> extrema){
-            DataItem[] items = extrema.OrderBy(i => i.Date).ToArray();
-            List<ExtremumGroup> list = new List<ExtremumGroup>();
+        //public static IEnumerable<ExtremumGroup> GetExtremaGroups(this IEnumerable<DataItem> extrema){
+        //    DataItem[] items = extrema.OrderBy(i => i.Date).ToArray();
+        //    List<ExtremumGroup> list = new List<ExtremumGroup>();
 
-            for (var i = 0; i < items.Length; i++)
-            {
-                DataItem item = items[i];
-                ExtremumGroup group = new ExtremumGroup();
-                if (i < items.Length - 1 && items[i + 1].Index - item.Index == 1)
-                {
-                    if (item.Price.IsExtremumByClosePrice())
-                    {
-                        group.master = item;
-                        group.slave = items[i + 1];
-                    }
-                    else
-                    {
-                        group.master = items[i + 1];
-                        group.slave = item;
-                    }
+        //    for (var i = 0; i < items.Length; i++)
+        //    {
+        //        DataItem item = items[i];
+        //        ExtremumGroup group = new ExtremumGroup();
+        //        if (i < items.Length - 1 && items[i + 1].Index - item.Index == 1)
+        //        {
+        //            if (item.Price.IsExtremumByClosePrice())
+        //            {
+        //                group.master = item;
+        //                group.slave = items[i + 1];
+        //            }
+        //            else
+        //            {
+        //                group.master = items[i + 1];
+        //                group.slave = item;
+        //            }
 
-                    i++;
+        //            i++;
 
-                }
-                else
-                {
-                    group.master = item;
-                }
+        //        }
+        //        else
+        //        {
+        //            group.master = item;
+        //        }
 
-                group.type = item.Price.IsTrough() ? ExtremumType.TroughByClose : ExtremumType.PeakByClose;
-                list.Add(group);
+        //        group.type = item.Price.IsTrough() ? ExtremumType.TroughByClose : ExtremumType.PeakByClose;
+        //        list.Add(group);
 
-            }
+        //    }
 
-            return list;
-        }
+        //    return list;
+        //}
 
         public static bool IsByClosePrice(this ExtremumType type)
         {
@@ -140,16 +140,6 @@ namespace Stock.Domain.Services
                 return true;
 
             return false;
-
-        }
-
-        public static void AppendIndexNumbers(this DataItem[] items)
-        {
-
-            for (var i = 0; i < items.Length; i++)
-            {
-                items[i].Index = i;
-            }
 
         }
 

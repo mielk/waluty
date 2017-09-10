@@ -50,7 +50,7 @@ namespace Stock.Utils
             }
             else if (compared == null)
             {
-                return false;
+                return true;
             }
             else
             {

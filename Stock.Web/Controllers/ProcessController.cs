@@ -25,7 +25,7 @@ namespace Stock.Web.Controllers
         public ActionResult RunProcess(int simulationId)
         {
 
-            Simulation simulation = ServiceFactory.GetSimulationService().GetSimulationById(simulationId);
+            Simulation simulation = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
             IProcessManager manager = new ProcessManager(simulation);
             //service.Setup(types);
             //var result = service.Run(fromScratch);

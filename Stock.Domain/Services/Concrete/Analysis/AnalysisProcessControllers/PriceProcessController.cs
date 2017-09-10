@@ -21,7 +21,7 @@ namespace Stock.Domain.Services
             this.manager = manager;
             if (this.processor == null)
             {
-                this.processor = ProcessorFactory.GetPriceProcessor(this.manager);
+                this.processor = ProcessorFactory.Instance().GetPriceProcessor(this.manager);
             }
         }
 
@@ -32,20 +32,22 @@ namespace Stock.Domain.Services
 
         public void Run(IProcessManager manager)
         {
+            
             setManager(manager);
-            DataSetInfo analysisInfo = this.manager.GetDataSetInfo(ANALYSIS_TYPE);
-            DataSetInfo quotationsInfo = this.manager.GetDataSetInfo(AnalysisType.Quotations);
-            if (quotationsInfo.EndDate.IsLaterThan(analysisInfo.EndDate))
+
+            int lastQuotationIndex = manager.GetAnalysisLastUpdatedIndex(AnalysisType.Quotations) ?? 0;
+            int lastPriceIndex = manager.GetAnalysisLastUpdatedIndex(ANALYSIS_TYPE) ?? 0;
+
+            if (lastQuotationIndex > lastPriceIndex)
             {
-                int lastUpdateIndex = manager.GetDataSetIndex(analysisInfo.EndDate);
-                int startIndex = Math.Max(lastUpdateIndex - HowManyItemsBeforeInclude, 1);
-                DataSet ds = manager.GetDataSet(startIndex);
-                do
+                int startIndex = Math.Max(lastPriceIndex - HowManyItemsBeforeInclude, 1);
+                for (int i = startIndex; i <= lastQuotationIndex; i++)
                 {
+                    DataSet ds = manager.GetDataSet(i);
                     processor.Process(ds);
-                    ds = manager.GetDataSet(++startIndex);
-                } while (ds != null);
+                }
             }
+
         }
 
     }

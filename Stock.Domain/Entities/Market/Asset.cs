@@ -14,7 +14,7 @@ namespace Stock.Domain.Entities
     {
 
         //Static properties.
-        private static IAssetService service = ServiceFactory.GetAssetService();
+        private static IAssetService service = ServiceFactory.Instance().GetAssetService();
 
         //Instance properties.
         private int id { get; set; }
@@ -32,7 +32,7 @@ namespace Stock.Domain.Entities
 
         public static void RestoreDefaultService()
         {
-            service = ServiceFactory.GetAssetService();
+            service = ServiceFactory.Instance().GetAssetService();
         }
 
         public static IEnumerable<Asset> GetAllAssets()

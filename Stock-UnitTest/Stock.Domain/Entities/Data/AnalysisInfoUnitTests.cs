@@ -7,23 +7,27 @@ using Stock.DAL.TransferObjects;
 namespace Stock_UnitTest.Stock.Domain
 {
     [TestClass]
-    public class DataSetInfoUnitTests
+    public class AnalysisInfoUnitTests
     {
 
         private DateTime DEFAULT_START_DATETIME = new DateTime(2017, 3, 4, 21, 10, 0);
         private DateTime DEFAULT_END_DATETIME = new DateTime(2017, 3, 7, 21, 10, 0);
+        private int DEFAULT_START_INDEX = 1;
+        private int DEFAULT_END_INDEX = 100;
         private const double DEFAULT_MIN_LEVEL = 1.03245;
         private const double DEFAULT_MAX_LEVEL = 1.03845;
         private const int DEFAULT_COUNTER = 10;
 
         #region EQUALS
 
-        private DataSetInfo getDefaultDataSetInfo()
+        private AnalysisInfo getDefaultAnalysisInfo()
         {
-            return new DataSetInfo()
+            return new AnalysisInfo()
             {
                 StartDate = DEFAULT_START_DATETIME,
+                StartIndex = DEFAULT_START_INDEX,
                 EndDate = DEFAULT_END_DATETIME,
+                EndIndex = DEFAULT_END_INDEX,
                 MinLevel = DEFAULT_MIN_LEVEL,
                 MaxLevel = DEFAULT_MAX_LEVEL,
                 Counter = DEFAULT_COUNTER
@@ -35,7 +39,7 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
             var comparedItem = new { Id = 1 };
 
             //Act
@@ -51,8 +55,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             var areEqual = baseItem.Equals(comparedItem);
@@ -68,8 +72,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.StartDate = ((DateTime)comparedItem.StartDate).AddMinutes(5);
@@ -81,16 +85,51 @@ namespace Stock_UnitTest.Stock.Domain
         }
 
         [TestMethod]
-        public void Equals_ReturnsTrue_IfBothStartDateAreNull()
+        public void Equals_ReturnsFalse_IfStartIndexIsDifferent()
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            comparedItem.StartIndex = comparedItem.StartIndex + 1;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfBothStartDatesAreNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.StartDate = null;
             comparedItem.StartDate = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsTrue(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfBothStartIndexesAreNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            baseItem.StartIndex = null;
+            comparedItem.StartIndex = null;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -103,11 +142,28 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.StartDate = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBaseStartIndexIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            baseItem.StartIndex = null;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -120,8 +176,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.StartDate = null;
@@ -132,14 +188,30 @@ namespace Stock_UnitTest.Stock.Domain
 
         }
 
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedStartIndexIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            comparedItem.StartIndex = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
 
         [TestMethod]
         public void Equals_ReturnsFalse_IfEndDateIsDifferent()
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.EndDate = ((DateTime)comparedItem.EndDate).AddMinutes(5);
@@ -151,12 +223,29 @@ namespace Stock_UnitTest.Stock.Domain
         }
 
         [TestMethod]
-        public void Equals_ReturnsTrue_IfBothEndDateAreNull()
+        public void Equals_ReturnsFalse_IfEndIndexIsDifferent()
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            comparedItem.EndIndex = comparedItem.EndIndex + 1;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfBothEndDatesAreNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.EndDate = null;
@@ -169,15 +258,50 @@ namespace Stock_UnitTest.Stock.Domain
         }
 
         [TestMethod]
+        public void Equals_ReturnsTrue_IfBothEndIndexesAreNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            baseItem.EndIndex = null;
+            comparedItem.EndIndex = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsTrue(areEqual);
+
+        }
+
+        [TestMethod]
         public void Equals_ReturnsFalse_IfOnlyBaseEndDateIsNull()
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.EndDate = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBaseEndIndexIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            baseItem.EndIndex = null;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -190,11 +314,28 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.EndDate = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedEndIndexIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
+
+            //Act
+            comparedItem.EndIndex = null;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -208,8 +349,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.MinLevel = ((double)comparedItem.MinLevel) + 0.01;
@@ -225,8 +366,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.MinLevel = null;
@@ -243,8 +384,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.MinLevel = null;
@@ -260,8 +401,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.MinLevel = null;
@@ -279,8 +420,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.MaxLevel = ((double)comparedItem.MaxLevel) + 0.01;
@@ -296,8 +437,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.MaxLevel = null;
@@ -314,8 +455,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             baseItem.MaxLevel = null;
@@ -331,8 +472,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.MaxLevel = null;
@@ -349,8 +490,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultDataSetInfo();
-            var comparedItem = getDefaultDataSetInfo();
+            var baseItem = getDefaultAnalysisInfo();
+            var comparedItem = getDefaultAnalysisInfo();
 
             //Act
             comparedItem.Counter++;

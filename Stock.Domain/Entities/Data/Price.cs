@@ -295,27 +295,27 @@ namespace Stock.Domain.Entities
         }
 
 
-        public double calculateTrendlineQuotationPoints(Trendline trendline)
-        {
-            return 0;
-        }
+        //public double calculateTrendlineQuotationPoints(Trendline trendline)
+        //{
+        //    return 0;
+        //}
 
 
-        public ExtremumGroup GetExtremumGroup()
-        {
-        //{ get; set; }
-        //public Extremum PeakByHighExtremum { get; set; }
-        //public Extremum TroughByCloseExtremum { get; set; }
-        //public Extremum TroughByLowExtremum { get; set; }
+        //public ExtremumGroup GetExtremumGroup()
+        //{
+        ////{ get; set; }
+        ////public Extremum PeakByHighExtremum { get; set; }
+        ////public Extremum TroughByCloseExtremum { get; set; }
+        ////public Extremum TroughByLowExtremum { get; set; }
 
-            //if (PeakByCloseExtremum != null){
-            //    //return PeakByCloseExtremum.gr
-            //} else (IsTrough()){
-            //}
+        //    //if (PeakByCloseExtremum != null){
+        //    //    //return PeakByCloseExtremum.gr
+        //    //} else (IsTrough()){
+        //    //}
 
-            return null;
+        //    return null;
 
-        }
+        //}
 
 
 

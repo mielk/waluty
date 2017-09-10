@@ -17,7 +17,7 @@ namespace Stock.Web.Controllers
 
         public CompanyController(IDataSetService dataService)
         {
-            this.assetService = ServiceFactory.GetAssetService();
+            this.assetService = ServiceFactory.Instance().GetAssetService();
             this.dataService = dataService;
         }
 
@@ -62,12 +62,13 @@ namespace Stock.Web.Controllers
         [AllowAnonymous]
         public ActionResult GetQuotations(int assetId, int timeframeId, int count)
         {
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { Limit = count };
-            IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
-            IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
-            IEnumerable<Trendline> trendlines = null;
-            var result = new { quotations = dataSets, trendlines = trendlines };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { Limit = count };
+            //IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
+            //IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
+            //IEnumerable<Trendline> trendlines = null;
+            //var result = new { quotations = dataSets, trendlines = trendlines };
+            //return Json(result, JsonRequestBehavior.AllowGet);
+            return null;
         }
 
         [HttpGet]
@@ -81,10 +82,11 @@ namespace Stock.Web.Controllers
 
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { StartDate = startDateTime, EndDate = endDateTime };
             IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
-            IEnumerable<Trendline> trendlines = null;
-            var result = new { quotations = dataSets, trendlines = trendlines };
+            //IEnumerable<Trendline> trendlines = null;
+            //var result = new { quotations = dataSets, trendlines = trendlines };
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            //return Json(result, JsonRequestBehavior.AllowGet);
+            return null;
 
         }
 
@@ -92,11 +94,12 @@ namespace Stock.Web.Controllers
         [AllowAnonymous]
         public ActionResult GetDataSetProperties(int assetId, int timeframeId)
         {
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId);
-            queryDef.StartDate = new DateTime(2017, 5, 1, 12, 0, 0);
-            DataSetInfo info = dataService.GetDataSetInfo(queryDef, AnalysisType.Quotations);
-            var result = new { firstDate = info.StartDate, lastDate = info.EndDate, minLevel = info.MinLevel, maxLevel = info.MaxLevel, counter = info.Counter};
-            return Json(result, JsonRequestBehavior.AllowGet);
+            //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId);
+            //queryDef.StartDate = new DateTime(2017, 5, 1, 12, 0, 0);
+            //AnalysisInfo info = dataService.GetAnalysisInfo(queryDef, AnalysisType.Quotations);
+            //var result = new { firstDate = info.StartDate, lastDate = info.EndDate, minLevel = info.MinLevel, maxLevel = info.MaxLevel, counter = info.Counter};
+            //return Json(result, JsonRequestBehavior.AllowGet);
+            return null;
         }
 
     }
