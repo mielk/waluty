@@ -307,11 +307,10 @@
     <Content Include="Scripts\charts\Chart.js" />
     <Content Include="Scripts\common\external\css-element-queries\ElementQueries.js" />
     <Content Include="Scripts\common\external\css-element-queries\ResizeSensor.js" />
-    <Content Include="Scripts\simulation\SimulationChartsContainer.js" />
-    <Content Include="Scripts\simulation\SimulationController.js" />
+    <Content Include="Scripts\stock\simulation\SimulationChartsContainer.js" />
+    <Content Include="Scripts\stock\simulation\SimulationController.js" />
     <Content Include="Scripts\STOCK2\Company.js" />
     <Content Include="Scripts\STOCK2\main.js" />
-    <Content Include="Scripts\STOCK2\ProcessButtons.js" />
     <Content Include="Scripts\STOCK2\LabelFactory.js" />
     <Content Include="Scripts\STOCK2\Market.js" />
     <Content Include="Scripts\STOCK2\Quotation.js" />
@@ -353,7 +352,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Scripts\stock\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

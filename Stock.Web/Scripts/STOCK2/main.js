@@ -13,7 +13,6 @@
     var controls = {}
 
 
-
     function loadControls() {
         controls.chartButton = document.getElementById('charts-menu');
         controls.analysisButton = document.getElementById('analysis-menu');
@@ -41,7 +40,6 @@
         });
 
     }
-
 
     function runChartModule() {
         modules.chart = modules.chart || new Module({
@@ -103,7 +101,7 @@
     function initialize() {
         loadControls();
         assignEvents();
-        runChartModule();
+        runSimulationModule();
     }
 
 

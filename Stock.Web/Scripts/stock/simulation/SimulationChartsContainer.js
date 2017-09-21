@@ -163,17 +163,18 @@
 
 
     function runSimulation() {
+
         mielk.db.fetch(
             'Simulation',
             'InitializeSimulation',
             {
-                pair: self.company().symbol,
-                timeframe: self.timeframe().symbol
+                assetId: self.company().id,
+                timeframeId: self.timeframe().id
             },
             {
                 async: true,
                 callback: function (r) {
-                    if (r.result) {
+                    if (r.assetId && r.timeframeId) {
                         alert('Simulation object has been successfully loaded');
                     } else {
                         alert('Error when trying to load data to simulation object');

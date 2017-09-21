@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Analysis\AnalysisTimestamp.cs" />
     <Compile Include="Entities\Analysis\Simulation.cs" />
     <Compile Include="Entities\Analysis\todo\Analysis.cs" />
     <Compile Include="Entities\Data\DataSet.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Enums\TimeframeUnit.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Abstract\Analysis\ISimulationManager.cs" />
     <Compile Include="Services\Abstract\Analysis\IAnalysisProcessController.cs" />
     <Compile Include="Services\Abstract\Analysis\IAnalysisTimestampService.cs" />
     <Compile Include="Services\Abstract\Analysis\IExtremumProcessor.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Services\Abstract\Factories\IProcessorFactory.cs" />
     <Compile Include="Services\Concrete\Analysis\AnalysisProcessControllers\PriceProcessController.cs" />
     <Compile Include="Services\Concrete\Analysis\AnalysisTimestampService.cs" />
+    <Compile Include="Services\Concrete\Analysis\SimulationManager.cs" />
     <Compile Include="Services\Concrete\Analysis\ExtremumProcessor.cs" />
     <Compile Include="Services\Concrete\Analysis\ProcessManager.cs" />
     <Compile Include="Services\Abstract\Analysis\IPriceProcessor.cs" />

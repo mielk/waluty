@@ -13,16 +13,12 @@ namespace Stock.DAL.TransferObjects
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public int AssetId { get; set; }
-        public int TimeframeId { get; set; }
 
 
         public void CopyProperties(SimulationDto dto)
         {
             Id = dto.Id;
             Name = dto.Name;
-            AssetId = dto.AssetId;
-            TimeframeId = dto.TimeframeId;
         }
 
         public override bool Equals(object obj)
@@ -32,8 +28,6 @@ namespace Stock.DAL.TransferObjects
 
             SimulationDto compared = (SimulationDto)obj;
             if (!compared.Name.Equals(Name)) return false;
-            if ((compared.AssetId) != AssetId) return false;
-            if ((compared.TimeframeId) != TimeframeId) return false;
             return true;
         }
 

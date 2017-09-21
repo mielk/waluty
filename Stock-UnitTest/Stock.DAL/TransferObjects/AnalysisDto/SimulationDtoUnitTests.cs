@@ -17,9 +17,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             return new SimulationDto()
             {
                 Id = 1,
-                Name = "Simulation",
-                AssetId = 1,
-                TimeframeId = 1
+                Name = "Simulation"
             };
         }
 
@@ -34,17 +32,13 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var baseItem = new SimulationDto()
             {
                 Id = 1,
-                Name = "a",
-                AssetId = 1,
-                TimeframeId = 1
+                Name = "a"
             };
 
             var comparedItem = new SimulationDto()
             {
                 Id = 1,
-                Name = "b",
-                AssetId = 2,
-                TimeframeId = 2
+                Name = "b"
             };
 
             //Act
@@ -104,40 +98,6 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             //Act
             comparedItem.Name += "a";
-            var areEqual = baseItem.Equals(comparedItem);
-
-            //Assert
-            Assert.IsFalse(areEqual);
-
-        }
-
-        [TestMethod]
-        public void Equals_ReturnsFalse_IfAssetIdIsDifferent()
-        {
-
-            //Arrange
-            var baseItem = getDefaultSimulationDto();
-            var comparedItem = getDefaultSimulationDto();
-
-            //Act
-            comparedItem.AssetId++;
-            var areEqual = baseItem.Equals(comparedItem);
-
-            //Assert
-            Assert.IsFalse(areEqual);
-
-        }
-
-        [TestMethod]
-        public void Equals_ReturnsFalse_IfTimeframeIdIsDifferent()
-        {
-
-            //Arrange
-            var baseItem = getDefaultSimulationDto();
-            var comparedItem = getDefaultSimulationDto();
-
-            //Act
-            comparedItem.TimeframeId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert

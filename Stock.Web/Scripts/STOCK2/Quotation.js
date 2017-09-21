@@ -17,8 +17,6 @@
     
 }
 
-
-
 function Macd(params){
 
     'use strict';
@@ -41,67 +39,3 @@ function Macd(params){
     };
 
 }
-
-
-
-//function QuotationUI(quotation) {
-//    var self = this;
-//    self.QuotationUI = true;
-//    self.quotation = quotation;
-
-//}
-
-
-
-
-
-//function QuotationManager() {
-
-//    'use strict';
-
-//    var drawParams = {};
-
-//    function resetDrawParams() {
-//        drawParams = {
-
-//        };
-//    }
-
-//    function convertToQuotations(items) {
-//        var quotations = [];
-//        for (var i = 0; i < items.length; i++) {
-//            var quotation = new Quotation(items[i]);
-//            quotations.push(quotation);
-//        }
-
-//        return quotations;
-
-//    }
-
-//    function createUIObjects() {
-
-//    }
-
-
-//    function initialize() {
-//        resetDrawParams();
-//    }
-
-
-
-//    //Initializing functions.
-//    initialize();
-
-
-//    return {
-//        convertToQuotations: convertToQuotations,
-//        createUIObjects: createUIObjects
-//    };
-
-//}
-
-
-////Add the instance of quotation manager as an item of STOCK library.
-//$(function () {
-//    STOCK.QUOTATIONS = QuotationManager();
-//});

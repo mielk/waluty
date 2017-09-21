@@ -2,6 +2,9 @@
  * Controller for managing charts.
  */
 function SimulationController(params) {
+
+    'use strict';
+
     var self = this;
     self.SimulationController = true;
 

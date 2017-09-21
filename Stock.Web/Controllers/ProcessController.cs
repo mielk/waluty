@@ -26,7 +26,7 @@ namespace Stock.Web.Controllers
         {
 
             Simulation simulation = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
-            IProcessManager manager = new ProcessManager(simulation);
+            ISimulationManager manager = new SimulationManager(simulation);
             //service.Setup(types);
             //var result = service.Run(fromScratch);
             //var json = new { value = result };

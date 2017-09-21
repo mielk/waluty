@@ -55,30 +55,19 @@ namespace Stock.DAL.Repositories
             return timestamps;
         }
 
-        public AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, AnalysisType analysisType)
+        public AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, int assetId, int timeframeId, AnalysisType analysisType)
         {
-            return GetAnalysisTimestamp(simulationId, (int)analysisType);
+            return GetAnalysisTimestamp(simulationId, assetId, timeframeId, (int)analysisType);
         }
 
-        public AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, int analysisTypeId)
+        public AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, int assetId, int timeframeId, int analysisTypeId)
         {
             using (var context = new SimulationContext())
             {
-                return context.AnalysisTimestamps.SingleOrDefault(a => a.SimulationId == simulationId && a.AnalysisTypeId == analysisTypeId);
+                return context.AnalysisTimestamps.SingleOrDefault(a => a.SimulationId == simulationId && a.AssetId == assetId && a.TimeframeId == timeframeId && a.AnalysisTypeId == analysisTypeId);
             }
         }
 
-        public SimulationDto GetSimulationByNameAssetTimeframe(string name, int assetId, int timeframeId)
-        {
-            SimulationDto dto;
-            using (var context = new SimulationContext())
-            {
-
-                dto = context.Simulations.SingleOrDefault(c => c.Name.Equals(name, System.StringComparison.CurrentCultureIgnoreCase) && c.AssetId == assetId && c.TimeframeId == timeframeId);
-            }
-            return dto;
-        }
-        
         public SimulationDto GetSimulationById(int id)
         {
             SimulationDto dto;

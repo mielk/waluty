@@ -40,7 +40,6 @@ namespace Stock.Web
                         "~/Scripts/STOCK2/Company.js",
                         "~/Scripts/STOCK2/QuotationsAnalyzer.js",
                         "~/Scripts/STOCK2/LabelFactory.js",
-                        "~/Scripts/STOCK2/ProcessButtons.js",
                         "~/Scripts/STOCK2/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/charts").Include(
@@ -56,8 +55,8 @@ namespace Stock.Web
                         "~/Scripts/analysis/AnalysisController.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/simulation").Include(
-                        "~/Scripts/simulation/SimulationChartsContainer.js",
-                        "~/Scripts/simulation/SimulationController.js"));
+                        "~/Scripts/stock/simulation/SimulationChartsContainer.js",
+                        "~/Scripts/stock/simulation/SimulationController.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -66,12 +65,10 @@ namespace Stock.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/common/select2.css",
-                        "~/Content/STOCK2/analysis.css",
-                        "~/Content/STOCK2/simulation.css",
-                        "~/Content/STOCK2/site.css"));
-
-            bundles.Add(new StyleBundle("~/Content/charts").Include(
-                        "~/Content/charts.css"));
+                        "~/Content/stock/analysis.css",
+                        "~/Content/stock/simulation.css",
+                        "~/Content/stock/charts.css",
+                        "~/Content/stock/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/common/normalize.css",

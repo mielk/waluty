@@ -49,14 +49,13 @@ namespace Stock.Web.Controllers
         
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetDataSetsWithInfo(int assetId, int timeframeId, int simulationId, int? startIndex, int? endIndex)
+        public ActionResult GetDataSetsWithInfo(int assetId, int timeframeId, int? startIndex, int? endIndex)
         {
 
-            Simulation simulation = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
-            IProcessManager manager = new ProcessManager(simulation);
+            IProcessManager manager = new ProcessManager();
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId)
             {
-                SimulationId = simulationId,
+                SimulationId = 0,
                 StartIndex = startIndex,
                 EndIndex = endIndex,
                 AnalysisTypes = new AnalysisType[] { AnalysisType.Quotations }

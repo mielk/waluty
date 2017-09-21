@@ -14,7 +14,7 @@ namespace Stock_UnitTest.Stock.Domain
         #region GET_ANALYSIS_INFO
 
         [TestMethod]
-        public void GetAnalysisInfo_AllTests()
+        public void GetAnalysisInfo_WszystkieTesty()
         {
             //jeżeli podany zestaw jest pusty - ...
             //jeżeli jest tylko jeden element - skopiowane są jego własciwości

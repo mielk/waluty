@@ -71,24 +71,8 @@ namespace Stock.Domain.Services
             var dtos = _repository.GetAnalysisTimestampsForSimulation(simulation.Id);
             foreach (var dto in dtos)
             {
-                simulation.AddLastUpdate((AnalysisType)dto.AnalysisTypeId, dto.LastAnalysedItem);
+                simulation.AddLastUpdate(dto);
             }
-        }
-
-        public Simulation GetSimulationByNameAssetTimeframe(string name, int assetId, int timeframeId)
-        {
-            var simulation = simulations.SingleOrDefault(m => m.Name.Equals(name) && m.AssetId == assetId && m.TimeframeId == timeframeId);
-            if (simulation == null)
-            {
-                var dto = _repository.GetSimulationByNameAssetTimeframe(name, assetId, timeframeId);
-                if (dto != null)
-                {
-                    simulation = Simulation.FromDto(dto);
-                    appendLastUpdates(simulation);
-                    appendSimulation(simulation);
-                }
-            }
-            return simulation;
         }
 
         public Simulation GetSimulationById(int id){

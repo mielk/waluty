@@ -18,17 +18,6 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
 
         #region HELPER_METHODS
 
-        private Simulation defaultSimulation()
-        {
-            return new Simulation()
-            {
-                AssetId = 1,
-                Id = 1, 
-                TimeframeId = 1,
-                Name = "a"
-            };
-        }
-
         #endregion HELPER_METHODS
 
 
@@ -44,7 +33,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
             mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(It.IsAny<int>())).Returns(indexes);
             
             //Act
-            ProcessManager manager = new ProcessManager(defaultSimulation());
+            ProcessManager manager = new ProcessManager();
             manager.InjectTimestampService(mockedTimestampService.Object);
 
             //Assert
@@ -64,7 +53,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
             mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(It.IsAny<int>())).Returns(indexes);
 
             //Act
-            ProcessManager manager = new ProcessManager(defaultSimulation());
+            ProcessManager manager = new ProcessManager();
             manager.InjectTimestampService(mockedTimestampService.Object);
 
             //Assert
@@ -86,7 +75,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
             mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(It.IsAny<int>())).Returns(indexes);
 
             //Act
-            ProcessManager manager = new ProcessManager(defaultSimulation());
+            ProcessManager manager = new ProcessManager();
             manager.InjectTimestampService(mockedTimestampService.Object);
 
             //Assert

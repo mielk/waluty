@@ -13,7 +13,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
     {
 
         [TestMethod]
-        public void TestsFor_Clone_Method()
+        public void Clone_WszystkieTesty()
         {
             Assert.Fail("Not implemented yet");
         }

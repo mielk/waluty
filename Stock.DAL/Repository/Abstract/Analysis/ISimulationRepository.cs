@@ -13,11 +13,10 @@ namespace Stock.DAL.Repositories
         void UpdateAnalysisTimestamps(IEnumerable<AnalysisTimestampDto> timestamps);
         IEnumerable<AnalysisTimestampDto> GetAnalysisTimestamps();
         IEnumerable<AnalysisTimestampDto> GetAnalysisTimestampsForSimulation(int simulationId);
-        AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, AnalysisType analysisType);
-        AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, int analysisTypeId);
+        AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, int assetId, int timeframeId, AnalysisType analysisType);
+        AnalysisTimestampDto GetAnalysisTimestamp(int simulationId, int assetId, int timeframeId, int analysisTypeId);
         void UpdateSimulations(IEnumerable<SimulationDto> simulations);
         IEnumerable<SimulationDto> GetSimulations();
-        SimulationDto GetSimulationByNameAssetTimeframe(string name, int assetId, int timeframeId);
         SimulationDto GetSimulationById(int id);
     }
 }

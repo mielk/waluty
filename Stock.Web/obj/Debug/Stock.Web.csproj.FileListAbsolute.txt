@@ -292,7 +292,8 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Utils.pdb
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.dll
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.pdb
-C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.Http.WebHost.dll
+C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Web.dll
+C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Web.pdb
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Antlr3.Runtime.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\EntityFramework.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\EntityFramework.SqlServer.dll
@@ -308,6 +309,7 @@ C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.DAL.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Domain.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Net.Http.Formatting.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.Http.dll
+C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.Http.WebHost.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.Mvc.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.Optimization.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.Providers.dll
@@ -342,5 +344,3 @@ C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Utils.pdb
 C:\Tomek\aplikacje\FX\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\Tomek\aplikacje\FX\Stock.Web\obj\Debug\Stock.Web.dll
 C:\Tomek\aplikacje\FX\Stock.Web\obj\Debug\Stock.Web.pdb
-C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Web.dll
-C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Web.pdb

@@ -9,78 +9,59 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Services
 {
-    public class ProcessManager : IProcessManager
+    public class SimulationManager : ProcessManager, ISimulationManager
     {
 
-        protected AnalysisDataQueryDefinition queryDef;
-        protected IDataSetService dataSetService;
-        protected IAnalysisTimestampService timestampService;
-        protected DataSet[] dataSetsArray;
-        protected Dictionary<AnalysisType, int?> lastIndexes;
-
+        private Simulation simulation;
 
 
         #region CONSTRUCTOR
 
-        public ProcessManager()
+        public SimulationManager(Simulation simulation) : base()
         {
-            this.dataSetService = ServiceFactory.Instance().GetDataSetService();
-            this.timestampService = ServiceFactory.Instance().GetAnalysisTimestampService();
+            setSimulation(simulation);
         }
 
-        public ProcessManager(IDataSetService dataSetService)
+        public SimulationManager(Simulation simulation, IDataSetService dataSetService) : base(dataSetService)
         {
-            this.dataSetService = dataSetService;
-            this.timestampService = ServiceFactory.Instance().GetAnalysisTimestampService();
+            setSimulation(simulation);
         }
 
-        public ProcessManager(IDataSetService dataSetService, IAnalysisTimestampService timestampService)
+        public SimulationManager(Simulation simulation, IDataSetService dataSetService, IAnalysisTimestampService timestampService) : base(dataSetService, timestampService)
         {
-            this.dataSetService = dataSetService;
-            this.timestampService = timestampService;
+            setSimulation(simulation);
         }
 
-        public void InjectDataSetService(IDataSetService service)
+        private void setSimulation(Simulation simulation)
         {
-            this.dataSetService = service;
+            this.simulation = simulation;
+            //this.queryDef = new AnalysisDataQueryDefinition(simulation.AssetId, simulation.TimeframeId) { SimulationId = simulation.Id, AnalysisTypes = simulation.GetAnalysisTypes() };
         }
-
-        public void InjectTimestampService(IAnalysisTimestampService service)
-        {
-            this.timestampService = service;
-        }
-
+        
         #endregion CONSTRUCTOR
 
 
-        #region SIMULATION
 
-        public int GetSimulationId()
+        #region SIMULATION
+        
+        public Simulation GetSimulation()
         {
-            return 0;
+            return simulation;
+        }
+
+        public new int GetSimulationId()
+        {
+            return simulation == null ? 0 : simulation.Id;
         }
 
         #endregion SIMULATION
 
 
-        #region UPDATING DATA SETS
 
-        private void loadLastIndexes()
-        {
-            if (this.lastIndexes == null)
-            {
-                this.lastIndexes = timestampService.GetLastAnalyzedIndexes(GetSimulationId());
-                int? lastQuotationIndex = GetAnalysisLastUpdatedIndex(AnalysisType.Quotations);
-                if (lastQuotationIndex != null)
-                {
-                    this.dataSetsArray = new DataSet[(int)lastQuotationIndex];
-                }
-            }
-        }
+        #region UPDATING DATA SETS
 
         public void loadDataSets(int initialIndex)
         {
-            loadLastIndexes();
             AnalysisDataQueryDefinition _queryDef = queryDef.Clone();
             _queryDef.StartIndex = initialIndex;
             this.dataSetsArray = dataSetService.AppendAndReturnAsArray(this.dataSetsArray, queryDef);
@@ -97,7 +78,7 @@ namespace Stock.Domain.Services
 
         public void Run()
         {
-            IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
+            IEnumerable<AnalysisType> analysisTypes = simulation.GetAnalysisTypes();
             foreach(AnalysisType type in analysisTypes){
                 IAnalysisProcessController processController = ProcessorFactory.Instance().GetProperAnalysisProcessController(type);
                 processController.Run(this);
@@ -158,7 +139,7 @@ namespace Stock.Domain.Services
         public int? GetAnalysisLastUpdatedIndex(AnalysisType type)
         {
 
-            if (lastIndexes == null) loadLastIndexes();
+            //if (lastIndexes == null) loadLastIndexes();
 
             int? index;
             try

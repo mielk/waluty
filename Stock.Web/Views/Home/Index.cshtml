@@ -1,7 +1,6 @@
 ﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    @Styles.Render("~/Content/charts")  
     @Scripts.Render("~/bundles/stock")
     @Scripts.Render("~/bundles/charts")
     @Scripts.Render("~/bundles/analysis")
@@ -28,7 +27,7 @@
 
     <div id="content-container">
 
-        <div id="charts-panel" class="charts-panel">
+@*        <div id="charts-panel" class="charts-panel">
 
             <div id="options-panel" class="options-panel">
 
@@ -65,7 +64,7 @@
 
             <div id="info-panel" class="info-panel"></div>
 
-        </div>
+        </div>*@
 
         <div id="simulation-panel" class="charts-panel">
 
@@ -92,9 +91,6 @@
 
         </div>
     </div>
-
-
-
 
     <div id="footer-container"></div>
     <div class="margin-panel"></div>

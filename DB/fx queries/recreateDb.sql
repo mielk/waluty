@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS _recreateDb //
 DROP PROCEDURE IF EXISTS recreateDb //
 DROP PROCEDURE IF EXISTS recreateSchema //
 DROP PROCEDURE IF EXISTS recreateTables //
+DROP PROCEDURE IF EXISTS recreateTriggers //
 DROP PROCEDURE IF EXISTS createTable //
 DROP PROCEDURE IF EXISTS recreateViews //
 DROP PROCEDURE IF EXISTS feedData //
@@ -21,6 +22,7 @@ CREATE PROCEDURE recreateDb()
 		CALL recreateSchema();
 		CALL recreateTables();
         CALL recreateViews();
+		CALL recreateTriggers();
         CALL feedData();
         COMMIT;
         
@@ -53,6 +55,26 @@ CREATE PROCEDURE recreateViews()
 		DECLARE sqlQuery NVARCHAR(5000);
         DECLARE done INT DEFAULT FALSE;
 		DECLARE tables_cursor CURSOR FOR SELECT CONCAT('CREATE VIEW fx_unittests.', TABLE_NAME, ' AS ', VIEW_DEFINITION) AS sql_query FROM information_schema.views WHERE table_schema = 'fx';
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+		OPEN tables_cursor;    
+		update_loop: LOOP
+			FETCH tables_cursor INTO sqlQuery;            
+			IF done THEN
+				LEAVE update_loop;
+			END IF;
+			SET @sql = sqlQuery;
+			PREPARE stmt FROM @sql;
+			EXECUTE stmt;
+			DEALLOCATE PREPARE stmt;
+		END LOOP;
+	END //
+
+
+CREATE PROCEDURE recreateTriggers()
+	BEGIN
+		DECLARE sqlQuery NVARCHAR(5000);
+        DECLARE done INT DEFAULT FALSE;
+		DECLARE tables_cursor CURSOR FOR SELECT CONCAT('CREATE TRIGGER ', TRIGGER_NAME, ' ', ACTION_TIMING, ' ', EVENT_MANIPULATION, ' ON ', EVENT_OBJECT_TABLE, ' FOR EACH ROW ', ACTION_STATEMENT) AS sql_query FROM information_schema.triggers WHERE table_schema = 'fx';
 		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 		OPEN tables_cursor;    
 		update_loop: LOOP

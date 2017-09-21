@@ -58,10 +58,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
+            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a" };
+            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b" };
+            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c" };
+            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d" };
             simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
 
             //Act
@@ -83,18 +83,18 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFSimulationRepository repository = new EFSimulationRepository();
             List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
+            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a" };
+            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b" };
+            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c" };
+            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d" };
             simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateSimulations(simulations);
 
             //Act
-            dto1.Name += "a";
-            dto2.TimeframeId++;
-            dto3.AssetId++;
+            dto1.Name = "x";
+            dto2.Name = "y";
+            dto3.Name = "z";
             repository.UpdateSimulations(new SimulationDto[] { dto1, dto2, dto3 });
             IEnumerable<SimulationDto> actualRecords = repository.GetSimulations();
 
@@ -112,17 +112,17 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFSimulationRepository repository = new EFSimulationRepository();
             List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
+            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a" };
+            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b" };
+            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c" };
+            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d" };
             simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3 });
             clearSimulationsTables();
             repository.UpdateSimulations(simulations);
 
             //Act
-            dto1.Name += "a";
-            dto2.TimeframeId++;
+            dto1.Name = "x";
+            dto2.Name += "b";
             
             IEnumerable<SimulationDto> expectedRecords = new SimulationDto[] { dto1, dto2, dto3, dto4 };
             repository.UpdateSimulations(expectedRecords);
@@ -146,10 +146,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 1, AnalysisTypeId = 4, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
 
             //Act
@@ -171,10 +171,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 1, AnalysisTypeId = 4, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
@@ -200,10 +200,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 1, AnalysisTypeId = 4, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
@@ -234,10 +234,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
-            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
+            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a" };
+            SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b" };
+            SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c" };
+            SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d" };
             simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables(); 
             repository.UpdateSimulations(simulations);
@@ -252,54 +252,13 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         }
 
         [TestMethod]
-        public void GetSimulation_ReturnsNull_IfThereIsNoSuchSimulation()
-        {
-
-            //Arrange
-            EFSimulationRepository repository = new EFSimulationRepository();
-            List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-            simulations.AddRange(new SimulationDto[] { dto1 });
-            clearSimulationsTables();
-            repository.UpdateSimulations(simulations);
-
-            //Act
-            SimulationDto dto = repository.GetSimulationByNameAssetTimeframe("a", 1, 2);
-
-            //Assert
-            Assert.IsNull(dto);
-
-        }
-
-        [TestMethod]
-        public void GetSimulationByNameAssetTimeframe_ReturnsProperSimulationDto_IfExists()
-        {
-
-            //Arrange
-            EFSimulationRepository repository = new EFSimulationRepository();
-            List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto expected = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-            simulations.AddRange(new SimulationDto[] { expected });
-            clearSimulationsTables();
-            repository.UpdateSimulations(simulations);
-
-            //Act
-            SimulationDto dto = repository.GetSimulationByNameAssetTimeframe("a", 1, 1);
-
-            //Assert
-            var areEqual = expected.Equals(dto);
-            Assert.IsTrue(areEqual);
-
-        }
-
-        [TestMethod]
         public void GetSimulationById_ReturnsNull_IfThereIsNoSimulationWithSuchId()
         {
 
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
+            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a" };
             simulations.AddRange(new SimulationDto[] { dto1 });
             clearSimulationsTables();
             repository.UpdateSimulations(simulations);
@@ -319,7 +278,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto expected = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
+            SimulationDto expected = new SimulationDto() { Id = 1, Name = "a" };
             simulations.AddRange(new SimulationDto[] { expected });
             clearSimulationsTables();
             repository.UpdateSimulations(simulations);
@@ -346,10 +305,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 1, AnalysisTypeId = 4, LastAnalysedItem = null, LastAnalysedIndex = null };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
@@ -370,10 +329,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 1, 12, 15, 0), LastAnalysedIndex = 50 };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 50 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 2, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
@@ -382,7 +341,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             IEnumerable<AnalysisTimestampDto> dtos = repository.GetAnalysisTimestampsForSimulation(1).ToArray();
 
             //Assert
-            IEnumerable<AnalysisTimestampDto> expectedDtos = new AnalysisTimestampDto[] { dto1, dto2 };
+            IEnumerable<AnalysisTimestampDto> expectedDtos = new AnalysisTimestampDto[] { dto1, dto2, dto3 };
             bool areEqualArrays = expectedDtos.HasEqualItems(dtos);
             Assert.IsTrue(areEqualArrays);
 
@@ -395,10 +354,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 1, 12, 15, 0), LastAnalysedIndex = 50 };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 50 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
@@ -420,16 +379,16 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 1, 12, 15, 0), LastAnalysedIndex = 50 };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
 
             //Act
-            AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(3, 4);
+            AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(1, 1, 1, 4);
 
             //Assert
             Assert.IsNull(dto);
@@ -443,16 +402,16 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 1, 12, 15, 0), LastAnalysedIndex = 50 };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 1000 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
 
             //Act
-            AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(2, 5);
+            AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(1, 1, 2, 2);
 
             //Assert
             var areEqual = dto4.Equals(dto);
@@ -467,19 +426,19 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<AnalysisTimestampDto> timestamps = new List<AnalysisTimestampDto>();
-            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 1, 12, 15, 0), LastAnalysedIndex = 50 };
-            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
-            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto1 = new AnalysisTimestampDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
+            AnalysisTimestampDto dto2 = new AnalysisTimestampDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 3, LastAnalysedItem = null, LastAnalysedIndex = null };
+            AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, AssetId = 1, TimeframeId = 2, SimulationId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
             timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
             clearSimulationsTables();
             repository.UpdateAnalysisTimestamps(timestamps);
 
             //Act
-            AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(2, AnalysisType.Prices);
+            AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(1, 1, 2, AnalysisType.Prices);
 
             //Assert
-            var areEqual = dto3.Equals(dto);
+            var areEqual = dto4.Equals(dto);
             Assert.IsTrue(areEqual);
 
         }

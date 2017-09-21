@@ -13,60 +13,65 @@ namespace Stock.Web.Controllers
 {
     public class SimulationController : Controller
     {
-        
-        //public SimulationController()
-        //{
-        //    this.ssf = null;// serviceFactory;
-        //}
 
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        private Simulation simulation;
+        private IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
+        private ISimulationManager manager;
 
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public ActionResult InitializeSimulation(string pair, string timeframe)
+        public SimulationController()
+        {
+            
+            //this.ssf = null;// serviceFactory;
+        }
 
-        //    //Później dodać, żeby można było podać jako parametr wejściowy datę, od której ma się rozpoczynać
-        //    //symulacja. Na razie wszystkie symulacje rozpoczynają się od początku.
-        //    //Kolejny parametr do dodania to jakie analizy mają być wykonane. Obecnie domyślnie robi tylko PRICE.
-        //{
+        public ActionResult Index()
+        {
+            return View();
+        }
 
-        //    //Restart simulation object.
-        //    var service = this.ssf.GetService();
-        //    var types = new AnalysisType[] { AnalysisType.Prices, AnalysisType.Trendlines };
-        //    var result = service.Start(pair, timeframe, types);
 
-        //    var json = new { pair = pair, timeframe = timeframe, result = result };
 
-        //    Debug.WriteLine(string.Format("+;Initializing simulation [{0}, {1}]", pair, timeframe));
+        //Później dodać, żeby można było podać jako parametr wejściowy datę, od której ma się rozpoczynać
+        //symulacja. Na razie wszystkie symulacje rozpoczynają się od początku.
+        //Kolejny parametr do dodania to jakie analizy mają być wykonane. Obecnie domyślnie robi tylko PRICE.
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult InitializeSimulation(int assetId, int timeframeId)
+        {
 
-        //    return Json(json, JsonRequestBehavior.AllowGet);
+            //Restart simulation object.
+            simulation = new Simulation() { 
+                Id = 1,
+                Name = "test"
+            };
 
-        //}
+            manager = new SimulationManager(simulation);
+            var json = new { result = (simulation != null) };
+            return Json(json, JsonRequestBehavior.AllowGet);
 
-        
+        }
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public ActionResult NextStep(int incrementation)
-        //{
 
-        //    Debug.WriteLine("---------------------------------------------------------------------------");
-        //    Debug.WriteLine("+;<SimulationController.NextStep>");
 
-        //    var service = this.ssf.GetService();
-        //    var index = service.NextStep(incrementation);            
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult NextStep(int incrementation)
+        {
 
-        //    var json = new { index = index };
 
-        //    Debug.WriteLine("+;<///SimulationController.NextStep>");
+            return null;
 
-        //    return Json(json, JsonRequestBehavior.AllowGet);
+            //var service = this.ssf.GetService();
+            //var index = service.NextStep(incrementation);
 
-        //}
+            //var json = new { index = index };
+
+            //Debug.WriteLine("+;<///SimulationController.NextStep>");
+
+            //return Json(json, JsonRequestBehavior.AllowGet);
+
+        }
 
 
         //[HttpGet]

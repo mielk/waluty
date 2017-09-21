@@ -288,7 +288,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
 
         [TestMethod]
-        public void Testy_Dla_IsInIndexRane()
+        public void IsInIndexRane_WszystkieTesty()
         {
             Assert.Fail("Not implemented yet");
         }

@@ -347,8 +347,8 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    IEnumerable<AnalysisTimestampDto> dtos = repository.GetAnalysisTimestampsForSimulation(1).ToArray();
 
         //    //Assert
-        //    IEnumerable<AnalysisTimestampDto> expectedDtos = new AnalysisTimestampDto[] { dto1, dto2 };
-        //    bool areEqualArrays = expectedDtos.HasEqualItems(dtos);
+        //    IEnumerable<AnalysisTimestampDto> expectedTimestamps = new AnalysisTimestampDto[] { dto1, dto2 };
+        //    bool areEqualArrays = expectedTimestamps.HasEqualItems(dtos);
         //    Assert.IsTrue(areEqualArrays);
 
         //}
@@ -372,8 +372,8 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    IEnumerable<AnalysisTimestampDto> dtos = repository.GetAnalysisTimestampsForSimulation(3).ToArray();
 
         //    //Assert
-        //    IEnumerable<AnalysisTimestampDto> expectedDtos = new AnalysisTimestampDto[] { };
-        //    bool areEqualArrays = expectedDtos.HasEqualItems(dtos);
+        //    IEnumerable<AnalysisTimestampDto> expectedTimestamps = new AnalysisTimestampDto[] { };
+        //    bool areEqualArrays = expectedTimestamps.HasEqualItems(dtos);
         //    Assert.IsTrue(areEqualArrays);
 
         //}

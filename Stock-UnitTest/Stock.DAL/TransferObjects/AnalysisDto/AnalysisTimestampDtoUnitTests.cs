@@ -37,6 +37,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities
                 Id = 1,
                 SimulationId = 1,
                 AnalysisTypeId = 1,
+                AssetId = 1,
+                TimeframeId = 2,
                 LastAnalysedItem = new DateTime(2017, 4, 20, 19, 45, 0)
             };
 
@@ -45,6 +47,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities
                 Id = 1,
                 SimulationId = 2,
                 AnalysisTypeId = 2,
+                AssetId = 1,
+                TimeframeId = 2,
                 LastAnalysedItem = new DateTime(2017, 4, 18, 19, 30, 0)
             };
 
@@ -54,6 +58,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             //Assert
             Assert.IsTrue(areEqual);
+            Assert.IsFalse(baseItem == comparedItem);
 
         }
 
@@ -105,6 +110,40 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
             //Act
             comparedItem.SimulationId++;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfAssetIdIsDifferent()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            comparedItem.AssetId++;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfTimeframeIdIsDifferent()
+        {
+
+            //Arrange
+            var baseItem = getDefaultAnalysisTimestampDto();
+            var comparedItem = getDefaultAnalysisTimestampDto();
+
+            //Act
+            comparedItem.TimeframeId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
