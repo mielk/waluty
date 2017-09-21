@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Entities
 {
-    public class FxPair
+    public class FxPair : IJsonable
     {
 
         //Static properties.
@@ -149,6 +149,17 @@ namespace Stock.Domain.Entities
         public string GetQuoteCurrencySymbol()
         {
             return (quoteCurrency == null ? string.Empty : quoteCurrency.GetSymbol());
+        }
+
+        public object GetJson()
+        {
+            return new
+            {
+                Id = id,
+                Name = name,
+                BaseCurrency = (baseCurrency == null ? null : baseCurrency.GetJson()),
+                QuoteCurrency = (quoteCurrency == null ? null : quoteCurrency.GetJson())
+            };
         }
 
         #endregion ACCESSORS

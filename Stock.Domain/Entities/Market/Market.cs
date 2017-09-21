@@ -8,7 +8,7 @@ using Stock.Domain.Services;
 
 namespace Stock.Domain.Entities
 {
-    public class Market
+    public class Market : IJsonable
     {
 
         //Static properties.
@@ -92,6 +92,16 @@ namespace Stock.Domain.Entities
         public string GetSymbol()
         {
             return symbol;
+        }
+
+        public object GetJson()
+        {
+            return new 
+            {
+                Id = this.id,
+                Name = this.name,
+                Symbol = this.symbol
+            };
         }
 
         #endregion ACCESSORS

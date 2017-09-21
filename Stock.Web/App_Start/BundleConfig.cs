@@ -8,43 +8,43 @@ namespace Stock.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/common/external/jquery/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
+                        "~/Scripts/common/external/jquery/jquery-ui-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/common/external/jquery/jquery.unobtrusive*",
+                        "~/Scripts/common/external/jquery/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                        "~/Scripts/bootstrap.js"));
+                        "~/Scripts/common/external/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/global").Include(
-                        "~/Scripts/common/notify.js",
+                        "~/Scripts/common/external/notify.js",
                         "~/Scripts/common/mielk.js",
-                        "~/Scripts/jquery.sizes.js",
+                        "~/Scripts/common/external/jquery/jquery.sizes.js",
                         "~/Scripts/common/util.js",
                         "~/Scripts/common/tree.js",
-                        "~/Scripts/common/spin.js",
-                        "~/Scripts/common/select2.full.min.js",
+                        "~/Scripts/common/external/spin.js",
+                        "~/Scripts/common/external/select2.js",
                         "~/Scripts/common/dropdown.js"));
-                        //"~/Scripts/css-element-queries/ElementQueries.js",
-                        //"~/Scripts/css-element-queries/ResizeSensor.js",
+                        //"~/Scripts/common/external/css-element-queries/ElementQueries.js",
+                        //"~/Scripts/common/external/css-element-queries/ResizeSensor.js",
                         
 
             bundles.Add(new ScriptBundle("~/bundles/stock").Include(
-                        "~/Scripts/STOCK/StockCommon.js",
-                        "~/Scripts/STOCK/Quotation.js",
-                        "~/Scripts/STOCK/Market.js",
-                        "~/Scripts/STOCK/Company.js",
-                        "~/Scripts/STOCK/QuotationsAnalyzer.js",
-                        "~/Scripts/STOCK/LabelFactory.js",
-                        "~/Scripts/STOCK/ProcessButtons.js",
-                        "~/Scripts/STOCK/main.js"));
+                        "~/Scripts/STOCK2/StockCommon.js",
+                        "~/Scripts/STOCK2/Quotation.js",
+                        "~/Scripts/STOCK2/Market.js",
+                        "~/Scripts/STOCK2/Company.js",
+                        "~/Scripts/STOCK2/QuotationsAnalyzer.js",
+                        "~/Scripts/STOCK2/LabelFactory.js",
+                        "~/Scripts/STOCK2/ProcessButtons.js",
+                        "~/Scripts/STOCK2/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/charts").Include(
-                        "~/Scripts/common/Raphael.js",
+                        "~/Scripts/common/external/Raphael.js",
                         "~/Scripts/charts/Chart.js",
                         "~/Scripts/charts/TimeframeChartsContainer.js", 
                         "~/Scripts/charts/ChartsContainer.js",
@@ -65,20 +65,16 @@ namespace Stock.Web
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                        //"~/Content/normalize.css",
-                        "~/Content/select2.min.css",
-                        //"~/Content/tree.css",
-                        //"~/Content/dropdown.css",
-                        //"~/Content/mielk.css",
-                        "~/Content/analysis.css",
-                        "~/Content/simulation.css",
-                        "~/Content/site.css"));
+                        "~/Content/common/select2.css",
+                        "~/Content/STOCK2/analysis.css",
+                        "~/Content/STOCK2/simulation.css",
+                        "~/Content/STOCK2/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/charts").Include(
                         "~/Content/charts.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
-                        "~/Content/normalize.css",
+                        "~/Content/common/normalize.css",
                         "~/Content/themes/base/jquery.ui.core.css",
                         "~/Content/themes/base/jquery.ui.resizable.css",
                         "~/Content/themes/base/jquery.ui.selectable.css",

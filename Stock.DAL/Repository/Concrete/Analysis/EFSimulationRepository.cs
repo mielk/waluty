@@ -78,6 +78,17 @@ namespace Stock.DAL.Repositories
             }
             return dto;
         }
+        
+        public SimulationDto GetSimulationById(int id)
+        {
+            SimulationDto dto;
+            using (var context = new SimulationContext())
+            {
+
+                dto = context.Simulations.SingleOrDefault(c => c.Id == id);
+            }
+            return dto;
+        }
 
         public IEnumerable<SimulationDto> GetSimulations()
         {
@@ -114,4 +125,5 @@ namespace Stock.DAL.Repositories
         }
 
     }
+
 }

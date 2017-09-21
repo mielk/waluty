@@ -29,6 +29,12 @@ namespace Stock.Domain.Services
             return instance;
         }
 
+        public static ProcessorFactory Instance(ProcessorFactory _instance)
+        {
+            instance = _instance;
+            return instance;
+        }
+
         #endregion CONSTRUCTOR
 
 

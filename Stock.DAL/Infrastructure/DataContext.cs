@@ -11,6 +11,7 @@ namespace Stock.DAL.Infrastructure
         public DbSet<QuotationDto> Quotations { get; set; }
         public DbSet<PriceDto> Prices { get; set; }
         public DbSet<ExtremumDto> Extrema { get; set; }
+        //public DbSet<AnalysisInfoDto> AnalysisInfos { get; set; }
 
         public DataContext()
         {
@@ -27,6 +28,7 @@ namespace Stock.DAL.Infrastructure
             modelBuilder.Entity<QuotationDto>().ToTable("quotations");
             modelBuilder.Entity<PriceDto>().ToTable("prices");
             modelBuilder.Entity<ExtremumDto>().ToTable("extrema");
+            //modelBuilder.Entity<AnalysisInfoDto>().ToTable
         }
 
     }

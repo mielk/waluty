@@ -287,6 +287,13 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         #endregion EQUALS
 
 
+        [TestMethod]
+        public void Testy_Dla_IsInIndexRane()
+        {
+            Assert.Fail("Not implemented yet");
+        }
+
+
     }
 
 }

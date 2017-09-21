@@ -12,6 +12,7 @@ namespace Stock.Domain.Services
     {
         void InjectQuotationService(IQuotationService service);
         void InjectPriceService(IPriceService service);
+        AnalysisInfo GetAnalysisInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType);
         IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef);
         DataSet[] AppendAndReturnAsArray(IEnumerable<DataSet> sets, AnalysisDataQueryDefinition queryDef);
         void UpdateDataSets(IEnumerable<DataSet> dataSets);

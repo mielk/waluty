@@ -227,19 +227,6 @@ body
 }
 
 
-
-#yt-set-background {
-    z-index: 1;
-    height: 980px;
-}
-
-#yt-select-background {
-    z-index: 2;
-}
-
-
-
-
 .arrow-up-icon {
     background: url('images/icons.png') no-repeat -96px -24px;
 }

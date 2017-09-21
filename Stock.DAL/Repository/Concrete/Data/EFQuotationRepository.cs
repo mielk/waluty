@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Stock.DAL.TransferObjects;
 using Stock.DAL.Infrastructure;
 using Stock.Core;
+using Stock.Utils;
 
 namespace Stock.DAL.Repositories
 {
@@ -16,15 +17,32 @@ namespace Stock.DAL.Repositories
 
         public IEnumerable<QuotationDto> GetQuotations(AnalysisDataQueryDefinition queryDef)
         {
-            DateTime MIN_DATE = new DateTime(1900, 1, 1, 0, 0, 0);
-            DateTime MAX_DATE = new DateTime(2100, 1, 1, 0, 0, 0);
             IEnumerable<QuotationDto> results;
             using (var context = new DataContext())
             {
+
                 results = context.Quotations.Where(q => q.TimeframeId == queryDef.TimeframeId &&
-                                                        q.AssetId == queryDef.AssetId &&
-                                                        (q.PriceDate.CompareTo(queryDef.StartDate ?? MIN_DATE) >= 0) &&
-                                                        (q.PriceDate.CompareTo(queryDef.EndDate ?? MAX_DATE) <= 0)).ToList();
+                                                        q.AssetId == queryDef.AssetId).ToList();
+            }
+
+            if (queryDef.StartDate != null)
+            {
+                results = results.Where(q => q.PriceDate.CompareTo((DateTime)queryDef.StartDate) >= 0);
+            }
+
+            if (queryDef.EndDate != null)
+            {
+                results = results.Where(q => q.PriceDate.CompareTo((DateTime)queryDef.EndDate) <= 0);
+            }
+
+            if (queryDef.StartIndex != null)
+            {
+                results = results.Where(q => q.IndexNumber >= queryDef.StartIndex);
+            }
+
+            if (queryDef.EndIndex != null)
+            {
+                results = results.Where(q => q.IndexNumber <= queryDef.EndIndex);
             }
 
             if (queryDef.Limit > 0)

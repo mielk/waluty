@@ -18,6 +18,30 @@ namespace Stock_UnitTest.Stock.Domain
         private const double DEFAULT_MAX_LEVEL = 1.03845;
         private const int DEFAULT_COUNTER = 10;
 
+
+
+        #region FROM_DTO
+
+        [TestMethod]
+        public void FromDto_WszystkieTesty()
+        {
+            Assert.Fail("Not implemented yet");
+        }
+
+        #endregion FROM_DTO
+
+
+        #region TO_DTO
+
+        [TestMethod]
+        public void ToDto_WszystkieTesty()
+        {
+            Assert.Fail("Not implemented yet");
+        }
+
+        #endregion TO_DTO
+
+
         #region EQUALS
 
         private AnalysisInfo getDefaultAnalysisInfo()

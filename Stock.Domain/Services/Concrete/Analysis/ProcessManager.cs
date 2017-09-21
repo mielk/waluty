@@ -20,6 +20,7 @@ namespace Stock.Domain.Services
         private Dictionary<AnalysisType, int?> lastIndexes;
 
 
+
         #region CONSTRUCTOR
 
         public ProcessManager(Simulation simulation)
@@ -83,15 +84,28 @@ namespace Stock.Domain.Services
 
         private void loadLastIndexes()
         {
-            this.lastIndexes = timestampService.GetLastAnalyzedIndexes(simulation.Id);
+            if (this.lastIndexes == null)
+            {
+                this.lastIndexes = timestampService.GetLastAnalyzedIndexes(simulation.Id);
+                int? lastQuotationIndex = GetAnalysisLastUpdatedIndex(AnalysisType.Quotations);
+                if (lastQuotationIndex != null)
+                {
+                    this.dataSetsArray = new DataSet[(int)lastQuotationIndex];
+                }
+            }
         }
 
-        private void loadDataSets()
+        public void loadDataSets(int initialIndex)
         {
-            if (this.dataSetsArray == null)
-            {
-                this.dataSetsArray = dataSetService.GetDataSets(queryDef).ToArray();
-            }
+            loadLastIndexes();
+            AnalysisDataQueryDefinition _queryDef = queryDef.Clone();
+            _queryDef.StartIndex = initialIndex;
+            this.dataSetsArray = dataSetService.AppendAndReturnAsArray(this.dataSetsArray, queryDef);
+        }
+
+        public void loadDataSets(AnalysisDataQueryDefinition queryDef)
+        {
+            this.dataSetsArray = dataSetService.AppendAndReturnAsArray(this.dataSetsArray, queryDef);
         }
 
         #endregion UPDATING DATA SETS
@@ -114,6 +128,30 @@ namespace Stock.Domain.Services
         public DataSet GetDataSet(int index)
         {
             return dataSetsArray[index];
+        }
+
+        public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef)
+        {
+            loadDataSets(queryDef);
+            var result = dataSetsArray.ToArray();
+            if (queryDef.StartDate != null)
+            {
+                result = result.Where(q => q.Date.CompareTo(queryDef.StartDate) >= 0).ToArray();
+            }
+            if (queryDef.EndDate != null)
+            {
+                result = result.Where(q => q.Date.CompareTo(queryDef.EndDate) <= 0).ToArray();
+            }
+            if (queryDef.StartIndex != null)
+            {
+                result = result.Where(q => q.IndexNumber >= (int) queryDef.StartIndex).ToArray();
+            }
+            if (queryDef.EndIndex != null)
+            {
+                result = result.Where(q => q.IndexNumber <= (int) queryDef.EndIndex).ToArray();
+            }
+            return result;
+
         }
 
         public int GetDataSetIndex(DateTime? datetime)

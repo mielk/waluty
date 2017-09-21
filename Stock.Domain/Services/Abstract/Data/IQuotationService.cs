@@ -14,5 +14,6 @@ namespace Stock.Domain.Services
         void InjectRepository(IQuotationRepository repository);
         IEnumerable<Quotation> GetQuotations(AnalysisDataQueryDefinition queryDef);
         void UpdateQuotations(IEnumerable<Quotation> quotations);
+
     }
 }

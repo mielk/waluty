@@ -292,6 +292,48 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
         }
 
+        [TestMethod]
+        public void GetSimulationById_ReturnsNull_IfThereIsNoSimulationWithSuchId()
+        {
+
+            //Arrange
+            EFSimulationRepository repository = new EFSimulationRepository();
+            List<SimulationDto> simulations = new List<SimulationDto>();
+            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
+            simulations.AddRange(new SimulationDto[] { dto1 });
+            clearSimulationsTables();
+            repository.UpdateSimulations(simulations);
+
+            //Act
+            SimulationDto dto = repository.GetSimulationById(2);
+
+            //Assert
+            Assert.IsNull(dto);
+
+        }
+
+        [TestMethod]
+        public void GetSimulationById_ReturnsProperSimulationDto_IfExists()
+        {
+
+            //Arrange
+            EFSimulationRepository repository = new EFSimulationRepository();
+            List<SimulationDto> simulations = new List<SimulationDto>();
+            SimulationDto expected = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
+            simulations.AddRange(new SimulationDto[] { expected });
+            clearSimulationsTables();
+            repository.UpdateSimulations(simulations);
+
+            //Act
+            SimulationDto dto = repository.GetSimulationById(expected.Id);
+
+            //Assert
+            var areEqual = expected.Equals(dto);
+            Assert.IsTrue(areEqual);
+
+        }
+
+
         #endregion GET_SIMULATIONS
 
 

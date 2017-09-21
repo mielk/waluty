@@ -8,7 +8,7 @@ using Stock.Core;
 
 namespace Stock.Domain.Entities
 {
-    public class DataSet : IDataUnit
+    public class DataSet : IDataUnit, IJsonable
     {
         private const AnalysisType analysisType = AnalysisType.DataSet;
         public int TimeframeId { get; set; }
@@ -88,6 +88,19 @@ namespace Stock.Domain.Entities
         public AnalysisType GetAnalysisType()
         {
             return AnalysisType.DataSet;
+        }
+
+        public object GetJson()
+        {
+            return new
+            {
+                timeframeId = TimeframeId,
+                assetId = AssetId,
+                date = Date,
+                indexNumber = IndexNumber,
+                quotation = this.quotation,
+                price = this.price
+            };
         }
 
         #endregion GETTERS

@@ -70,7 +70,7 @@ function Company(params) {
     this.lastTrendlinesReview = params.LastTrendlinesReview;
     this.pricesChecked = params.PricesChecked;
 
-    //[Quotations].
+    //[Data sets].
     this.dataSets = {};
 
 }
@@ -88,35 +88,35 @@ Company.prototype = {
     getSymbol: function (timeframe) {
         this.name + '_' + timeframe.symbol;
     },
-    getDataSet: function (timeframe) {
+    getDataSet: function (timeframe, simulationId) {
         //Create reference to this [Company] object.
         var self = this;
 
         //Check if the sub-object for this timeframe already exists.
-        var dataSet = self.dataSets[timeframe.symbol];
+        var dataSetCol = self.dataSets[timeframe.symbol];
 
         //If [dataSet] for this timeframe doesn't exist, 
         //create it, add to the collection of data sets...
-        if (!dataSet) {
-            dataSet = new QuotationSet({ company: self, timeframe: timeframe });
-            self.dataSets[timeframe.symbol] = dataSet;
+        if (!dataSetCol) {
+            dataSetCol = new DataSetCollection({ company: self, timeframe: timeframe });
+            self.dataSets[timeframe.symbol] = dataSetCol;
         }
 
-        return dataSet;
+        return dataSetCol;
 
     }
 };
 
 
-function QuotationSet(params) {
+function DataSetCollection(params) {
     //[Meta].
     var self = this;
-    self.QuotationSet = true;
+    self.DataSetCollection = true;
     var company = params.company;
     var timeframe = params.timeframe;
     var size = STOCK.CONFIG.loading.packageSize;
 
-    //[QuotationSet] objects are user for two purposes - showing current charts and simulation charts.
+    //[DataSetCollection] objects are user for two purposes - showing current charts and simulation charts.
     //Simulation charts works different and [company] and [timeframe] can be empty in this object.
     var simulation = params.simulation || false;
 
@@ -145,8 +145,8 @@ function QuotationSet(params) {
         var startDate = quotationsDates[startIndex];
 
         mielk.db.fetch(
-            simulation ? 'Simulation' : 'Company',
-            'GetQuotations',
+            'Data',
+            'GetDataSets',
             simulation ?
                 { startDate: startDate, endDate: endDate } :
                 { assetId: company.id, timeframeId: timeframe.id, startDate: startDate, endDate: endDate },
@@ -218,14 +218,20 @@ function QuotationSet(params) {
 
 
     //Funkcja pobierająca właściwości dla danego timeframeu z bazy danych.
-    function loadProperties(fn) {
+    function loadProperties(fn, simulationId) {
 
-        var properties = null;
+        var properties = {
+            assetId: company.id,
+            timeframeId: timeframe.id,
+            simulationId: simulationId,
+            startIndex: null,
+            endIndex: null
+        };
         //simulation ? {} : { pairSymbol: company.id, timeframe: timeframe.id },
         mielk.db.fetch(
-            simulation ? 'Simulation' : 'Company',
-            'GetDataSetProperties',
-            simulation ? { } : { assetId: 1, timeframeId: 3 },
+            'Data',
+            'GetDataSetsWithInfo',
+            properties,
             {
                 async: false,
                 callback: function (res) {

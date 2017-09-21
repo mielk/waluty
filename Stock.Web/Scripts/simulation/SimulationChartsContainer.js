@@ -88,7 +88,7 @@
         reset();
 
         //Load data set and its properties.
-        dataSet = new QuotationSet({ company: self.company(), timeframe: self.timeframe(), simulation: true });
+        dataSet = new DataSetCollection({ company: self.company(), timeframe: self.timeframe(), simulation: true });
         dataSet.loadProperties(loadProperties);
 
         //Draw actual chart.

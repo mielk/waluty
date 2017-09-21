@@ -10,7 +10,7 @@ namespace Stock.Domain.Services
 {
     public class PriceProcessor : IPriceProcessor
     {
-
+        private ExtremumType[] extremumTypes = new ExtremumType[] { ExtremumType.PeakByClose, ExtremumType.PeakByHigh, ExtremumType.TroughByClose, ExtremumType.TroughByLow };
         private IProcessManager manager;
         private IExtremumProcessor extremumProcessor;
 
@@ -46,14 +46,13 @@ namespace Stock.Domain.Services
 
         
 
-
         public void Process(DataSet dataSet)
         {
             if (dataSet.GetQuotation() != null)
             {
                 createPriceObjectIfNotExist(dataSet);
                 calculateDelta(dataSet);
-                processExtrema(dataSet, new ExtremumType[] {ExtremumType.PeakByClose, ExtremumType.PeakByHigh, ExtremumType.TroughByClose, ExtremumType.TroughByLow});
+                processExtrema(dataSet, extremumTypes);
             }
         }
 
@@ -196,10 +195,13 @@ namespace Stock.Domain.Services
             IExtremumProcessor processor = getExtremumProcessor();
             if (extremum == null)
             {
-                if (processor.IsExtremum(dataSet, type))
+                if (price.IsNew)
                 {
-                    extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate()) { IndexNumber = dataSet.IndexNumber };
-                    price.SetExtremum(extremum);
+                    if (processor.IsExtremum(dataSet, type))
+                    {
+                        extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate()) { IndexNumber = dataSet.IndexNumber };
+                        price.SetExtremum(extremum);
+                    }
                 }
             }
 

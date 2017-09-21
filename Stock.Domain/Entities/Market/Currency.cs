@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Stock.Domain.Entities
 {
-    public class Currency
+    public class Currency : IJsonable
     {
 
         //Static properties.
@@ -88,6 +88,16 @@ namespace Stock.Domain.Entities
         public string GetName()
         {
             return name;
+        }
+
+        public object GetJson()
+        {
+            return new
+            {
+                Id = id,
+                Name = name,
+                Symbol = symbol
+            };
         }
 
         #endregion ACCESSORS

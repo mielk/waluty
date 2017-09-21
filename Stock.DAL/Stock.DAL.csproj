@@ -77,11 +77,13 @@
     <Compile Include="Infrastructure\CurrencyContext.cs" />
     <Compile Include="Infrastructure\EfDbContext.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
+    <Compile Include="Repository\Abstract\Analysis\IAnalysisRepository.cs" />
     <Compile Include="Repository\Abstract\Analysis\ISimulationRepository.cs" />
     <Compile Include="Repository\Abstract\Data\IPriceRepository.cs" />
     <Compile Include="Repository\Abstract\Data\IQuotationRepository.cs" />
     <Compile Include="Repository\Abstract\Market\ITimeframeRepository.cs" />
     <Compile Include="Repository\Abstract\Market\IAssetRepository.cs" />
+    <Compile Include="Repository\Concrete\Analysis\EFAnalysisRepository.cs" />
     <Compile Include="Repository\Concrete\Analysis\EFSimulationRepository.cs" />
     <Compile Include="Repository\Concrete\Data\EFPriceRepository.cs" />
     <Compile Include="Repository\Concrete\Data\EFQuotationRepository.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Repository\Abstract\Market\IMarketRepository.cs" />
     <Compile Include="Repository\Concrete\Market\EFCurrencyRepository.cs" />
     <Compile Include="Repository\Concrete\Market\EFMarketRepository.cs" />
+    <Compile Include="TransferObjects\AnalysisDto\AnalysisInfoDto.cs" />
     <Compile Include="TransferObjects\AnalysisDto\AnalysisTimestampDto.cs" />
     <Compile Include="TransferObjects\AnalysisDto\SimulationDto.cs" />
     <Compile Include="TransferObjects\DataDto\ExtremumDto.cs" />

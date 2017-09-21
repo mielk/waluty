@@ -5,12 +5,13 @@
     //State
     var company = params.initialCompany || STOCK.COMPANIES.getCompany(1);
     var timeframe = params.initialTimeframe || STOCK.TIMEFRAMES.defaultValue();
+    var simulationId = params.simulationId || 0;
     var showPeaks = params.showPeaks || true;
     var showTrendlines = params.showTrendlines || true;
     var indicators = {
-        PRICE: params.showPriceChart || true,
-        MACD: params.showMACDChart || true,
-        ADX: params.showADXChart || true
+        PRICE: params.showPriceChart || false, //true,
+        MACD: params.showMACDChart || false, //true,
+        ADX: params.showADXChart || false //true
     };
     var optionPanel = (function (params) {
 
@@ -151,6 +152,7 @@
             chartContainerId: params.chartsContainerId,
             company: company,
             timeframe: timeframe,
+            simulationId: simulationId,
             showPeaks: showPeaks,
             showTrendlines: showTrendlines,
             showADX: indicators.ADX,
@@ -179,6 +181,11 @@
             timeframe: timeframe,
             company: company
         });
+    }
+
+    function changeSimulationId(id) {
+        simulationId = id;
+        alert('Simulation Id changed');
     }
 
     function changeShowPeaksSetting(_value) {

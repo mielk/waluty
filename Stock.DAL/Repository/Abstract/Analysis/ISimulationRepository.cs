@@ -18,5 +18,6 @@ namespace Stock.DAL.Repositories
         void UpdateSimulations(IEnumerable<SimulationDto> simulations);
         IEnumerable<SimulationDto> GetSimulations();
         SimulationDto GetSimulationByNameAssetTimeframe(string name, int assetId, int timeframeId);
+        SimulationDto GetSimulationById(int id);
     }
 }

@@ -65,5 +65,13 @@ namespace Stock_UnitTest.Stock.DAL.Infrastructure
             Assert.AreSame(repository, repository2);
         }
 
+        [TestMethod]
+        public void GetAnalysisRepository_alwaysReturnsSingletonInstance()
+        {
+            IAnalysisRepository repository = RepositoryFactory.GetAnalysisRepository();
+            IAnalysisRepository repository2 = RepositoryFactory.GetAnalysisRepository();
+            Assert.AreSame(repository, repository2);
+        }
+
     }
 }

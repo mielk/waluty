@@ -54,6 +54,14 @@ namespace Stock.DAL.TransferObjects
             return AnalysisType.Quotations;
         }
 
+        public bool IsInIndexRange(int? startIndex, int? endIndex)
+        {
+            bool startIndexStatus, endIndexStatus;
+            startIndexStatus = (startIndex == null ? true : IndexNumber >= startIndex);
+            endIndexStatus = (endIndex == null ? true : IndexNumber <= endIndex);
+            return startIndexStatus && endIndexStatus;
+        }
+
         #endregion GETTERS
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Utils;
+using Stock.DAL.TransferObjects;
 
 namespace Stock.Domain.Entities
 {
@@ -17,6 +18,38 @@ namespace Stock.Domain.Entities
         public double? MaxLevel { get; set; }
         public int Counter { get; set; }
 
+
+        #region CONSTRUCTORS
+
+        public static AnalysisInfo FromDto(AnalysisInfoDto dto)
+        {
+            var info = new AnalysisInfo();
+            info.StartDate = dto.StartDate;
+            info.EndDate = dto.EndDate;
+            info.StartIndex = dto.StartIndex;
+            info.EndIndex = dto.EndIndex;
+            info.MinLevel = dto.MinLevel;
+            info.MaxLevel = dto.MaxLevel;
+            info.Counter = dto.Counter;
+            return info;
+        }
+
+        public AnalysisInfoDto ToDto()
+        {
+            var dto = new AnalysisInfoDto
+            {
+                StartDate = this.StartDate,
+                EndDate = this.EndDate,
+                StartIndex = this.StartIndex,
+                EndIndex = this.EndIndex,
+                MinLevel = this.MinLevel,
+                MaxLevel = this.MaxLevel,
+                Counter = this.Counter
+            };
+            return dto;
+        }
+
+        #endregion CONSTRUCTORS
 
 
         #region SYSTEM.OBJECT

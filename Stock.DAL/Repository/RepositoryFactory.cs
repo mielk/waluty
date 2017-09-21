@@ -10,6 +10,7 @@
         private static readonly IQuotationRepository quotationRepository;
         private static readonly IPriceRepository priceRepository;
         private static readonly ISimulationRepository simulationRepository;
+        private static readonly IAnalysisRepository analysisRepository;
 
         static RepositoryFactory()
         {
@@ -20,6 +21,7 @@
             quotationRepository = new EFQuotationRepository();
             priceRepository = new EFPriceRepository();
             simulationRepository = new EFSimulationRepository();
+            analysisRepository = new EFAnalysisRepository();
         }
 
 
@@ -56,6 +58,11 @@
         public static ISimulationRepository GetSimulationRepository()
         {
             return simulationRepository;
+        }
+
+        public static IAnalysisRepository GetAnalysisRepository()
+        {
+            return analysisRepository;
         }
 
     }

@@ -77,10 +77,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stock.Core\AnalysisDataQueryDefinitionUnitTests.cs" />
     <Compile Include="Stock.Core\Enums\HelperMethodsUnitTests.cs" />
     <Compile Include="Stock.DAL\Helpers\DbStringBuilderUnitTest.cs" />
     <Compile Include="Stock.DAL\Helpers\HelperMethodUnitTest.cs" />
     <Compile Include="Stock.DAL\Infrastructure\RepositoryFactoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Analysis\EFAnalysisRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\Analysis\EFSimulationRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\Data\EFPriceRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\Data\EFQuotationRepositoryUnitTest.cs" />

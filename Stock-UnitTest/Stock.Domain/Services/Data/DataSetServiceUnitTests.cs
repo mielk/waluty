@@ -335,6 +335,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
         #endregion GET_DATA_SETS
 
 
+        #region GET_DATA_SET_INFO
+
+        [TestMethod]
+        public void GetDataSetInfo_wszystkieTesty()
+        {
+            Assert.Fail("Not implemented yet");
+        }
+
+        #endregion GET_DATA_SET_INFO
+
         #region APPEND_AND_RETURN_AS_ARRAY
 
         [TestMethod]

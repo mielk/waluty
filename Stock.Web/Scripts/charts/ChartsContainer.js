@@ -13,6 +13,7 @@
     //[Parameters].
     self.company = params.company;
     self.timeframe = params.timeframe;
+    self.simulationId = params.simulationId;
 
     //[Settings].
     self.settings = { };
@@ -61,6 +62,9 @@
             changeTimeframe: function (e) {
                 changeTimeframe(e.timeframe);
             },
+            changeSimulation: function (e) {
+
+            },
             showMACD: function (e) {
                 self.settings[STOCK.INDICATORS.MACD.name].visible = e.value;
             },
@@ -82,6 +86,12 @@
         if (self.timeframe !== _timeframe) {
             self.timeframe = _timeframe;
             load();
+        }
+    }
+
+    function changeSimulationId(id) {
+        if (self.simulationId !== id) {
+            self.simulationId = id;
         }
     }
 

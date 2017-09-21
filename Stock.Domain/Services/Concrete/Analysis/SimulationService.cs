@@ -92,7 +92,18 @@ namespace Stock.Domain.Services
         }
 
         public Simulation GetSimulationById(int id){
-            throw new Exception();
+            var simulation = simulations.SingleOrDefault(m => m.Id == id);
+            if (simulation == null)
+            {
+                var dto = _repository.GetSimulationById(id);
+                if (dto != null)
+                {
+                    simulation = Simulation.FromDto(dto);
+                    appendLastUpdates(simulation);
+                    appendSimulation(simulation);
+                }
+            }
+            return simulation;
         }
 
         private void appendSimulation(Simulation simulation)

@@ -340,6 +340,68 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
 
         [TestMethod]
+        public void GetQuotationsWithQueryDef_ReturnsDataFromGivenStartIndexOnly()
+        {
+
+            //Arrange
+            EFQuotationRepository repository = new EFQuotationRepository();
+            List<QuotationDto> quotations = new List<QuotationDto>();
+            QuotationDto dto1 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09191, HighPrice = 1.09218, LowPrice = 1.09186, ClosePrice = 1.09194, Volume = 1411, IndexNumber = 2 };
+            QuotationDto dto2 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 3 };
+            QuotationDto dto3 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 4 };
+            QuotationDto dto4 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 5 };
+            QuotationDto dto5 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 2 };
+            QuotationDto dto6 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 3 };
+            QuotationDto dto7 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 1 };
+            QuotationDto dto8 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 2 };
+            quotations.AddRange(new QuotationDto[] { dto1, dto2, dto3, dto4, dto5, dto6, dto7, dto8 });
+            clearQuotationsTable();
+            repository.UpdateQuotations(quotations);
+
+            //Act
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1) { StartIndex = 3 };
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
+
+            //Assert
+            IEnumerable<QuotationDto> expectedRecords = new QuotationDto[] { dto2, dto3, dto4 };
+            bool areEqualArrays = expectedRecords.HasEqualItems(actualRecords);
+            Assert.IsTrue(areEqualArrays);
+
+        }
+
+        [TestMethod]
+        public void GetQuotationsWithQueryDef_ReturnsDataToGivenEndIndexOnly()
+        {
+
+            //Arrange
+            EFQuotationRepository repository = new EFQuotationRepository();
+            List<QuotationDto> quotations = new List<QuotationDto>();
+            QuotationDto dto1 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09191, HighPrice = 1.09218, LowPrice = 1.09186, ClosePrice = 1.09194, Volume = 1411, IndexNumber = 2 };
+            QuotationDto dto2 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 3 };
+            QuotationDto dto3 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 4 };
+            QuotationDto dto4 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 5 };
+            QuotationDto dto5 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 1 };
+            QuotationDto dto6 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 2 };
+            QuotationDto dto7 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 1 };
+            QuotationDto dto8 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 2 };
+            quotations.AddRange(new QuotationDto[] { dto1, dto2, dto3, dto4, dto5, dto6, dto7, dto8 });
+            clearQuotationsTable();
+            repository.UpdateQuotations(quotations);
+
+            //Act
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1) { EndIndex = 3 };
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
+
+            //Assert
+            IEnumerable<QuotationDto> expectedRecords = new QuotationDto[] { dto1, dto2 };
+            bool areEqualArrays = expectedRecords.HasEqualItems(actualRecords);
+            Assert.IsTrue(areEqualArrays);
+
+        }
+
+
+
+        [TestMethod]
         public void GetQuotationsWithQueryDef_ReturnsDataFromGivenStartDateAndToGivenEndDateOnly()
         {
 
@@ -363,6 +425,41 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
                                                             StartDate = new DateTime(2016, 1, 15, 22, 30, 0), 
                                                             EndDate = new DateTime(2016, 1, 15, 22, 35, 0) 
                                                         };
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
+
+            //Assert
+            IEnumerable<QuotationDto> expectedRecords = new QuotationDto[] { dto2, dto3 };
+            bool areEqualArrays = expectedRecords.HasEqualItems(actualRecords);
+            Assert.IsTrue(areEqualArrays);
+
+        }
+
+
+        [TestMethod]
+        public void GetQuotationsWithQueryDef_ReturnsDataFromGivenStartIndexAndToGivenEndIndexOnly()
+        {
+
+            //Arrange
+            EFQuotationRepository repository = new EFQuotationRepository();
+            List<QuotationDto> quotations = new List<QuotationDto>();
+            QuotationDto dto1 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09191, HighPrice = 1.09218, LowPrice = 1.09186, ClosePrice = 1.09194, Volume = 1411, IndexNumber = 2 };
+            QuotationDto dto2 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 3 };
+            QuotationDto dto3 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 4 };
+            QuotationDto dto4 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 5 };
+            QuotationDto dto5 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 1 };
+            QuotationDto dto6 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 2 };
+            QuotationDto dto7 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 6 };
+            QuotationDto dto8 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 7 };
+            quotations.AddRange(new QuotationDto[] { dto1, dto2, dto3, dto4, dto5, dto6, dto7, dto8 });
+            clearQuotationsTable();
+            repository.UpdateQuotations(quotations);
+
+            //Act
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1)
+            {
+                StartIndex = 3,
+                EndIndex = 4
+            };
             IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
 
             //Assert
@@ -396,6 +493,40 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             {
                 StartDate = new DateTime(2016, 1, 15, 23, 30, 0),
                 EndDate = new DateTime(2016, 1, 15, 22, 35, 0)
+            };
+            IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
+
+            //Assert
+            bool isEmpty = actualRecords.Count() == 0;
+            Assert.IsTrue(isEmpty);
+
+        }
+
+
+        [TestMethod]
+        public void GetQuotationsWithQueryDef_ReturnsEmptyContainer_IfThereIsNoDataInGivenIndexRange()
+        {
+
+            //Arrange
+            EFQuotationRepository repository = new EFQuotationRepository();
+            List<QuotationDto> quotations = new List<QuotationDto>();
+            QuotationDto dto1 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09191, HighPrice = 1.09218, LowPrice = 1.09186, ClosePrice = 1.09194, Volume = 1411, IndexNumber = 2 };
+            QuotationDto dto2 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 3 };
+            QuotationDto dto3 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 4 };
+            QuotationDto dto4 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 5 };
+            QuotationDto dto5 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 1 };
+            QuotationDto dto6 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 2, TimeframeId = 1, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 2 };
+            QuotationDto dto7 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 3 };
+            QuotationDto dto8 = new QuotationDto() { PriceDate = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 2, OpenPrice = 1.09193, HighPrice = 1.09256, LowPrice = 1.09165, ClosePrice = 1.09177, Volume = 1819, IndexNumber = 4 };
+            quotations.AddRange(new QuotationDto[] { dto1, dto2, dto3, dto4, dto5, dto6, dto7, dto8 });
+            clearQuotationsTable();
+            repository.UpdateQuotations(quotations);
+
+            //Act
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1)
+            {
+                StartIndex = 10,
+                EndIndex = 15
             };
             IEnumerable<QuotationDto> actualRecords = repository.GetQuotations(queryDef);
 

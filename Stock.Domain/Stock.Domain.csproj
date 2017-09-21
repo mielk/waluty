@@ -51,6 +51,7 @@
     <Compile Include="Entities\Analysis\todo\ExtremumGroup.cs" />
     <Compile Include="Entities\Data\IDataUnit.cs" />
     <Compile Include="Entities\Analysis\todo\ValuePoint.cs" />
+    <Compile Include="Entities\IJsonable.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\HolidaysManager.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\IHolidaysManager.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\MonthsProcessor.cs" />

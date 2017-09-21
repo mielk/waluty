@@ -54,7 +54,8 @@
                 showTrendlinesCheckboxId: 'show-trendlines-checkbox',
                 showMACDCheckboxId: 'show-macd-checkbox',
                 showADXCheckboxId: 'show-adx-checkbox',
-                chartsContainerId: 'charts-container'
+                chartsContainerId: 'charts-container',
+                simulationId: 0
             }),
             run: function (e) {
                 e.run();

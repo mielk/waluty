@@ -15,6 +15,7 @@ namespace Stock.Domain.Services
 
     public class DataSetService : IDataSetService
     {
+        private IAnalysisRepository analysisRepository;
         private IQuotationService quotationService;
         private IPriceService priceService;
         private DataSetsContainer container;
@@ -24,9 +25,15 @@ namespace Stock.Domain.Services
 
         public DataSetService()
         {
+            this.analysisRepository = RepositoryFactory.GetAnalysisRepository();
             this.quotationService = ServiceFactory.Instance().GetQuotationService();
             this.priceService = ServiceFactory.Instance().GetPriceService();
             setContainer(new DataSetsContainer());
+        }
+
+        public void injectAnalysisRepository(IAnalysisRepository repository)
+        {
+            this.analysisRepository = repository;
         }
 
         public void InjectQuotationService(IQuotationService service)
@@ -56,6 +63,12 @@ namespace Stock.Domain.Services
         public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef)
         {
             return container.GetDataSets(queryDef);
+        }
+
+        public AnalysisInfo GetAnalysisInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType)
+        {
+            AnalysisInfoDto dto = analysisRepository.GetAnalysisInfoDto(queryDef, analysisType);
+            return AnalysisInfo.FromDto(dto);
         }
 
         public IEnumerable<IDataUnit> GetUnits(AnalysisDataQueryDefinition queryDef)
