@@ -19,13 +19,16 @@ namespace Stock.Domain.Services
             this.repository = repository;
         }
 
-        public Dictionary<AnalysisType, int?> GetLastAnalyzedIndexes(int simulationId)
+        public Dictionary<AnalysisType, int?> GetLastAnalyzedIndexes(int assetId, int timeframeId, int simulationId)
         {
             Dictionary<AnalysisType, int?> result = new Dictionary<AnalysisType, int?>();
             IEnumerable<AnalysisTimestampDto> dtos = repository.GetAnalysisTimestampsForSimulation(simulationId);
             foreach (var dto in dtos)
             {
-                result.Add((AnalysisType)dto.AnalysisTypeId, dto.LastAnalysedIndex);
+                if (dto.AssetId == assetId && dto.TimeframeId == timeframeId)
+                {
+                    result.Add((AnalysisType)dto.AnalysisTypeId, dto.LastAnalysedIndex);
+                }
             }
             return result;
         }

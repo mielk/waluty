@@ -9,6 +9,6 @@ namespace Stock.Domain.Services
 {
     public interface IAnalysisTimestampService
     {
-        Dictionary<AnalysisType, int?> GetLastAnalyzedIndexes(int simulationId);
+        Dictionary<AnalysisType, int?> GetLastAnalyzedIndexes(int assetId, int timeframeId, int simulationId);
     }
 }

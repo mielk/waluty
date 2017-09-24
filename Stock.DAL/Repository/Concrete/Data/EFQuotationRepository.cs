@@ -12,7 +12,7 @@ namespace Stock.DAL.Repositories
 {
     public class EFQuotationRepository : IQuotationRepository
     {
-        
+
         private const string QUOTATIONS_TABLE_NAME = "quotations";
 
         public IEnumerable<QuotationDto> GetQuotations(AnalysisDataQueryDefinition queryDef)
@@ -22,7 +22,8 @@ namespace Stock.DAL.Repositories
             {
 
                 results = context.Quotations.Where(q => q.TimeframeId == queryDef.TimeframeId &&
-                                                        q.AssetId == queryDef.AssetId).ToList();
+                                                        q.AssetId == queryDef.AssetId && 
+                                                        q.IndexNumber > 0).ToList();
             }
 
             if (queryDef.StartDate != null)

@@ -27,6 +27,7 @@ namespace Stock.Domain.Entities
         public bool IsNew { get; set; }
 
 
+
         #region DTO
         public static Quotation FromDto(QuotationDto dto)
         {
@@ -93,6 +94,27 @@ namespace Stock.Domain.Entities
         {
             return analysisType;
         }
+
+        public object GetJson()
+        {
+            return new
+            {
+                id = Id,
+                assetId = AssetId,
+                timeframeId = TimeframeId,
+                date = Date,
+                analysisType = (int)analysisType,
+                open = Open,
+                high = High,
+                low = Low,
+                close = Close,
+                volume = Volume,
+                indexNumber = IndexNumber,
+                isUpdated = IsUpdated,
+                isNew = IsNew
+            };
+        }
+
 
         #endregion GETTERS
 

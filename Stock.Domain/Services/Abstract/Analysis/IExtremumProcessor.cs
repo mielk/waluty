@@ -18,5 +18,6 @@ namespace Stock.Domain.Services
         double CalculateLaterAmplitude(Extremum extremum);
         int CalculateLaterCounter(Extremum extremum);
         double CalculateLaterChange(Extremum extremum, int units);
+        double CalculateValue(Extremum extremum);
     }
 }

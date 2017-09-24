@@ -85,7 +85,6 @@ namespace Stock.DAL.TransferObjects
 
         public override bool Equals(object obj)
         {
-            const double MAX_VALUE_DIFFERENCE = 0.000000001d;
             if (obj == null) return false;
             if (obj.GetType() != typeof(QuotationDto)) return false;
 

@@ -124,6 +124,34 @@ namespace Stock.Domain.Entities
             return extrema;
         }
 
+        public object GetJson()
+        {
+            return new
+            {
+                analysisType = (int)analysisType,
+                id = Id,
+                simulationId = SimulationId,
+                assetId = AssetId,
+                timeframeId = TimeframeId,
+                date = Date,
+                indexNumber = IndexNumber,
+                closeDelta = CloseDelta,
+                direction2D = Direction2D,
+                direction3D = Direction3D,
+                priceGap = PriceGap,
+                peakByClose = PeakByClose,
+                peakByHigh = PeakByHigh,
+                troughByClose = TroughByClose,
+                troughByLow = TroughByLow,
+                closeRatio = CloseRatio,
+                extremumRatio = ExtremumRatio,
+                isUpdated = IsUpdated,
+                isNew = IsNew,
+                isComplete = IsComplete
+            };
+        }
+
+
         #endregion GETTERS
 
 

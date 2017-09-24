@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.DAL.TransferObjects;
+using Stock.Core;
 
 namespace Stock.Domain.Services
 {
@@ -16,6 +17,27 @@ namespace Stock.Domain.Services
 
         public AnalysisItemsContainer(IBasicAnalysisService service){
             this.service = service;
+        }
+
+        public IEnumerable<T> GetItems(AnalysisDataQueryDefinition queryDef)
+        {
+            AssetItemsContainer assetItems;
+            TimeframeItemsContainer timeframeItems;
+            if (quotationsByAssets.ContainsKey(queryDef.AssetId))
+            {
+                quotationsByAssets.TryGetValue(queryDef.AssetId, out assetItems);
+            }
+            else
+            {
+                assetItems = new AssetItemsContainer(queryDef.AssetId);
+            }
+
+            if (assetItems != null)
+            {
+                timeframeItems = assetItems.GetOrCreateTimeframeContainer(queryDef.TimeframeId);
+            }
+
+            return null;
         }
 
         public IEnumerable<T> ProcessDtoToItems(IEnumerable<IDataUnitDto> items, int assetId, int timeframeId)
@@ -84,6 +106,7 @@ namespace Stock.Domain.Services
         {
             private int timeframeId;
             private List<IDataUnit> items;
+            private bool isLoaded;
 
             public TimeframeItemsContainer(int timeframeId)
             {
@@ -96,10 +119,25 @@ namespace Stock.Domain.Services
                 return timeframeId;
             }
 
+            public IEnumerable<IDataUnit> GetItems(AnalysisDataQueryDefinition queryDef)
+            {
+                if (!isLoaded)
+                {
+                    //loadItems();
+                    isLoaded = true;
+                }
+                return null;
+            }
+
+            private void loadItems(int assetId, int timeframeId)
+            {
+
+            }
+
             public IEnumerable<T> ProcessDtoToItems(IEnumerable<IDataUnitDto> dtos, IBasicAnalysisService service)
             {
                 List<T> result = new List<T>();
-                foreach (var dto in dtos)
+                foreach (var dto in dtos.ToList())
                 {
                     var dataItem = items.SingleOrDefault(i => i.GetIndexNumber() == dto.GetIndexNumber());
                     if (dataItem == null)

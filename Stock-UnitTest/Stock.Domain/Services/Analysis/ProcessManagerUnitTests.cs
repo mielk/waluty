@@ -15,6 +15,8 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
     public class ProcessManagerUnitTests
     {
 
+        private static int DEFAULT_ASSET_ID = 1;
+        private static int DEFAULT_TIMEFRAME_ID = 4;
 
         #region HELPER_METHODS
 
@@ -30,10 +32,10 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
             //Arrange
             Mock<IAnalysisTimestampService> mockedTimestampService = new Mock<IAnalysisTimestampService>();
             Dictionary<AnalysisType, int?> indexes = new Dictionary<AnalysisType, int?>();
-            mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(It.IsAny<int>())).Returns(indexes);
+            mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, It.IsAny<int>())).Returns(indexes);
             
             //Act
-            ProcessManager manager = new ProcessManager();
+            ProcessManager manager = new ProcessManager(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID);
             manager.InjectTimestampService(mockedTimestampService.Object);
 
             //Assert
@@ -50,10 +52,10 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
             Mock<IAnalysisTimestampService> mockedTimestampService = new Mock<IAnalysisTimestampService>();
             Dictionary<AnalysisType, int?> indexes = new Dictionary<AnalysisType, int?>();
             indexes.Add(AnalysisType.Prices, null);
-            mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(It.IsAny<int>())).Returns(indexes);
+            mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, It.IsAny<int>())).Returns(indexes);
 
             //Act
-            ProcessManager manager = new ProcessManager();
+            ProcessManager manager = new ProcessManager(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID);
             manager.InjectTimestampService(mockedTimestampService.Object);
 
             //Assert
@@ -72,10 +74,10 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
             Mock<IAnalysisTimestampService> mockedTimestampService = new Mock<IAnalysisTimestampService>();
             Dictionary<AnalysisType, int?> indexes = new Dictionary<AnalysisType, int?>();
             indexes.Add(AnalysisType.Prices, expected);
-            mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(It.IsAny<int>())).Returns(indexes);
+            mockedTimestampService.Setup(s => s.GetLastAnalyzedIndexes(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, It.IsAny<int>())).Returns(indexes);
 
             //Act
-            ProcessManager manager = new ProcessManager();
+            ProcessManager manager = new ProcessManager(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID);
             manager.InjectTimestampService(mockedTimestampService.Object);
 
             //Assert
@@ -85,6 +87,40 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
         }
 
         #endregion GET_ANALYSIS_LAST_UPDATED_INDEX
+
+
+
+        #region GET_DATA_SET
+
+        [TestMethod]
+        public void GetDataSet_ReturnsNull_IfGivenIndexIsNegative()
+        {
+            //Arrange
+            ProcessManager manager = new ProcessManager(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID);
+
+            //Act
+            DataSet dataSet = manager.GetDataSet(-1);
+
+            //Assert
+            Assert.IsNull(dataSet);
+
+        }
+
+        [TestMethod]
+        public void GetDataSet_ReturnsNull_IfGivenIndexIsZero()
+        {
+            //Arrange
+            ProcessManager manager = new ProcessManager(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID);
+
+            //Act
+            DataSet dataSet = manager.GetDataSet(0);
+
+            //Assert
+            Assert.IsNull(dataSet);
+
+        }
+
+        #endregion GET_DATA_SET
 
 
     }

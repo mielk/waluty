@@ -14,9 +14,11 @@ namespace Stock.Web.Controllers
     public class SimulationController : Controller
     {
 
-        private Simulation simulation;
-        private IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
-        private ISimulationManager manager;
+        private static int assetId;
+        private static int timeframeId;
+        private static Simulation simulation;
+        private static IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
+        private static ISimulationManager manager;
 
 
         public SimulationController()
@@ -46,7 +48,7 @@ namespace Stock.Web.Controllers
                 Name = "test"
             };
 
-            manager = new SimulationManager(simulation);
+            manager = new SimulationManager(assetId, timeframeId, simulation);
             var json = new { result = (simulation != null) };
             return Json(json, JsonRequestBehavior.AllowGet);
 
@@ -58,52 +60,49 @@ namespace Stock.Web.Controllers
         [AllowAnonymous]
         public ActionResult NextStep(int incrementation)
         {
-
-
-            return null;
-
-            //var service = this.ssf.GetService();
-            //var index = service.NextStep(incrementation);
-
-            //var json = new { index = index };
-
-            //Debug.WriteLine("+;<///SimulationController.NextStep>");
-
-            //return Json(json, JsonRequestBehavior.AllowGet);
-
+            manager.RunByGivenSteps(incrementation);
+            AnalysisInfo info = manager.GetAnalysisInfo();
+            var json = new { info = info };
+            return Json(json, JsonRequestBehavior.AllowGet);
         }
 
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public ActionResult GetDataSetProperties()
-        //{
-        //    var service = this.ssf.GetService();
-        //    var properties = service.GetDataSetProperties();
-        //    return Json(properties, JsonRequestBehavior.AllowGet);
-        //}
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetDataSets()
+        {
+            IEnumerable<DataSet> dataSets = manager.GetDataSets();
+            var json = new { quotations = dataSets };
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetDataSetsInfo()
+        {
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public ActionResult GetFxQuotationsByDates(string startDate, string endDate)
-        //{
+            AnalysisInfo info = manager.GetAnalysisInfo();
+            if (info == null)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new
+                {
+                    startIndex = info.StartIndex,
+                    endIndex = info.EndIndex,
+                    firstDate = info.StartDate,
+                    lastDate = info.EndDate,
+                    minLevel = info.MinLevel,
+                    maxLevel = info.MaxLevel,
+                    counter = info.Counter
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
 
-        //    //Converts date strings to DateTime objects.
-        //    DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-        //    DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-
-        //    //findTrendlines(pairSymbol, timeframe);
-
-        //    ISimulationService2 service = this.ssf.GetService();
-        //    IEnumerable<DataItem> quotations = service.GetQuotations(startDateTime, endDateTime);
-        //    IEnumerable<Trendline> trendlines = service.GetTrendlines(startDateTime, endDateTime);
-        //    var result = new { quotations = quotations, trendlines = trendlines };
-
-        //    return Json(result, JsonRequestBehavior.AllowGet);
-
-        //}
 
     }
 }

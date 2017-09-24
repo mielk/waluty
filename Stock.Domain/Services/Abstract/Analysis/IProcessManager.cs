@@ -10,12 +10,13 @@ namespace Stock.Domain.Services
 {
     public interface IProcessManager
     {
-        void loadDataSets(int initialIndex);
         DataSet GetDataSet(int index);
+        IEnumerable<DataSet> GetDataSets();
         IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef);
         int GetDataSetIndex(DateTime? datetime);
         int? GetAnalysisLastUpdatedIndex(AnalysisType type);
         void Run();
         int GetSimulationId();
+        AnalysisInfo GetAnalysisInfo();
     }
 }

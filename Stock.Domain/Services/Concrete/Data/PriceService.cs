@@ -53,19 +53,24 @@ namespace Stock.Domain.Services
 
         private void appendExtrema(IEnumerable<Price> prices, AnalysisDataQueryDefinition baseQueryDef)
         {
-            DateTime minDate = prices.Min(p => p.Date);
-            DateTime maxDate = prices.Max(p => p.Date);
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(baseQueryDef.AssetId, baseQueryDef.TimeframeId) { StartDate = minDate, EndDate = maxDate };
-            IEnumerable<ExtremumDto> dtos = _repository.GetExtrema(queryDef);
-            foreach (var dto in dtos)
+
+            if (prices != null && prices.Count() > 0)
             {
-                Extremum extremum = Extremum.FromDto(dto);
-                Price price = prices.SingleOrDefault(p => p.AssetId == dto.AssetId && p.TimeframeId == dto.TimeframeId && p.Date.CompareTo(dto.Date) == 0);
-                if (price != null)
+                DateTime minDate = prices.Min(p => p.Date);
+                DateTime maxDate = prices.Max(p => p.Date);
+                AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(baseQueryDef.AssetId, baseQueryDef.TimeframeId) { StartDate = minDate, EndDate = maxDate };
+                IEnumerable<ExtremumDto> dtos = _repository.GetExtrema(queryDef);
+                foreach (var dto in dtos)
                 {
-                    price.SetExtremum(extremum);
+                    Extremum extremum = Extremum.FromDto(dto);
+                    Price price = prices.SingleOrDefault(p => p.AssetId == dto.AssetId && p.TimeframeId == dto.TimeframeId && p.Date.CompareTo(dto.Date) == 0);
+                    if (price != null)
+                    {
+                        price.SetExtremum(extremum);
+                    }
                 }
             }
+
         }
 
         public IEnumerable<IDataUnit> GetUnits(AnalysisDataQueryDefinition queryDef)

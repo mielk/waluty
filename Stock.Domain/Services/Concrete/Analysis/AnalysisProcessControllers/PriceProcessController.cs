@@ -60,7 +60,6 @@ namespace Stock.Domain.Services
             if (lastQuotationIndex > lastPriceIndex)
             {
                 int startIndex = Math.Max(lastPriceIndex - HowManyItemsBeforeInclude, 1);
-                manager.loadDataSets(startIndex - PAST_QUOTATIONS_REQUIRED_FOR_ANALYSIS);
                 for (int i = startIndex; i <= lastQuotationIndex; i++)
                 {
                     DataSet ds = manager.GetDataSet(i);

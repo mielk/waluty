@@ -6,6 +6,7 @@
     var self = this;
     self.SimulationChartsContainer = true;
     var controller = params.controller;
+    self.simulationId = params.simulation;
 
     //[Properties]
     var key = params.key || mielk.numbers.generateUUID();
@@ -82,23 +83,27 @@
 
 
 
-    function reloadData() {
+    function reloadData(info) {
 
-        //Reset previous charts.
-        reset();
+        if (info) {
 
-        //Load data set and its properties.
-        dataSet = new DataSetCollection({ company: self.company(), timeframe: self.timeframe(), simulation: true });
-        dataSet.loadProperties(loadProperties);
+            //Reset previous charts.
+            reset();
 
-        //Draw actual chart.
-        loadCharts();
-        loadTimeScale();
+            //Load data set and its properties.
+            dataSet = new DataSetCollection({ company: self.company(), timeframe: self.timeframe(), simulationId: self.simulationId });
+            dataSet.loadProperties(loadProperties, self.simulationId || 1, info.StartIndex, info.EndIndex);
 
-        //Assign events. It must be placed here, after charts and time scale is already loaded.
-        assignEvents();
+            //Draw actual chart.
+            loadCharts();
+            loadTimeScale();
 
-        dataSet.loadQuotations(loadQuotations);
+            //Assign events. It must be placed here, after charts and time scale is already loaded.
+            assignEvents();
+
+            dataSet.loadQuotations(loadQuotations);
+
+        }
 
     }
 
@@ -174,7 +179,7 @@
             {
                 async: true,
                 callback: function (r) {
-                    if (r.assetId && r.timeframeId) {
+                    if (r.result) {
                         alert('Simulation object has been successfully loaded');
                     } else {
                         alert('Error when trying to load data to simulation object');
@@ -195,8 +200,8 @@
             {
                 async: true,
                 callback: function (result) {
-                    if (result.index) {
-                        reloadData();
+                    if (result.info) {
+                        reloadData(result.info);
                     }
                 }
             }

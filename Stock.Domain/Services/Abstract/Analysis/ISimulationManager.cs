@@ -10,6 +10,6 @@ namespace Stock.Domain.Services
 {
     public interface ISimulationManager : IProcessManager
     {
-        int GetSimulationId();
+        void RunByGivenSteps(int steps);
     }
 }

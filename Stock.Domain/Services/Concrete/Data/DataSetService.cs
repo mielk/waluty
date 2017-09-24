@@ -80,30 +80,37 @@ namespace Stock.Domain.Services
         {
 
             IEnumerable<DataSet> currentSet = GetDataSets(queryDef);
-            int maxIndexOriginal = (currentSet.Count() > 0 ? currentSet.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0);
-            int maxIndexAppended = (sets.Count() > 0 ? sets.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0);
+            int maxIndexOriginal = (currentSet == null ? 0 : (currentSet.Count() > 0 ? currentSet.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0));
+            int maxIndexAppended = (sets == null ? 0 : (sets.Count() > 0 ? sets.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0));
             int maxIndex = Math.Max(maxIndexOriginal, maxIndexAppended);
             DataSet[] array = new DataSet[maxIndex + 1];
 
-            foreach (var ds in sets)
+            if (sets != null)
             {
-                if (ds != null)
+                foreach (var ds in sets)
                 {
-                    var indexNumber = ds.IndexNumber;
-                    array[indexNumber] = ds;
+                    if (ds != null)
+                    {
+                        var indexNumber = ds.IndexNumber;
+                        array[indexNumber] = ds;
+                    }
                 }
             }
 
-            foreach (var ds in currentSet)
+            if (currentSet != null)
             {
-                if (ds != null)
+                foreach (var ds in currentSet)
                 {
-                    var indexNumber = ds.IndexNumber;
-                    array[indexNumber] = ds;
+                    if (ds != null)
+                    {
+                        var indexNumber = ds.IndexNumber;
+                        array[indexNumber] = ds;
+                    }
                 }
             }
 
             return array;
+
         }
         
         public void UpdateDataSets(IEnumerable<DataSet> dataSets)

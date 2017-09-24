@@ -20,6 +20,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
     {
 
         private const int DEFAULT_SIMULATION_ID = 1;
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
 
 
         #region HELPER_METHODS
@@ -48,7 +50,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             AnalysisTimestampService service = new AnalysisTimestampService(mockedRepository.Object);
 
             //Assert
-            var result = service.GetLastAnalyzedIndexes(DEFAULT_SIMULATION_ID);
+            var result = service.GetLastAnalyzedIndexes(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID);
             Assert.AreEqual(0, result.Count);
 
         }
@@ -64,16 +66,17 @@ namespace Stock_UnitTest.Stock.Domain.Services
             int lastPriceIndex = 84;
             int lastMacdIndex = 72;
             List<AnalysisTimestampDto> list = new List<AnalysisTimestampDto>();
-            list.Add(new AnalysisTimestampDto() { AnalysisTypeId = (int)AnalysisType.Quotations, Id = 7, SimulationId = DEFAULT_SIMULATION_ID, LastAnalysedItem = new DateTime(2017, 6, 4, 13, 0, 0), LastAnalysedIndex = lastQuotationIndex });
-            list.Add(new AnalysisTimestampDto() { AnalysisTypeId = (int)AnalysisType.Prices, Id = 54, SimulationId = DEFAULT_SIMULATION_ID, LastAnalysedItem = new DateTime(2017, 6, 4, 13, 0, 0), LastAnalysedIndex = lastPriceIndex });
-            list.Add(new AnalysisTimestampDto() { AnalysisTypeId = (int)AnalysisType.Macd, Id = 54, SimulationId = DEFAULT_SIMULATION_ID, LastAnalysedItem = new DateTime(2017, 6, 4, 13, 0, 0), LastAnalysedIndex = lastMacdIndex });
+            list.Add(new AnalysisTimestampDto() { AssetId = 1, TimeframeId = 1, AnalysisTypeId = (int)AnalysisType.Quotations, Id = 7, SimulationId = DEFAULT_SIMULATION_ID, LastAnalysedItem = new DateTime(2017, 6, 4, 13, 0, 0), LastAnalysedIndex = lastQuotationIndex });
+            list.Add(new AnalysisTimestampDto() { AssetId = 1, TimeframeId = 2, AnalysisTypeId = (int)AnalysisType.Quotations, Id = 10, SimulationId = DEFAULT_SIMULATION_ID, LastAnalysedItem = new DateTime(2017, 6, 4, 15, 0, 0), LastAnalysedIndex = lastQuotationIndex + 2 });
+            list.Add(new AnalysisTimestampDto() { AssetId = 1, TimeframeId = 1, AnalysisTypeId = (int)AnalysisType.Prices, Id = 54, SimulationId = DEFAULT_SIMULATION_ID, LastAnalysedItem = new DateTime(2017, 6, 4, 11, 0, 0), LastAnalysedIndex = lastPriceIndex });
+            list.Add(new AnalysisTimestampDto() { AssetId = 1, TimeframeId = 1, AnalysisTypeId = (int)AnalysisType.Macd, Id = 57, SimulationId = DEFAULT_SIMULATION_ID, LastAnalysedItem = new DateTime(2017, 6, 4, 10, 0, 0), LastAnalysedIndex = lastMacdIndex });
             mockedRepository.Setup(m => m.GetAnalysisTimestampsForSimulation(DEFAULT_SIMULATION_ID)).Returns(list);
 
             //Act
             AnalysisTimestampService service = new AnalysisTimestampService(mockedRepository.Object);
 
             //Assert
-            var result = service.GetLastAnalyzedIndexes(DEFAULT_SIMULATION_ID);
+            var result = service.GetLastAnalyzedIndexes(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID);
             Assert.AreEqual(3, result.Count);
 
             int? returnedQuotationIndex;

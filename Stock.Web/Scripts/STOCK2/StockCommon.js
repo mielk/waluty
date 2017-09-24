@@ -127,7 +127,7 @@ Date.prototype.isHoliday = function () {
             return array;
         },
         defaultValue: function () {
-            return this.M5;
+            return this.H4;
         }
     };
 

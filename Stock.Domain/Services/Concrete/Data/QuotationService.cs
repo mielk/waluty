@@ -16,6 +16,8 @@ namespace Stock.Domain.Services
     {
 
         private IQuotationRepository _repository;
+        private Dictionary<int, Quotation> quotationsByIndex;
+        private Dictionary<long, Quotation> quotationsByDate;
         private AnalysisItemsContainer<Quotation> container;
 
 
@@ -25,6 +27,8 @@ namespace Stock.Domain.Services
         {
             _repository = repository;
             container = new AnalysisItemsContainer<Quotation>(this);
+            quotationsByIndex = new Dictionary<int, Quotation>();
+            quotationsByDate = new Dictionary<long, Quotation>();
         }
 
         public void InjectRepository(IQuotationRepository repository)

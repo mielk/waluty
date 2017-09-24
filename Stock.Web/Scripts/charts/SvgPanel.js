@@ -530,8 +530,8 @@ PriceSvgRenderer.prototype = {
         function addExtremumLabel(extrema, isMin) {
             var dist = STOCK.CONFIG.peaks.distance;
             var extremum = isMin ?
-                Math.max(item.troughByClose, item.troughByLow) :
-                Math.max(item.peakByClose, item.peakByHigh);
+                Math.max(item.troughByClose ? item.troughByClose.Value : 0, item.troughByLow ? item.troughByLow.Value : 0) :
+                Math.max(item.peakByClose ? item.peakByClose.Value : 0, item.peakByHigh ? item.peakByHigh.Value : 0);
             if (!extremum) return;
 
             var scale = Math.min(1, extremum / 50);

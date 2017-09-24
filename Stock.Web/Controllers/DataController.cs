@@ -14,6 +14,11 @@ namespace Stock.Web.Controllers
     {
 
         private static IDataSetService dataSetService = ServiceFactory.Instance().GetDataSetService();
+        //private static int assetId;
+        //private static int timeframeId;
+        //private static Simulation simulation;
+        //private static IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
+        //private static ISimulationManager manager;
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -49,22 +54,29 @@ namespace Stock.Web.Controllers
         
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetDataSetsWithInfo(int assetId, int timeframeId, int? startIndex, int? endIndex)
+        public ActionResult GetDataSetsInfo(int assetId, int timeframeId, int? startIndex, int? endIndex)
         {
 
-            IProcessManager manager = new ProcessManager();
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId)
+            IProcessManager manager = new ProcessManager(assetId, timeframeId);
+            AnalysisInfo info = manager.GetAnalysisInfo();
+            if (info == null)
             {
-                SimulationId = 0,
-                StartIndex = startIndex,
-                EndIndex = endIndex,
-                AnalysisTypes = new AnalysisType[] { AnalysisType.Quotations }
-            };
-
-            var result = manager.GetDataSets(queryDef);
-            //var json = new { value = result };
-            //return Json(json, JsonRequestBehavior.AllowGet);
-            return null;
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new
+                {
+                    startIndex = info.StartIndex,
+                    endIndex = info.EndIndex,
+                    firstDate = info.StartDate,
+                    lastDate = info.EndDate,
+                    minLevel = info.MinLevel,
+                    maxLevel = info.MaxLevel,
+                    counter = info.Counter
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

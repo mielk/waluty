@@ -48,7 +48,7 @@ namespace Stock.Domain.Services
 
         public void Process(DataSet dataSet)
         {
-            if (dataSet.GetQuotation() != null)
+            if (dataSet != null && dataSet.GetQuotation() != null)
             {
                 createPriceObjectIfNotExist(dataSet);
                 calculateDelta(dataSet);
@@ -58,7 +58,7 @@ namespace Stock.Domain.Services
 
         private void createPriceObjectIfNotExist(DataSet dataSet)
         {
-            if (dataSet.GetPrice() == null)
+            if (dataSet != null && dataSet.GetPrice() == null)
             {
                 Price price = new Price()
                 {
@@ -221,6 +221,7 @@ namespace Stock.Domain.Services
                 extremum.LaterChange3 = processor.CalculateLaterChange(extremum, 3);
                 extremum.LaterChange5 = processor.CalculateLaterChange(extremum, 5);
                 extremum.LaterChange10 = processor.CalculateLaterChange(extremum, 10);
+                extremum.Value = processor.CalculateValue(extremum);
                 extremum.IsUpdated = true;
             }
 

@@ -263,6 +263,16 @@ namespace Stock.Domain.Services
             }
         }
 
+
+        public double CalculateValue(Extremum extremum)
+        {
+
+            var beforeFactor = ((double)extremum.EarlierCounter / (double)DEFAULT_MAX_SERIE_COUNT);
+            var afterFactor = ((double)extremum.LaterCounter / (double)DEFAULT_MAX_SERIE_COUNT);
+            var value = Math.Sqrt(beforeFactor * afterFactor) * 200;
+            return value;
+        }
+
     }
 
 }

@@ -15,8 +15,8 @@ namespace Stock.Domain.Entities
         public int AssetId { get; set; }
         public DateTime Date { get; set; }
         public int IndexNumber { get; set; }
-        private Quotation quotation;
-        private Price price;
+        public Quotation quotation { get; set; }
+        public Price price { get; set; }
 
 
         #region CONSTRUCTORS
@@ -98,8 +98,8 @@ namespace Stock.Domain.Entities
                 assetId = AssetId,
                 date = Date,
                 indexNumber = IndexNumber,
-                quotation = this.quotation,
-                price = this.price
+                quotation = this.quotation.GetJson(),
+                price = this.price.GetJson()
             };
         }
 

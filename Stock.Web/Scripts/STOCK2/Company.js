@@ -118,7 +118,7 @@ function DataSetCollection(params) {
 
     //[DataSetCollection] objects are user for two purposes - showing current charts and simulation charts.
     //Simulation charts works different and [company] and [timeframe] can be empty in this object.
-    var simulation = params.simulation || false;
+    var simulationId = params.simulationId || 0;
 
 
     //[Loading status].
@@ -143,13 +143,17 @@ function DataSetCollection(params) {
         var startIndex = Math.max(endIndex - size + 1, 0);
         var endDate = quotationsDates[endIndex];
         var startDate = quotationsDates[startIndex];
+        var params = { 
+            assetId: company.id, 
+            timeframe: timeframe.id,
+            simulationId: simulationId, 
+            startIndex: startIndex, 
+            endIndex: endIndex };
 
         mielk.db.fetch(
-            'Data',
+            (simulationId ? 'Simulation' : 'Data'),
             'GetDataSets',
-            simulation ?
-                { startDate: startDate, endDate: endDate } :
-                { assetId: company.id, timeframeId: timeframe.id, startDate: startDate, endDate: endDate },
+            (simulationId ? {} : params),
             {
                 async: true,
                 callback: function (res) {
@@ -187,7 +191,7 @@ function DataSetCollection(params) {
         //Make sure that metadata about those quotations are already loaded.
         if (!propertiesLoaded) loadProperties(null);
 
-        if (!quotationsLoaded || force || simulation) {
+        if (!quotationsLoaded || force || simulationId) {
             fetchQuotations(fn, { });
         } else {
             if (mielk.objects.isFunction(fn)) {
@@ -198,18 +202,19 @@ function DataSetCollection(params) {
     }
 
     function assignQuotations(data) {
-
         data.forEach(function (item) {
-            var date = mielk.dates.fromCSharpDateTime(item.Date);
-            var dataItem = quotations[date];
+            if (item) {
+                var date = mielk.dates.fromCSharpDateTime(item.Date);
+                var dataItem = quotations[date];
 
-            //There are some quotations in the database with Saturday or Sunday date.
-            //For such quotations the operation above will return null, since there are no
-            //items in [quotations] object with Saturday or Sunday date as a key.
-            if (dataItem) {
-                var quotation = new Quotation(item);
-                dataItem.quotation = quotation;
-                quotationsArray[dataItem.index] = quotation;
+                //There are some quotations in the database with Saturday or Sunday date.
+                //For such quotations the operation above will return null, since there are no
+                //items in [quotations] object with Saturday or Sunday date as a key.
+                if (dataItem) {
+                    var quotation = new Quotation(item);
+                    dataItem.quotation = quotation;
+                    quotationsArray[dataItem.index] = quotation;
+                }
             }
         });
 
@@ -218,23 +223,26 @@ function DataSetCollection(params) {
 
 
     //Funkcja pobierająca właściwości dla danego timeframeu z bazy danych.
-    function loadProperties(fn, simulationId) {
+    function loadProperties(fn, simulationId, startIndex, endIndex) {
 
         var properties = {
             assetId: company.id,
             timeframeId: timeframe.id,
             simulationId: simulationId,
-            startIndex: null,
-            endIndex: null
+            startIndex: startIndex || null,
+            endIndex: endIndex || null
         };
         //simulation ? {} : { pairSymbol: company.id, timeframe: timeframe.id },
         mielk.db.fetch(
-            'Data',
-            'GetDataSetsWithInfo',
-            properties,
+            (simulationId ? 'simulation' : 'Data'),
+            'GetDataSetsInfo',
+            (simulationId ? {} : properties),
             {
                 async: false,
                 callback: function (res) {
+
+                    if (res == null) return;
+
                     var arr = { firstDate: res.firstDate, lastDate: res.lastDate, minLevel: res.minLevel * 1, maxLevel: res.maxLevel * 1, counter: res.counter * 1 };
                     firstDate = mielk.dates.fromCSharpDateTime(arr.firstDate);
                     lastDate = mielk.dates.fromCSharpDateTime(arr.lastDate);

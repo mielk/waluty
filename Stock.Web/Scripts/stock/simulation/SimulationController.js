@@ -10,6 +10,7 @@ function SimulationController(params) {
 
     var company = params.initialCompany || STOCK.COMPANIES.getCompany(1);
     var timeframe = params.initialTimeframe || STOCK.TIMEFRAMES.defaultValue();
+    var simulation = { id: 1 };
     var controls = {}
     var incrementation = params.incrementation || 1;
 
@@ -178,6 +179,7 @@ function SimulationController(params) {
             chartContainerId: params.chartsContainerId,
             company: company,
             timeframe: timeframe,
+            simulation: simulation.id,
             showPeaks: true,
             showTrendlines: true,
             showADX: false,
