@@ -73,5 +73,13 @@ namespace Stock_UnitTest.Stock.DAL.Infrastructure
             Assert.AreSame(repository, repository2);
         }
 
+        [TestMethod]
+        public void GetTrendlineRepository_alwaysReturnsSingletonInstance()
+        {
+            ITrendlineRepository repository = RepositoryFactory.GetTrendlineRepository();
+            ITrendlineRepository repository2 = RepositoryFactory.GetTrendlineRepository();
+            Assert.AreSame(repository, repository2);
+        }
+
     }
 }

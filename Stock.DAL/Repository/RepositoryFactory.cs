@@ -11,6 +11,7 @@
         private static readonly IPriceRepository priceRepository;
         private static readonly ISimulationRepository simulationRepository;
         private static readonly IAnalysisRepository analysisRepository;
+        private static readonly ITrendlineRepository trendlineRepository;
 
         static RepositoryFactory()
         {
@@ -22,6 +23,7 @@
             priceRepository = new EFPriceRepository();
             simulationRepository = new EFSimulationRepository();
             analysisRepository = new EFAnalysisRepository();
+            trendlineRepository = new EFTrendlineRepository();
         }
 
 
@@ -65,5 +67,11 @@
             return analysisRepository;
         }
 
+        public static ITrendlineRepository GetTrendlineRepository()
+        {
+            return trendlineRepository;
+        }
+
     }
 }
+

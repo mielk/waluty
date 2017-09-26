@@ -37,7 +37,7 @@ namespace Stock.Domain.Services
         private void setSimulation(Simulation simulation)
         {
             this.simulation = simulation;
-            //this.queryDef = new AnalysisDataQueryDefinition(simulation.AssetId, simulation.TimeframeId) { SimulationId = simulation.Id, AnalysisTypes = simulation.GetAnalysisTypes() };
+            //this.queryDef = new AnalysisDataQueryDefinition(trendline.AssetId, trendline.TimeframeId) { SimulationId = trendline.Id, AnalysisTypes = trendline.GetAnalysisTypes() };
         }
         
         #endregion CONSTRUCTOR

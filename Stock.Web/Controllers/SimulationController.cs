@@ -42,7 +42,7 @@ namespace Stock.Web.Controllers
         public ActionResult InitializeSimulation(int assetId, int timeframeId)
         {
 
-            //Restart simulation object.
+            //Restart trendline object.
             simulation = new Simulation() { 
                 Id = 1,
                 Name = "test"

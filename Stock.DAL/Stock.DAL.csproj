@@ -68,6 +68,7 @@
     <Compile Include="Helpers\DbStringBuilder.cs" />
     <Compile Include="Helpers\DataItemHelpers\MacdDALHelper.cs" />
     <Compile Include="Infrastructure\AssetContext.cs" />
+    <Compile Include="Infrastructure\TrendlineContext.cs" />
     <Compile Include="Infrastructure\SimulationContext.cs" />
     <Compile Include="Infrastructure\DataContext.cs" />
     <Compile Include="Infrastructure\UnitTestsDbContext.cs" />
@@ -79,12 +80,14 @@
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Repository\Abstract\Analysis\IAnalysisRepository.cs" />
     <Compile Include="Repository\Abstract\Analysis\ISimulationRepository.cs" />
+    <Compile Include="Repository\Abstract\Analysis\ITrendlineRepository.cs" />
     <Compile Include="Repository\Abstract\Data\IPriceRepository.cs" />
     <Compile Include="Repository\Abstract\Data\IQuotationRepository.cs" />
     <Compile Include="Repository\Abstract\Market\ITimeframeRepository.cs" />
     <Compile Include="Repository\Abstract\Market\IAssetRepository.cs" />
     <Compile Include="Repository\Concrete\Analysis\EFAnalysisRepository.cs" />
     <Compile Include="Repository\Concrete\Analysis\EFSimulationRepository.cs" />
+    <Compile Include="Repository\Concrete\Analysis\EFTrendlineRepository.cs" />
     <Compile Include="Repository\Concrete\Data\EFPriceRepository.cs" />
     <Compile Include="Repository\Concrete\Data\EFQuotationRepository.cs" />
     <Compile Include="Repository\Concrete\Market\EFTimeframeRepository.cs" />

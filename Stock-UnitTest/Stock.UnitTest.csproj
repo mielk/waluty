@@ -82,6 +82,7 @@
     <Compile Include="Stock.DAL\Helpers\DbStringBuilderUnitTest.cs" />
     <Compile Include="Stock.DAL\Helpers\HelperMethodUnitTest.cs" />
     <Compile Include="Stock.DAL\Infrastructure\RepositoryFactoryUnitTest.cs" />
+    <Compile Include="Stock.DAL\Repositories\Analysis\EFTrendlineRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\Analysis\EFAnalysisRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\Analysis\EFSimulationRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\Data\EFPriceRepositoryUnitTest.cs" />
@@ -91,11 +92,13 @@
     <Compile Include="Stock.DAL\Repositories\Market\EFAssetRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\Repositories\Market\EFCurrencyRepositoryUnitTest.cs" />
     <Compile Include="Stock.DAL\TransferObjects\AnalysisDto\AnalysisTimestampDtoUnitTests.cs" />
+    <Compile Include="Stock.DAL\TransferObjects\AnalysisDto\TrendlineDtoUnitTests.cs" />
     <Compile Include="Stock.DAL\TransferObjects\AnalysisDto\SimulationDtoUnitTests.cs" />
     <Compile Include="Stock.DAL\TransferObjects\DataDto\ExtremumDtoUnitTests.cs" />
     <Compile Include="Stock.DAL\TransferObjects\DataDto\PriceDtoUnitTests.cs" />
     <Compile Include="Stock.DAL\TransferObjects\DataDto\QuotationDtoUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Analysis\AnalysisTimestampUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\Analysis\TrendlineUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Analysis\SimulationUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Data\HelperMethods.cs" />
     <Compile Include="Stock.Domain\Entities\Data\AnalysisInfoUnitTests.cs" />

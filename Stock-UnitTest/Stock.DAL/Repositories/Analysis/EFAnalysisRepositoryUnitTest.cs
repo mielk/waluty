@@ -46,7 +46,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    context.Database.ExecuteSqlCommand("DROP DATABASE fx_unittests");
         //}
 
-        //private void clearSimulationsTables()
+        //private void clearTrendlinesTables()
         //{
         //    DbContext context = new UnitTestsDbContext();
         //    context.ClearTable(UNIT_TEST_DB_NAME, SIMULATIONS_TABLE_NAME);
@@ -72,7 +72,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
 
         //    //Act
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateSimulations(simulations);
         //    IEnumerable<SimulationDto> actualRecords = repository.GetSimulations();
 
@@ -95,7 +95,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
         //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateSimulations(simulations);
 
         //    //Act
@@ -124,7 +124,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
         //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateSimulations(simulations);
 
         //    //Act
@@ -160,7 +160,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
 
         //    //Act
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
         //    IEnumerable<AnalysisTimestampDto> actualRecords = repository.GetAnalysisTimestamps();
 
@@ -183,7 +183,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 1, AnalysisTypeId = 4, LastAnalysedItem = null, LastAnalysedIndex = null };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
@@ -212,7 +212,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 1, AnalysisTypeId = 4, LastAnalysedItem = null, LastAnalysedIndex = null };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
@@ -246,7 +246,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
         //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables(); 
+        //    clearTrendlinesTables(); 
         //    repository.UpdateSimulations(simulations);
 
         //    //Act
@@ -267,7 +267,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    List<SimulationDto> simulations = new List<SimulationDto>();
         //    SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
         //    simulations.AddRange(new SimulationDto[] { dto1 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateSimulations(simulations);
 
         //    //Act
@@ -287,7 +287,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    List<SimulationDto> simulations = new List<SimulationDto>();
         //    SimulationDto expected = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
         //    simulations.AddRange(new SimulationDto[] { expected });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateSimulations(simulations);
 
         //    //Act
@@ -316,7 +316,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 1, AnalysisTypeId = 4, LastAnalysedItem = null, LastAnalysedIndex = null };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 1, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
@@ -340,7 +340,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 50 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
@@ -365,7 +365,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 50 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
@@ -390,7 +390,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
@@ -413,7 +413,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 1000 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
@@ -437,7 +437,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    AnalysisTimestampDto dto3 = new AnalysisTimestampDto() { Id = 3, SimulationId = 2, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    AnalysisTimestampDto dto4 = new AnalysisTimestampDto() { Id = 4, SimulationId = 2, AnalysisTypeId = 5, LastAnalysedItem = new DateTime(2017, 2, 4, 14, 15, 0), LastAnalysedIndex = 100 };
         //    timestamps.AddRange(new AnalysisTimestampDto[] { dto1, dto2, dto3, dto4 });
-        //    clearSimulationsTables();
+        //    clearTrendlinesTables();
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act

@@ -16,7 +16,7 @@ namespace Stock.Web.Controllers
         private static IDataSetService dataSetService = ServiceFactory.Instance().GetDataSetService();
         //private static int assetId;
         //private static int timeframeId;
-        //private static Simulation simulation;
+        //private static Simulation trendline;
         //private static IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
         //private static ISimulationManager manager;
 
@@ -43,8 +43,8 @@ namespace Stock.Web.Controllers
         public ActionResult GetDataSets(int assetId, int timeframeId, int simulationId, int? startIndex, int? endIndex)
         {
 
-            //Simulation simulation = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
-            //IProcessManager manager = new ProcessManager(simulation);
+            //Simulation trendline = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
+            //IProcessManager manager = new ProcessManager(trendline);
             //service.Setup(types);
             //var result = service.Run(fromScratch);
             //var json = new { value = result };
