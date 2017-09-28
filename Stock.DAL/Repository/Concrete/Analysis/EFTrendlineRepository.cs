@@ -66,12 +66,12 @@ namespace Stock.DAL.Repositories
 
         public IEnumerable<TrendHitDto> GetTrendHits(int trendlineId)
         {
-            IEnumerable<TrendHitDto> trendHits;
+            IEnumerable<TrendHitDto> trendlines;
             using (var context = new TrendlineContext())
             {
-                trendHits = context.TrendHits.Where(t => t.TrendlineId == trendlineId).ToList();
+                trendlines = context.TrendHits.Where(t => t.TrendlineId == trendlineId).ToList();
             }
-            return trendHits;
+            return trendlines;
         }
 
         public TrendHitDto GetTrendHitById(int id)
@@ -83,13 +83,13 @@ namespace Stock.DAL.Repositories
         }
 
 
-        public void UpdateTrendHits(IEnumerable<TrendHitDto> trendHits)
+        public void UpdateTrendHits(IEnumerable<TrendHitDto> trendlines)
         {
 
             using (var db = new TrendlineContext())
             {
 
-                foreach (TrendHitDto dto in trendHits)
+                foreach (TrendHitDto dto in trendlines)
                 {
                     var record = db.TrendHits.SingleOrDefault(t => t.Id == dto.Id);
                     if (record != null)

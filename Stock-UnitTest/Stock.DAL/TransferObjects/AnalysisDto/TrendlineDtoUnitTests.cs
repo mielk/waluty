@@ -167,6 +167,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
+        [TestMethod]
         public void Equals_ReturnsFalse_IfStartLevelIsDifferent()
         {
 
@@ -183,6 +184,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
+        [TestMethod]
         public void Equals_ReturnsFalse_IfEndIndexIsDifferent()
         {
 
@@ -191,7 +193,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var comparedItem = getDefaultTrendlineDto();
 
             //Act
-            comparedItem.EndIndex = comparedItem.EndIndex++;
+            comparedItem.EndIndex += 1;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -199,6 +201,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
+        [TestMethod]
         public void Equals_ReturnsFalse_IfEndLevelIsDifferent()
         {
 
@@ -215,7 +218,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
-
+        [TestMethod]
         public void Equals_ReturnsFalse_IfValueIsDifferent()
         {
 
@@ -232,6 +235,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
+        [TestMethod]
         public void Equals_ReturnsFalse_IfLastUpdateIsDifferent()
         {
 

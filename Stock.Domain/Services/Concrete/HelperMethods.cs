@@ -127,7 +127,7 @@ namespace Stock.Domain.Services
                 case AnalysisType.Candlesticks:
                     return "candlesticks";
                 case AnalysisType.Trendlines:
-                    return "trendHits";
+                    return "trendlines";
                 default:
                     return "";
             }

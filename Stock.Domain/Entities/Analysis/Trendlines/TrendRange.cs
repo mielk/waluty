@@ -25,15 +25,15 @@ namespace Stock.Domain.Entities
 
         
 
-        //public TrendBounce(Trendline trendline)
+        //public TrendBounce(Trendline trendHit)
         //{
-        //    this.Trendline = trendline;
+        //    this.Trendline = trendHit;
         //    this.breaks = new List<TrendBreak>();
         //}
 
-        //public TrendBounce(Trendline trendline, TrendHit startHit)
+        //public TrendBounce(Trendline trendHit, TrendHit startHit)
         //{
-        //    this.Trendline = trendline;
+        //    this.Trendline = trendHit;
         //    this.StartHit = startHit;
         //    this.breaks = new List<TrendBreak>();
         //}
@@ -52,14 +52,14 @@ namespace Stock.Domain.Entities
         //    }
         //}
 
-        //public void AddQuotation(Trendline trendline, DataItem item)
+        //public void AddQuotation(Trendline trendHit, DataItem item)
         //{
         //    this.length++;
-        //    this.pointsForQuotations += calculatePointForQuotation(trendline, item);
+        //    this.pointsForQuotations += calculatePointForQuotation(trendHit, item);
         //}
 
 
-        //private double calculatePointForQuotation(Trendline trendline, DataItem item)
+        //private double calculatePointForQuotation(Trendline trendHit, DataItem item)
         //{
         //    return 0;
         //}

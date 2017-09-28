@@ -25,8 +25,8 @@ namespace Stock.Web.Controllers
         public ActionResult RunProcess(int simulationId)
         {
 
-            //Simulation trendline = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
-            //ISimulationManager manager = new SimulationManager(trendline);
+            //Simulation trendHit = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
+            //ISimulationManager manager = new SimulationManager(trendHit);
             //service.Setup(types);
             //var result = service.Run(fromScratch);
             //var json = new { value = result };

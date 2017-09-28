@@ -9,8 +9,16 @@ namespace Stock.Domain.Services
 {
     public interface ITrendlineService
     {
+        
+        //Trendlines
         IEnumerable<Trendline> GetTrendlines(int assetId, int timeframeId, int simulationId);
         Trendline GetTrendlineById(int id);
-        void Update(Trendline trendline);
+        void UpdateTrendline(Trendline trendline);
+
+        //Trend hits
+        IEnumerable<TrendHit> GetTrendHits(int trendlineId);
+        TrendHit GetTrendHitById(int id);
+        void UpdateTrendHit(TrendHit trendHit);
+
     }
 }

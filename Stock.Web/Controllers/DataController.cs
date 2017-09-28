@@ -16,7 +16,7 @@ namespace Stock.Web.Controllers
         private static IDataSetService dataSetService = ServiceFactory.Instance().GetDataSetService();
         //private static int assetId;
         //private static int timeframeId;
-        //private static Simulation trendline;
+        //private static Simulation trendHit;
         //private static IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
         //private static ISimulationManager manager;
 
@@ -43,8 +43,8 @@ namespace Stock.Web.Controllers
         public ActionResult GetDataSets(int assetId, int timeframeId, int simulationId, int? startIndex, int? endIndex)
         {
 
-            //Simulation trendline = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
-            //IProcessManager manager = new ProcessManager(trendline);
+            //Simulation trendHit = ServiceFactory.Instance().GetSimulationService().GetSimulationById(simulationId);
+            //IProcessManager manager = new ProcessManager(trendHit);
             //service.Setup(types);
             //var result = service.Run(fromScratch);
             //var json = new { value = result };
@@ -88,8 +88,8 @@ namespace Stock.Web.Controllers
         //    //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { Limit = count };
         //    //IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
         //    //IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
-        //    //IEnumerable<Trendline> trendHits = null;
-        //    //var result = new { quotations = dataSets, trendHits = trendHits };
+        //    //IEnumerable<Trendline> trendlines = null;
+        //    //var result = new { quotations = dataSets, trendlines = trendlines };
         //    //return Json(result, JsonRequestBehavior.AllowGet);
         //    return null;
         //}
@@ -105,8 +105,8 @@ namespace Stock.Web.Controllers
 
         //    AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { StartDate = startDateTime, EndDate = endDateTime };
         //    IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
-        //    //IEnumerable<Trendline> trendHits = null;
-        //    //var result = new { quotations = dataSets, trendHits = trendHits };
+        //    //IEnumerable<Trendline> trendlines = null;
+        //    //var result = new { quotations = dataSets, trendlines = trendlines };
 
         //    //return Json(result, JsonRequestBehavior.AllowGet);
         //    return null;

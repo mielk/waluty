@@ -19,7 +19,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
-        private const string SIMULATIONS_TABLE_NAME = "trendHits";
+        private const string SIMULATIONS_TABLE_NAME = "trendlines";
         private const string LASTUPDATES_TABLE_NAME = "last_updates";
 
 
@@ -271,10 +271,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    repository.UpdateSimulations(trendHits);
 
         //    //Act
-        //    SimulationDto dto = repository.GetSimulationByNameAssetTimeframe("a", 1, 2);
+        //    SimulationDto resultDto = repository.GetSimulationByNameAssetTimeframe("a", 1, 2);
 
         //    //Assert
-        //    Assert.IsNull(dto);
+        //    Assert.IsNull(resultDto);
 
         //}
 
@@ -291,10 +291,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    repository.UpdateSimulations(trendHits);
 
         //    //Act
-        //    SimulationDto dto = repository.GetSimulationByNameAssetTimeframe("a", 1, 1);
+        //    SimulationDto resultDto = repository.GetSimulationByNameAssetTimeframe("a", 1, 1);
 
         //    //Assert
-        //    var areEqual = expected.Equals(dto);
+        //    var areEqual = expected.Equals(resultDto);
         //    Assert.IsTrue(areEqual);
 
         //}
@@ -394,10 +394,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
-        //    AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(3, 4);
+        //    AnalysisTimestampDto resultDto = repository.GetAnalysisTimestamp(3, 4);
 
         //    //Assert
-        //    Assert.IsNull(dto);
+        //    Assert.IsNull(resultDto);
 
         //}
 
@@ -417,10 +417,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
-        //    AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(2, 5);
+        //    AnalysisTimestampDto resultDto = repository.GetAnalysisTimestamp(2, 5);
 
         //    //Assert
-        //    var areEqual = dto4.Equals(dto);
+        //    var areEqual = dto4.Equals(resultDto);
         //    Assert.IsTrue(areEqual);
 
         //}
@@ -441,10 +441,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    repository.UpdateAnalysisTimestamps(timestamps);
 
         //    //Act
-        //    AnalysisTimestampDto dto = repository.GetAnalysisTimestamp(2, AnalysisType.Prices);
+        //    AnalysisTimestampDto resultDto = repository.GetAnalysisTimestamp(2, AnalysisType.Prices);
 
         //    //Assert
-        //    var areEqual = dto3.Equals(dto);
+        //    var areEqual = dto3.Equals(resultDto);
         //    Assert.IsTrue(areEqual);
 
         //}

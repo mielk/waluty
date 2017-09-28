@@ -149,5 +149,45 @@ namespace Stock_UnitTest.Stock.Domain.Services
         #endregion GET_SIMULATIONS
 
 
+
+        #region UPDATE_SIMULATIONS
+
+        [TestMethod]
+        public void Update_AllItemsPassedToMethodArePassedToRepository()
+        {
+
+            //Arrange
+            IEnumerable<SimulationDto> simulationDtos = null;
+            IEnumerable<AnalysisTimestampDto> timestampDtos = null;
+            Simulation simulation = new Simulation() { Id = 1, Name = "a" };
+            AnalysisTimestamp timestamp1 = new AnalysisTimestamp() { Id = 1, SimulationId = 1, AssetId = 1, TimeframeId = 1, AnalysisTypeId = 2, LastAnalysedItem = new DateTime(2016, 5, 2, 12, 0, 0), LastAnalysedIndex = 15 };
+            AnalysisTimestamp timestamp2 = new AnalysisTimestamp() { Id = 2, SimulationId = 1, AssetId = 1, TimeframeId = 1, AnalysisTypeId = 3, LastAnalysedItem = new DateTime(2016, 6, 2, 12, 0, 0), LastAnalysedIndex = 19 };
+            simulation.AddLastUpdate(timestamp1);
+            simulation.AddLastUpdate(timestamp2);
+            Mock<ISimulationRepository> mockedRepository = new Mock<ISimulationRepository>();
+            mockedRepository.
+                Setup(r => r.UpdateSimulations(It.IsAny<IEnumerable<SimulationDto>>())).
+                Callback<IEnumerable<SimulationDto>>((col) => simulationDtos = col).Verifiable();
+            mockedRepository.
+                Setup(r => r.UpdateAnalysisTimestamps(It.IsAny<IEnumerable<AnalysisTimestampDto>>())).
+                Callback<IEnumerable<AnalysisTimestampDto>>((col) => timestampDtos = col).Verifiable();
+
+            //Act
+            SimulationService service = new SimulationService(mockedRepository.Object);
+            service.Update(simulation);
+
+            //Assert
+            IEnumerable<SimulationDto> expectedSimulationDtos = new SimulationDto[] { simulation.ToDto() };
+            IEnumerable<AnalysisTimestampDto> expectedTimestampDtos = new AnalysisTimestampDto[] { timestamp1.ToDto(), timestamp2.ToDto() };
+            mockedRepository.Verify(r => r.UpdateSimulations(It.IsAny<IEnumerable<SimulationDto>>()), Times.Exactly(1));
+            mockedRepository.Verify(r => r.UpdateAnalysisTimestamps(It.IsAny<IEnumerable<AnalysisTimestampDto>>()), Times.Exactly(1));
+            Assert.IsTrue(simulationDtos.HasEqualItems(expectedSimulationDtos));
+            Assert.IsTrue(timestampDtos.HasEqualItems(expectedTimestampDtos));
+
+        }
+
+        #endregion UPDATE_SIMULATIONS
+
+
     }
 }

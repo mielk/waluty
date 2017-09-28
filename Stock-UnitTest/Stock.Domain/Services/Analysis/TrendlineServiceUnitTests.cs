@@ -27,6 +27,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
         private const double DEFAULT_VALUE = 1.234;
         private const int DEFAULT_LAST_UPDATE_INDEX = 104;
 
+
+
         #region GET_TRENDLINES
 
         [TestMethod]
@@ -122,5 +124,39 @@ namespace Stock_UnitTest.Stock.Domain.Services
         #endregion GET_TRENDLINES
 
 
+        #region UPDATE_TRENDLINES
+
+        [TestMethod]
+        public void UpdateTrendlines_AllItemsPassedToMethodArePassedToRepository()
+        {
+
+            //Arrange
+            IEnumerable<TrendlineDto> trendlineDtos = null;
+            Trendline trendline = new Trendline(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID, DEFAULT_START_INDEX, DEFAULT_START_LEVEL, DEFAULT_END_INDEX, DEFAULT_END_LEVEL) 
+            { 
+                Id = 1, 
+                Value = 1.2345,
+                LastUpdateIndex = 51
+            };
+            Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
+            mockedRepository.
+                Setup(r => r.UpdateTrendlines(It.IsAny<IEnumerable<TrendlineDto>>())).
+                Callback<IEnumerable<TrendlineDto>>((col) => trendlineDtos = col).Verifiable();
+
+            //Act
+            TrendlineService service = new TrendlineService(mockedRepository.Object);
+            service.UpdateTrendline(trendline);
+
+            //Assert
+            IEnumerable<TrendlineDto> expectedTrendlineDtos = new TrendlineDto[] { trendline.ToDto() };
+            mockedRepository.Verify(r => r.UpdateTrendlines(It.IsAny<IEnumerable<TrendlineDto>>()), Times.Exactly(1));
+            Assert.IsTrue(trendlineDtos.HasEqualItems(expectedTrendlineDtos));
+
+        }
+
+        #endregion UPDATE_TRENDLINES
+
+
     }
+
 }

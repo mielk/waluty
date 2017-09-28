@@ -15,6 +15,9 @@ namespace Stock.Domain.Services
 
         private ITrendlineRepository _repository;
         private IEnumerable<Trendline> trendlines = new List<Trendline>();
+        private IEnumerable<TrendHit> trendHits = new List<TrendHit>();
+        private IEnumerable<TrendRange> trendRanges = new List<TrendRange>();
+        private IEnumerable<TrendBreak> trendBreaks = new List<TrendBreak>();
 
 
         #region INFRASTRUCTURE
@@ -32,7 +35,7 @@ namespace Stock.Domain.Services
         #endregion INFRASTRUCTURE
 
 
-        #region API
+        #region TRENDLINES
 
         public IEnumerable<Trendline> GetTrendlines(int assetId, int timeframeId, int simulationId)
         {
@@ -56,12 +59,6 @@ namespace Stock.Domain.Services
             return result;
         }
 
-        public void Update(Trendline trendline)
-        {
-            TrendlineDto dto = trendline.ToDto();
-            _repository.UpdateTrendlines(new TrendlineDto[] { dto });
-        }
-
         public Trendline GetTrendlineById(int id){
             var trendline = trendlines.SingleOrDefault(m => m.Id == id);
             if (trendline == null)
@@ -81,10 +78,68 @@ namespace Stock.Domain.Services
             trendlines = trendlines.Concat(new[] { trendline });
         }
 
-        
-        #endregion API
+        public void UpdateTrendline(Trendline trendline)
+        {
+            TrendlineDto dto = trendline.ToDto();
+            _repository.UpdateTrendlines(new TrendlineDto[] { dto });
+        }
+
+        #endregion TRENDLINES
 
 
+
+        #region TREND_HITS
+
+        public IEnumerable<TrendHit> GetTrendHits(int trendlineId)
+        {
+            var dtos = _repository.GetTrendHits(trendlineId);
+            return GetTrendHits(dtos);
+        }
+
+        private IEnumerable<TrendHit> GetTrendHits(IEnumerable<TrendHitDto> dtos)
+        {
+            List<TrendHit> result = new List<TrendHit>();
+            foreach (var dto in dtos)
+            {
+                TrendHit trendHit = trendHits.SingleOrDefault(t => t.Id == dto.Id);
+                if (trendHit == null)
+                {
+                    trendHit = TrendHit.FromDto(dto);
+                    appendTrendHit(trendHit);
+                }
+                result.Add(trendHit);
+            }
+            return result;
+        }
+
+        public TrendHit GetTrendHitById(int id)
+        {
+            var trendHit = trendHits.SingleOrDefault(m => m.Id == id);
+            if (trendHit == null)
+            {
+                var dto = _repository.GetTrendHitById(id);
+                if (dto != null)
+                {
+                    trendHit = TrendHit.FromDto(dto);
+                    appendTrendHit(trendHit);
+                }
+            }
+            return trendHit;
+        }
+
+        private void appendTrendHit(TrendHit trendHit)
+        {
+            trendHits = trendHits.Concat(new[] { trendHit });
+        }
+
+        public void UpdateTrendHit(TrendHit trendHit)
+        {
+            TrendHitDto dto = trendHit.ToDto();
+            _repository.UpdateTrendHits(new TrendHitDto[] { dto });
+        }
+
+
+        #endregion TREND_HITS
 
 
     }

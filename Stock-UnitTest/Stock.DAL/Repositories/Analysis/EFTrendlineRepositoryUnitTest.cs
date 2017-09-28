@@ -21,6 +21,29 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
         private const string TRENDLINES_TABLE_NAME = "trendlines";
         private const string TREND_HITS_TABLE_NAME = "trend_hits";
+        private const string TREND_BREAKS_TABLE_NAME = "trend_breaks";
+        private const string TREND_RANGES_TABLE_NAME = "trend_ranges";
+        private const int DEFAULT_ID = 1;
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const int DEFAULT_SIMULATION_ID = 1;
+        private const int DEFAULT_START_INDEX = 87;
+        private const double DEFAULT_START_LEVEL = 1.1654;
+        private const int DEFAULT_END_INDEX = 100;
+        private const double DEFAULT_END_LEVEL = 1.1754;
+        private const double DEFAULT_VALUE = 1.234;
+        private const int DEFAULT_LAST_UPDATE_INDEX = 104;
+        //TrendHit
+        private const string DEFAULT_GUID = "74017f2d-9dfe-494e-bfa0-93c09418cfb7";
+        private const int DEFAULT_TRENDLINE_ID = 1;
+        private const int DEFAULT_INDEX_NUMBER = 2;
+        private const int DEFAULT_EXTREMUM_TYPE = 2;
+        private const double DEFAULT_DISTANCE_TO_LINE = 0.134;
+        private const string DEFAULT_PREVIOUS_RANGE_GUID = "45e223ec-cd32-4eca-8d38-0d96d3ee121b";
+        private const string DEFAULT_NEXT_RANGE_GUID = "a9139a25-6d38-4c05-bbc7-cc413d6feee9";
+
+
+
 
 
         #region INFRASTRUCTURE
@@ -51,7 +74,53 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             context.ClearTable(UNIT_TEST_DB_NAME, TREND_HITS_TABLE_NAME);
         }
 
+        private void clearTrendBreaksTables()
+        {
+            DbContext context = new UnitTestsDbContext();
+            context.ClearTable(UNIT_TEST_DB_NAME, TREND_BREAKS_TABLE_NAME);
+        }
+
+        private void clearTrendRangesTables()
+        {
+            DbContext context = new UnitTestsDbContext();
+            context.ClearTable(UNIT_TEST_DB_NAME, TREND_RANGES_TABLE_NAME);
+        }
+
+
+        private TrendlineDto getDefaultTrendlineDto()
+        {
+            return new TrendlineDto() {
+                Id = DEFAULT_ID,
+                AssetId = DEFAULT_ASSET_ID,
+                TimeframeId = DEFAULT_TIMEFRAME_ID,
+                SimulationId = DEFAULT_SIMULATION_ID,
+                StartIndex = DEFAULT_START_INDEX,
+                StartLevel = DEFAULT_START_LEVEL,
+                EndIndex = DEFAULT_END_INDEX,
+                EndLevel = DEFAULT_END_LEVEL,
+                Value = DEFAULT_VALUE,
+                LastUpdateIndex = DEFAULT_LAST_UPDATE_INDEX
+            };
+        }
+
+        private TrendHitDto getDefaultTrendHitDto()
+        {
+            return new TrendHitDto()
+            {
+                Id = DEFAULT_ID,
+                Guid = DEFAULT_GUID,
+                TrendlineId = DEFAULT_TRENDLINE_ID,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                ExtremumType = DEFAULT_EXTREMUM_TYPE,
+                Value = DEFAULT_VALUE,
+                DistanceToLine = DEFAULT_DISTANCE_TO_LINE,
+                PreviousRangeGuid = DEFAULT_PREVIOUS_RANGE_GUID,
+                NextRangeGuid = DEFAULT_NEXT_RANGE_GUID
+            };
+        }
+
         #endregion INFRASTRUCTURE
+
 
 
 
@@ -141,7 +210,6 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         #endregion UPDATE_TRENDLINES
 
 
-
         #region GET_TRENDLINES
 
         [TestMethod]
@@ -174,18 +242,17 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         {
 
             //Arrange
-            EFSimulationRepository repository = new EFSimulationRepository();
-            List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a" };
-            simulations.AddRange(new SimulationDto[] { dto1 });
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendlineDto> trendlines = new List<TrendlineDto>();
+            trendlines.AddRange(new TrendlineDto[] { getDefaultTrendlineDto() });
             clearTrendlinesTables();
-            repository.UpdateSimulations(simulations);
+            repository.UpdateTrendlines(trendlines);
 
             //Act
-            SimulationDto dto = repository.GetSimulationById(2);
+            TrendlineDto resultDto = repository.GetTrendlineById(2);
 
             //Assert
-            Assert.IsNull(dto);
+            Assert.IsNull(resultDto);
 
         }
 
@@ -194,35 +261,26 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         {
 
             //Arrange
-            EFSimulationRepository repository = new EFSimulationRepository();
-            List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto expected = new SimulationDto() { Id = 1, Name = "a" };
-            simulations.AddRange(new SimulationDto[] { expected });
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendlineDto> trendlines = new List<TrendlineDto>();
+            TrendlineDto expectedDto = getDefaultTrendlineDto();
+            trendlines.AddRange(new TrendlineDto[] { expectedDto });
             clearTrendlinesTables();
-            repository.UpdateSimulations(simulations);
+            repository.UpdateTrendlines(trendlines);
 
             //Act
-            SimulationDto dto = repository.GetSimulationById(expected.Id);
+            TrendlineDto dto = repository.GetTrendlineById(DEFAULT_ID);
 
             //Assert
-            var areEqual = expected.Equals(dto);
+            var areEqual = expectedDto.Equals(dto);
             Assert.IsTrue(areEqual);
 
         }
 
-
         #endregion GET_TRENDLINES
 
 
-
-
-        #region GET_TREND_HITS
-
-
-
-        #endregion GET_TREND_HITS
-
-
+        
 
         #region UPDATE_TREND_HITS
 
@@ -232,16 +290,16 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
             //Arrange
             EFTrendlineRepository repository = new EFTrendlineRepository();
-            List<TrendHitDto> trendHits = new List<TrendHitDto>();
+            List<TrendHitDto> trendlines = new List<TrendHitDto>();
             TrendHitDto dto1 = new TrendHitDto() { Id = 1, Guid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", TrendlineId = 1, IndexNumber = 2, ExtremumType = 1, Value = 1.234, DistanceToLine = 0.0004, PreviousRangeGuid = null, NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
             TrendHitDto dto2 = new TrendHitDto() { Id = 2, Guid = "89BFF378-F310-4A28-B753-00A0FF9A852C", TrendlineId = 1, IndexNumber = 9, ExtremumType = 2, Value = 1.345, DistanceToLine = 0.0007, PreviousRangeGuid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", NextRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58" };
             TrendHitDto dto3 = new TrendHitDto() { Id = 3, Guid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", TrendlineId = 1, IndexNumber = 18, ExtremumType = 2, Value = 1.567, DistanceToLine = 0.0002, PreviousRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C", NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
             TrendHitDto dto4 = new TrendHitDto() { Id = 4, Guid = "562BED90-29F8-423E-8D00-DE699C1D14C3", TrendlineId = 2, IndexNumber = 21, ExtremumType = 3, Value = 1.678, DistanceToLine = 0.0001, PreviousRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", NextRangeGuid = null };
-            trendHits.AddRange(new TrendHitDto[] { dto1, dto2, dto3, dto4 });
+            trendlines.AddRange(new TrendHitDto[] { dto1, dto2, dto3, dto4 });
 
             //Act
             clearTrendHitsTables();
-            repository.UpdateTrendHits(trendHits);
+            repository.UpdateTrendHits(trendlines);
             IEnumerable<TrendHitDto> actualRecords = repository.GetTrendHits(1);
 
             //Assert
@@ -257,14 +315,14 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFTrendlineRepository repository = new EFTrendlineRepository();
-            List<TrendHitDto> trendHits = new List<TrendHitDto>();
+            List<TrendHitDto> trendlines = new List<TrendHitDto>();
             TrendHitDto dto1 = new TrendHitDto() { Id = 1, Guid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", TrendlineId = 1, IndexNumber = 2, ExtremumType = 1, Value = 1.234, DistanceToLine = 0.0004, PreviousRangeGuid = null, NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
             TrendHitDto dto2 = new TrendHitDto() { Id = 2, Guid = "89BFF378-F310-4A28-B753-00A0FF9A852C", TrendlineId = 1, IndexNumber = 9, ExtremumType = 2, Value = 1.345, DistanceToLine = 0.0007, PreviousRangeGuid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", NextRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58" };
             TrendHitDto dto3 = new TrendHitDto() { Id = 3, Guid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", TrendlineId = 1, IndexNumber = 18, ExtremumType = 2, Value = 1.567, DistanceToLine = 0.0002, PreviousRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C", NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
             TrendHitDto dto4 = new TrendHitDto() { Id = 4, Guid = "562BED90-29F8-423E-8D00-DE699C1D14C3", TrendlineId = 2, IndexNumber = 21, ExtremumType = 3, Value = 1.678, DistanceToLine = 0.0001, PreviousRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", NextRangeGuid = null };
-            trendHits.AddRange(new TrendHitDto[] { dto1, dto2, dto3, dto4 });
+            trendlines.AddRange(new TrendHitDto[] { dto1, dto2, dto3, dto4 });
             clearTrendHitsTables();
-            repository.UpdateTrendHits(trendHits);
+            repository.UpdateTrendHits(trendlines);
 
             //Act
             dto1.Value = 2.345;
@@ -285,14 +343,14 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFTrendlineRepository repository = new EFTrendlineRepository();
-            List<TrendHitDto> trendHits = new List<TrendHitDto>();
+            List<TrendHitDto> trendlines = new List<TrendHitDto>();
             TrendHitDto dto1 = new TrendHitDto() { Id = 1, Guid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", TrendlineId = 1, IndexNumber = 2, ExtremumType = 1, Value = 1.234, DistanceToLine = 0.0004, PreviousRangeGuid = null, NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
             TrendHitDto dto2 = new TrendHitDto() { Id = 2, Guid = "89BFF378-F310-4A28-B753-00A0FF9A852C", TrendlineId = 1, IndexNumber = 9, ExtremumType = 2, Value = 1.345, DistanceToLine = 0.0007, PreviousRangeGuid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", NextRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58" };
             TrendHitDto dto3 = new TrendHitDto() { Id = 3, Guid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", TrendlineId = 1, IndexNumber = 18, ExtremumType = 2, Value = 1.567, DistanceToLine = 0.0002, PreviousRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C", NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
             TrendHitDto dto4 = new TrendHitDto() { Id = 4, Guid = "562BED90-29F8-423E-8D00-DE699C1D14C3", TrendlineId = 2, IndexNumber = 21, ExtremumType = 3, Value = 1.678, DistanceToLine = 0.0001, PreviousRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", NextRangeGuid = null };
-            trendHits.AddRange(new TrendHitDto[] { dto1, dto2, dto3, dto4 });
+            trendlines.AddRange(new TrendHitDto[] { dto1, dto2, dto3, dto4 });
             clearTrendHitsTables();
-            repository.UpdateTrendHits(trendHits);
+            repository.UpdateTrendHits(trendlines);
 
             //Act
             dto1.Value = 2.345;
@@ -308,6 +366,96 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         }
 
         #endregion UPDATE_TREND_HITS
+
+
+        #region GET_TREND_HITS
+
+        [TestMethod]
+        public void GetTrendHits_returnProperDtoCollection()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendHitDto> trendHits = new List<TrendHitDto>();
+            TrendHitDto dto1 = new TrendHitDto() { Id = 1, Guid = "0BF8E6BD-0C8D-43B4-A9A0-C8B2745502B0", TrendlineId = 1, IndexNumber = 10, ExtremumType = 1, DistanceToLine = 0.0005, PreviousRangeGuid = null, NextRangeGuid = "07ACE1F3-89B4-49C5-A6F9-155B78E33836" };
+            TrendHitDto dto2 = new TrendHitDto() { Id = 2, Guid = "07ACE1F3-89B4-49C5-A6F9-155B78E33836", TrendlineId = 1, IndexNumber = 31, ExtremumType = 2, DistanceToLine = 0.0003, PreviousRangeGuid = "0BF8E6BD-0C8D-43B4-A9A0-C8B2745502B0", NextRangeGuid = "15AB46D1-615A-46FA-9533-A2DC3EA4F340" };
+            TrendHitDto dto3 = new TrendHitDto() { Id = 3, Guid = "15AB46D1-615A-46FA-9533-A2DC3EA4F340", TrendlineId = 1, IndexNumber = 31, ExtremumType = 2, DistanceToLine = 0.0003, PreviousRangeGuid = "07ACE1F3-89B4-49C5-A6F9-155B78E33836", NextRangeGuid = "B49C3C3E-0D42-451F-B2FD-F28A1679BF50" };
+            TrendHitDto dto4 = new TrendHitDto() { Id = 4, Guid = "B49C3C3E-0D42-451F-B2FD-F28A1679BF50", TrendlineId = 2, IndexNumber = 31, ExtremumType = 2, DistanceToLine = 0.0003, PreviousRangeGuid = "15AB46D1-615A-46FA-9533-A2DC3EA4F341", NextRangeGuid = null };
+            trendHits.AddRange(new TrendHitDto[] { dto1, dto2, dto3, dto4 });
+            clearTrendHitsTables();
+            repository.UpdateTrendHits(trendHits);
+
+            //Act
+            IEnumerable<TrendHitDto> dtos = repository.GetTrendHits(1).ToArray();
+
+            //Assert
+            IEnumerable<TrendHitDto> expected = new TrendHitDto[] { dto1, dto2, dto3 };
+            bool areEqualArrays = expected.HasEqualItems(dtos);
+            Assert.IsTrue(areEqualArrays);
+
+        }
+
+        [TestMethod]
+        public void GetTrendHitById_ReturnsNull_IfThereIsNoTrendlineWithSuchId()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendHitDto> trendHits = new List<TrendHitDto>();
+            trendHits.AddRange(new TrendHitDto[] { getDefaultTrendHitDto() });
+            clearTrendHitsTables();
+            repository.UpdateTrendHits(trendHits);
+
+            //Act
+            TrendHitDto resultDto = repository.GetTrendHitById(DEFAULT_ID + 1);
+
+            //Assert
+            Assert.IsNull(resultDto);
+
+        }
+
+        [TestMethod]
+        public void GetTrendHitById_ReturnsProperTrendlineDto_IfExists()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendHitDto> trendHits = new List<TrendHitDto>();
+            TrendHitDto expectedDto = getDefaultTrendHitDto();
+            trendHits.AddRange(new TrendHitDto[] { expectedDto });
+            clearTrendHitsTables();
+            repository.UpdateTrendHits(trendHits);
+
+            //Act
+            TrendHitDto resultDto = repository.GetTrendHitById(expectedDto.Id);
+
+            //Assert
+            var areEqual = expectedDto.Equals(resultDto);
+            Assert.IsTrue(areEqual);
+
+        }
+
+        #endregion GET_TREND_HITS
+
+
+
+
+        #region UPDATE TREND BREAKS
+        #endregion UPDATE TREND BREAKS
+
+
+        #region GET TREND BREAKS
+        #endregion GET TREND BREAKS
+
+
+
+
+        #region UPDATE TREND RANGES
+        #endregion UPDATE TREND RANGES
+
+
+        #region GET TREND RANGES
+        #endregion GET TREND RANGES
 
 
 

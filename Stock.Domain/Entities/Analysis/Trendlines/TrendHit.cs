@@ -62,22 +62,22 @@ namespace Stock.Domain.Entities
 
         #region CONSTRUCTOR
         
-        //        //public TrendHit(Trendline trendline) : this()
+        //        //public TrendHit(Trendline trendHit) : this()
         //        //{
-        //        //    this.Trendline = trendline;
+        //        //    this.Trendline = trendHit;
         //        //}
 
-        //        public TrendHit(Trendline trendline, DataItem item, double crossPoint, TrendlineType type)
+        //        public TrendHit(Trendline trendHit, DataItem item, double crossPoint, TrendlineType type)
         //        {
         //            Guid = System.Guid.NewGuid();
-        //            this.Trendline = trendline;
+        //            this.Trendline = trendHit;
         //            this.Item = item;
         //            this.CrossLevel = crossPoint;
         //            this.Type = type;
         //        }
 
-        //        public TrendHit(Trendline trendline, DataItem item, double crossPoint, TrendlineType type, TrendHit prevHit, TrendBounce prevBounce)
-        //            : this(trendline, item, crossPoint, type)
+        //        public TrendHit(Trendline trendHit, DataItem item, double crossPoint, TrendlineType type, TrendHit prevHit, TrendBounce prevBounce)
+        //            : this(trendHit, item, crossPoint, type)
         //        {
         //            this.PreviousHit = prevHit;
         //            this.BounceFromPreviousHit = prevBounce;
@@ -127,7 +127,7 @@ namespace Stock.Domain.Entities
 
         public override string ToString()
         {
-            return "(" + Id + ") | trendline: " + this.TrendlineId + " | index: " + this.IndexNumber;
+            return "(" + Id + ") | trendHit: " + this.TrendlineId + " | index: " + this.IndexNumber;
         }
 
         #endregion SYSTEM.OBJECT

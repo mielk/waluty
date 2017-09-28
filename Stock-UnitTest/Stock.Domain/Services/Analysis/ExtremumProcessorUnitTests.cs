@@ -27,7 +27,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [TestMethod]
         public void AfterBeingProcessed_ItemExtremumHasItsUpdatedFlagSetToTrue()
         {
-
+            Assert.Fail("Not implemented yet");
         }
 
         #endregion ISUPDATED_FLAG

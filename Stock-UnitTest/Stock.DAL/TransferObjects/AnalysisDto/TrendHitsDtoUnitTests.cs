@@ -225,6 +225,40 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
         [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedPreviousRangeGuidIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendHitDto();
+            var comparedItem = getDefaultTrendHitDto();
+
+            //Act
+            comparedItem.PreviousRangeGuid = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBasePreviousRangeGuidIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendHitDto();
+            var comparedItem = getDefaultTrendHitDto();
+
+            //Act
+            baseItem.PreviousRangeGuid = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
         public void Equals_ReturnsFalse_IfNextRangeGuidIsDifferent()
         {
 
@@ -233,7 +267,41 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var comparedItem = getDefaultTrendHitDto();
 
             //Act
+            comparedItem.NextRangeGuid = System.Guid.NewGuid().ToString();
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedNextRangeGuidIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendHitDto();
+            var comparedItem = getDefaultTrendHitDto();
+
+            //Act
             comparedItem.NextRangeGuid = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBaseNextRangeGuidIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendHitDto();
+            var comparedItem = getDefaultTrendHitDto();
+
+            //Act
+            baseItem.NextRangeGuid = null;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
