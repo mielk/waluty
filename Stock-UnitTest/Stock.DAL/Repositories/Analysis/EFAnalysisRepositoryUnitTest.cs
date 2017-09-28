@@ -19,7 +19,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
-        private const string SIMULATIONS_TABLE_NAME = "simulations";
+        private const string SIMULATIONS_TABLE_NAME = "trendHits";
         private const string LASTUPDATES_TABLE_NAME = "last_updates";
 
 
@@ -64,20 +64,20 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
         //    //Arrange
         //    EFSimulationRepository repository = new EFSimulationRepository();
-        //    List<SimulationDto> simulations = new List<SimulationDto>();
+        //    List<SimulationDto> trendHits = new List<SimulationDto>();
         //    SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
-        //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
+        //    trendHits.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
 
         //    //Act
         //    clearTrendlinesTables();
-        //    repository.UpdateSimulations(simulations);
+        //    repository.UpdateSimulations(trendHits);
         //    IEnumerable<SimulationDto> actualRecords = repository.GetSimulations();
 
         //    //Assert
-        //    bool areEqual = simulations.HasEqualItems(actualRecords);
+        //    bool areEqual = trendHits.HasEqualItems(actualRecords);
         //    Assert.IsTrue(areEqual);
 
         //}
@@ -89,14 +89,14 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    //Arrange
         //    AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
         //    EFSimulationRepository repository = new EFSimulationRepository();
-        //    List<SimulationDto> simulations = new List<SimulationDto>();
+        //    List<SimulationDto> trendHits = new List<SimulationDto>();
         //    SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
-        //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
+        //    trendHits.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
         //    clearTrendlinesTables();
-        //    repository.UpdateSimulations(simulations);
+        //    repository.UpdateSimulations(trendHits);
 
         //    //Act
         //    dto1.Name += "a";
@@ -106,7 +106,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    IEnumerable<SimulationDto> actualRecords = repository.GetSimulations();
 
         //    //Assert
-        //    bool areEqual = simulations.HasEqualItems(actualRecords);
+        //    bool areEqual = trendHits.HasEqualItems(actualRecords);
         //    Assert.IsTrue(areEqual);
 
         //}
@@ -118,14 +118,14 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         //    //Arrange
         //    AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
         //    EFSimulationRepository repository = new EFSimulationRepository();
-        //    List<SimulationDto> simulations = new List<SimulationDto>();
+        //    List<SimulationDto> trendHits = new List<SimulationDto>();
         //    SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
-        //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3 });
+        //    trendHits.AddRange(new SimulationDto[] { dto1, dto2, dto3 });
         //    clearTrendlinesTables();
-        //    repository.UpdateSimulations(simulations);
+        //    repository.UpdateSimulations(trendHits);
 
         //    //Act
         //    dto1.Name += "a";
@@ -240,20 +240,20 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
         //    //Arrange
         //    EFSimulationRepository repository = new EFSimulationRepository();
-        //    List<SimulationDto> simulations = new List<SimulationDto>();
+        //    List<SimulationDto> trendHits = new List<SimulationDto>();
         //    SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto2 = new SimulationDto() { Id = 2, Name = "b", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto3 = new SimulationDto() { Id = 3, Name = "c", AssetId = 1, TimeframeId = 1 };
         //    SimulationDto dto4 = new SimulationDto() { Id = 4, Name = "d", AssetId = 1, TimeframeId = 1 };
-        //    simulations.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
+        //    trendHits.AddRange(new SimulationDto[] { dto1, dto2, dto3, dto4 });
         //    clearTrendlinesTables(); 
-        //    repository.UpdateSimulations(simulations);
+        //    repository.UpdateSimulations(trendHits);
 
         //    //Act
         //    IEnumerable<SimulationDto> dtos = repository.GetSimulations().ToArray();
 
         //    //Assert
-        //    bool areEqualArrays = simulations.HasEqualItems(dtos);
+        //    bool areEqualArrays = trendHits.HasEqualItems(dtos);
         //    Assert.IsTrue(areEqualArrays);
 
         //}
@@ -264,11 +264,11 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
         //    //Arrange
         //    EFSimulationRepository repository = new EFSimulationRepository();
-        //    List<SimulationDto> simulations = new List<SimulationDto>();
+        //    List<SimulationDto> trendHits = new List<SimulationDto>();
         //    SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-        //    simulations.AddRange(new SimulationDto[] { dto1 });
+        //    trendHits.AddRange(new SimulationDto[] { dto1 });
         //    clearTrendlinesTables();
-        //    repository.UpdateSimulations(simulations);
+        //    repository.UpdateSimulations(trendHits);
 
         //    //Act
         //    SimulationDto dto = repository.GetSimulationByNameAssetTimeframe("a", 1, 2);
@@ -284,11 +284,11 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
         //    //Arrange
         //    EFSimulationRepository repository = new EFSimulationRepository();
-        //    List<SimulationDto> simulations = new List<SimulationDto>();
+        //    List<SimulationDto> trendHits = new List<SimulationDto>();
         //    SimulationDto expected = new SimulationDto() { Id = 1, Name = "a", AssetId = 1, TimeframeId = 1 };
-        //    simulations.AddRange(new SimulationDto[] { expected });
+        //    trendHits.AddRange(new SimulationDto[] { expected });
         //    clearTrendlinesTables();
-        //    repository.UpdateSimulations(simulations);
+        //    repository.UpdateSimulations(trendHits);
 
         //    //Act
         //    SimulationDto dto = repository.GetSimulationByNameAssetTimeframe("a", 1, 1);

@@ -67,7 +67,6 @@ C:\tm\aplikacje\FX3\Stock-UnitTest\bin\Debug\Moq.xml
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock.UnitTest.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.dll
 C:\tm\aplikacje\FX3\Stock-UnitTest\obj\Debug\Stock-UnitTest.pdb
-C:\Tomek\aplikacje\FX\Stock-UnitTest\obj\Debug\Stock.UnitTest.csprojResolveAssemblyReference.cache
 C:\Tomek\aplikacje\FX\Stock-UnitTest\bin\Debug\Stock-UnitTest.dll.config
 C:\Tomek\aplikacje\FX\Stock-UnitTest\bin\Debug\Stock-UnitTest.dll
 C:\Tomek\aplikacje\FX\Stock-UnitTest\bin\Debug\Stock-UnitTest.pdb
@@ -90,5 +89,6 @@ C:\Tomek\aplikacje\FX\Stock-UnitTest\bin\Debug\Castle.Core.xml
 C:\Tomek\aplikacje\FX\Stock-UnitTest\bin\Debug\EntityFramework.xml
 C:\Tomek\aplikacje\FX\Stock-UnitTest\bin\Debug\EntityFramework.SqlServer.xml
 C:\Tomek\aplikacje\FX\Stock-UnitTest\bin\Debug\Moq.xml
+C:\Tomek\aplikacje\FX\Stock-UnitTest\obj\Debug\Stock.UnitTest.csprojResolveAssemblyReference.cache
 C:\Tomek\aplikacje\FX\Stock-UnitTest\obj\Debug\Stock-UnitTest.dll
 C:\Tomek\aplikacje\FX\Stock-UnitTest\obj\Debug\Stock-UnitTest.pdb

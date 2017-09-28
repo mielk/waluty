@@ -10,13 +10,9 @@ namespace Stock.DAL.TransferObjects
 {
     public class TrendBreakDto
     {
-
         [Key]
         public int Id { get; set; }
-
-
-        [NotMapped]
-        public int TimeframeId { get; set; }
-
+        public int TrendlineId { get; set; }
+        public int IndexNumber { get; set; }
     }
 }

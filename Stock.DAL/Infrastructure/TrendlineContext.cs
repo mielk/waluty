@@ -9,6 +9,9 @@ namespace Stock.DAL.Infrastructure
     {
         private static TrendlineContext _instance;
         public DbSet<TrendlineDto> Trendlines { get; set; }
+        public DbSet<TrendHitDto> TrendHits { get; set; }
+        public DbSet<TrendBreakDto> TrendBreaks { get; set; }
+        public DbSet<TrendRangeDto> TrendRanges { get; set; }
 
         public TrendlineContext()
         {
@@ -23,7 +26,11 @@ namespace Stock.DAL.Infrastructure
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TrendlineDto>().ToTable("trendlines");
+            modelBuilder.Entity<TrendHitDto>().ToTable("trend_hits");
+            modelBuilder.Entity<TrendBreakDto>().ToTable("trend_breaks");
+            modelBuilder.Entity<TrendRangeDto>().ToTable("trend_ranges");
         }
 
     }
 }
+

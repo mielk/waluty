@@ -9,8 +9,13 @@ using System.Threading.Tasks;
 
 namespace Stock.DAL.Repositories
 {
+
     public class EFTrendlineRepository : ITrendlineRepository
     {
+
+
+
+        #region TRENDLINES
 
         public IEnumerable<TrendlineDto> GetTrendlines(int assetId, int timeframeId, int simulationId)
         {
@@ -53,5 +58,57 @@ namespace Stock.DAL.Repositories
             }
         }
 
+        #endregion TRENDLINES
+
+
+
+        #region TREND HITS
+
+        public IEnumerable<TrendHitDto> GetTrendHits(int trendlineId)
+        {
+            IEnumerable<TrendHitDto> trendHits;
+            using (var context = new TrendlineContext())
+            {
+                trendHits = context.TrendHits.Where(t => t.TrendlineId == trendlineId).ToList();
+            }
+            return trendHits;
+        }
+
+        public TrendHitDto GetTrendHitById(int id)
+        {
+            using (var context = new TrendlineContext())
+            {
+                return context.TrendHits.SingleOrDefault(t => t.Id == id);
+            }
+        }
+
+
+        public void UpdateTrendHits(IEnumerable<TrendHitDto> trendHits)
+        {
+
+            using (var db = new TrendlineContext())
+            {
+
+                foreach (TrendHitDto dto in trendHits)
+                {
+                    var record = db.TrendHits.SingleOrDefault(t => t.Id == dto.Id);
+                    if (record != null)
+                    {
+                        record.CopyProperties(dto);
+                    }
+                    else
+                    {
+                        db.TrendHits.Add(dto);
+                    }
+                }
+                db.SaveChanges();
+
+            }
+        }
+
+        #endregion TREND HITS
+
+
     }
+
 }

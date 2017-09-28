@@ -12,5 +12,9 @@ namespace Stock.DAL.Repositories
         IEnumerable<TrendlineDto> GetTrendlines(int assetId, int timeframeId, int simulationId);
         TrendlineDto GetTrendlineById(int id);
         void UpdateTrendlines(IEnumerable<TrendlineDto> dtos);
+
+        IEnumerable<TrendHitDto> GetTrendHits(int trendlineId);
+        void UpdateTrendHits(IEnumerable<TrendHitDto> dtos);
+
     }
 }

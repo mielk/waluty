@@ -19,7 +19,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
-        private const string SIMULATIONS_TABLE_NAME = "simulations";
+        private const string SIMULATIONS_TABLE_NAME = "trendHits";
         private const string LASTUPDATES_TABLE_NAME = "last_updates";
 
 

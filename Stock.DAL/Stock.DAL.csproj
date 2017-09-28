@@ -115,7 +115,7 @@
     <Compile Include="TransferObjects\MarketObjectsDto\MarketDto.cs" />
     <Compile Include="TransferObjects\DataDto\QuotationDto.cs" />
     <Compile Include="TransferObjects\AnalysisDto\TrendlineDto\TrendHitDto.cs" />
-    <Compile Include="TransferObjects\AnalysisDto\TrendlineDto\TrendBounceDto.cs" />
+    <Compile Include="TransferObjects\AnalysisDto\TrendlineDto\TrendRangeDto.cs" />
     <Compile Include="TransferObjects\AnalysisDto\TrendlineDto\TrendBreakDto.cs" />
     <Compile Include="TransferObjects\AnalysisDto\TrendlineDto\TrendlineDto.cs" />
   </ItemGroup>

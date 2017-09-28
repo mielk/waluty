@@ -46,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Analysis\AnalysisTimestamp.cs" />
-    <Compile Include="Entities\Analysis\Trendline.cs" />
+    <Compile Include="Entities\Analysis\Trendlines\TrendHit.cs" />
+    <Compile Include="Entities\Analysis\Trendlines\Trendline.cs" />
     <Compile Include="Entities\Analysis\Simulation.cs" />
     <Compile Include="Entities\Analysis\todo\Analysis.cs" />
     <Compile Include="Entities\Data\DataSet.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Entities\Market\TimeframeProcessors\ITimeframeProcessor.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\MinutesProcessor.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\TimeframeProcessorFactory.cs" />
+    <Compile Include="Entities\Analysis\Trendlines\ITrendEvent.cs" />
     <Compile Include="Enums\HelperMethods.cs" />
     <Compile Include="Entities\Market\Asset.cs" />
     <Compile Include="Entities\Market\Timeframe.cs" />
@@ -75,10 +77,8 @@
     <Compile Include="Entities\Data\Price.cs" />
     <Compile Include="Entities\Data\Quotation.cs" />
     <Compile Include="Entities\Market\Market.cs" />
-    <Compile Include="Entities\Trendlines\TrendBreak.cs" />
-    <Compile Include="Entities\Trendlines\TrendBounce.cs" />
-    <Compile Include="Entities\Trendlines\TrendHit.cs" />
-    <Compile Include="Entities\Trendlines\Trendline.cs" />
+    <Compile Include="Entities\Analysis\Trendlines\TrendBreak.cs" />
+    <Compile Include="Entities\Analysis\Trendlines\TrendRange.cs" />
     <Compile Include="Enums\ExtremumType.cs" />
     <Compile Include="Enums\TimeframeUnit.cs" />
     <Compile Include="Enums\TrendlineType.cs" />
