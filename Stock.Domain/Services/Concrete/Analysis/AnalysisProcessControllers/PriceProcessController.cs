@@ -11,12 +11,14 @@ namespace Stock.Domain.Services
 {
     public class PriceProcessController : IAnalysisProcessController
     {
+
         private const AnalysisType ANALYSIS_TYPE = AnalysisType.Prices;
         private const int PAST_QUOTATIONS_REQUIRED_FOR_ANALYSIS = 260;
         private const int DEFAULT_HOW_MANY_ITEMS_BEFORE_INCLUDED = 10;
         public int HowManyItemsBeforeInclude { get; set; }
         private IProcessManager manager;
         private IPriceProcessor processor;
+
 
 
         #region CONSTRUCTOR
@@ -27,6 +29,7 @@ namespace Stock.Domain.Services
         }
 
         #endregion CONSTRUCTOR
+
 
 
         #region SERVICES

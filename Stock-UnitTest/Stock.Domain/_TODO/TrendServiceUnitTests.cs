@@ -28,11 +28,11 @@
 //            var extrema = service.GetExtrema();
 //            var item = extrema[0];
 //            var subitem = extrema[2];
-//            var trendHits = service.ProcessSinglePair(item, subitem);
+//            var ranges = service.ProcessSinglePair(item, subitem);
 
-//            foreach (var trendHit in trendHits)
+//            foreach (var trendBreak in ranges)
 //            {
-//                System.Diagnostics.Debug.WriteLine(trendHit.ToString());
+//                System.Diagnostics.Debug.WriteLine(trendBreak.ToString());
 //            }
 
 

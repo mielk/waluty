@@ -62,7 +62,7 @@
 //        public void IsProperExtremum_returns_false_for_support_line_if_item_is_not_trough(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -70,7 +70,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, new DataItem());
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, new DataItem());
 
 //            //then
 //            Assert.IsFalse(isExtremum);
@@ -85,7 +85,7 @@
 //        public void IsProperExtremum_returns_false_for_resistance_line_if_item_is_not_peak(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -93,7 +93,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, new DataItem());
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, new DataItem());
 
 //            //then
 //            Assert.IsFalse(isExtremum);
@@ -107,7 +107,7 @@
 //        public void IsProperExtremum_returns_false_for_support_line_if_item_is_trough_but_previous_item_was_previous_hit(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -115,8 +115,8 @@
 //            };
 
 //            //when
-//            trendHit.PreviousHit = new DataItem { Index = 4 };
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, new DataItem());
+//            trendBreak.PreviousHit = new DataItem { Index = 4 };
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, new DataItem());
 
 //            //then
 //            Assert.IsFalse(isExtremum);
@@ -131,7 +131,7 @@
 //        public void IsProperExtremum_returns_false_for_resistance_line_if_item_is_peak_but_previous_item_was_previous_hit(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -139,8 +139,8 @@
 //            };
 
 //            //when
-//            trendHit.PreviousHit = new DataItem { Index = 4 };
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, new DataItem());
+//            trendBreak.PreviousHit = new DataItem { Index = 4 };
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, new DataItem());
 
 //            //then
 //            Assert.IsFalse(isExtremum);
@@ -155,7 +155,7 @@
 //        public void IsProperExtremum_returns_false_for_support_line_if_item_is_trough_by_close_but_next_item_is_trough_by_low(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -168,7 +168,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, nextItem);
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, nextItem);
 
 //            //then
 //            Assert.IsFalse(isExtremum);
@@ -183,7 +183,7 @@
 //        public void IsProperExtremum_returns_false_for_resistance_line_if_item_is_peak_by_close_but_next_item_is_peak_by_high(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -196,7 +196,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, nextItem);
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, nextItem);
 
 //            //then
 //            Assert.IsFalse(isExtremum);
@@ -210,7 +210,7 @@
 //        public void IsProperExtremum_returns_true_for_support_line_if_item_is_trough_by_low(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -218,7 +218,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, new DataItem { Price = new Price() });
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, new DataItem { Price = new Price() });
 
 //            //then
 //            Assert.IsTrue(isExtremum);
@@ -232,7 +232,7 @@
 //        public void IsProperExtremum_returns_true_for_resistance_line_if_item_is_peak_by_high(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -240,7 +240,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, new DataItem { Price = new Price() });
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, new DataItem { Price = new Price() });
 
 //            //then
 //            Assert.IsTrue(isExtremum);
@@ -254,7 +254,7 @@
 //        public void IsProperExtremum_returns_true_for_support_line_if_item_is_trough_by_close_but_next_item_is_not_trough_by_low(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Support, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -267,7 +267,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, nextItem);
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, nextItem);
 
 //            //then
 //            Assert.IsTrue(isExtremum);
@@ -281,7 +281,7 @@
 //        public void IsProperExtremum_returns_true_for_resistance_line_if_item_is_peak_by_close_but_next_item_is_not_peak_by_high(){
 
 //            //given
-//            Trendline trendHit = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
+//            Trendline trendBreak = ProduceTrendline(TrendlineType.Resistance, 1, 1d, 10, 0.99d);
 //            DataItem checkedItem = new DataItem
 //            {
 //                Index = 5,
@@ -294,7 +294,7 @@
 //            };
 
 //            //when
-//            bool isExtremum = trendHit.IsProperExtremum(checkedItem, nextItem);
+//            bool isExtremum = trendBreak.IsProperExtremum(checkedItem, nextItem);
 
 //            //then
 //            Assert.IsTrue(isExtremum);

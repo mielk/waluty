@@ -60,6 +60,25 @@ namespace Stock.Utils
             }
         }
 
+        public static bool IsEqual(this int? value, int? compared)
+        {
+            if (value == null)
+            {
+                return (compared == null);
+            }
+            else
+            {
+                if (compared != null)
+                {
+                    return (value == compared);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
     }
 
 }

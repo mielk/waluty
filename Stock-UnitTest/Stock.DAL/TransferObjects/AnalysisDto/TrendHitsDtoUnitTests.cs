@@ -11,6 +11,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
     [TestClass]
     public class TrendHitsDtoUnitTests
     {
+
         private const int DEFAULT_ID = 1;
         private const string DEFAULT_GUID = "74017f2d-9dfe-494e-bfa0-93c09418cfb7";
         private const int DEFAULT_TRENDLINE_ID = 1; 

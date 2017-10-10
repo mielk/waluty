@@ -17,6 +17,7 @@ namespace Stock.Domain.Entities
         public string Guid { get; set; }
         public int TrendlineId { get; set; }
         public int IndexNumber { get; set; }
+        public DataSet DataSet { get; set; }
         public ExtremumType ExtremumType { get; set; }
         public double Value { get; set; }
         public double DistanceToLine { get; set; }
@@ -62,22 +63,22 @@ namespace Stock.Domain.Entities
 
         #region CONSTRUCTOR
         
-        //        //public TrendHit(Trendline trendHit) : this()
+        //        //public TrendHit(Trendline trendBreak) : this()
         //        //{
-        //        //    this.Trendline = trendHit;
+        //        //    this.Trendline = trendBreak;
         //        //}
 
-        //        public TrendHit(Trendline trendHit, DataItem item, double crossPoint, TrendlineType type)
+        //        public TrendHit(Trendline trendBreak, DataItem item, double crossPoint, TrendlineType type)
         //        {
         //            Guid = System.Guid.NewGuid();
-        //            this.Trendline = trendHit;
+        //            this.Trendline = trendBreak;
         //            this.Item = item;
         //            this.CrossLevel = crossPoint;
         //            this.Type = type;
         //        }
 
-        //        public TrendHit(Trendline trendHit, DataItem item, double crossPoint, TrendlineType type, TrendHit prevHit, TrendBounce prevBounce)
-        //            : this(trendHit, item, crossPoint, type)
+        //        public TrendHit(Trendline trendBreak, DataItem item, double crossPoint, TrendlineType type, TrendHit prevHit, TrendBounce prevBounce)
+        //            : this(trendBreak, item, crossPoint, type)
         //        {
         //            this.PreviousHit = prevHit;
         //            this.BounceFromPreviousHit = prevBounce;
@@ -114,8 +115,8 @@ namespace Stock.Domain.Entities
             if (compared.ExtremumType != ExtremumType) return false;
             if (compared.Value != Value) return false;
             if (compared.DistanceToLine != DistanceToLine) return false;
-            if ((compared.PreviousRangeGuid == null && PreviousRangeGuid != null) || (compared != null && !compared.PreviousRangeGuid.Equals(PreviousRangeGuid))) return false;
-            if ((compared.NextRangeGuid == null && NextRangeGuid != null) || (compared != null && !compared.NextRangeGuid.Equals(NextRangeGuid))) return false;
+            if (compared.PreviousRangeGuid.Compare(PreviousRangeGuid) == false) return false;
+            if (compared.NextRangeGuid.Compare(NextRangeGuid) == false) return false;
             return true;
 
         }
@@ -127,7 +128,7 @@ namespace Stock.Domain.Entities
 
         public override string ToString()
         {
-            return "(" + Id + ") | trendHit: " + this.TrendlineId + " | index: " + this.IndexNumber;
+            return "(" + Id + ") | trendBreak: " + this.TrendlineId + " | index: " + this.IndexNumber;
         }
 
         #endregion SYSTEM.OBJECT

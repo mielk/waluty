@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HelperMethods\ContainerHelperMethods.cs" />
+    <Compile Include="HelperMethods\StringHelperMethods.cs" />
     <Compile Include="HelperMethods\DateTimeHelperMethods.cs" />
     <Compile Include="HelperMethods\NumericHelperMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

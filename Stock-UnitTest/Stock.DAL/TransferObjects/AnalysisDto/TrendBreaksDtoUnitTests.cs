@@ -12,244 +12,245 @@ namespace Stock_UnitTest.Stock.Domain.Entities
     public class TrendBreaksDtoUnitTests
     {
 
-        //private TrendlineDto getDefaultTrendlineDto()
-        //{
-        //    return new TrendlineDto()
-        //    {
-        //        Id = 1,
-        //        AssetId = 1,
-        //        TimeframeId = 1,
-        //        SimulationId = 1,
-        //        StartIndex = 3,
-        //        StartLevel = 1.2345,
-        //        EndIndex = 15,
-        //        EndLevel = 1.2532,
-        //        Value = 1.234,
-        //        LastUpdateIndex = 20
-        //    };
-        //}
-
-
-        //#region COPY_PROPERTIES
-
-        //[TestMethod]
-        //public void CopyProperties_AfterwardAllPropertiesAreEqual()
-        //{
-
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = new TrendlineDto()
-        //    {
-        //        Id = 1,
-        //        AssetId = 1,
-        //        TimeframeId = 1,
-        //        SimulationId = 1,
-        //        StartIndex = 5,
-        //        StartLevel = 2.2345,
-        //        EndIndex = 20,
-        //        EndLevel = 2.2532,
-        //        Value = 2.234,
-        //        LastUpdateIndex = 25
-        //    };
+        private const int DEFAULT_ID = 1;
+        private const string DEFAULT_GUID = "74017f2d-9dfe-494e-bfa0-93c09418cfb7";
+        private const int DEFAULT_TRENDLINE_ID = 1;
+        private const int DEFAULT_INDEX_NUMBER = 2;
+        private const string DEFAULT_PREVIOUS_RANGE_GUID = "45e223ec-cd32-4eca-8d38-0d96d3ee121b";
+        private const string DEFAULT_NEXT_RANGE_GUID = "a9139a25-6d38-4c05-bbc7-cc413d6feee9";
 
-        //    //Act
-        //    comparedItem.CopyProperties(baseItem);
-        //    var areEqual = baseItem.Equals(comparedItem);
+        private TrendBreakDto getDefaultTrendBreakDto()
+        {
+            return new TrendBreakDto()
+            {
+                Id = DEFAULT_ID,
+                Guid = DEFAULT_GUID,
+                TrendlineId = DEFAULT_TRENDLINE_ID,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                PreviousRangeGuid = DEFAULT_PREVIOUS_RANGE_GUID,
+                NextRangeGuid = DEFAULT_NEXT_RANGE_GUID
+            };
+        }
 
-        //    //Assert
-        //    Assert.IsTrue(areEqual);
 
-        //}
+        #region COPY_PROPERTIES
 
-
-        //#endregion COPY_PROPERTIES
+        [TestMethod]
+        public void CopyProperties_AfterwardAllPropertiesAreEqual()
+        {
 
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = new TrendBreakDto()
+            {
+                Id = 1,
+                Guid = DEFAULT_GUID,
+                TrendlineId = DEFAULT_TRENDLINE_ID + 1,
+                IndexNumber = DEFAULT_INDEX_NUMBER + 1,
+                PreviousRangeGuid = DEFAULT_PREVIOUS_RANGE_GUID,
+                NextRangeGuid = DEFAULT_NEXT_RANGE_GUID
+            };
 
-        //#region EQUALS
+            //Act
+            comparedItem.CopyProperties(baseItem);
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //[TestMethod]
-        //public void Equals_ReturnsFalse_IfComparedToObjectOfOtherType()
-        //{
+            //Assert
+            Assert.IsTrue(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = new { Id = 1 };
+        }
 
-        //    //Act
-        //    var areEqual = baseItem.Equals(comparedItem);
+        #endregion COPY_PROPERTIES
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
 
-        //}
+        #region EQUALS
 
-        //[TestMethod]
-        //public void Equals_ReturnsTrue_IfAllPropertiesAreEqual()
-        //{
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfComparedToObjectOfOtherType()
+        {
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
-            
-        //    //Act
-        //    var areEqual = baseItem.Equals(comparedItem);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = new { Id = 1 };
 
-        //    //Assert
-        //    Assert.IsTrue(areEqual);
+            //Act
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //}
-        
-        //[TestMethod]
-        //public void Equals_ReturnsFalse_IfAssetIdIsDifferent()
-        //{
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        }
 
-        //    //Act
-        //    comparedItem.AssetId += 1;
-        //    var areEqual = baseItem.Equals(comparedItem);
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfAllPropertiesAreEqual()
+        {
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //}
+            //Act
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //[TestMethod]
-        //public void Equals_ReturnsFalse_IfTimeframeIdIsDifferent()
-        //{
+            //Assert
+            Assert.IsTrue(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        }
 
-        //    //Act
-        //    comparedItem.TimeframeId += 1;
-        //    var areEqual = baseItem.Equals(comparedItem);
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfGuidIsDifferent()
+        {
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //}
+            //Act
+            comparedItem.Guid = System.Guid.NewGuid().ToString();
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //[TestMethod]
-        //public void Equals_ReturnsFalse_IfSimulationIdIsDifferent()
-        //{
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        }
 
-        //    //Act
-        //    comparedItem.SimulationId += 1;
-        //    var areEqual = baseItem.Equals(comparedItem);
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfTrendlineIdIsDifferent()
+        {
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //}
+            //Act
+            comparedItem.TrendlineId += 1;
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //[TestMethod]
-        //public void Equals_ReturnsFalse_IfStartIndexIsDifferent()
-        //{
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        }
 
-        //    //Act
-        //    comparedItem.StartIndex = comparedItem.StartIndex + 2;
-        //    var areEqual = baseItem.Equals(comparedItem);
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfIndexNumberIsDifferent()
+        {
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //}
+            //Act
+            comparedItem.IndexNumber += 1;
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //public void Equals_ReturnsFalse_IfStartLevelIsDifferent()
-        //{
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        }
 
-        //    //Act
-        //    comparedItem.StartLevel += 0.1;
-        //    var areEqual = baseItem.Equals(comparedItem);
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfPreviousRangeGuidIsDifferent()
+        {
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //}
+            //Act
+            comparedItem.PreviousRangeGuid = System.Guid.NewGuid().ToString();
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //public void Equals_ReturnsFalse_IfEndIndexIsDifferent()
-        //{
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        }
 
-        //    //Act
-        //    comparedItem.EndIndex = comparedItem.EndIndex++;
-        //    var areEqual = baseItem.Equals(comparedItem);
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedPreviousRangeGuidIsNull()
+        {
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //}
+            //Act
+            comparedItem.PreviousRangeGuid = null;
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //public void Equals_ReturnsFalse_IfEndLevelIsDifferent()
-        //{
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        }
 
-        //    //Act
-        //    comparedItem.EndLevel += 1;
-        //    var areEqual = baseItem.Equals(comparedItem);
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBasePreviousRangeGuidIsNull()
+        {
 
-        //    //Assert
-        //    Assert.IsFalse(areEqual);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //}
+            //Act
+            baseItem.PreviousRangeGuid = null;
+            var areEqual = baseItem.Equals(comparedItem);
 
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //public void Equals_ReturnsFalse_IfValueIsDifferent()
-        //{
+        }
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfNextRangeGuidIsDifferent()
+        {
 
-        //    //Act
-        //    comparedItem.Value += 1;
-        //    var areEqual = baseItem.Equals(comparedItem);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //    //Assert
-        //    Assert.IsTrue(areEqual);
+            //Act
+            comparedItem.NextRangeGuid = System.Guid.NewGuid().ToString();
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //}
+            //Assert
+            Assert.IsFalse(areEqual);
 
-        //public void Equals_ReturnsFalse_IfLastUpdateIsDifferent()
-        //{
+        }
 
-        //    //Arrange
-        //    var baseItem = getDefaultTrendlineDto();
-        //    var comparedItem = getDefaultTrendlineDto();
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedNextRangeGuidIsNull()
+        {
 
-        //    //Act
-        //    comparedItem.LastUpdateIndex = comparedItem.LastUpdateIndex + 5;
-        //    var areEqual = baseItem.Equals(comparedItem);
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
 
-        //    //Assert
-        //    Assert.IsTrue(areEqual);
+            //Act
+            comparedItem.NextRangeGuid = null;
+            var areEqual = baseItem.Equals(comparedItem);
 
-        //}
+            //Assert
+            Assert.IsFalse(areEqual);
 
+        }
 
-        //#endregion EQUALS
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBaseNextRangeGuidIsNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendBreakDto();
+            var comparedItem = getDefaultTrendBreakDto();
+
+            //Act
+            baseItem.NextRangeGuid = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        #endregion EQUALS
 
 
     }

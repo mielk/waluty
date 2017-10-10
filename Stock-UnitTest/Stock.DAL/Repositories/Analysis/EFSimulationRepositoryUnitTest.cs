@@ -19,7 +19,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
-        private const string SIMULATIONS_TABLE_NAME = "trendlines";
+        private const string SIMULATIONS_TABLE_NAME = "trendRanges";
         private const string LASTUPDATES_TABLE_NAME = "last_updates";
 
 
@@ -258,13 +258,14 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFSimulationRepository repository = new EFSimulationRepository();
             List<SimulationDto> simulations = new List<SimulationDto>();
-            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "a" };
-            simulations.AddRange(new SimulationDto[] { dto1 });
+            SimulationDto dto0 = new SimulationDto() { Id = 1, Name = "a" };
+            SimulationDto dto1 = new SimulationDto() { Id = 1, Name = "b" };
+            simulations.AddRange(new SimulationDto[] { dto0, dto1 });
             clearSimulationsTables();
             repository.UpdateSimulations(simulations);
 
             //Act
-            SimulationDto dto = repository.GetSimulationById(2);
+            SimulationDto dto = repository.GetSimulationById(dto1.Id + 1);
 
             //Assert
             Assert.IsNull(dto);

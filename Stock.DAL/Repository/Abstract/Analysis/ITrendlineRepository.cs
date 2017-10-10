@@ -17,5 +17,13 @@ namespace Stock.DAL.Repositories
         TrendHitDto GetTrendHitById(int trendHitId);
         void UpdateTrendHits(IEnumerable<TrendHitDto> dtos);
 
+        IEnumerable<TrendRangeDto> GetTrendRanges(int trendlineId);
+        TrendRangeDto GetTrendRangeById(int trendRangeId);
+        void UpdateTrendRanges(IEnumerable<TrendRangeDto> dtos);
+
+        IEnumerable<TrendBreakDto> GetTrendBreaks(int trendlineId);
+        TrendBreakDto GetTrendBreakById(int trendBreakId);
+        void UpdateTrendBreaks(IEnumerable<TrendBreakDto> dtos);
+
     }
 }

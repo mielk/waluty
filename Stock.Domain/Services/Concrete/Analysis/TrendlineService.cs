@@ -20,6 +20,7 @@ namespace Stock.Domain.Services
         private IEnumerable<TrendBreak> trendBreaks = new List<TrendBreak>();
 
 
+
         #region INFRASTRUCTURE
 
         public TrendlineService(ITrendlineRepository repository)
@@ -33,6 +34,7 @@ namespace Stock.Domain.Services
         }
 
         #endregion INFRASTRUCTURE
+
 
 
         #region TRENDLINES
@@ -141,6 +143,119 @@ namespace Stock.Domain.Services
 
         #endregion TREND_HITS
 
+
+
+
+        #region TREND_BREAKS
+
+
+        public IEnumerable<TrendBreak> GetTrendBreaks(int trendlineId)
+        {
+            var dtos = _repository.GetTrendBreaks(trendlineId);
+            return getTrendBreaks(dtos);
+        }
+
+        private IEnumerable<TrendBreak> getTrendBreaks(IEnumerable<TrendBreakDto> dtos)
+        {
+            List<TrendBreak> result = new List<TrendBreak>();
+            foreach (var dto in dtos)
+            {
+                TrendBreak trendBreak = trendBreaks.SingleOrDefault(t => t.Guid.Equals(dto.Guid));
+                if (trendBreak == null)
+                {
+                    trendBreak = TrendBreak.FromDto(dto);
+                    appendTrendBreak(trendBreak);
+                }
+                result.Add(trendBreak);
+            }
+            return result;
+        }
+
+        public TrendBreak GetTrendBreakById(int id)
+        {
+            var trendBreak = trendBreaks.SingleOrDefault(m => m.Id == id);
+            if (trendBreak == null)
+            {
+                var dto = _repository.GetTrendBreakById(id);
+                if (dto != null)
+                {
+                    trendBreak = TrendBreak.FromDto(dto);
+                    appendTrendBreak(trendBreak);
+                }
+            }
+            return trendBreak;
+        }
+
+        private void appendTrendBreak(TrendBreak trendBreak)
+        {
+            trendBreaks = trendBreaks.Concat(new[] { trendBreak });
+        }
+
+
+
+        public void UpdateTrendBreak(TrendBreak trendBreak)
+        {
+            TrendBreakDto dto = trendBreak.ToDto();
+            _repository.UpdateTrendBreaks(new TrendBreakDto[] { dto });
+        }
+
+        #endregion TREND_BREAKS
+
+
+
+        #region TREND_RANGES
+
+        public IEnumerable<TrendRange> GetTrendRanges(int trendlineId)
+        {
+            var dtos = _repository.GetTrendRanges(trendlineId);
+            return GetTrendRanges(dtos);
+        }
+
+        private IEnumerable<TrendRange> GetTrendRanges(IEnumerable<TrendRangeDto> dtos)
+        {
+            List<TrendRange> result = new List<TrendRange>();
+            foreach (var dto in dtos)
+            {
+                TrendRange trendRange = trendRanges.SingleOrDefault(t => t.Guid.Equals(dto.Guid));
+                if (trendRange == null)
+                {
+                    trendRange = TrendRange.FromDto(dto);
+                    appendTrendRange(trendRange);
+                }
+                result.Add(trendRange);
+            }
+            return result;
+        }
+
+        public TrendRange GetTrendRangeById(int id)
+        {
+            var trendRange = trendRanges.SingleOrDefault(m => m.Id == id);
+            if (trendRange == null)
+            {
+                var dto = _repository.GetTrendRangeById(id);
+                if (dto != null)
+                {
+                    trendRange = TrendRange.FromDto(dto);
+                    appendTrendRange(trendRange);
+                }
+            }
+            return trendRange;
+        }
+
+        private void appendTrendRange(TrendRange trendRange)
+        {
+            trendRanges = trendRanges.Concat(new[] { trendRange });
+        }
+
+
+        
+        public void UpdateTrendRange(TrendRange trendRange)
+        {
+            TrendRangeDto dto = trendRange.ToDto();
+            _repository.UpdateTrendRanges(new TrendRangeDto[] { dto });
+        }
+
+        #endregion TREND_RANGES
 
     }
 }

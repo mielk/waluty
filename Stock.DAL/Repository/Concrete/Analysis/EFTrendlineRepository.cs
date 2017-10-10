@@ -66,12 +66,12 @@ namespace Stock.DAL.Repositories
 
         public IEnumerable<TrendHitDto> GetTrendHits(int trendlineId)
         {
-            IEnumerable<TrendHitDto> trendlines;
+            IEnumerable<TrendHitDto> trendHits;
             using (var context = new TrendlineContext())
             {
-                trendlines = context.TrendHits.Where(t => t.TrendlineId == trendlineId).ToList();
+                trendHits = context.TrendHits.Where(t => t.TrendlineId == trendlineId).ToList();
             }
-            return trendlines;
+            return trendHits;
         }
 
         public TrendHitDto GetTrendHitById(int id)
@@ -83,13 +83,13 @@ namespace Stock.DAL.Repositories
         }
 
 
-        public void UpdateTrendHits(IEnumerable<TrendHitDto> trendlines)
+        public void UpdateTrendHits(IEnumerable<TrendHitDto> trendHits)
         {
 
             using (var db = new TrendlineContext())
             {
 
-                foreach (TrendHitDto dto in trendlines)
+                foreach (TrendHitDto dto in trendHits)
                 {
                     var record = db.TrendHits.SingleOrDefault(t => t.Id == dto.Id);
                     if (record != null)
@@ -107,6 +107,104 @@ namespace Stock.DAL.Repositories
         }
 
         #endregion TREND HITS
+
+
+
+        #region TREND_RANGE
+
+
+        public IEnumerable<TrendRangeDto> GetTrendRanges(int trendlineId)
+        {
+            IEnumerable<TrendRangeDto> trendRanges;
+            using (var context = new TrendlineContext())
+            {
+                trendRanges = context.TrendRanges.Where(t => t.TrendlineId == trendlineId).ToList();
+            }
+            return trendRanges;
+        }
+
+        public TrendRangeDto GetTrendRangeById(int id)
+        {
+            using (var context = new TrendlineContext())
+            {
+                return context.TrendRanges.SingleOrDefault(t => t.Id == id);
+            }
+        }
+
+        public void UpdateTrendRanges(IEnumerable<TrendRangeDto> dtos)
+        {
+
+            using (var db = new TrendlineContext())
+            {
+
+                foreach (TrendRangeDto dto in dtos)
+                {
+                    var record = db.TrendRanges.SingleOrDefault(t => t.Id == dto.Id);
+                    if (record != null)
+                    {
+                        record.CopyProperties(dto);
+                    }
+                    else
+                    {
+                        db.TrendRanges.Add(dto);
+                    }
+                }
+                db.SaveChanges();
+
+            }
+        }
+        
+
+        #endregion TREND_RANGE
+
+
+
+        #region TREND_BREAK
+
+        public void UpdateTrendBreaks(IEnumerable<TrendBreakDto> dtos)
+        {
+
+            using (var db = new TrendlineContext())
+            {
+
+                foreach (TrendBreakDto dto in dtos)
+                {
+                    var record = db.TrendBreaks.SingleOrDefault(t => t.Id == dto.Id);
+                    if (record != null)
+                    {
+                        record.CopyProperties(dto);
+                    }
+                    else
+                    {
+                        db.TrendBreaks.Add(dto);
+                    }
+                }
+                db.SaveChanges();
+
+            }
+        }
+
+        public IEnumerable<TrendBreakDto> GetTrendBreaks(int trendlineId)
+        {
+            IEnumerable<TrendBreakDto> trendBreaks;
+            using (var context = new TrendlineContext())
+            {
+                trendBreaks = context.TrendBreaks.Where(t => t.TrendlineId == trendlineId).ToList();
+            }
+            return trendBreaks;
+        }
+
+        public TrendBreakDto GetTrendBreakById(int id)
+        {
+            using (var context = new TrendlineContext())
+            {
+                return context.TrendBreaks.SingleOrDefault(t => t.Id == id);
+            }
+        }
+
+
+
+        #endregion TREND_BREAK
 
 
     }

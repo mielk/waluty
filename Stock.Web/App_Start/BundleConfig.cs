@@ -54,9 +54,9 @@ namespace Stock.Web
             bundles.Add(new ScriptBundle("~/bundles/analysis").Include(
                         "~/Scripts/analysis/AnalysisController.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/trendHit").Include(
-                        "~/Scripts/stock/trendHit/SimulationChartsContainer.js",
-                        "~/Scripts/stock/trendHit/SimulationController.js"));
+            bundles.Add(new ScriptBundle("~/bundles/trendBreak").Include(
+                        "~/Scripts/stock/trendBreak/SimulationChartsContainer.js",
+                        "~/Scripts/stock/trendBreak/SimulationController.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -66,7 +66,7 @@ namespace Stock.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/common/select2.css",
                         "~/Content/stock/analysis.css",
-                        "~/Content/stock/trendHit.css",
+                        "~/Content/stock/trendBreak.css",
                         "~/Content/stock/charts.css",
                         "~/Content/stock/site.css"));
 

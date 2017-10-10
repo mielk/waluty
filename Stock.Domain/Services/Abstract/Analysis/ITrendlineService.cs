@@ -19,6 +19,16 @@ namespace Stock.Domain.Services
         IEnumerable<TrendHit> GetTrendHits(int trendlineId);
         TrendHit GetTrendHitById(int id);
         void UpdateTrendHit(TrendHit trendHit);
+        
+        //Trend breaks
+        IEnumerable<TrendBreak> GetTrendBreaks(int trendlineId);
+        TrendBreak GetTrendBreakById(int id);
+        void UpdateTrendBreak(TrendBreak trendBreak);
+
+        //Trend hits
+        IEnumerable<TrendRange> GetTrendRanges(int trendlineId);
+        TrendRange GetTrendRangeById(int id);
+        void UpdateTrendRange(TrendRange trendRange);
 
     }
 }

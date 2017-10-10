@@ -19,7 +19,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
-        private const string TRENDLINES_TABLE_NAME = "trendlines";
+        private const string TRENDLINES_TABLE_NAME = "trendRanges";
         private const string TREND_HITS_TABLE_NAME = "trend_hits";
         private const string TREND_BREAKS_TABLE_NAME = "trend_breaks";
         private const string TREND_RANGES_TABLE_NAME = "trend_ranges";
@@ -41,6 +41,13 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         private const double DEFAULT_DISTANCE_TO_LINE = 0.134;
         private const string DEFAULT_PREVIOUS_RANGE_GUID = "45e223ec-cd32-4eca-8d38-0d96d3ee121b";
         private const string DEFAULT_NEXT_RANGE_GUID = "a9139a25-6d38-4c05-bbc7-cc413d6feee9";
+        //TrendRange
+        private const int DEFAULT_QUOTATIONS_COUNTER = 11;
+        private const double DEFAULT_TOTAL_DISTANCE = 0.12d;
+        private const string DEFAULT_PREVIOUS_BREAK_GUID = "45e223ec-cd32-4eca-8d38-0d96d3ee121b";
+        private const string DEFAULT_PREVIOUS_HIT_TYPE = null;
+        private const string DEFAULT_NEXT_BREAK_TYPE = null;
+        private const string DEFAULT_NEXT_HIT_GUID = "a9139a25-6d38-4c05-bbc7-cc413d6feee9";
 
 
 
@@ -269,7 +276,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             repository.UpdateTrendlines(trendlines);
 
             //Act
-            TrendlineDto dto = repository.GetTrendlineById(DEFAULT_ID);
+            TrendlineDto dto = repository.GetTrendlineById(expectedDto.Id);
 
             //Assert
             var areEqual = expectedDto.Equals(dto);
@@ -441,20 +448,437 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
 
 
         #region UPDATE TREND BREAKS
+
+        private TrendBreakDto getDefaultTrendBreakDto()
+        {
+            return new TrendBreakDto()
+            {
+                Id = DEFAULT_ID,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = DEFAULT_TRENDLINE_ID,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                PreviousRangeGuid = System.Guid.NewGuid().ToString(),
+                NextRangeGuid = System.Guid.NewGuid().ToString()
+            };
+        }
+
+        private TrendBreakDto[] getDefaultTrendBreakDtosArray()
+        {
+            TrendBreakDto[] arr = new TrendBreakDto[4];
+            arr[0] = new TrendBreakDto()
+            {
+                Id = 1,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 1,
+                IndexNumber = 5,
+                PreviousRangeGuid = System.Guid.NewGuid().ToString(),
+                NextRangeGuid = System.Guid.NewGuid().ToString()
+            };
+            arr[1] = new TrendBreakDto()
+            {
+                Id = 2,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 1,
+                IndexNumber = 12,
+                PreviousRangeGuid = System.Guid.NewGuid().ToString(),
+                NextRangeGuid = System.Guid.NewGuid().ToString()
+            };
+            arr[2] = new TrendBreakDto()
+            {
+                Id = 3,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 1,
+                IndexNumber = 156,
+                PreviousRangeGuid = System.Guid.NewGuid().ToString(),
+                NextRangeGuid = System.Guid.NewGuid().ToString()
+            };
+            arr[3] = new TrendBreakDto()
+            {
+                Id = 4,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 2,
+                IndexNumber = 187,
+                PreviousRangeGuid = System.Guid.NewGuid().ToString(),
+                NextRangeGuid = null
+            };
+            return arr;
+        }
+
+        [TestMethod]
+        public void UpdateTrendBreaks_WorksProperly_IfItemsAreOnlyAdded()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendBreakDto> trendBreaks = new List<TrendBreakDto>();
+            TrendBreakDto dto1 = new TrendBreakDto() { Id = 1, Guid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", TrendlineId = 1, IndexNumber = 2, PreviousRangeGuid = null, NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
+            TrendBreakDto dto2 = new TrendBreakDto() { Id = 2, Guid = "89BFF378-F310-4A28-B753-00A0FF9A852C", TrendlineId = 1, IndexNumber = 9, PreviousRangeGuid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", NextRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58" };
+            TrendBreakDto dto3 = new TrendBreakDto() { Id = 3, Guid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", TrendlineId = 1, IndexNumber = 18, PreviousRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C", NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
+            TrendBreakDto dto4 = new TrendBreakDto() { Id = 4, Guid = "562BED90-29F8-423E-8D00-DE699C1D14C3", TrendlineId = 2, IndexNumber = 21, PreviousRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", NextRangeGuid = null };
+            trendBreaks.AddRange(new TrendBreakDto[] { dto1, dto2, dto3, dto4 });
+
+            //Act
+            clearTrendBreaksTables();
+            repository.UpdateTrendBreaks(trendBreaks);
+            IEnumerable<TrendBreakDto> actualRecords = repository.GetTrendBreaks(1);
+
+            //Assert
+            Assert.IsTrue(repository.GetTrendBreaks(1).HasEqualItems(new TrendBreakDto[] { dto1, dto2, dto3 }));
+            Assert.IsTrue(repository.GetTrendBreaks(2).HasEqualItems(new TrendBreakDto[] { dto4 }));
+
+        }
+
+        [TestMethod]
+        public void UpdateTrendBreaks_WorksProperly_IfItemsAreOnlyUpdated()
+        {
+
+            //Arrange
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+
+            List<TrendBreakDto> trendBreaks = new List<TrendBreakDto>();
+            TrendBreakDto dto1 = new TrendBreakDto() { Id = 1, Guid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", TrendlineId = 1, IndexNumber = 2, PreviousRangeGuid = null, NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
+            TrendBreakDto dto2 = new TrendBreakDto() { Id = 2, Guid = "89BFF378-F310-4A28-B753-00A0FF9A852C", TrendlineId = 1, IndexNumber = 9, PreviousRangeGuid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", NextRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58" };
+            TrendBreakDto dto3 = new TrendBreakDto() { Id = 3, Guid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", TrendlineId = 1, IndexNumber = 18, PreviousRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C", NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
+            TrendBreakDto dto4 = new TrendBreakDto() { Id = 4, Guid = "562BED90-29F8-423E-8D00-DE699C1D14C3", TrendlineId = 2, IndexNumber = 21, PreviousRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", NextRangeGuid = null };
+            trendBreaks.AddRange(new TrendBreakDto[] { dto1, dto2, dto3, dto4 });
+            clearTrendBreaksTables();
+            repository.UpdateTrendBreaks(trendBreaks);
+
+            //Act
+            dto1.NextRangeGuid = System.Guid.NewGuid().ToString();
+            dto2.NextRangeGuid = System.Guid.NewGuid().ToString();
+            dto3.NextRangeGuid = System.Guid.NewGuid().ToString();
+            repository.UpdateTrendBreaks(new TrendBreakDto[] { dto1, dto2, dto3, dto4 });
+
+            //Assert
+            Assert.IsTrue(repository.GetTrendBreaks(1).HasEqualItems(new TrendBreakDto[] { dto1, dto2, dto3 }));
+            Assert.IsTrue(repository.GetTrendBreaks(2).HasEqualItems(new TrendBreakDto[] { dto4 }));
+
+        }
+
+        [TestMethod]
+        public void UpdateTrendBreaks_WorksProperly_IfItemsAreAddedAndUpdated()
+        {
+
+            //Arrange
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+
+            List<TrendBreakDto> trendBreaks = new List<TrendBreakDto>();
+            TrendBreakDto dto1 = new TrendBreakDto() { Id = 1, Guid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", TrendlineId = 1, IndexNumber = 2, PreviousRangeGuid = null, NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
+            TrendBreakDto dto2 = new TrendBreakDto() { Id = 2, Guid = "89BFF378-F310-4A28-B753-00A0FF9A852C", TrendlineId = 1, IndexNumber = 9, PreviousRangeGuid = "AC180C9B-E6D2-4138-8E0A-BE31FCE8626D", NextRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58" };
+            TrendBreakDto dto3 = new TrendBreakDto() { Id = 3, Guid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", TrendlineId = 1, IndexNumber = 18, PreviousRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C", NextRangeGuid = "89BFF378-F310-4A28-B753-00A0FF9A852C" };
+            TrendBreakDto dto4 = new TrendBreakDto() { Id = 4, Guid = "562BED90-29F8-423E-8D00-DE699C1D14C3", TrendlineId = 2, IndexNumber = 21, PreviousRangeGuid = "A62DB207-FDDA-45B4-94F6-AE16F4CA9A58", NextRangeGuid = null };
+            trendBreaks.AddRange(new TrendBreakDto[] { dto1, dto2 });
+            clearTrendBreaksTables();
+            repository.UpdateTrendBreaks(trendBreaks);
+
+            //Act
+            dto1.NextRangeGuid = System.Guid.NewGuid().ToString();
+            dto2.NextRangeGuid = System.Guid.NewGuid().ToString();
+            repository.UpdateTrendBreaks(new TrendBreakDto[] { dto1, dto2, dto3, dto4 });
+
+            //Assert
+            Assert.IsTrue(repository.GetTrendBreaks(1).HasEqualItems(new TrendBreakDto[] { dto1, dto2, dto3 }));
+            Assert.IsTrue(repository.GetTrendBreaks(2).HasEqualItems(new TrendBreakDto[] { dto4 }));
+
+        }
+
+
         #endregion UPDATE TREND BREAKS
 
 
         #region GET TREND BREAKS
+
+
+        [TestMethod]
+        public void GetTrendBreaks_returnProperDtoCollection()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            TrendBreakDto[] breaks = getDefaultTrendBreakDtosArray();
+            clearTrendBreaksTables();
+            repository.UpdateTrendBreaks(breaks);
+
+            //Act
+            IEnumerable<TrendBreakDto> dtos = repository.GetTrendBreaks(1).ToArray();
+
+            //Assert
+            IEnumerable<TrendBreakDto> expected = new TrendBreakDto[] { breaks[0], breaks[1], breaks[2] };
+            bool areEqualArrays = expected.HasEqualItems(dtos);
+            Assert.IsTrue(areEqualArrays);
+
+        }
+
+        [TestMethod]
+        public void GetTrendBreakById_ReturnsNull_IfThereIsNoTrendlineWithSuchId()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendBreakDto> trendBreaks = new List<TrendBreakDto>();
+            trendBreaks.AddRange(new TrendBreakDto[] { getDefaultTrendBreakDto() });
+            clearTrendBreaksTables();
+            repository.UpdateTrendBreaks(trendBreaks);
+
+            //Act
+            TrendBreakDto resultDto = repository.GetTrendBreakById(50);
+
+            //Assert
+            Assert.IsNull(resultDto);
+
+        }
+
+        [TestMethod]
+        public void GetTrendBreakById_ReturnsProperTrendlineDto_IfExists()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendBreakDto> trendBreaks = new List<TrendBreakDto>();
+            TrendBreakDto expectedDto = getDefaultTrendBreakDto();
+            trendBreaks.AddRange(new TrendBreakDto[] { expectedDto });
+            clearTrendBreaksTables();
+            repository.UpdateTrendBreaks(trendBreaks);
+
+            //Act
+            TrendBreakDto resultDto = repository.GetTrendBreakById(expectedDto.Id);
+
+            //Assert
+            var areEqual = expectedDto.Equals(resultDto);
+            Assert.IsTrue(areEqual);
+
+        }
+
+
         #endregion GET TREND BREAKS
 
 
 
 
         #region UPDATE TREND RANGES
+
+        private TrendRangeDto getDefaultTrendRangeDto()
+        {
+            return new TrendRangeDto()
+            {
+                Id = DEFAULT_ID,
+                Guid = DEFAULT_GUID,
+                TrendlineId = DEFAULT_TRENDLINE_ID,
+                StartIndex = DEFAULT_START_INDEX,
+                EndIndex = DEFAULT_END_INDEX,
+                QuotationsCounter = DEFAULT_QUOTATIONS_COUNTER,
+                TotalDistance = DEFAULT_TOTAL_DISTANCE,
+                PreviousBreakGuid = DEFAULT_PREVIOUS_BREAK_GUID,
+                PreviousHitGuid = DEFAULT_PREVIOUS_HIT_TYPE,
+                NextBreakGuid = DEFAULT_NEXT_BREAK_TYPE,
+                NextHitGuid = DEFAULT_NEXT_HIT_GUID
+            };
+        }
+
+        private TrendRangeDto[] getDefaultTrendRangeDtosArray()
+        {
+            TrendRangeDto[] arr = new TrendRangeDto[4];
+            arr[0] = new TrendRangeDto()
+            {
+                Id = 1,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 1,
+                StartIndex = 2,
+                EndIndex = 9,
+                QuotationsCounter = 8,
+                TotalDistance = 1.23,
+                Value = 21.04,
+                PreviousBreakGuid = null,
+                PreviousHitGuid = System.Guid.NewGuid().ToString(),
+                NextBreakGuid = System.Guid.NewGuid().ToString(),
+                NextHitGuid = null
+            };
+            arr[1] = new TrendRangeDto()
+            {
+                Id = 2,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 1,
+                StartIndex = 10,
+                EndIndex = 18,
+                QuotationsCounter = 8,
+                TotalDistance = 1.34,
+                Value = 22.04,
+                PreviousBreakGuid = System.Guid.NewGuid().ToString(),
+                PreviousHitGuid = null,
+                NextHitGuid = System.Guid.NewGuid().ToString(),
+                NextBreakGuid = null
+            };
+            arr[2] = new TrendRangeDto()
+            {
+                Id = 3,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 1,
+                StartIndex = 19,
+                EndIndex = null,
+                QuotationsCounter = 10,
+                TotalDistance = 1.23,
+                Value = 23.04,
+                PreviousBreakGuid = null,
+                PreviousHitGuid = System.Guid.NewGuid().ToString(),
+                NextBreakGuid = System.Guid.NewGuid().ToString(),
+                NextHitGuid = null
+            };
+            arr[3] = new TrendRangeDto()
+            {
+                Id = 4,
+                Guid = System.Guid.NewGuid().ToString(),
+                TrendlineId = 2,
+                StartIndex = 10,
+                EndIndex = 18,
+                QuotationsCounter = 8,
+                TotalDistance = 1.34,
+                Value = 22.04,
+                PreviousBreakGuid = System.Guid.NewGuid().ToString(),
+                PreviousHitGuid = null,
+                NextHitGuid = System.Guid.NewGuid().ToString(),
+                NextBreakGuid = null
+            };
+            return arr;
+        }
+
+        [TestMethod]
+        public void UpdateTrendRanges_WorksProperly_IfItemsAreOnlyAdded()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            TrendRangeDto[] trendRanges = getDefaultTrendRangeDtosArray();
+
+            //Act
+            clearTrendRangesTables();
+            repository.UpdateTrendRanges(trendRanges);
+            IEnumerable<TrendRangeDto> actualRecords = repository.GetTrendRanges(1);
+
+            //Assert
+            Assert.IsTrue(repository.GetTrendRanges(1).HasEqualItems(new TrendRangeDto[] { trendRanges[0], trendRanges[1], trendRanges[2] }));
+            Assert.IsTrue(repository.GetTrendRanges(2).HasEqualItems(new TrendRangeDto[] { trendRanges[3] }));
+
+        }
+
+        [TestMethod]
+        public void UpdateTrendRanges_WorksProperly_IfItemsAreOnlyUpdated()
+        {
+
+            //Arrange
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+
+            TrendRangeDto[] trendRanges = getDefaultTrendRangeDtosArray();
+            clearTrendRangesTables();
+            repository.UpdateTrendRanges(trendRanges);
+
+            //Act
+            trendRanges[0].NextBreakGuid = System.Guid.NewGuid().ToString();
+            trendRanges[1].NextBreakGuid = System.Guid.NewGuid().ToString();
+            trendRanges[2].NextHitGuid = System.Guid.NewGuid().ToString();
+            repository.UpdateTrendRanges(trendRanges);
+
+            //Assert
+            Assert.IsTrue(repository.GetTrendRanges(1).HasEqualItems(new TrendRangeDto[] { trendRanges[0], trendRanges[1], trendRanges[2] }));
+            Assert.IsTrue(repository.GetTrendRanges(2).HasEqualItems(new TrendRangeDto[] { trendRanges[3] }));
+
+        }
+
+        [TestMethod]
+        public void UpdateTrendRanges_WorksProperly_IfItemsAreAddedAndUpdated()
+        {
+
+            //Arrange
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+
+            TrendRangeDto[] trendRanges = getDefaultTrendRangeDtosArray();
+            clearTrendRangesTables();
+            repository.UpdateTrendRanges(new TrendRangeDto[] { trendRanges[0], trendRanges[1] });
+
+            //Act
+            trendRanges[0].NextBreakGuid = System.Guid.NewGuid().ToString();
+            trendRanges[1].NextBreakGuid = System.Guid.NewGuid().ToString();
+            repository.UpdateTrendRanges(trendRanges);
+
+            //Assert
+            Assert.IsTrue(repository.GetTrendRanges(1).HasEqualItems(new TrendRangeDto[] { trendRanges[0], trendRanges[1], trendRanges[2] }));
+            Assert.IsTrue(repository.GetTrendRanges(2).HasEqualItems(new TrendRangeDto[] { trendRanges[3] }));
+
+        }
+
+
+
         #endregion UPDATE TREND RANGES
 
 
         #region GET TREND RANGES
+
+
+
+        [TestMethod]
+        public void GetTrendRanges_returnProperDtoCollection()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            TrendRangeDto[] ranges = getDefaultTrendRangeDtosArray();
+            clearTrendRangesTables();
+            repository.UpdateTrendRanges(ranges);
+
+            //Act
+            IEnumerable<TrendRangeDto> dtos = repository.GetTrendRanges(1).ToArray();
+
+            //Assert
+            IEnumerable<TrendRangeDto> expected = new TrendRangeDto[] { ranges[0], ranges[1], ranges[2] };
+            bool areEqualArrays = expected.HasEqualItems(dtos);
+            Assert.IsTrue(areEqualArrays);
+
+        }
+
+        [TestMethod]
+        public void GetTrendRangeById_ReturnsNull_IfThereIsNoTrendlineWithSuchId()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            TrendRangeDto[] ranges = getDefaultTrendRangeDtosArray();
+            clearTrendRangesTables();
+            repository.UpdateTrendRanges(ranges);
+
+            //Act
+            TrendRangeDto resultDto = repository.GetTrendRangeById(50);
+
+            //Assert
+            Assert.IsNull(resultDto);
+
+        }
+
+        [TestMethod]
+        public void GetTrendRangeById_ReturnsProperTrendlineDto_IfExists()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendRangeDto> trendBreaks = new List<TrendRangeDto>();
+            TrendRangeDto expectedDto = getDefaultTrendRangeDto();
+            trendBreaks.AddRange(new TrendRangeDto[] { expectedDto });
+            clearTrendRangesTables();
+            repository.UpdateTrendRanges(trendBreaks);
+
+            //Act
+            TrendRangeDto resultDto = repository.GetTrendRangeById(expectedDto.Id);
+
+            //Assert
+            var areEqual = expectedDto.Equals(resultDto);
+            Assert.IsTrue(areEqual);
+
+        }
+
+
         #endregion GET TREND RANGES
 
 

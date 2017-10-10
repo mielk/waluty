@@ -323,7 +323,7 @@ namespace Stock.Domain.Entities
         }
 
 
-        //public double calculateTrendlineQuotationPoints(Trendline trendHit)
+        //public double calculateTrendlineQuotationPoints(Trendline trendBreak)
         //{
         //    return 0;
         //}

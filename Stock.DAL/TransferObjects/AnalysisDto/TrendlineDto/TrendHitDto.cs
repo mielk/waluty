@@ -50,8 +50,8 @@ namespace Stock.DAL.TransferObjects
             if (compared.ExtremumType != ExtremumType) return false;
             if (!compared.Value.IsEqual(Value)) return false;
             if (!compared.DistanceToLine.IsEqual(DistanceToLine)) return false;
-            if (((compared.PreviousRangeGuid == null) != (PreviousRangeGuid == null)) || (compared.PreviousRangeGuid != null && !compared.PreviousRangeGuid.Equals(PreviousRangeGuid))) return false;
-            if (((compared.NextRangeGuid == null) != (NextRangeGuid == null)) || (compared.NextRangeGuid != null && !compared.NextRangeGuid.Equals(NextRangeGuid))) return false;
+            if (!compared.PreviousRangeGuid.Compare(PreviousRangeGuid)) return false;
+            if (!compared.NextRangeGuid.Compare(NextRangeGuid)) return false;
             return true;
         }
 
@@ -64,7 +64,7 @@ namespace Stock.DAL.TransferObjects
 
         public override string ToString()
         {
-            return "(" + Id + ") Trendline: " + TrendlineId + " | IndexNumber: " + IndexNumber;
+            return "[TrendHit] (" + Id + ") Trendline: " + TrendlineId + " | IndexNumber: " + IndexNumber;
         }
 
 
