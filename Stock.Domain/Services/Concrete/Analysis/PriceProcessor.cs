@@ -84,7 +84,6 @@ namespace Stock.Domain.Services
 
 
 
-
         //private void CheckPriceGap(DataItem item)
         //{
 
@@ -193,15 +192,12 @@ namespace Stock.Domain.Services
 
             Extremum extremum = price.GetExtremum(type);
             IExtremumProcessor processor = getExtremumProcessor();
-            if (extremum == null)
+            if (extremum == null && price.IsNew)
             {
-                if (price.IsNew)
+                if (processor.IsExtremum(dataSet, type))
                 {
-                    if (processor.IsExtremum(dataSet, type))
-                    {
-                        extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate()) { IndexNumber = dataSet.IndexNumber };
-                        price.SetExtremum(extremum);
-                    }
+                    extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetDate()) { IndexNumber = dataSet.IndexNumber };
+                    price.SetExtremum(extremum);
                 }
             }
 

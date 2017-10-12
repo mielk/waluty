@@ -19,5 +19,6 @@ namespace Stock.Domain.Services
         int CalculateLaterCounter(Extremum extremum);
         double CalculateLaterChange(Extremum extremum, int units);
         double CalculateValue(Extremum extremum);
+        IEnumerable<ExtremumGroup> ExtractExtremumGroups(IEnumerable<DataSet> dataSets);
     }
 }

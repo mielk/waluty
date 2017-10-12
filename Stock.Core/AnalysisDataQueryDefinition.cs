@@ -18,15 +18,19 @@ namespace Stock.Core
         public int Limit { get; set; }
         public int SimulationId { get; set; }
 
-        public AnalysisDataQueryDefinition(int assetId, int timeframeId)
+        public AnalysisDataQueryDefinition()
         {
-            this.AssetId = assetId;
-            this.TimeframeId = timeframeId;
             this.StartDate = null;
             this.EndDate = null;
             this.AnalysisTypes = new List<AnalysisType>();
             this.Limit = 0;
             this.SimulationId = 0;
+        }
+
+        public AnalysisDataQueryDefinition(int assetId, int timeframeId) : base()
+        {
+            this.AssetId = assetId;
+            this.TimeframeId = timeframeId;
         }
 
         public AnalysisDataQueryDefinition Clone()
@@ -35,8 +39,9 @@ namespace Stock.Core
             {
                 Limit = this.Limit,
                 StartDate = this.StartDate,
+                SimulationId = this.SimulationId,
                 EndDate = this.EndDate,
-                AnalysisTypes = this.AnalysisTypes,
+                AnalysisTypes = (this.AnalysisTypes != null ? this.AnalysisTypes.ToArray() : new AnalysisType[] { }),
                 StartIndex = this.StartIndex,
                 EndIndex = this.EndIndex
             };

@@ -1,4 +1,46 @@
-﻿//using Stock.Domain.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Stock.Domain.Entities
+{
+    public class ExtremumGroup
+    {
+        public Extremum MasterExtremum { get; set; }
+        public Extremum SecondExtremum { get; set; }
+        public bool IsPeak { get; set; }
+        private bool isModified;
+
+        public ExtremumGroup(Extremum master, Extremum second, bool isPeak)
+        {
+            this.IsPeak = isPeak;
+            this.MasterExtremum = master;
+            if (second != null && (master == null || second.IndexNumber != master.IndexNumber))
+            {
+                this.SecondExtremum = second;
+            }
+        }
+
+        public int GetIndex()
+        {
+            if (MasterExtremum != null)
+            {
+                return MasterExtremum.IndexNumber;
+            }
+            else if (SecondExtremum != null)
+            {
+                return SecondExtremum.IndexNumber;
+            }
+            return 0;
+        }
+
+    }
+}
+
+
+//using Stock.Domain.Enums;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;

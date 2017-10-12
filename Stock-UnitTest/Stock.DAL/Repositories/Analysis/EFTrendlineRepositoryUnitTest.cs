@@ -19,7 +19,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
-        private const string TRENDLINES_TABLE_NAME = "trendRanges";
+        private const string TRENDLINES_TABLE_NAME = "trendlines";
         private const string TREND_HITS_TABLE_NAME = "trend_hits";
         private const string TREND_BREAKS_TABLE_NAME = "trend_breaks";
         private const string TREND_RANGES_TABLE_NAME = "trend_ranges";

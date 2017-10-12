@@ -19,7 +19,7 @@ namespace Stock.Domain.Services
         protected IAnalysisTimestampService timestampService;
         protected DataSet[] dataSetsArray;
         protected Dictionary<AnalysisType, int?> lastIndexes;
-        protected IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
+        protected IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };//, AnalysisType.Trendlines };
 
 
 

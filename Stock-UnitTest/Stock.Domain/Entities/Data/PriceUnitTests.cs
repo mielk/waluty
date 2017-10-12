@@ -646,6 +646,74 @@ namespace Stock_UnitTest.Stock.Domain
         #endregion EQUALS
 
 
+        #region SETTERS
+
+        [TestMethod]
+        public void PriceSetExtremum_AfterSettingPeakByClose_ProperExtremumIsAssigned()
+        {
+
+            //Arrange
+            Price price = getDefaultPrice();
+
+            //Act
+            Extremum peakByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByClose, price.GetDate());
+            price.SetExtremum(peakByClose);
+
+            //Assert
+            Assert.IsTrue(peakByClose == price.PeakByClose);
+
+        }
+
+        [TestMethod]
+        public void PriceSetExtremum_AfterSettingPeakByHigh_ProperExtremumIsAssigned()
+        {
+
+            //Arrange
+            Price price = getDefaultPrice();
+
+            //Act
+            Extremum peakByHigh = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByHigh, price.GetDate());
+            price.SetExtremum(peakByHigh);
+
+            //Assert
+            Assert.IsTrue(peakByHigh == price.PeakByHigh);
+
+        }
+
+        [TestMethod]
+        public void PriceSetExtremum_AfterSettingTroughByClose_ProperExtremumIsAssigned()
+        {
+
+            //Arrange
+            Price price = getDefaultPrice();
+
+            //Act
+            Extremum troughByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByClose, price.GetDate());
+            price.SetExtremum(troughByClose);
+
+            //Assert
+            Assert.IsTrue(troughByClose == price.TroughByClose);
+
+        }
+
+        [TestMethod]
+        public void PriceSetExtremum_AfterSettingTroughByLow_ProperExtremumIsAssigned()
+        {
+
+            //Arrange
+            Price price = getDefaultPrice();
+
+            //Act
+            Extremum troughByLow = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByLow, price.GetDate());
+            price.SetExtremum(troughByLow);
+
+            //Assert
+            Assert.IsTrue(troughByLow == price.TroughByLow);
+
+        }
+        #endregion SETTERS
+
+
 
     }
 }

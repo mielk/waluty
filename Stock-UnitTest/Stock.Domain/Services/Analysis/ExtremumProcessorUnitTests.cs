@@ -27,6 +27,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [TestMethod]
         public void AfterBeingProcessed_ItemExtremumHasItsUpdatedFlagSetToTrue()
         {
+            Assert.Fail("Zastanowić się nad tym testem, czy powinien być w tym miejscu.");
+            Assert.Fail("Na pewno trzeba to sprawdzić, ale chyba z poziomu klasy wywołującej");
+            Assert.Fail("i z bardziej skomplikowanymi parametrami wejściowymi.");
             Assert.Fail("Not implemented yet");
         }
 
@@ -4284,5 +4287,424 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         #endregion CALCULATE_LATER_CHANGE
 
+
+
+        #region EXTRACT_EXTREMUM_GROUPS
+
+        [TestMethod]
+        public void ExtractExtremumGroups_IfThereIsNoExtremumByCloseInSourceCollection_ReturnsNothing()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            Assert.IsTrue(result.Count() == 0);
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_ReturnsProperExtremumGroupForPeakByCloseAndHighAtTheSameQuotation()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(peakByClose);
+            dataSet3.GetPrice().SetExtremum(peakByHigh);
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup group = result.ElementAt(0);
+            
+            Assert.IsTrue(result.Count() == 1);
+            Assert.IsNotNull(group);
+            Assert.IsTrue(group.IsPeak);
+            Assert.IsTrue(group.MasterExtremum == peakByClose);
+            Assert.IsNull(group.SecondExtremum);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_ReturnsProperExtremumGroupForPeakByCloseAndHighAtPreviousQuotation()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09222, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            dataSet2.GetPrice().SetExtremum(peakByHigh);            
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(peakByClose);
+
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup group = result.ElementAt(0);
+
+            Assert.IsTrue(result.Count() == 1);
+            Assert.IsNotNull(group);
+            Assert.IsTrue(group.IsPeak);
+            Assert.IsTrue(group.MasterExtremum == peakByClose);
+            Assert.IsNotNull(group.SecondExtremum);
+            Assert.IsTrue(group.SecondExtremum == peakByHigh);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_ReturnsProperExtremumGroupForPeakByCloseAndHighAtNextQuotation()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09192, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0922, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(peakByClose);
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 40, 0)) { IndexNumber = 4 };
+            dataSet4.GetPrice().SetExtremum(peakByHigh);
+
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup group = result.ElementAt(0);
+
+            Assert.IsTrue(result.Count() == 1);
+            Assert.IsNotNull(group);
+            Assert.IsTrue(group.IsPeak);
+            Assert.IsTrue(group.MasterExtremum == peakByClose);
+            Assert.IsNotNull(group.SecondExtremum);
+            Assert.IsTrue(group.SecondExtremum == peakByHigh);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_ReturnsProperExtremumGroupForTroughByCloseAndLowAtTheSameQuotation()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09192, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09188, Low = 1.09126, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09162, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(troughByClose);
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(troughByLow);
+
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup group = result.ElementAt(0);
+
+            Assert.IsTrue(result.Count() == 1);
+            Assert.IsNotNull(group);
+            Assert.IsFalse(group.IsPeak);
+            Assert.IsTrue(group.MasterExtremum == troughByClose);
+            Assert.IsNull(group.SecondExtremum);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_ReturnsProperExtremumGroupForTroughByCloseAndLowAtPreviousQuotation()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09192, Low = 1.09115, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09188, Low = 1.09126, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09162, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            dataSet2.GetPrice().SetExtremum(troughByLow);
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(troughByClose);
+
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup group = result.ElementAt(0);
+
+            Assert.IsTrue(result.Count() == 1);
+            Assert.IsNotNull(group);
+            Assert.IsFalse(group.IsPeak);
+            Assert.IsTrue(group.MasterExtremum == troughByClose);
+            Assert.IsNotNull(group.SecondExtremum);
+            Assert.IsTrue(group.SecondExtremum == troughByLow);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_ReturnsProperExtremumGroupForTroughByCloseAndLowAtNextQuotation()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09192, Low = 1.09135, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09188, Low = 1.09126, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09111, Close = 1.09162, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 40, 0)) { IndexNumber = 4 };
+            dataSet4.GetPrice().SetExtremum(troughByLow);
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(troughByClose);
+
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup group = result.ElementAt(0);
+
+            Assert.IsTrue(result.Count() == 1);
+            Assert.IsNotNull(group);
+            Assert.IsFalse(group.IsPeak);
+            Assert.IsTrue(group.MasterExtremum == troughByClose);
+            Assert.IsNotNull(group.SecondExtremum);
+            Assert.IsTrue(group.SecondExtremum == troughByLow);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_IfThereIsOrphanedByHighExtremum_ItIsReturnedAsExtremumGroup()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09192, Low = 1.09115, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09208, Low = 1.09126, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09132, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09182, Volume = 1392, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09172, Volume = 1392, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(peakByHigh);
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            dataSet5.GetPrice().SetExtremum(peakByClose);
+
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4, dataSet5, dataSet6 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup groupHigh = result.ElementAt(0);
+            ExtremumGroup groupClose = result.ElementAt(1);
+
+            Assert.IsTrue(result.Count() == 2);
+
+            Assert.IsNotNull(groupHigh);
+            Assert.IsTrue(groupHigh.IsPeak);
+            Assert.IsNull(groupHigh.MasterExtremum);
+            Assert.IsNotNull(groupHigh.SecondExtremum);
+            Assert.IsTrue(groupHigh.SecondExtremum == peakByHigh);
+
+            Assert.IsNotNull(groupClose);
+            Assert.IsTrue(groupClose.IsPeak);
+            Assert.IsNotNull(groupClose.MasterExtremum);
+            Assert.IsNull(groupClose.SecondExtremum);
+            Assert.IsTrue(groupClose.MasterExtremum == peakByClose);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_IfThereIsOrphanedByLowExtremum_ItIsReturnedAsExtremumGroup()
+        {
+
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09192, Low = 1.09115, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.0918, Low = 1.09096, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09101, Close = 1.09132, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09101, Close = 1.09112, Volume = 1392, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09101, Close = 1.09172, Volume = 1392, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            dataSet3.GetPrice().SetExtremum(troughByLow);
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            dataSet5.GetPrice().SetExtremum(troughByClose);
+
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+            mockedManager.Setup(m => m.GetDataSet(5)).Returns(dataSet5);
+            mockedManager.Setup(m => m.GetDataSet(6)).Returns(dataSet6);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4, dataSet5, dataSet6 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            ExtremumGroup groupLow = result.ElementAt(0);
+            ExtremumGroup groupClose = result.ElementAt(1);
+
+            Assert.IsTrue(result.Count() == 2);
+
+            Assert.IsNotNull(groupLow);
+            Assert.IsFalse(groupLow.IsPeak);
+            Assert.IsNull(groupLow.MasterExtremum);
+            Assert.IsNotNull(groupLow.SecondExtremum);
+            Assert.IsTrue(groupLow.SecondExtremum == troughByLow);
+
+            Assert.IsNotNull(groupClose);
+            Assert.IsFalse(groupClose.IsPeak);
+            Assert.IsNotNull(groupClose.MasterExtremum);
+            Assert.IsNull(groupClose.SecondExtremum);
+            Assert.IsTrue(groupClose.MasterExtremum == troughByClose);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_IfThereIsPeakByCloseExtremumAtFirstQuotation_ItIsSkipped()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 25, 0)) { IndexNumber = 1 };
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            dataSet1.GetPrice().SetExtremum(peakByClose);
+            dataSet2.GetPrice().SetExtremum(peakByHigh);
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            Assert.IsTrue(result.Count() == 0);
+
+        }
+
+        [TestMethod]
+        public void ExtractExtremumGroups_IfThereIsTroughByCloseExtremumAtFirstQuotation_ItIsSkipped()
+        {
+            //Arrange
+            Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
+            DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
+            DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
+            DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 25, 0)) { IndexNumber = 1 };
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            dataSet1.GetPrice().SetExtremum(troughByClose);
+            dataSet2.GetPrice().SetExtremum(troughByLow);
+            DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
+            mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
+            mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
+            mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
+            mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
+
+            DataSet[] dataSets = new DataSet[] { dataSet1, dataSet2, dataSet3, dataSet4 };
+
+            //Act
+            ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
+
+            //Assert
+            var result = processor.ExtractExtremumGroups(dataSets);
+            Assert.IsTrue(result.Count() == 0);
+
+        }
+
+        #endregion EXTRACT_EXTREMUM_GROUPS
+
     }
+
 }

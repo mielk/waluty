@@ -25,7 +25,7 @@ namespace Stock.DAL.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TrendlineDto>().ToTable("trendRanges");
+            modelBuilder.Entity<TrendlineDto>().ToTable("trendlines");
             modelBuilder.Entity<TrendHitDto>().ToTable("trend_hits");
             modelBuilder.Entity<TrendBreakDto>().ToTable("trend_breaks");
             modelBuilder.Entity<TrendRangeDto>().ToTable("trend_ranges");

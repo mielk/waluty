@@ -19,7 +19,7 @@ namespace Stock_UnitTest.Stock.Core.Enums
 
             //Arrange
             var actualAnalysisTypes = new AnalysisType[] { "quotations".ToAnalysisType(), "macd".ToAnalysisType(), "adx".ToAnalysisType(), 
-                                                           "candlesticks".ToAnalysisType(), "prices".ToAnalysisType(), "trendRanges".ToAnalysisType(),
+                                                           "candlesticks".ToAnalysisType(), "prices".ToAnalysisType(), "trendlines".ToAnalysisType(),
                                                             "dataset".ToAnalysisType() };
 
             //Assert
@@ -60,11 +60,10 @@ namespace Stock_UnitTest.Stock.Core.Enums
         }
 
         [TestMethod]
-        public void ToAnalysisTypes_ReturnsProperSetOfValues_ForLowerCaseNames()
-        {
+        public void ToAnalysisTypes_ReturnsProperSetOfValues_ForLowerCaseNames(){
 
             //Arrange
-            string[] names = new string[] { "quotations", "macd", "adx", "candlesticks", "prices", "trendRanges" };
+            string[] names = new string[] { "quotations", "macd", "adx", "candlesticks", "prices", "trendlines" };
 
             //Act
             var actualAnalysisTypes = names.ToAnalysisTypes();

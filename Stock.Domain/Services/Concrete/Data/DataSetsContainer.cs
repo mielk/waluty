@@ -189,7 +189,12 @@ namespace Stock.Domain.Services
 
             private void appendDataForSpecificAnalysisType(IEnumerable<DataSet> dataSets, IDataAccessService service, AnalysisType analysisType, AnalysisDataQueryDefinition queryDef)
             {
-                if (service == null) throw new Exception(string.Format("Service for analysis type {0} not found", analysisType));
+                if (service == null)
+                {
+                    //Niektóre serwisy nie mają danych wg notowań. np. TrendlineService.
+                    return;
+                    //throw new Exception(string.Format("Service for analysis type {0} not found", analysisType));
+                }
 
                 IEnumerable<IDataUnit> units = service.GetUnits(queryDef).ToList();
                 foreach (var unit in units)

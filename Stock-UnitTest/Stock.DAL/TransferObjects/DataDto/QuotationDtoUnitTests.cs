@@ -14,6 +14,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
     public class QuotationDtoUnitTests
     {
 
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const int DEFAULT_INDEX_NUMBER = 10;
 
         #region COPY_PROPERTIES
 
@@ -287,12 +290,263 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         #endregion EQUALS
 
 
-        [TestMethod]
-        public void IsInIndexRane_WszystkieTesty()
+        private QuotationDto getDefaultQuotation_ForIsInIndexRangeTest()
         {
-            Assert.Fail("Not implemented yet");
+            return new QuotationDto()
+            {
+                AssetId = DEFAULT_ASSET_ID,
+                TimeframeId = DEFAULT_TIMEFRAME_ID,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                OpenPrice = 1,
+                HighPrice = 1.1,
+                LowPrice = 0.9,
+                ClosePrice = 1
+            };
         }
 
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfBothDelimitersAreNull()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+            
+            //Act
+            var result = quotation.IsInIndexRange(null, null);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsNullAndEndLimitIsLater()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(null, DEFAULT_INDEX_NUMBER + 5);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsNullAndEndLimitIsEqual()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(null, DEFAULT_INDEX_NUMBER);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsEarlierAndEndLimitIsNull()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER - 2, null);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsEarlierAndEndLimitIsLater()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER - 5, DEFAULT_INDEX_NUMBER + 5);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsEarlierAndEndLimitIsEqual()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER - 5, DEFAULT_INDEX_NUMBER);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsEqualAndEndLimitIsNull()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER, null);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsEqualAndEndLimitIsEqual()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER, DEFAULT_INDEX_NUMBER);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsTrue_IfStartLimitIsEqualAndEndLimitIsLater()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER, DEFAULT_INDEX_NUMBER + 5);
+
+            //Assert
+            Assert.IsTrue(result);
+
+        }
+
+
+
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsFalse_IfStartLimitIsLaterAndEndLimitIsEarlier()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER + 1, DEFAULT_INDEX_NUMBER - 1);
+
+            //Assert
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsFalse_IfStartLimitIsLaterAndEndLimitIsNull()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER + 5, null);
+
+            //Assert
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsFalse_IfStartLimitIsLaterAndEndLimitIsLater()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER + 1, DEFAULT_INDEX_NUMBER + 1);
+
+            //Assert
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsFalse_IfStartLimitIsLaterAndEndLimitIsEqual()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER + 1, DEFAULT_INDEX_NUMBER);
+
+            //Assert
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsFalse_IfStartLimitIsNullAndEndLimitIsEarlier()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(null, DEFAULT_INDEX_NUMBER - 1);
+
+            //Assert
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsFalse_IfStartLimitIsEqualAndEndLimitIsEarlier()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER, DEFAULT_INDEX_NUMBER - 1);
+
+            //Assert
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        public void IsInIndexRange_ReturnsFalse_IfStartLimitIsEarlierAndEndLimitIsEarlier()
+        {
+
+            //Arrange
+            QuotationDto quotation = getDefaultQuotation_ForIsInIndexRangeTest();
+
+            //Act
+            var result = quotation.IsInIndexRange(DEFAULT_INDEX_NUMBER - 1, DEFAULT_INDEX_NUMBER - 1);
+
+            //Assert
+            Assert.IsFalse(result);
+        }
 
     }
 

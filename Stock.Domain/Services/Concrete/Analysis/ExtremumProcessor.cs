@@ -273,6 +273,141 @@ namespace Stock.Domain.Services
             return value;
         }
 
+
+
+
+
+
+
+        public IEnumerable<ExtremumGroup> ExtractExtremumGroups(IEnumerable<DataSet> dataSets)
+        {
+            List<ExtremumGroup> groups = new List<ExtremumGroup>();
+            DataSet[] byDate = dataSets.OrderBy(ds => ds.Date).ToArray();
+
+            for (int i = 1; i < byDate.Length; i++)
+            {
+
+                ExtremumGroup peakGroup = getPeakGroup(byDate, i);
+                if (peakGroup != null)
+                {
+                    groups.Add(peakGroup);
+                }
+
+                ExtremumGroup troughGroup = getTroughGroup(byDate, i);
+                if (troughGroup != null)
+                {
+                    groups.Add(troughGroup);
+                }
+
+            }
+            return groups.OrderBy(e => e.GetIndex()).ToArray();
+        }
+
+        private ExtremumGroup getPeakGroup(DataSet[] dataSetsByDate, int index)
+        {
+            DataSet ds = dataSetsByDate[index];
+            Extremum peakByClose = getExtremum(dataSetsByDate, index, ExtremumType.PeakByClose);
+            if (peakByClose != null)
+            {
+                if (ds.price.PeakByHigh == null)
+                {
+                    Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.PeakByHigh);
+                    if (previous != null)
+                    {
+                        return new ExtremumGroup(peakByClose, previous, true);
+                    }
+                    else
+                    {
+                        Extremum next = getExtremum(dataSetsByDate, index + 1, ExtremumType.PeakByHigh);
+                        if (next != null)
+                        {
+                            return new ExtremumGroup(peakByClose, next, true);
+                        }
+                    }
+                }
+                return new ExtremumGroup(peakByClose, null, true);
+            }
+            else
+            {
+                Extremum peakByHigh = getExtremum(dataSetsByDate, index, ExtremumType.PeakByHigh);
+                if (peakByHigh != null)
+                {
+                    Extremum next = getExtremum(dataSetsByDate, index + 1, ExtremumType.PeakByClose);
+                    if (next == null)
+                    {
+                        Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.PeakByClose);
+                        if (previous == null)
+                        {
+                            return new ExtremumGroup(null, peakByHigh, true);
+                        }
+                    }
+                }
+            }
+
+            return null;
+
+        }
+
+        private ExtremumGroup getTroughGroup(DataSet[] dataSetsByDate, int index)
+        {
+            DataSet ds = dataSetsByDate[index];
+            Extremum troughByClose = getExtremum(dataSetsByDate, index, ExtremumType.TroughByClose);
+            if (troughByClose != null)
+            {
+                if (ds.price.TroughByLow == null)
+                {
+                    Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.TroughByLow);
+                    if (previous != null)
+                    {
+                        return new ExtremumGroup(troughByClose, previous, false);
+                    }
+                    else
+                    {
+                        Extremum next = getExtremum(dataSetsByDate, index + 1, ExtremumType.TroughByLow);
+                        if (next != null)
+                        {
+                            return new ExtremumGroup(troughByClose, next, false);
+                        }
+                    }
+                }
+                return new ExtremumGroup(troughByClose, null, false);
+            }
+            else
+            {
+                Extremum troughByLow = getExtremum(dataSetsByDate, index, ExtremumType.TroughByLow);
+                if (troughByLow != null)
+                {
+                    Extremum next = getExtremum(dataSetsByDate, index + 1, ExtremumType.TroughByClose);
+                    if (next == null)
+                    {
+                        Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.TroughByClose);
+                        if (previous == null)
+                        {
+                            return new ExtremumGroup(null, troughByLow, false);
+                        }
+                    }
+                }
+            }
+
+            return null;
+
+        }
+
+        private Extremum getExtremum(DataSet[] dataSetsByDate, int index, ExtremumType extremumType)
+        {
+            if (index >= 0 && index < dataSetsByDate.Length)
+            {
+                DataSet ds = dataSetsByDate[index];
+                Price price = ds.price;
+                if (price != null)
+                {
+                    return price.GetExtremum(extremumType);
+                }
+            }
+            return null;
+        }
+
+
     }
 
 }

@@ -75,6 +75,54 @@ namespace Stock.Domain.Entities
         #endregion CONSTRUCTORS
 
 
+        #region SYSTEM.OBJECT
+
+        public override bool Equals(object obj)
+        {
+            //const double MAX_VALUE_DIFFERENCE = 0.000000001d;
+            if (obj == null) return false;
+            if (obj.GetType() != typeof(Price)) return false;
+
+            Price compared = (Price)obj;
+            if ((compared.Id) != Id) return false;
+            if ((compared.SimulationId) != SimulationId) return false;
+            if ((compared.IndexNumber) != IndexNumber) return false;
+            if (compared.Date.CompareTo(Date) != 0) return false;
+            if ((compared.AssetId) != AssetId) return false;
+            if ((compared.TimeframeId) != TimeframeId) return false;
+            if (!compared.CloseDelta.IsEqual(CloseDelta)) return false;
+            if ((compared.Direction2D) != Direction2D) return false;
+            if ((compared.Direction3D) != Direction3D) return false;
+            if (!compared.PriceGap.IsEqual(PriceGap)) return false;
+            if (PeakByClose == null && compared.GetExtremum(ExtremumType.PeakByClose) != null) return false;
+            if (PeakByClose != null && !PeakByClose.Equals(compared.PeakByClose)) return false;
+            if (PeakByHigh == null && compared.GetExtremum(ExtremumType.PeakByHigh) != null) return false;
+            if (PeakByHigh != null && !PeakByHigh.Equals(compared.PeakByHigh)) return false;
+            if (TroughByClose == null && compared.GetExtremum(ExtremumType.TroughByClose) != null) return false;
+            if (TroughByClose != null && !TroughByClose.Equals(compared.TroughByClose)) return false;
+            if (TroughByLow == null && compared.GetExtremum(ExtremumType.TroughByLow) != null) return false;
+            if (TroughByLow != null && !TroughByLow.Equals(compared.TroughByLow)) return false;
+            if (!compared.CloseRatio.IsEqual(CloseRatio)) return false;
+            if (!compared.ExtremumRatio.IsEqual(ExtremumRatio)) return false;
+            if (compared.IsUpdated != IsUpdated) return false;
+            if (compared.IsNew != IsNew) return false;
+            return true;
+
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Date.ToString() + " | " + TimeframeId + " | " + AssetId;
+        }
+
+        #endregion SYSTEM.OBJECT
+
+
         #region GETTERS
 
         public DateTime GetDate()
@@ -171,34 +219,16 @@ namespace Stock.Domain.Entities
         #endregion SETTERS
 
 
-        public void ApplyExtremumValue(ExtremumType type, Extremum extremum)
-        {
-            //switch (type)
-            //{
-            //    case ExtremumType.PeakByClose:
-            //        PeakByCloseExtremum = extremum;
-            //        PeakByClose = extremum == null ? 0 : extremum.Evaluate();
-            //        break;
-            //    case ExtremumType.PeakByHigh:
-            //        PeakByHighExtremum= extremum;
-            //        PeakByHigh = extremum == null ? 0 : extremum.Evaluate();
-            //        break;
-            //    case ExtremumType.TroughByClose:
-            //        TroughByCloseExtremum = extremum;
-            //        TroughByClose = extremum == null ? 0 : extremum.Evaluate();
-            //        break;
-            //    case ExtremumType.TroughByLow:
-            //        TroughByLowExtremum = extremum;
-            //        TroughByLow = extremum == null ? 0 : extremum.Evaluate();
-            //        break;
-            //}
-        }
 
-        public void ApplyExtremumValue(Extremum extremum)
-        {
-            ExtremumType type = extremum.Type;
-            ApplyExtremumValue(type, extremum);
-        }
+
+
+
+
+
+
+
+
+
 
         public bool IsExtremumByClosePrice()
         {
@@ -345,50 +375,6 @@ namespace Stock.Domain.Entities
 
         //}
 
-
-
-        public override bool Equals(object obj)
-        {
-            const double MAX_VALUE_DIFFERENCE = 0.000000001d;
-            if (obj == null) return false;
-            if (obj.GetType() != typeof(Price)) return false;
-
-            Price compared = (Price)obj;
-            if ((compared.Id) != Id) return false;
-            if ((compared.SimulationId) != SimulationId) return false;
-            if ((compared.IndexNumber) != IndexNumber) return false;
-            if (compared.Date.CompareTo(Date) != 0) return false;
-            if ((compared.AssetId) != AssetId) return false;
-            if ((compared.TimeframeId) != TimeframeId) return false;
-            if (!compared.CloseDelta.IsEqual(CloseDelta)) return false;
-            if ((compared.Direction2D) != Direction2D) return false;
-            if ((compared.Direction3D) != Direction3D) return false;
-            if (!compared.PriceGap.IsEqual(PriceGap)) return false;
-            if (PeakByClose == null && compared.GetExtremum(ExtremumType.PeakByClose) != null) return false;
-            if (PeakByClose != null && !PeakByClose.Equals(compared.PeakByClose)) return false;
-            if (PeakByHigh == null && compared.GetExtremum(ExtremumType.PeakByHigh) != null) return false;
-            if (PeakByHigh != null && !PeakByHigh.Equals(compared.PeakByHigh)) return false;
-            if (TroughByClose == null && compared.GetExtremum(ExtremumType.TroughByClose) != null) return false;
-            if (TroughByClose != null && !TroughByClose.Equals(compared.TroughByClose)) return false;
-            if (TroughByLow == null && compared.GetExtremum(ExtremumType.TroughByLow) != null) return false;
-            if (TroughByLow != null && !TroughByLow.Equals(compared.TroughByLow)) return false;
-            if (!compared.CloseRatio.IsEqual(CloseRatio)) return false;
-            if (!compared.ExtremumRatio.IsEqual(ExtremumRatio)) return false;
-            if (compared.IsUpdated != IsUpdated) return false;
-            if (compared.IsNew != IsNew) return false;
-            return true;
-
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return Date.ToString() + " | " + TimeframeId + " | " + AssetId;
-        }
 
 
 

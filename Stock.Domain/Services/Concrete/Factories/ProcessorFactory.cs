@@ -12,8 +12,10 @@ namespace Stock.Domain.Services
     {
 
         private static ProcessorFactory instance;
-        private static PriceProcessController priceProcessorController;
+        private static PriceProcessController priceProcessController;
+        private static TrendlineProcessController trendlineProcessController;
         private static IPriceProcessor priceProcessor;
+        private static ITrendlineProcessor trendlineProcessor;
         private static IExtremumProcessor extremumProcessor;
 
 
@@ -45,18 +47,28 @@ namespace Stock.Domain.Services
         {
             switch (analysisType)
             {
-                case AnalysisType.Prices: return GetPriceProcessController();
+                case AnalysisType.Prices:       return GetPriceProcessController();
+                case AnalysisType.Trendlines:   return GetTrendlineProcessController();
             }
             return null;
         }
 
         public PriceProcessController GetPriceProcessController()
         {
-            if (priceProcessorController == null)
+            if (priceProcessController == null)
             {
-                priceProcessorController = new PriceProcessController();
+                priceProcessController = new PriceProcessController();
             }
-            return priceProcessorController;
+            return priceProcessController;
+        }
+
+        public TrendlineProcessController GetTrendlineProcessController()
+        {
+            if (trendlineProcessController == null)
+            {
+                trendlineProcessController = new TrendlineProcessController();
+            }
+            return trendlineProcessController;
         }
 
         #endregion CONTROLLERS
@@ -90,6 +102,15 @@ namespace Stock.Domain.Services
                 extremumProcessor = new ExtremumProcessor(manager);
             }
             return extremumProcessor;
+        }
+
+        public ITrendlineProcessor GetTrendlineProcessor(IProcessManager manager)
+        {
+            if (trendlineProcessor == null)
+            {
+                trendlineProcessor = new TrendlineProcessor(manager);
+            }
+            return trendlineProcessor;
         }
 
         #endregion PROCESSORS
