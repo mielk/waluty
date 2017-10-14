@@ -13,6 +13,7 @@ namespace Stock.Domain.Services
         DataSet GetDataSet(int index);
         IEnumerable<DataSet> GetDataSets();
         IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef);
+        IEnumerable<Trendline> GetTrendlines();
         int GetDataSetIndex(DateTime? datetime);
         int? GetAnalysisLastUpdatedIndex(AnalysisType type);
         void Run();

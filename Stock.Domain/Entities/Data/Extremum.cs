@@ -53,6 +53,15 @@ namespace Stock.Domain.Entities
             this.IndexNumber = indexNumber;
         }
 
+        public Extremum(AtsSettings settings, ExtremumType type, int indexNumber)
+        {
+            this.AssetId = settings.AssetId;
+            this.TimeframeId = settings.TimeframeId;
+            this.SimulationId = settings.SimulationId;
+            this.Type = type;
+            this.IndexNumber = indexNumber;
+        }
+
         #endregion CONSTRUCTORS
 
 

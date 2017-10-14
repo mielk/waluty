@@ -19,7 +19,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
     public class TrendlineProcessorUnitTests
     {
 
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const int DEFAULT_SIMULATION_ID = 1;
         //private double MAX_DOUBLE_COMPARISON_DIFFERENCE = 0.00000000001;
+
+
+        private AtsSettings getDefaultAtsSettings()
+        {
+            return new AtsSettings(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID);
+        }
 
 
         #region CAN_CREATE_TRENDLINES
@@ -96,13 +105,62 @@ namespace Stock_UnitTest.Stock.Domain.Services
         [TestMethod]
         public void GetChartPoints_IfOnlyMasterPeakExtremumWithLongShadow_OnlyLimitedNumberOfPointsIsCreated()
         {
-            Assert.Fail("Not implemented");
+
+            //Arrange
+            Extremum master = new Extremum(getDefaultAtsSettings(), ExtremumType.PeakByClose, 5);
+            Quotation quotation5 = new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.09193, High = 1.09307, Low = 1.09165, Close = 1.09207, Volume = 1819, IndexNumber = 5 };
+            DataSet ds5 = new DataSet(quotation5);
+            ExtremumGroup extremumGroup = new ExtremumGroup(master, null, true);
+            Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
+            mockManager.Setup(m => m.GetDataSet(5)).Returns(ds5);
+
+            //Act
+            TrendlineProcessor processor = new TrendlineProcessor(mockManager.Object);
+
+            //Assert
+            processor.MaxChartPointsForExtremumGroup = 6;
+            processor.MinDistanceBetweenChartPoints = 0.0001;
+            var result = processor.GetChartPoints(extremumGroup);
+            var expectedResult = new List<ChartPoint>();
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09207));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09217));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09227));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09237));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09247));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09257));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09267));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09277));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09287));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09297));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09307));
+            var isEqual = expectedResult.HasEqualItems(result);
+            Assert.IsTrue(isEqual);
         }
 
         [TestMethod]
         public void GetChartPoints_IfOnlyMasterPeakExtremumWithShortShadow_PointsDifferByOnePipBetweenThemselves()
         {
-            Assert.Fail("Not implemented");
+
+            //Arrange
+            Extremum master = new Extremum(getDefaultAtsSettings(), ExtremumType.PeakByClose, 5);
+            Quotation quotation5 = new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.09193, High = 1.09209, Low = 1.09165, Close = 1.09207, Volume = 1819, IndexNumber = 5 };
+            DataSet ds5 = new DataSet(quotation5);
+            ExtremumGroup extremumGroup = new ExtremumGroup(master, null, true);
+            Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
+            mockManager.Setup(m => m.GetDataSet(5)).Returns(ds5);
+
+            //Act
+            TrendlineProcessor processor = new TrendlineProcessor(mockManager.Object);
+
+            //Assert
+            processor.MaxChartPointsForExtremumGroup = 6;
+            processor.MinDistanceBetweenChartPoints = 0.0001;
+            var result = processor.GetChartPoints(extremumGroup);
+            var expectedResult = new List<ChartPoint>();
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09207));
+            expectedResult.Add(new ChartPoint(master.IndexNumber, 1.09209));
+            var isEqual = expectedResult.HasEqualItems(result);
+            Assert.IsTrue(isEqual);
         }
 
         [TestMethod]

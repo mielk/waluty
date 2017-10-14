@@ -20,7 +20,7 @@ namespace Stock.Domain.Services
         protected DataSet[] dataSetsArray;
         protected Dictionary<AnalysisType, int?> lastIndexes;
         protected IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices , AnalysisType.Trendlines };
-
+        private Dictionary<AnalysisType, IAnalysisProcessController> controllers = new Dictionary<AnalysisType, IAnalysisProcessController>();
 
 
         #region CONSTRUCTOR
@@ -167,10 +167,34 @@ namespace Stock.Domain.Services
         {
             foreach (AnalysisType type in analysisTypes)
             {
-                IAnalysisProcessController processController = ProcessorFactory.Instance().GetProperAnalysisProcessController(type);
+
+                IAnalysisProcessController processController = getAnalysisProcessController(type);
                 processController.Run(this);
             }
         }
+
+        private IAnalysisProcessController getAnalysisProcessController(AnalysisType type)
+        {
+            IAnalysisProcessController controller = null;
+            try
+            {
+                controllers.TryGetValue(type, out controller);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            if (controller == null)
+            {
+                controller = ProcessorFactory.Instance().GetProperAnalysisProcessController(type);
+                this.controllers.Add(type, controller);
+            }
+
+            return controller;
+
+        }
+
 
 
 
@@ -294,6 +318,16 @@ namespace Stock.Domain.Services
                     return null;
                 }
             }
+        }
+
+        public IEnumerable<Trendline> GetTrendlines()
+        {
+            TrendlineProcessController processController = (TrendlineProcessController)getAnalysisProcessController(AnalysisType.Trendlines);
+            if (processController != null)
+            {
+                return processController.GetTrendlines();
+            }
+            return new List<Trendline>();
         }
 
         #endregion ACCESS TO DATA SETS

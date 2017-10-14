@@ -73,7 +73,8 @@ namespace Stock.Web.Controllers
         public ActionResult GetDataSets()
         {
             IEnumerable<DataSet> dataSets = manager.GetDataSets();
-            var json = new { quotations = dataSets };
+            IEnumerable<Trendline> trendlines = manager.GetTrendlines();
+            var json = new { quotations = dataSets, trendlines = trendlines };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 

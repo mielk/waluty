@@ -66,6 +66,14 @@ namespace Stock.Domain.Services
         #endregion SERVICES
 
 
+        
+        public IEnumerable<Trendline> GetTrendlines()
+        {
+            return trendlines.ToArray();
+        }
+
+
+
 
         public void Run(IProcessManager manager)
         {            
@@ -74,7 +82,6 @@ namespace Stock.Domain.Services
             processTrendlines();
             sortTrendlines();
         }
-
 
         private void loadTrendlines()
         {
