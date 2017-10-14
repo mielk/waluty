@@ -100,9 +100,9 @@ namespace Stock_UnitTest.Stock.Core.Enums
         {
 
             //Arrange
-            string[] names = new string[] { "prices", "adx", "macd", "zzz", "trendRanges" };
+            string[] names = new string[] { "prices", "adx", "macd", "zzz", "trendlines" };
 
-            //Act
+            //Acttre
             var actualAnalysisTypes = names.ToAnalysisTypes();
 
 

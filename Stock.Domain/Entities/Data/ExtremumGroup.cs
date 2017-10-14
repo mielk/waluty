@@ -11,16 +11,12 @@ namespace Stock.Domain.Entities
         public Extremum MasterExtremum { get; set; }
         public Extremum SecondExtremum { get; set; }
         public bool IsPeak { get; set; }
-        private bool isModified;
 
         public ExtremumGroup(Extremum master, Extremum second, bool isPeak)
         {
             this.IsPeak = isPeak;
-            this.MasterExtremum = master;
-            if (second != null && (master == null || second.IndexNumber != master.IndexNumber))
-            {
-                this.SecondExtremum = second;
-            }
+            this.MasterExtremum = (master != null ? master : second);
+            this.SecondExtremum = (second != null ? second : master);
         }
 
         public int GetIndex()
@@ -36,7 +32,25 @@ namespace Stock.Domain.Entities
             return 0;
         }
 
+        public int GetMasterIndex()
+        {
+            return MasterExtremum.IndexNumber;
+        }
+
+        public int GetSlaveIndex()
+        {
+            return SecondExtremum.IndexNumber;
+        }
+
+        public int GetLateIndexNumber()
+        {
+            var masterIndex = (MasterExtremum != null ? MasterExtremum.IndexNumber : 0);
+            var secondIndex = (SecondExtremum != null ? SecondExtremum.IndexNumber : 0);
+            return Math.Max(masterIndex, secondIndex);
+        }
+
     }
+
 }
 
 

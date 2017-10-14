@@ -18,5 +18,8 @@ namespace Stock.Domain.Services
         void Run();
         int GetSimulationId();
         AnalysisInfo GetAnalysisInfo();
+        AtsSettings GetSettings();
+        int GetAssetId();
+        int GetTimeframeId();
     }
 }

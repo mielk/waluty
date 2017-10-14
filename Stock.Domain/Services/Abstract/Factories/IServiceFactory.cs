@@ -28,6 +28,8 @@ namespace Stock.Domain.Services
         ISimulationService GetSimulationService(ISimulationService service);
         IAnalysisTimestampService GetAnalysisTimestampService();
         IAnalysisTimestampService GetAnalysisTimestampService(IAnalysisTimestampService service);
+        ITrendlineService GetTrendlineService();
+        ITrendlineService GetTrendlineService(ITrendlineService service);
     }
 
 }

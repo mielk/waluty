@@ -12,14 +12,14 @@ namespace Stock.Domain.Services
     public class ProcessManager : IProcessManager
     {
 
-        protected int assetId;
-        protected int timeframeId;
+        public int AssetId { get; set; }
+        protected int TimeframeId { get; set; }
         protected AnalysisDataQueryDefinition queryDef;
         protected IDataSetService dataSetService;
         protected IAnalysisTimestampService timestampService;
         protected DataSet[] dataSetsArray;
         protected Dictionary<AnalysisType, int?> lastIndexes;
-        protected IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };//, AnalysisType.Trendlines };
+        protected IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices , AnalysisType.Trendlines };
 
 
 
@@ -27,24 +27,24 @@ namespace Stock.Domain.Services
 
         public ProcessManager(int assetId, int timeframeId)
         {
-            this.assetId = assetId;
-            this.timeframeId = timeframeId;
+            this.AssetId = assetId;
+            this.TimeframeId = timeframeId;
             this.dataSetService = ServiceFactory.Instance().GetDataSetService();
             this.timestampService = ServiceFactory.Instance().GetAnalysisTimestampService();
         }
 
         public ProcessManager(int assetId, int timeframeId, IDataSetService dataSetService)
         {
-            this.assetId = assetId;
-            this.timeframeId = timeframeId;
+            this.AssetId = assetId;
+            this.TimeframeId = timeframeId;
             this.dataSetService = dataSetService;
             this.timestampService = ServiceFactory.Instance().GetAnalysisTimestampService();
         }
 
         public ProcessManager(int assetId, int timeframeId, IDataSetService dataSetService, IAnalysisTimestampService timestampService)
         {
-            this.assetId = assetId;
-            this.timeframeId = timeframeId;
+            this.AssetId = assetId;
+            this.TimeframeId = timeframeId;
             this.dataSetService = dataSetService;
             this.timestampService = timestampService;
         }
@@ -72,6 +72,26 @@ namespace Stock.Domain.Services
         #endregion SIMULATION
 
 
+        #region GETTERS
+
+        public AtsSettings GetSettings()
+        {
+            return new AtsSettings(AssetId, TimeframeId, GetSimulationId());
+        }
+
+        public int GetAssetId()
+        {
+            return AssetId;
+        }
+
+        public int GetTimeframeId()
+        {
+            return TimeframeId;
+        }
+
+        #endregion GETTERS
+
+
         #region SETTINGS
 
         public void changeAsset(int assetId)
@@ -95,13 +115,13 @@ namespace Stock.Domain.Services
 
         protected void loadDataSets(int initialIndex)
         {
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { StartIndex = initialIndex,  AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId) { StartIndex = initialIndex,  AnalysisTypes = analysisTypes };
             loadDataSets(queryDef);
         }
 
         protected void loadDataSets(int initialIndex, int endIndex)
         {
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { StartIndex = initialIndex, EndIndex = endIndex };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId) { StartIndex = initialIndex, EndIndex = endIndex };
             loadDataSets(queryDef);
         }
 
@@ -112,7 +132,7 @@ namespace Stock.Domain.Services
 
         protected void loadLastIndexes()
         {
-            this.lastIndexes = timestampService.GetLastAnalyzedIndexes(assetId, timeframeId, GetSimulationId());
+            this.lastIndexes = timestampService.GetLastAnalyzedIndexes(AssetId, TimeframeId, GetSimulationId());
             int? lastQuotationIndex = GetAnalysisLastUpdatedIndex(AnalysisType.Quotations);
             if (lastQuotationIndex != null)
             {

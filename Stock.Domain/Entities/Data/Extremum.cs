@@ -45,12 +45,12 @@ namespace Stock.Domain.Entities
 
         #region CONSTRUCTORS
 
-        public Extremum(int assetId, int timeframeId, ExtremumType type, DateTime date)
+        public Extremum(int assetId, int timeframeId, ExtremumType type, int indexNumber)
         {
             this.AssetId = assetId;
             this.TimeframeId = timeframeId;
             this.Type = type;
-            this.Date = date;
+            this.IndexNumber = indexNumber;
         }
 
         #endregion CONSTRUCTORS
@@ -90,9 +90,9 @@ namespace Stock.Domain.Entities
 
         public static Extremum FromDto(ExtremumDto dto)
         {
-            var extremum = new Extremum(dto.AssetId, dto.TimeframeId, (ExtremumType)dto.ExtremumType, dto.Date);
+            var extremum = new Extremum(dto.AssetId, dto.TimeframeId, (ExtremumType)dto.ExtremumType, dto.IndexNumber);
             extremum.SimulationId = dto.SimulationId;
-            extremum.IndexNumber = dto.IndexNumber;
+            extremum.Date = dto.Date;
             extremum.ExtremumId = dto.Id;
             extremum.EarlierCounter = dto.EarlierCounter;
             extremum.EarlierAmplitude = dto.EarlierAmplitude;

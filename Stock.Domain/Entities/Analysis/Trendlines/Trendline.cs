@@ -17,8 +17,11 @@ namespace Stock.Domain.Entities
         public int SimulationId { get; set; }
         public int StartIndex { get; set; }
         public double StartLevel { get; set; }
-        public int EndIndex { get; set; }
-        public double EndLevel { get; set; }
+        public int FootholdIndex { get; set; }
+        public double FootholdLevel { get; set; }
+        public int FootholdSlaveIndex { get; set; }
+        public int FootholdIsPeak { get; set; }
+        public int? EndIndex { get; set; }
         public double Value { get; set; }
         public int LastUpdateIndex { get; set; }
 
@@ -26,29 +29,32 @@ namespace Stock.Domain.Entities
 
         #region CONSTRUCTOR
 
-        public Trendline(int assetId, int timeframeId, int simulationId, int startIndex, double startLevel, int endIndex, double endLevel)
+        public Trendline(AtsSettings settings, TrendlinePoint basePoint, TrendlinePoint secondPoint)
+        {
+            this.AssetId = settings.AssetId;
+            this.TimeframeId = settings.TimeframeId;
+            this.SimulationId = settings.SimulationId;
+            this.StartIndex = basePoint.GetIndex();
+            this.StartLevel = basePoint.Level;
+            this.FootholdIndex = secondPoint.GetIndex();
+            this.FootholdLevel = secondPoint.Level;
+            this.FootholdSlaveIndex = secondPoint.Group.GetLateIndexNumber();
+            this.FootholdIsPeak = (secondPoint.Group.IsPeak ? 1 : 0);
+        }
+
+        public Trendline(int assetId, int timeframeId, int simulationId, int startIndex, double startLevel, int footholdIndex, double footholdLevel, int FootholdSlaveIndex, int FootholdIsPeak)
         {
             this.AssetId = assetId;
             this.TimeframeId = timeframeId;
             this.SimulationId = simulationId;
             this.StartIndex = startIndex;
             this.StartLevel = startLevel;
-            this.EndIndex = endIndex;
-            this.EndLevel = endLevel;
+            this.FootholdIndex = footholdIndex;
+            this.FootholdLevel = footholdLevel;
+            this.FootholdSlaveIndex = FootholdSlaveIndex;
+            this.FootholdIsPeak = FootholdIsPeak;
         }
 
-        //        public Trendline(int id, AssetTimeframe atf, ValuePoint initial, ValuePoint bound)
-        //        {
-        //            initialize();
-        //            this.Id = id;
-        //            assignProperties(atf, initial, bound);
-        //        }
-
-        //        public Trendline(AssetTimeframe atf, ValuePoint initial, ValuePoint bound)
-        //        {
-        //            initialize();
-        //            assignProperties(atf, initial, bound);
-        //        }
 
         #endregion CONSTRUCTOR
 
@@ -69,8 +75,11 @@ namespace Stock.Domain.Entities
             if (compared.AssetId != AssetId) return false;
             if (compared.StartIndex != StartIndex) return false;
             if (compared.StartLevel != StartLevel) return false;
-            if (compared.EndIndex != EndIndex) return false;
-            if (compared.EndLevel != EndLevel) return false;
+            if (compared.FootholdIndex != FootholdIndex) return false;
+            if (!compared.EndIndex.IsEqual(EndIndex)) return false;
+            if (compared.FootholdLevel != FootholdLevel) return false;
+            if (compared.FootholdSlaveIndex != FootholdSlaveIndex) return false;
+            if (compared.FootholdIsPeak != FootholdIsPeak) return false;
             if (compared.Value != Value) return false;
             if (compared.LastUpdateIndex != LastUpdateIndex) return false;
             return true;
@@ -84,7 +93,7 @@ namespace Stock.Domain.Entities
 
         public override string ToString()
         {
-            return "(" + Id + "): " + StartIndex.ToString() + " - " + EndIndex.ToString();
+            return "(" + Id + "): " + StartIndex.ToString() + " - " + FootholdIndex.ToString();
 
             //        public override string ToString()
             //        {
@@ -110,10 +119,11 @@ namespace Stock.Domain.Entities
 
         public static Trendline FromDto(TrendlineDto dto)
         {
-            return new Trendline(dto.AssetId, dto.TimeframeId, dto.SimulationId, dto.StartIndex, dto.StartLevel, dto.EndIndex, dto.EndLevel)
+            return new Trendline(dto.AssetId, dto.TimeframeId, dto.SimulationId, dto.StartIndex, dto.StartLevel, dto.FootholdIndex, dto.FootholdLevel, dto.FootholdSlaveIndex, dto.FootholdIsPeak)
             {
                 Id = dto.Id,
                 Value = dto.Value,
+                EndIndex = dto.EndIndex,
                 LastUpdateIndex = dto.LastUpdateIndex
             };
         }
@@ -128,8 +138,11 @@ namespace Stock.Domain.Entities
                 SimulationId = this.SimulationId, 
                 StartIndex = this.StartIndex, 
                 StartLevel = this.StartLevel, 
-                EndIndex = this.EndIndex, 
-                EndLevel = this.EndLevel,
+                EndIndex = this.EndIndex,
+                FootholdIndex = this.FootholdIndex, 
+                FootholdLevel = this.FootholdLevel,
+                FootholdIsPeak = this.FootholdIsPeak,
+                FootholdSlaveIndex = this.FootholdSlaveIndex,
                 Value = this.Value,
                 LastUpdateIndex = this.LastUpdateIndex
             };

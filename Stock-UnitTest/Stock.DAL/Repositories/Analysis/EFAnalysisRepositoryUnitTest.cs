@@ -19,10 +19,11 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
     {
 
         private const string UNIT_TEST_DB_NAME = "fx_unittests";
-        private const string SIMULATIONS_TABLE_NAME = "trendRanges";
+        private const string SIMULATIONS_TABLE_NAME = "simulations";
         private const string LASTUPDATES_TABLE_NAME = "last_updates";
 
 
+        [Ignore]
         [TestMethod]
         public void EFAnalysisRepositoryUnitTest_WszystkieTesty()
         {

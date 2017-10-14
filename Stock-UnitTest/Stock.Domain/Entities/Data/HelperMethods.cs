@@ -13,6 +13,7 @@ namespace Stock_UnitTest.Stock.Domain
 
         #region GET_ANALYSIS_INFO
 
+        [Ignore]
         [TestMethod]
         public void GetAnalysisInfo_WszystkieTesty()
         {

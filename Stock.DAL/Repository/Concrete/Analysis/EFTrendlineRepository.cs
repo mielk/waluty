@@ -58,6 +58,25 @@ namespace Stock.DAL.Repositories
             }
         }
 
+        public void RemoveTrendlines(IEnumerable<TrendlineDto> trendlines)
+        {
+
+            using (var db = new TrendlineContext())
+            {
+
+                foreach (TrendlineDto dto in trendlines)
+                {
+                    var record = db.Trendlines.SingleOrDefault(t => t.Id == dto.Id);
+                    if (record != null)
+                    {
+                        db.Trendlines.Remove(record);
+                    }
+                }
+                db.SaveChanges();
+
+            }
+        }
+
         #endregion TRENDLINES
 
 

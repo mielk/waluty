@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using Stock.Utils;
 using System.Threading.Tasks;
 
 namespace Stock.DAL.TransferObjects
@@ -18,8 +19,11 @@ namespace Stock.DAL.TransferObjects
         public int SimulationId { get; set; }
         public int StartIndex { get; set; }
         public double StartLevel { get; set; }
-        public int EndIndex { get; set; }
-        public double EndLevel { get; set; }
+        public int FootholdIndex { get; set; }
+        public double FootholdLevel { get; set; }
+        public int FootholdSlaveIndex { get; set; }
+        public int FootholdIsPeak { get; set; }
+        public int? EndIndex { get; set; }
         public double Value { get; set; }
         public int LastUpdateIndex { get; set; }
 
@@ -34,7 +38,10 @@ namespace Stock.DAL.TransferObjects
             StartIndex = dto.StartIndex;
             StartLevel = dto.StartLevel;
             EndIndex = dto.EndIndex;
-            EndLevel = dto.EndLevel;
+            FootholdIndex = dto.FootholdIndex;
+            FootholdLevel = dto.FootholdLevel;
+            FootholdSlaveIndex = dto.FootholdSlaveIndex;
+            FootholdIsPeak = dto.FootholdIsPeak;
             Value = dto.Value;
             LastUpdateIndex = dto.LastUpdateIndex;
         }
@@ -50,8 +57,11 @@ namespace Stock.DAL.TransferObjects
             if (compared.SimulationId != SimulationId) return false;
             if (compared.StartIndex != StartIndex) return false;
             if (compared.StartLevel != StartLevel) return false;
-            if (compared.EndIndex != EndIndex) return false;
-            if (compared.EndLevel != EndLevel) return false;
+            if (!compared.EndIndex.IsEqual(EndIndex)) return false;
+            if (compared.FootholdIndex != FootholdIndex) return false;
+            if (compared.FootholdLevel != FootholdLevel) return false;
+            if (compared.FootholdSlaveIndex != FootholdSlaveIndex) return false;
+            if (compared.FootholdIsPeak != FootholdIsPeak) return false;
             return true;
         }
 

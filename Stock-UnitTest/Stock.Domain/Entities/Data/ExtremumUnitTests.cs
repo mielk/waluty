@@ -54,11 +54,11 @@ namespace Stock_UnitTest.Stock.Domain
             Extremum actualExtremum = Extremum.FromDto(dto);
 
             //Assert
-            Extremum expectedExtremum = new Extremum(1, 1, (ExtremumType)1, new DateTime(2017, 5, 2, 12, 15, 0))
+            Extremum expectedExtremum = new Extremum(1, 1, (ExtremumType)1, 1)
             {
                 ExtremumId = 1,
                 SimulationId = 1,
-                IndexNumber = 1,
+                Date = new DateTime(2017, 5, 2, 12, 15, 0),
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0),
                 Volatility = 1.23,
                 EarlierCounter = 15,
@@ -92,11 +92,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            Extremum extremum = new Extremum(1, 1, (ExtremumType)1, new DateTime(2017, 5, 2, 12, 15, 0))
+            Extremum extremum = new Extremum(1, 1, (ExtremumType)1, 1)
             {
                 ExtremumId = 1,
                 SimulationId = 1,
-                IndexNumber = 1,
+                Date = new DateTime(2017, 5, 2, 12, 15, 0),
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0),
                 Volatility = 1.23,
                 EarlierCounter = 15,
@@ -161,10 +161,10 @@ namespace Stock_UnitTest.Stock.Domain
 
         private Extremum getDefaultExtremum()
         {
-            return new Extremum(1, 1, (ExtremumType)1, new DateTime(2017, 5, 2, 12, 15, 0))
+            return new Extremum(1, 1, (ExtremumType)1, 1)
             {
                 ExtremumId = 1,
-                IndexNumber = 1,
+                Date = new DateTime(2017, 5, 2, 12, 15, 0),
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0),
                 Volatility = 1.23,
                 EarlierCounter = 15,

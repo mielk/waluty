@@ -14,6 +14,8 @@ namespace Stock.Domain.Services
         IEnumerable<Trendline> GetTrendlines(int assetId, int timeframeId, int simulationId);
         Trendline GetTrendlineById(int id);
         void UpdateTrendline(Trendline trendline);
+        void RemoveTrendlines(IEnumerable<Trendline> trendlines);
+        void RemoveTrendline(Trendline trendline);
 
         //Trend hits
         IEnumerable<TrendHit> GetTrendHits(int trendlineId);

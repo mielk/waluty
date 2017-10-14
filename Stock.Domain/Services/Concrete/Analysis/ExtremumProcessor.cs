@@ -281,6 +281,7 @@ namespace Stock.Domain.Services
 
         public IEnumerable<ExtremumGroup> ExtractExtremumGroups(IEnumerable<DataSet> dataSets)
         {
+
             List<ExtremumGroup> groups = new List<ExtremumGroup>();
             DataSet[] byDate = dataSets.OrderBy(ds => ds.Date).ToArray();
 

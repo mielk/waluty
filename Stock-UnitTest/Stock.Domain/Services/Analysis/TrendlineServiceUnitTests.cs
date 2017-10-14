@@ -23,8 +23,10 @@ namespace Stock_UnitTest.Stock.Domain.Services
         private const int DEFAULT_SIMULATION_ID = 1;
         private const int DEFAULT_START_INDEX = 87;
         private const double DEFAULT_START_LEVEL = 1.1654;
-        private const int DEFAULT_END_INDEX = 100;
-        private const double DEFAULT_END_LEVEL = 1.1754;
+        private const int DEFAULT_FOOTHOLD_INDEX = 100;
+        private const double DEFAULT_FOOTHOLD_LEVEL = 1.1754;
+        private const int DEFAULT_FOOTHOLD_SLAVE_INDEX = 100;
+        private const int DEFAULT_FOOTHOLD_TYPE = 1;
         private const double DEFAULT_VALUE = 1.234;
         private const int DEFAULT_LAST_UPDATE_INDEX = 104;
         //TrendRange
@@ -48,6 +50,35 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         #region GET_TRENDLINES
 
+        private Trendline getDefaultTrendline()
+        {
+            return new Trendline(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID, DEFAULT_START_INDEX, DEFAULT_START_LEVEL, DEFAULT_FOOTHOLD_INDEX, DEFAULT_FOOTHOLD_LEVEL, DEFAULT_FOOTHOLD_SLAVE_INDEX, DEFAULT_FOOTHOLD_TYPE) 
+            { 
+                Id = 1, 
+                Value = 1.2345,
+                LastUpdateIndex = 51
+            };
+        }
+
+        private TrendlineDto getDefaultTrendlineDto()
+        {
+            return new TrendlineDto()
+            {
+                Id = 1,
+                AssetId = DEFAULT_ASSET_ID, 
+                TimeframeId = DEFAULT_TIMEFRAME_ID, 
+                SimulationId = DEFAULT_SIMULATION_ID, 
+                StartIndex = DEFAULT_START_INDEX, 
+                StartLevel = DEFAULT_START_LEVEL, 
+                FootholdIndex = DEFAULT_FOOTHOLD_INDEX, 
+                FootholdLevel = DEFAULT_FOOTHOLD_LEVEL, 
+                FootholdSlaveIndex = DEFAULT_FOOTHOLD_SLAVE_INDEX, 
+                FootholdIsPeak = DEFAULT_FOOTHOLD_TYPE,
+                Value = 1.2345,
+                LastUpdateIndex = 51
+            };
+        }
+
         [TestMethod]
         public void GetTrendlines_ReturnsProperCollectionOfTrendlines()
         {
@@ -55,9 +86,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
             List<TrendlineDto> dtos = new List<TrendlineDto>();
-            TrendlineDto trendlineDto1 = new TrendlineDto() { Id = 1, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 50, StartLevel = 1.1234, EndLevel = 1.1412, EndIndex = 72, LastUpdateIndex = 77, Value = 1.23 };
-            TrendlineDto trendlineDto2 = new TrendlineDto() { Id = 2, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 64, StartLevel = 1.1276, EndLevel = 1.1412, EndIndex = 72, LastUpdateIndex = 77, Value = 1.49 };
-            TrendlineDto trendlineDto3 = new TrendlineDto() { Id = 3, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 81, StartLevel = 1.1315, EndLevel = 1.1412, EndIndex = 72, LastUpdateIndex = 77, Value = 2.16 };
+            TrendlineDto trendlineDto1 = new TrendlineDto() { Id = 1, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 50, StartLevel = 1.1234, FootholdLevel = 1.1412, FootholdIndex = 72, LastUpdateIndex = 77, Value = 1.23 };
+            TrendlineDto trendlineDto2 = new TrendlineDto() { Id = 2, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 64, StartLevel = 1.1276, FootholdLevel = 1.1412, FootholdIndex = 72, LastUpdateIndex = 77, Value = 1.49 };
+            TrendlineDto trendlineDto3 = new TrendlineDto() { Id = 3, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 81, StartLevel = 1.1315, FootholdLevel = 1.1412, FootholdIndex = 72, LastUpdateIndex = 77, Value = 2.16 };
             dtos.AddRange(new TrendlineDto[] { trendlineDto1, trendlineDto2, trendlineDto3 });
 
             mockedRepository.Setup(r => r.GetTrendlines(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID)).Returns(dtos);
@@ -68,9 +99,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Assert
             List<Trendline> expectedTrendlines = new List<Trendline>();
-            Trendline trendline1 = new Trendline(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID, 50, 1.1234, 72, 1.1412) { Id = 1, LastUpdateIndex = 77, Value = 1.23 };
-            Trendline trendline2 = new Trendline(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID, 64, 1.1276, 72, 1.1412) { Id = 2, LastUpdateIndex = 77, Value = 1.49 };
-            Trendline trendline3 = new Trendline(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID, 81, 1.1315, 72, 1.1412) { Id = 3, LastUpdateIndex = 77, Value = 2.16 };
+            Trendline trendline1 = Trendline.FromDto(trendlineDto1);
+            Trendline trendline2 = Trendline.FromDto(trendlineDto2);
+            Trendline trendline3 = Trendline.FromDto(trendlineDto3); ;
             expectedTrendlines.AddRange(new Trendline[] { trendline1, trendline2, trendline3 });
             bool areEqual = expectedTrendlines.HasEqualItems(actualSimultations);
             Assert.IsTrue(areEqual);
@@ -101,7 +132,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
-            TrendlineDto trendlineDto = new TrendlineDto() { Id = 1, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 50, StartLevel = 1.1234, EndLevel = 1.1412, EndIndex = 72, LastUpdateIndex = 77, Value = 1.23 };
+            TrendlineDto trendlineDto = new TrendlineDto() { Id = 1, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 50, StartLevel = 1.1234, FootholdLevel = 1.1412, FootholdIndex = 72, LastUpdateIndex = 77, Value = 1.23 };
             mockedRepository.Setup(r => r.GetTrendlineById(1)).Returns(trendlineDto);
 
             //Act
@@ -109,7 +140,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             var actualTrendline = service.GetTrendlineById(1);
 
             //Assert
-            Trendline expectedTrendline = new Trendline(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID, 50, 1.1234, 72, 1.1412) { Id = 1, LastUpdateIndex = 77, Value = 1.23 };
+            Trendline expectedTrendline = Trendline.FromDto(trendlineDto);
             bool areEqual = expectedTrendline.Equals(actualTrendline);
             Assert.IsTrue(areEqual);
 
@@ -122,7 +153,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
             List<TrendlineDto> dtos = new List<TrendlineDto>();
-            TrendlineDto trendlineDto1 = new TrendlineDto() { Id = 1, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 50, StartLevel = 1.1234, EndLevel = 1.1412, EndIndex = 72, LastUpdateIndex = 77, Value = 1.23 };
+            TrendlineDto trendlineDto1 = new TrendlineDto() { Id = 1, AssetId = DEFAULT_ASSET_ID, TimeframeId = DEFAULT_TIMEFRAME_ID, SimulationId = DEFAULT_SIMULATION_ID, StartIndex = 50, StartLevel = 1.1234, FootholdLevel = 1.1412, FootholdIndex = 72, LastUpdateIndex = 77, Value = 1.23 };
             dtos.AddRange(new TrendlineDto[] { trendlineDto1 });
             mockedRepository.Setup(r => r.GetTrendlines(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID)).Returns(dtos);
 
@@ -149,12 +180,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             IEnumerable<TrendlineDto> trendlineDtos = null;
-            Trendline trendline = new Trendline(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID, DEFAULT_START_INDEX, DEFAULT_START_LEVEL, DEFAULT_END_INDEX, DEFAULT_END_LEVEL) 
-            { 
-                Id = 1, 
-                Value = 1.2345,
-                LastUpdateIndex = 51
-            };
+            Trendline trendline = getDefaultTrendline();
             Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
             mockedRepository.
                 Setup(r => r.UpdateTrendlines(It.IsAny<IEnumerable<TrendlineDto>>())).
@@ -174,7 +200,86 @@ namespace Stock_UnitTest.Stock.Domain.Services
         #endregion UPDATE_TRENDLINES
 
 
+        #region REMOVE_TRENDLINES
 
+        [TestMethod]
+        public void RemoveTrendline_SignalIsSentToRepositoryToRemoveThisItem()
+        {
+
+            //Arrange
+            IEnumerable<TrendlineDto> trendlineDtos = null;
+            Trendline trendline = getDefaultTrendline();
+            Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
+            mockedRepository.
+                Setup(r => r.RemoveTrendlines(It.IsAny<IEnumerable<TrendlineDto>>())).
+                Callback<IEnumerable<TrendlineDto>>((col) => trendlineDtos = col).Verifiable();
+
+            //Act
+            TrendlineService service = new TrendlineService(mockedRepository.Object);
+            service.RemoveTrendline(trendline);
+
+            //Assert
+            IEnumerable<TrendlineDto> expectedTrendlineDtos = new TrendlineDto[] { trendline.ToDto() };
+            mockedRepository.Verify(r => r.RemoveTrendlines(It.IsAny<IEnumerable<TrendlineDto>>()), Times.Exactly(1));
+            Assert.IsTrue(trendlineDtos.HasEqualItems(expectedTrendlineDtos));
+
+        }
+
+
+        [TestMethod]
+        public void RemoveTrendline_ThisItemIsRemovedFromCache()
+        {
+
+            //Arrange
+            IEnumerable<TrendlineDto> trendlineDtos = null;
+            TrendlineDto trendlineDto = getDefaultTrendlineDto();
+            Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
+            mockedRepository.Setup(r => r.GetTrendlineById(1)).Returns(trendlineDto);
+            mockedRepository.
+                Setup(r => r.RemoveTrendlines(It.IsAny<IEnumerable<TrendlineDto>>())).
+                Callback<IEnumerable<TrendlineDto>>((col) => trendlineDtos = col).Verifiable();
+
+            //Act
+            TrendlineService service = new TrendlineService(mockedRepository.Object);
+            Trendline trendline = service.GetTrendlineById(1);
+            TrendlineDto nullTrendline = null;
+            service.RemoveTrendline(trendline);
+            mockedRepository.Setup(r => r.GetTrendlineById(1)).Returns(nullTrendline);
+
+            //Assert
+            Trendline actualTrendline = service.GetTrendlineById(1);
+            Assert.IsNull(actualTrendline);
+
+        }
+
+
+        [TestMethod]
+        public void RemoveTrendlines_SignalIsSentToRepositoryToRemoveAllItems()
+        {
+
+            //Arrange
+            IEnumerable<TrendlineDto> trendlineDtos = null;
+            Trendline trendline1 = getDefaultTrendline();
+            Trendline trendline2 = getDefaultTrendline();
+            trendline2.Id = 2;
+            Mock<ITrendlineRepository> mockedRepository = new Mock<ITrendlineRepository>();
+            mockedRepository.
+                Setup(r => r.RemoveTrendlines(It.IsAny<IEnumerable<TrendlineDto>>())).
+                Callback<IEnumerable<TrendlineDto>>((col) => trendlineDtos = col).Verifiable();
+
+            //Act
+            TrendlineService service = new TrendlineService(mockedRepository.Object);
+            service.RemoveTrendlines(new Trendline [] { trendline1, trendline2 });
+
+            //Assert
+            IEnumerable<TrendlineDto> expectedTrendlineDtos = new TrendlineDto[] { trendline1.ToDto(), trendline2.ToDto() };
+            mockedRepository.Verify(r => r.RemoveTrendlines(It.IsAny<IEnumerable<TrendlineDto>>()), Times.Exactly(1));
+            Assert.IsTrue(trendlineDtos.HasEqualItems(expectedTrendlineDtos));
+
+        }
+
+
+        #endregion REMOVE_TRENDLINES
 
 
         #region GET_TRENDHITS

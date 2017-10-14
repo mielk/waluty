@@ -23,9 +23,37 @@ namespace Stock_UnitTest.Stock.Domain
         #region FROM_DTO
 
         [TestMethod]
-        public void FromDto_WszystkieTesty()
+        public void FromDto_ReturnsProperObject()
         {
-            Assert.Fail("Not implemented yet");
+
+            //Arrange
+            AnalysisInfoDto dto = new AnalysisInfoDto()
+            {
+                StartDate = DEFAULT_START_DATETIME,
+                EndDate = DEFAULT_END_DATETIME,
+                StartIndex = DEFAULT_START_INDEX,
+                EndIndex = DEFAULT_END_INDEX,
+                MinLevel = DEFAULT_MIN_LEVEL,
+                MaxLevel = DEFAULT_MAX_LEVEL,
+                Counter = DEFAULT_COUNTER
+            };
+
+            //Act
+            AnalysisInfo actualAnalysisInfo = AnalysisInfo.FromDto(dto);
+
+            //Assert
+            AnalysisInfo expectedAnalysisInfo = new AnalysisInfo()
+            {
+                StartDate = DEFAULT_START_DATETIME,
+                EndDate = DEFAULT_END_DATETIME,
+                StartIndex = DEFAULT_START_INDEX,
+                EndIndex = DEFAULT_END_INDEX,
+                MinLevel = DEFAULT_MIN_LEVEL,
+                MaxLevel = DEFAULT_MAX_LEVEL,
+                Counter = DEFAULT_COUNTER
+            };
+            Assert.AreEqual(expectedAnalysisInfo, actualAnalysisInfo);
+
         }
 
         #endregion FROM_DTO
@@ -34,9 +62,38 @@ namespace Stock_UnitTest.Stock.Domain
         #region TO_DTO
 
         [TestMethod]
-        public void ToDto_WszystkieTesty()
+        public void ToDto_ReturnsProperPriceDtoObject()
         {
-            Assert.Fail("Not implemented yet");
+
+            //Arrange
+            AnalysisInfo info = new AnalysisInfo()
+            {
+                StartDate = DEFAULT_START_DATETIME,
+                EndDate = DEFAULT_END_DATETIME,
+                StartIndex = DEFAULT_START_INDEX,
+                EndIndex = DEFAULT_END_INDEX,
+                MinLevel = DEFAULT_MIN_LEVEL,
+                MaxLevel = DEFAULT_MAX_LEVEL,
+                Counter = DEFAULT_COUNTER
+            };
+
+            //Act
+            AnalysisInfoDto actualDto = info.ToDto();
+
+            //Assert
+            AnalysisInfoDto expectedDto = new AnalysisInfoDto()
+            {
+                StartDate = DEFAULT_START_DATETIME,
+                EndDate = DEFAULT_END_DATETIME,
+                StartIndex = DEFAULT_START_INDEX,
+                EndIndex = DEFAULT_END_INDEX,
+                MinLevel = DEFAULT_MIN_LEVEL,
+                MaxLevel = DEFAULT_MAX_LEVEL,
+                Counter = DEFAULT_COUNTER
+            };
+
+            Assert.AreEqual(expectedDto, actualDto);
+
         }
 
         #endregion TO_DTO

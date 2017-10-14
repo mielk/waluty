@@ -14,8 +14,8 @@ namespace Stock.Web.Controllers
     {
 
         private static IDataSetService dataSetService = ServiceFactory.Instance().GetDataSetService();
-        //private static int assetId;
-        //private static int timeframeId;
+        //private static int AssetId;
+        //private static int TimeframeId;
         //private static Simulation trendBreak;
         //private static IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
         //private static ISimulationManager manager;
@@ -29,9 +29,9 @@ namespace Stock.Web.Controllers
 
         //[HttpGet]
         //[AllowAnonymous]
-        //public ActionResult GetDataSetsInfo(int assetId, int timeframeId, int simulationId)
+        //public ActionResult GetDataSetsInfo(int AssetId, int TimeframeId, int simulationId)
         //{
-        //    AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { SimulationId = simulationId };
+        //    AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId) { SimulationId = simulationId };
         //    AnalysisInfo analysisInfo = dataSetService.GetAnalysisInfo(queryDef, AnalysisType.Quotations);
         //    var json = new { value = analysisInfo };
         //    return Json(json, JsonRequestBehavior.AllowGet);
@@ -83,9 +83,9 @@ namespace Stock.Web.Controllers
 
         //[HttpGet]
         //[AllowAnonymous]
-        //public ActionResult GetQuotations(int assetId, int timeframeId, int count)
+        //public ActionResult GetQuotations(int AssetId, int TimeframeId, int count)
         //{
-        //    //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { Limit = count };
+        //    //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId) { Limit = count };
         //    //IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
         //    //IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
         //    //IEnumerable<Trendline> trendRanges = null;
@@ -96,14 +96,14 @@ namespace Stock.Web.Controllers
 
         //[HttpGet]
         //[AllowAnonymous]
-        //public ActionResult GetQuotationsByDates(int assetId, int timeframeId, string startDate, string endDate)
+        //public ActionResult GetQuotationsByDates(int AssetId, int TimeframeId, string startDate, string endDate)
         //{
 
         //    //Converts date strings to DateTime objects.
         //    DateTime startDateTime = DateTime.ParseExact(startDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
         //    DateTime endDateTime = DateTime.ParseExact(endDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
-        //    AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId) { StartDate = startDateTime, EndDate = endDateTime };
+        //    AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId) { StartDate = startDateTime, EndDate = endDateTime };
         //    IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
         //    //IEnumerable<Trendline> trendRanges = null;
         //    //var result = new { quotations = dataSets, trendRanges = trendRanges };
@@ -115,9 +115,9 @@ namespace Stock.Web.Controllers
 
         //[HttpGet]
         //[AllowAnonymous]
-        //public ActionResult GetDataSetProperties(int assetId, int timeframeId)
+        //public ActionResult GetDataSetProperties(int AssetId, int TimeframeId)
         //{
-        //    //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(assetId, timeframeId);
+        //    //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId);
         //    //queryDef.StartDate = new DateTime(2017, 5, 1, 12, 0, 0);
         //    //AnalysisInfo info = dataService.GetAnalysisInfo(queryDef, AnalysisType.Quotations);
         //    //var result = new { firstDate = info.StartDate, lastDate = info.EndDate, minLevel = info.MinLevel, maxLevel = info.MaxLevel, counter = info.Counter};

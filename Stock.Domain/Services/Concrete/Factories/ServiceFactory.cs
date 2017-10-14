@@ -19,7 +19,7 @@ namespace Stock.Domain.Services
         private static IDataSetService _dataSetService;
         private static ISimulationService _simulationService;
         private static IAnalysisTimestampService _analysisTimestampService;
-
+        private static ITrendlineService _trendlineService;
 
 
 
@@ -192,6 +192,21 @@ namespace Stock.Domain.Services
         public IAnalysisTimestampService GetAnalysisTimestampService(IAnalysisTimestampService service)
         {
             return _analysisTimestampService;
+        }
+
+        public ITrendlineService GetTrendlineService()
+        {
+            if (_trendlineService == null)
+            {
+                _trendlineService = new TrendlineService();
+            }
+            return _trendlineService;
+        }
+
+        public ITrendlineService GetTrendlineService(ITrendlineService service)
+        {
+            _trendlineService = service;
+            return _trendlineService;
         }
 
     }

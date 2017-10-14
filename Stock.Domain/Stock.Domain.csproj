@@ -50,11 +50,14 @@
     <Compile Include="Entities\Analysis\Trendlines\Trendline.cs" />
     <Compile Include="Entities\Analysis\Simulation.cs" />
     <Compile Include="Entities\Analysis\todo\Analysis.cs" />
+    <Compile Include="Entities\Helpers\AtsSettings.cs" />
+    <Compile Include="Entities\Helpers\ChartPoint.cs" />
+    <Compile Include="Entities\Helpers\TrendlinePoint.cs" />
     <Compile Include="Entities\Data\DataSet.cs" />
     <Compile Include="Entities\Data\ExtremumGroup.cs" />
     <Compile Include="Entities\Data\IDataUnit.cs" />
     <Compile Include="Entities\Analysis\todo\ValuePoint.cs" />
-    <Compile Include="Entities\IJsonable.cs" />
+    <Compile Include="Entities\Helpers\IJsonable.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\HolidaysManager.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\IHolidaysManager.cs" />
     <Compile Include="Entities\Market\TimeframeProcessors\MonthsProcessor.cs" />

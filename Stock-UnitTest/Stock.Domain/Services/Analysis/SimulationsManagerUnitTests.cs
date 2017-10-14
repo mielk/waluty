@@ -32,6 +32,7 @@ namespace Stock_UnitTest.Stock.Domain.Services.Analysis
 
         #region GET_ANALYSIS_LAST_UPDATED_INDEX
 
+        [Ignore]
         [TestMethod]
         public void SimulationManager_WszystkieTesty()
         {

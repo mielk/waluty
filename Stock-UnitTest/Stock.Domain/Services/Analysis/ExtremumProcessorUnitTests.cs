@@ -24,6 +24,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         #region ISUPDATED_FLAG
 
+        [Ignore]
         [TestMethod]
         public void AfterBeingProcessed_ItemExtremumHasItsUpdatedFlagSetToTrue()
         {
@@ -930,7 +931,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -989,7 +990,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, 20) { Date = new DateTime(2016, 1, 18, 0, 0, 0) };
             dataSet20.GetPrice().SetExtremum(extremum20);
 
             //Assert
@@ -1048,7 +1049,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, 20) { Date = new DateTime(2016, 1, 18, 0, 0, 0) };
             dataSet20.GetPrice().SetExtremum(extremum20);
 
             //Assert
@@ -1112,7 +1113,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 10;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 4, 30, 0)) { IndexNumber = 74 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 74) { Date = new DateTime(2016, 1, 18, 4, 30, 0) };
             dataSet74.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1152,7 +1153,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1197,7 +1198,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum100 = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 6, 40, 0)) { IndexNumber = 100 };
+            Extremum extremum100 = new Extremum(1, 1, ExtremumType.PeakByHigh, 100) { Date = new DateTime(2016, 1, 18, 6, 40, 0) };
             dataSet100.GetPrice().SetExtremum(extremum100);
 
             //Assert
@@ -1227,7 +1228,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1268,7 +1269,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum43 = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 1, 55, 0)) { IndexNumber = 43 };
+            Extremum extremum43 = new Extremum(1, 1, ExtremumType.TroughByClose, 43) { Date = new DateTime(2016, 1, 18, 1, 55, 0) };
             dataSet43.GetPrice().SetExtremum(extremum43);
 
             //Assert
@@ -1320,7 +1321,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum16 = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 40, 0)) { IndexNumber = 16 };
+            Extremum extremum16 = new Extremum(1, 1, ExtremumType.TroughByClose, 16) { Date = new DateTime(2016, 1, 15, 23, 40, 0) };
             dataSet16.GetPrice().SetExtremum(extremum16);
 
             //Assert
@@ -1350,7 +1351,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 5 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1391,7 +1392,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum45 = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 2, 5, 0)) { IndexNumber = 45 };
+            Extremum extremum45 = new Extremum(1, 1, ExtremumType.TroughByLow, 45) { Date = new DateTime(2016, 1, 18, 2, 5, 0) };
             dataSet45.GetPrice().SetExtremum(extremum45);
 
             //Assert
@@ -1434,7 +1435,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1469,7 +1470,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1505,7 +1506,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet9.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1541,7 +1542,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet9.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1586,7 +1587,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 1, 30, 0)) { IndexNumber = 38 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 38) { Date = new DateTime(2016, 1, 18, 1, 30, 0) };
             dataSet38.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1614,7 +1615,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1644,7 +1645,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 0, 15, 0)) { IndexNumber = 23 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 23) { Date = new DateTime(2016, 1, 18, 0, 15, 0) };
             dataSet23.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1672,7 +1673,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1725,7 +1726,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 10;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 17 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 17) { Date = new DateTime(2016, 1, 15, 23, 45, 0) };
             dataSet17.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1764,7 +1765,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1799,7 +1800,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1835,7 +1836,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1871,7 +1872,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet9.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1908,7 +1909,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet9.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1944,7 +1945,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -1980,7 +1981,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2017,7 +2018,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet9.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2053,7 +2054,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2107,7 +2108,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 17 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 17) { Date = new DateTime(2016, 1, 15, 23, 45, 0) };
             dataSet17.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2161,7 +2162,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 17 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 17) { Date = new DateTime(2016, 1, 15, 23, 45, 0) };
             dataSet17.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2197,7 +2198,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2247,7 +2248,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2286,7 +2287,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, 20) { Date = new DateTime(2016, 1, 18, 0, 0, 0) };
             dataSet20.GetPrice().SetExtremum(extremum20);
 
             //Assert
@@ -2323,7 +2324,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            Extremum extremum20 = new Extremum(1, 1, ExtremumType.PeakByClose, 20) { Date = new DateTime(2016, 1, 18, 0, 0, 0) };
             dataSet20.GetPrice().SetExtremum(extremum20);
 
             //Assert
@@ -2377,7 +2378,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 10;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2423,7 +2424,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet9.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2476,7 +2477,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum9 = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 5, 0)) { IndexNumber = 9 };
+            Extremum extremum9 = new Extremum(1, 1, ExtremumType.PeakByHigh, 9) { Date = new DateTime(2016, 1, 15, 23, 5, 0) };
             dataSet9.GetPrice().SetExtremum(extremum9);
 
             //Assert
@@ -2524,7 +2525,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2624,7 +2625,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum5 = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            Extremum extremum5 = new Extremum(1, 1, ExtremumType.TroughByClose, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(extremum5);
 
             //Assert
@@ -2663,7 +2664,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 5 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2758,7 +2759,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 25, 0)) { IndexNumber = 25 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 25) { Date = new DateTime(2016, 1, 18, 0, 25, 0) };
             dataSet25.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2806,7 +2807,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 5;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 25, 0)) { IndexNumber = 25 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 25) { Date = new DateTime(2016, 1, 18, 0, 25, 0) };
             dataSet25.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2879,7 +2880,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 20;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 1, 15, 0)) { IndexNumber = 35 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 35) { Date = new DateTime(2016, 1, 18, 1, 15, 0) };
             dataSet35.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2927,7 +2928,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 8;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 25, 0)) { IndexNumber = 25 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 25) { Date = new DateTime(2016, 1, 18, 0, 25, 0) };
             dataSet25.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -2975,7 +2976,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 7;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 25, 0)) { IndexNumber = 25 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 25) { Date = new DateTime(2016, 1, 18, 0, 25, 0) };
             dataSet25.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3033,7 +3034,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 0, 35, 0)) { IndexNumber = 27 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 27) { Date = new DateTime(2016, 1, 18, 0, 35, 0) };
             dataSet27.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3088,7 +3089,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 5;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 0, 35, 0)) { IndexNumber = 27 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 27) { Date = new DateTime(2016, 1, 18, 0, 35, 0) };
             dataSet27.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3148,7 +3149,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 10;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 1, 15, 0)) { IndexNumber = 35 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 35) { Date = new DateTime(2016, 1, 18, 1, 15, 0) };
             dataSet35.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3203,7 +3204,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 7;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 0, 35, 0)) { IndexNumber = 27 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 27) { Date = new DateTime(2016, 1, 18, 0, 35, 0) };
             dataSet27.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3258,7 +3259,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 6;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 0, 35, 0)) { IndexNumber = 27 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 27) { Date = new DateTime(2016, 1, 18, 0, 35, 0) };
             dataSet27.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3312,7 +3313,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 1, 55, 0)) { IndexNumber = 43 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 43) { Date = new DateTime(2016, 1, 18, 1, 55, 0) };
             dataSet43.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3363,7 +3364,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 5;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 1, 55, 0)) { IndexNumber = 43 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 43) { Date = new DateTime(2016, 1, 18, 1, 55, 0) };
             dataSet43.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3419,7 +3420,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 10;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 40, 0)) { IndexNumber = 16 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 16) { Date = new DateTime(2016, 1, 15, 23, 40, 0) };
             dataSet16.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3470,7 +3471,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 9;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 1, 55, 0)) { IndexNumber = 43 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 43) { Date = new DateTime(2016, 1, 18, 1, 55, 0) };
             dataSet43.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3521,7 +3522,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 8;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 1, 55, 0)) { IndexNumber = 43 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 43) { Date = new DateTime(2016, 1, 18, 1, 55, 0) };
             dataSet43.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3581,7 +3582,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 45, 0)) { IndexNumber = 89 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 89) { Date = new DateTime(2016, 1, 18, 5, 45, 0) };
             dataSet89.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3638,7 +3639,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 4;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 45, 0)) { IndexNumber = 89 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 89) { Date = new DateTime(2016, 1, 18, 5, 45, 0) };
             dataSet89.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3694,7 +3695,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 10;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 45, 0)) { IndexNumber = 17 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 17) { Date = new DateTime(2016, 1, 15, 23, 45, 0) };
             dataSet17.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3751,7 +3752,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 6;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 45, 0)) { IndexNumber = 89 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 89) { Date = new DateTime(2016, 1, 18, 5, 45, 0) };
             dataSet89.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3808,7 +3809,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
             processor.MaxSerieCount = 5;
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 45, 0)) { IndexNumber = 89 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 89) { Date = new DateTime(2016, 1, 18, 5, 45, 0) };
             dataSet89.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3854,7 +3855,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3894,7 +3895,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 20) { Date = new DateTime(2016, 1, 18, 0, 0, 0) };
             dataSet20.GetPrice().SetExtremum(extremum);
             
             //Assert
@@ -3929,7 +3930,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -3966,7 +3967,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4005,7 +4006,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 18, 0, 0, 0)) { IndexNumber = 20 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 20) { Date = new DateTime(2016, 1, 18, 0, 0, 0) };
             dataSet20.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4040,7 +4041,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.PeakByHigh, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4081,7 +4082,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 80) { Date = new DateTime(2016, 1, 18, 5, 0, 0) };
             dataSet80.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4122,7 +4123,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 80) { Date = new DateTime(2016, 1, 18, 5, 0, 0) };
             dataSet80.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4157,7 +4158,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByClose, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4199,7 +4200,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 80) { Date = new DateTime(2016, 1, 18, 5, 0, 0) };
             dataSet80.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4240,7 +4241,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 18, 5, 0, 0)) { IndexNumber = 80 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 80) { Date = new DateTime(2016, 1, 18, 5, 0, 0) };
             dataSet80.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4275,7 +4276,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Act
             ExtremumProcessor processor = new ExtremumProcessor(mockedManager.Object);
-            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 23, 0, 0)) { IndexNumber = 8 };
+            Extremum extremum = new Extremum(1, 1, ExtremumType.TroughByLow, 8) { Date = new DateTime(2016, 1, 15, 23, 0, 0) };
             dataSet8.GetPrice().SetExtremum(extremum);
 
             //Assert
@@ -4322,8 +4323,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
             DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
-            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(peakByClose);
             dataSet3.GetPrice().SetExtremum(peakByHigh);
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
@@ -4345,7 +4346,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Assert.IsNotNull(group);
             Assert.IsTrue(group.IsPeak);
             Assert.IsTrue(group.MasterExtremum == peakByClose);
-            Assert.IsNull(group.SecondExtremum);
+            Assert.IsNotNull(group.SecondExtremum);
+            Assert.IsTrue(group.SecondExtremum == peakByClose);
 
         }
 
@@ -4360,9 +4362,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
 
-            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 2) { Date = new DateTime(2016, 1, 15, 22, 30, 0) };
             dataSet2.GetPrice().SetExtremum(peakByHigh);            
-            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(peakByClose);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
@@ -4399,9 +4401,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0922, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
 
-            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(peakByClose);
-            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 40, 0)) { IndexNumber = 4 };
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 4) { Date = new DateTime(2016, 1, 15, 22, 40, 0) };
             dataSet4.GetPrice().SetExtremum(peakByHigh);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
@@ -4438,9 +4440,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09188, Low = 1.09126, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09162, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
 
-            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(troughByClose);
-            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(troughByLow);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
@@ -4461,7 +4463,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Assert.IsNotNull(group);
             Assert.IsFalse(group.IsPeak);
             Assert.IsTrue(group.MasterExtremum == troughByClose);
-            Assert.IsNull(group.SecondExtremum);
+            Assert.IsNotNull(group.SecondExtremum);
+            Assert.IsTrue(group.SecondExtremum == troughByClose);
 
         }
 
@@ -4476,9 +4479,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09188, Low = 1.09126, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09162, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
 
-            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 2) { Date = new DateTime(2016, 1, 15, 22, 30, 0) };
             dataSet2.GetPrice().SetExtremum(troughByLow);
-            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(troughByClose);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
@@ -4515,9 +4518,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09188, Low = 1.09126, Close = 1.09134, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09111, Close = 1.09162, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
 
-            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 40, 0)) { IndexNumber = 4 };
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 4) { Date = new DateTime(2016, 1, 15, 22, 40, 0) };
             dataSet4.GetPrice().SetExtremum(troughByLow);
-            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(troughByClose);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
@@ -4556,9 +4559,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09182, Volume = 1392, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
             DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09151, Close = 1.09172, Volume = 1392, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
 
-            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(peakByHigh);
-            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(peakByClose);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
@@ -4582,15 +4585,17 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             Assert.IsNotNull(groupHigh);
             Assert.IsTrue(groupHigh.IsPeak);
-            Assert.IsNull(groupHigh.MasterExtremum);
+            Assert.IsNotNull(groupHigh.MasterExtremum);
             Assert.IsNotNull(groupHigh.SecondExtremum);
+            Assert.IsTrue(groupHigh.MasterExtremum == peakByHigh);
             Assert.IsTrue(groupHigh.SecondExtremum == peakByHigh);
 
             Assert.IsNotNull(groupClose);
             Assert.IsTrue(groupClose.IsPeak);
             Assert.IsNotNull(groupClose.MasterExtremum);
-            Assert.IsNull(groupClose.SecondExtremum);
+            Assert.IsNotNull(groupClose.SecondExtremum);
             Assert.IsTrue(groupClose.MasterExtremum == peakByClose);
+            Assert.IsTrue(groupClose.SecondExtremum == peakByClose);
 
         }
 
@@ -4607,9 +4612,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet5 = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09101, Close = 1.09112, Volume = 1392, IndexNumber = 5 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
             DataSet dataSet6 = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.0916, High = 1.0917, Low = 1.09101, Close = 1.09172, Volume = 1392, IndexNumber = 6 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
 
-            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 35, 0)) { IndexNumber = 3 };
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 3) { Date = new DateTime(2016, 1, 15, 22, 35, 0) };
             dataSet3.GetPrice().SetExtremum(troughByLow);
-            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 45, 0)) { IndexNumber = 5 };
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 5) { Date = new DateTime(2016, 1, 15, 22, 45, 0) };
             dataSet5.GetPrice().SetExtremum(troughByClose);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
@@ -4633,15 +4638,17 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             Assert.IsNotNull(groupLow);
             Assert.IsFalse(groupLow.IsPeak);
-            Assert.IsNull(groupLow.MasterExtremum);
+            Assert.IsNotNull(groupLow.MasterExtremum);
             Assert.IsNotNull(groupLow.SecondExtremum);
             Assert.IsTrue(groupLow.SecondExtremum == troughByLow);
+            Assert.IsTrue(groupLow.MasterExtremum == troughByLow);
 
             Assert.IsNotNull(groupClose);
             Assert.IsFalse(groupClose.IsPeak);
             Assert.IsNotNull(groupClose.MasterExtremum);
-            Assert.IsNull(groupClose.SecondExtremum);
+            Assert.IsNotNull(groupClose.SecondExtremum);
             Assert.IsTrue(groupClose.MasterExtremum == troughByClose);
+            Assert.IsTrue(groupClose.SecondExtremum == troughByClose);
 
         }
 
@@ -4653,8 +4660,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
             DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2016, 1, 15, 22, 25, 0)) { IndexNumber = 1 };
-            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            Extremum peakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 1) { Date = new DateTime(2016, 1, 15, 22, 25, 0) };
+            Extremum peakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 2) { Date = new DateTime(2016, 1, 15, 22, 30, 0) };
             dataSet1.GetPrice().SetExtremum(peakByClose);
             dataSet2.GetPrice().SetExtremum(peakByHigh);
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });
@@ -4682,8 +4689,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet1 = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09187, Low = 1.09162, Close = 1.09177, Volume = 1411, IndexNumber = 1 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0) });
             DataSet dataSet2 = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09177, High = 1.09182, Low = 1.09165, Close = 1.09174, Volume = 1819, IndexNumber = 2 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 30, 0) });
             DataSet dataSet3 = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1359, IndexNumber = 3 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 35, 0) });
-            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2016, 1, 15, 22, 25, 0)) { IndexNumber = 1 };
-            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2016, 1, 15, 22, 30, 0)) { IndexNumber = 2 };
+            Extremum troughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 1) { Date = new DateTime(2016, 1, 15, 22, 25, 0) };
+            Extremum troughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 2) { Date = new DateTime(2016, 1, 15, 22, 30, 0) };
             dataSet1.GetPrice().SetExtremum(troughByClose);
             dataSet2.GetPrice().SetExtremum(troughByLow);
             DataSet dataSet4 = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 }).SetPrice(new Price() { AssetId = 1, TimeframeId = 1, SimulationId = 1, Date = new DateTime(2016, 1, 15, 22, 40, 0) });

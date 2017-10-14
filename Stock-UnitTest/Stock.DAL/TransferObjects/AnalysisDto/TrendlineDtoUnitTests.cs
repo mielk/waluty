@@ -22,8 +22,9 @@ namespace Stock_UnitTest.Stock.Domain.Entities
                 SimulationId = 1,
                 StartIndex = 3,
                 StartLevel = 1.2345,
-                EndIndex = 15,
-                EndLevel = 1.2532,
+                EndIndex = null,
+                FootholdIndex = 15,
+                FootholdLevel = 1.2532,
                 Value = 1.234,
                 LastUpdateIndex = 20
             };
@@ -47,7 +48,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
                 StartIndex = 5,
                 StartLevel = 2.2345,
                 EndIndex = 20,
-                EndLevel = 2.2532,
+                FootholdLevel = 2.2532,
                 Value = 2.234,
                 LastUpdateIndex = 25
             };
@@ -185,7 +186,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
         [TestMethod]
-        public void Equals_ReturnsFalse_IfEndIndexIsDifferent()
+        public void Equals_ReturnsFalse_IfFootholdIndexIsDifferent()
         {
 
             //Arrange
@@ -193,7 +194,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var comparedItem = getDefaultTrendlineDto();
 
             //Act
-            comparedItem.EndIndex += 1;
+            comparedItem.FootholdIndex += 1;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -202,7 +203,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
         }
 
         [TestMethod]
-        public void Equals_ReturnsFalse_IfEndLevelIsDifferent()
+        public void Equals_ReturnsFalse_IfFootholdLevelIsDifferent()
         {
 
             //Arrange
@@ -210,7 +211,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities
             var comparedItem = getDefaultTrendlineDto();
 
             //Act
-            comparedItem.EndLevel += 1;
+            comparedItem.FootholdLevel += 1;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -252,6 +253,95 @@ namespace Stock_UnitTest.Stock.Domain.Entities
 
         }
 
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfEndIndexIsEqual()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendlineDto();
+            var comparedItem = getDefaultTrendlineDto();
+
+            //Act
+            baseItem.EndIndex = 100;
+            comparedItem.EndIndex = 100;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsTrue(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfEndIndexIsDifferent()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendlineDto();
+            var comparedItem = getDefaultTrendlineDto();
+
+            //Act
+            baseItem.EndIndex = 50;
+            comparedItem.EndIndex = 100;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyBaseItemHasEndIndexNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendlineDto();
+            var comparedItem = getDefaultTrendlineDto();
+
+            //Act
+            baseItem.EndIndex = null;
+            comparedItem.EndIndex = 100;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsFalse_IfOnlyComparedItemHasEndIndexNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendlineDto();
+            var comparedItem = getDefaultTrendlineDto();
+
+            //Act
+            baseItem.EndIndex = 100;
+            comparedItem.EndIndex = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsFalse(areEqual);
+
+        }
+
+        [TestMethod]
+        public void Equals_ReturnsTrue_IfBothItemHasEndIndexNull()
+        {
+
+            //Arrange
+            var baseItem = getDefaultTrendlineDto();
+            var comparedItem = getDefaultTrendlineDto();
+
+            //Act
+            comparedItem.EndIndex = null;
+            baseItem.EndIndex = null;
+            var areEqual = baseItem.Equals(comparedItem);
+
+            //Assert
+            Assert.IsTrue(areEqual);
+
+        }
 
         #endregion EQUALS
 

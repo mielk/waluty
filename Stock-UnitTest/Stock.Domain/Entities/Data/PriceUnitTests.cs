@@ -78,7 +78,7 @@ namespace Stock_UnitTest.Stock.Domain
                 PriceGap = 0,
                 CloseRatio = 1.45,
                 ExtremumRatio = 2.12,
-                PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2017, 5, 2, 12, 15, 0))
+                PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 1)
             };
 
             //Act
@@ -338,8 +338,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2017, 5, 2, 12, 0, 0)) { IndexNumber = 10 } ;
+            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
+            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -356,7 +356,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2017, 5, 2, 12, 0, 0));
+            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -373,7 +373,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -390,8 +390,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) }; 
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -408,8 +408,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2017, 5, 2, 12, 0, 0)) { IndexNumber = 10 };
+            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
+            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -426,7 +426,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2017, 5, 2, 12, 0, 0));
+            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -443,7 +443,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -460,8 +460,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -478,8 +478,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2017, 5, 2, 12, 0, 0)) { IndexNumber = 10 };
+            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
+            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -496,7 +496,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2017, 5, 2, 12, 0, 0));
+            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -513,7 +513,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -530,8 +530,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
+            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -548,8 +548,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2017, 5, 2, 12, 0, 0)) { IndexNumber = 10 };
+            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
+            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -566,7 +566,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2017, 5, 2, 12, 0, 0));
+            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -583,7 +583,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -600,8 +600,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultPrice();
 
             //Act
-            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2017, 5, 2, 12, 0, 0));
-            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, new DateTime(2017, 5, 2, 12, 0, 0));
+            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -656,7 +656,7 @@ namespace Stock_UnitTest.Stock.Domain
             Price price = getDefaultPrice();
 
             //Act
-            Extremum peakByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByClose, price.GetDate());
+            Extremum peakByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByClose, price.GetIndexNumber());
             price.SetExtremum(peakByClose);
 
             //Assert
@@ -672,7 +672,7 @@ namespace Stock_UnitTest.Stock.Domain
             Price price = getDefaultPrice();
 
             //Act
-            Extremum peakByHigh = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByHigh, price.GetDate());
+            Extremum peakByHigh = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByHigh, price.GetIndexNumber());
             price.SetExtremum(peakByHigh);
 
             //Assert
@@ -688,7 +688,7 @@ namespace Stock_UnitTest.Stock.Domain
             Price price = getDefaultPrice();
 
             //Act
-            Extremum troughByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByClose, price.GetDate());
+            Extremum troughByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByClose, price.GetIndexNumber());
             price.SetExtremum(troughByClose);
 
             //Assert
@@ -704,7 +704,7 @@ namespace Stock_UnitTest.Stock.Domain
             Price price = getDefaultPrice();
 
             //Act
-            Extremum troughByLow = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByLow, price.GetDate());
+            Extremum troughByLow = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByLow, price.GetIndexNumber());
             price.SetExtremum(troughByLow);
 
             //Assert

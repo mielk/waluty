@@ -23,6 +23,11 @@ namespace Stock.Domain.Services
 
         #region INFRASTRUCTURE
 
+        public TrendlineService()
+        {
+            _repository = RepositoryFactory.GetTrendlineRepository();
+        }
+
         public TrendlineService(ITrendlineRepository repository)
         {
             _repository = repository;
@@ -84,6 +89,20 @@ namespace Stock.Domain.Services
         {
             TrendlineDto dto = trendline.ToDto();
             _repository.UpdateTrendlines(new TrendlineDto[] { dto });
+        }
+
+        public void RemoveTrendlines(IEnumerable<Trendline> trendlines)
+        {
+            _repository.RemoveTrendlines(trendlines.Select(t => t.ToDto()));
+            foreach (var trendline in trendlines)
+            {
+                this.trendlines = this.trendlines.Where(t => t.GetHashCode() != trendline.GetHashCode()).ToList();
+            }
+        }
+
+        public void RemoveTrendline(Trendline trendline) 
+        {
+            RemoveTrendlines(new Trendline[] { trendline } );
         }
 
         #endregion TRENDLINES

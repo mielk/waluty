@@ -28,9 +28,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         private const int DEFAULT_TIMEFRAME_ID = 1;
         private const int DEFAULT_SIMULATION_ID = 1;
         private const int DEFAULT_START_INDEX = 87;
+        private int? DEFAULT_END_INDEX = null;
         private const double DEFAULT_START_LEVEL = 1.1654;
-        private const int DEFAULT_END_INDEX = 100;
-        private const double DEFAULT_END_LEVEL = 1.1754;
+        private const int DEFAULT_FOOTHOLD_INDEX = 100;
+        private const double DEFAULT_FOOTHOLD_LEVEL = 1.1754;
         private const double DEFAULT_VALUE = 1.234;
         private const int DEFAULT_LAST_UPDATE_INDEX = 104;
         //TrendHit
@@ -103,8 +104,9 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
                 SimulationId = DEFAULT_SIMULATION_ID,
                 StartIndex = DEFAULT_START_INDEX,
                 StartLevel = DEFAULT_START_LEVEL,
+                FootholdIndex = DEFAULT_FOOTHOLD_INDEX,
+                FootholdLevel = DEFAULT_FOOTHOLD_LEVEL,
                 EndIndex = DEFAULT_END_INDEX,
-                EndLevel = DEFAULT_END_LEVEL,
                 Value = DEFAULT_VALUE,
                 LastUpdateIndex = DEFAULT_LAST_UPDATE_INDEX
             };
@@ -140,10 +142,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFTrendlineRepository repository = new EFTrendlineRepository();
             List<TrendlineDto> trendlines = new List<TrendlineDto>();
-            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, EndIndex = 26, EndLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
-            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, EndIndex = 23, EndLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
-            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 12, StartLevel = 1.5678, EndIndex = 45, EndLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
-            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 8, StartLevel = 1.6789, EndIndex = 21, EndLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
+            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, FootholdIndex = 26, FootholdLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
+            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, FootholdIndex = 23, FootholdLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
+            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 12, StartLevel = 1.5678, FootholdIndex = 45, FootholdLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
+            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 8, StartLevel = 1.6789, FootholdIndex = 21, FootholdLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
             trendlines.AddRange(new TrendlineDto[] { dto1, dto2, dto3, dto4 });
 
             //Act
@@ -165,10 +167,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFTrendlineRepository repository = new EFTrendlineRepository();
             List<TrendlineDto> trendlines = new List<TrendlineDto>();
-            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, EndIndex = 26, EndLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
-            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, EndIndex = 23, EndLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
-            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 12, StartLevel = 1.5678, EndIndex = 45, EndLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
-            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 8, StartLevel = 1.6789, EndIndex = 21, EndLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
+            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, FootholdIndex = 26, FootholdLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
+            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, FootholdIndex = 23, FootholdLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
+            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 12, StartLevel = 1.5678, FootholdIndex = 45, FootholdLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
+            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 8, StartLevel = 1.6789, FootholdIndex = 21, FootholdLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
             trendlines.AddRange(new TrendlineDto[] { dto1, dto2, dto3, dto4 });
             clearTrendlinesTables();
             repository.UpdateTrendlines(trendlines);
@@ -193,10 +195,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1);
             EFTrendlineRepository repository = new EFTrendlineRepository();
             List<TrendlineDto> trendlines = new List<TrendlineDto>();
-            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, EndIndex = 26, EndLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
-            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, EndIndex = 23, EndLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
-            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 12, StartLevel = 1.5678, EndIndex = 45, EndLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
-            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 8, StartLevel = 1.6789, EndIndex = 21, EndLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
+            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, FootholdIndex = 26, FootholdLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
+            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, FootholdIndex = 23, FootholdLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
+            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 12, StartLevel = 1.5678, FootholdIndex = 45, FootholdLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
+            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 2, StartIndex = 8, StartLevel = 1.6789, FootholdIndex = 21, FootholdLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
             trendlines.AddRange(new TrendlineDto[] { dto1, dto2 });
             clearTrendlinesTables();
             repository.UpdateTrendlines(trendlines);
@@ -226,10 +228,10 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
             //Arrange
             EFTrendlineRepository repository = new EFTrendlineRepository();
             List<TrendlineDto> trendlines = new List<TrendlineDto>();
-            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2573, EndIndex = 27, EndLevel = 1.2871, Value = 1.54, LastUpdateIndex = 70 };
-            TrendlineDto dto2 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 2, SimulationId = 1, StartIndex = 7, StartLevel = 1.0123, EndIndex = 52, EndLevel = 1.4865, Value = 1.54, LastUpdateIndex = 70 };
-            TrendlineDto dto3 = new TrendlineDto() { Id = 1, AssetId = 2, TimeframeId = 1, SimulationId = 1, StartIndex = 7, StartLevel = 1.1234, EndIndex = 60, EndLevel = 1.4564, Value = 1.54, LastUpdateIndex = 70 };
-            TrendlineDto dto4 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 25, StartLevel = 1.3456, EndIndex = 48, EndLevel = 1.4564, Value = 1.54, LastUpdateIndex = 70 };
+            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2573, FootholdIndex = 27, FootholdLevel = 1.2871, Value = 1.54, LastUpdateIndex = 70 };
+            TrendlineDto dto2 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 2, SimulationId = 1, StartIndex = 7, StartLevel = 1.0123, FootholdIndex = 52, FootholdLevel = 1.4865, Value = 1.54, LastUpdateIndex = 70 };
+            TrendlineDto dto3 = new TrendlineDto() { Id = 1, AssetId = 2, TimeframeId = 1, SimulationId = 1, StartIndex = 7, StartLevel = 1.1234, FootholdIndex = 60, FootholdLevel = 1.4564, Value = 1.54, LastUpdateIndex = 70 };
+            TrendlineDto dto4 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 25, StartLevel = 1.3456, FootholdIndex = 48, FootholdLevel = 1.4564, Value = 1.54, LastUpdateIndex = 70 };
             trendlines.AddRange(new TrendlineDto[] { dto1, dto2, dto3, dto4 });
             clearTrendlinesTables(); 
             repository.UpdateTrendlines(trendlines);
@@ -287,7 +289,71 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
         #endregion GET_TRENDLINES
 
 
-        
+        #region REMOVE_TRENDLINES
+
+        [TestMethod]
+        public void RemoveTrendlines_AfterRemovingTrendline_ItDoesntExistInDatabaseAnymore()
+        {
+            
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendlineDto> trendlines = new List<TrendlineDto>();
+            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, FootholdIndex = 26, FootholdLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
+            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, FootholdIndex = 23, FootholdLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
+            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 12, StartLevel = 1.5678, FootholdIndex = 45, FootholdLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
+            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 8, StartLevel = 1.6789, FootholdIndex = 21, FootholdLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
+            trendlines.AddRange(new TrendlineDto[] { dto1, dto2, dto3, dto4 });
+            clearTrendlinesTables();
+            repository.UpdateTrendlines(trendlines);
+            IEnumerable<TrendlineDto> actualRecords = repository.GetTrendlines(1, 1, 1);
+            if (actualRecords.Count() != 4)
+            {
+                throw new Exception("Test failed while preparing environment");
+            }
+
+            //Act
+            repository.RemoveTrendlines(new TrendlineDto[] { dto1, dto3 });
+
+            //Assert
+            IEnumerable<TrendlineDto> recordsAfterRemoving = repository.GetTrendlines(1, 1, 1);
+            IEnumerable<TrendlineDto> expectedRecords = new TrendlineDto[] { dto2, dto4 };
+            Assert.IsTrue(recordsAfterRemoving.HasEqualItems(expectedRecords));
+
+        }
+
+        [TestMethod]
+        public void RemoveTrendlines_IfNotExistingTrendlineIsPassed_NothingHappens()
+        {
+
+            //Arrange
+            EFTrendlineRepository repository = new EFTrendlineRepository();
+            List<TrendlineDto> trendlines = new List<TrendlineDto>();
+            TrendlineDto dto1 = new TrendlineDto() { Id = 1, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 5, StartLevel = 1.2345, FootholdIndex = 26, FootholdLevel = 1.3456, Value = 1.234, LastUpdateIndex = 31 };
+            TrendlineDto dto2 = new TrendlineDto() { Id = 2, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 6, StartLevel = 1.4567, FootholdIndex = 23, FootholdLevel = 1.5678, Value = 1.345, LastUpdateIndex = 29 };
+            TrendlineDto dto3 = new TrendlineDto() { Id = 3, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 12, StartLevel = 1.5678, FootholdIndex = 45, FootholdLevel = 1.6789, Value = 1.567, LastUpdateIndex = 47 };
+            TrendlineDto dto4 = new TrendlineDto() { Id = 4, AssetId = 1, TimeframeId = 1, SimulationId = 1, StartIndex = 8, StartLevel = 1.6789, FootholdIndex = 21, FootholdLevel = 1.7891, Value = 1.678, LastUpdateIndex = 29 };
+            trendlines.AddRange(new TrendlineDto[] { dto1, dto2, dto3 });
+            clearTrendlinesTables();
+            repository.UpdateTrendlines(trendlines);
+            IEnumerable<TrendlineDto> actualRecords = repository.GetTrendlines(1, 1, 1);
+            if (actualRecords.Count() != 3)
+            {
+                throw new Exception("Test failed while preparing environment");
+            }
+
+            //Act
+            repository.RemoveTrendlines(new TrendlineDto[] { dto4 });
+
+            //Assert
+            IEnumerable<TrendlineDto> recordsAfterRemoving = repository.GetTrendlines(1, 1, 1);
+            IEnumerable<TrendlineDto> expectedRecords = new TrendlineDto[] { dto1, dto2, dto3 };
+            Assert.IsTrue(recordsAfterRemoving.HasEqualItems(expectedRecords));
+
+        }
+
+        #endregion REMOVE_TRENDLINES
+
+
 
         #region UPDATE_TREND_HITS
 
@@ -668,7 +734,7 @@ namespace Stock_UnitTest.Stock.DAL.Repositories.Data
                 Guid = DEFAULT_GUID,
                 TrendlineId = DEFAULT_TRENDLINE_ID,
                 StartIndex = DEFAULT_START_INDEX,
-                EndIndex = DEFAULT_END_INDEX,
+                EndIndex = DEFAULT_FOOTHOLD_INDEX,
                 QuotationsCounter = DEFAULT_QUOTATIONS_COUNTER,
                 TotalDistance = DEFAULT_TOTAL_DISTANCE,
                 PreviousBreakGuid = DEFAULT_PREVIOUS_BREAK_GUID,
