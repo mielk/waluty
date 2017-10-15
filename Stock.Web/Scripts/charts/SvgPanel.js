@@ -270,34 +270,42 @@ function AbstractSvgRenderer(params) {
     }
 
     self.countTrendlineValue = function(trendline, index){
-        return (index - trendline.InitialPoint.dataItem.Index) * trendline.Slope + trendline.InitialPoint.value;
+        return (index - trendline.StartIndex) * trendline.Slope + trendline.StartLevel;
     }
 
     self.createTrendlinePath = function (trendline, params) {
-        var INITIAL_OFFSET = 4;
-        var AFTER_OFFSET = 10;
+        var INITIAL_OFFSET = 2;
+        var AFTER_OFFSET = 20;
         var bodyWidth = params.width - params.space;
-        var initialIndex = Math.max(0, trendline.InitialPoint.dataItem.Index - INITIAL_OFFSET);
-        var x1 = self.quotations[initialIndex].coordinates.middle;
-        var value1 = self.countTrendlineValue(trendline, initialIndex);
-        var y1 = self.getY(value1);
-        var boundIndex = trendline.BoundPoint.dataItem.Index;
-        //var x2 = (self.offset + self.size.width - (boundIndex * params.width) + (params.space / 2));
-        var x2 = self.quotations[boundIndex].coordinates.middle + (AFTER_OFFSET * params.width);
-        var value2 = self.countTrendlineValue(trendline, boundIndex + AFTER_OFFSET);
-        var y2 = self.getY(value2);
+        var initialIndex = Math.max(0, trendline.StartIndex - INITIAL_OFFSET - 1);
+        if (self.quotations[initialIndex].coordinates) {
+            var x1 = self.quotations[initialIndex].coordinates.middle;
+            var value1 = self.countTrendlineValue(trendline, initialIndex + 1);  //trendline.StartLevel;
+            var value3 = self.countTrendlineValue(trendline, 3);
+            var y1 = self.getY(value1);
+            var boundIndex = Math.min(trendline.FootholdIndex + AFTER_OFFSET, self.quotations.length - 1);
+            //var x2 = (self.offset + self.size.width - (boundIndex * params.width) + (params.space / 2));
+            var x2 = self.quotations[boundIndex].coordinates.middle + (AFTER_OFFSET * params.width);
+            var value2 = self.countTrendlineValue(trendline, boundIndex + 1);
+            var value2calculated = self.countTrendlineValue(trendline, boundIndex);
+            var value7 = self.countTrendlineValue(trendline, 7);
+            var value8 = self.countTrendlineValue(trendline, 8);
+            var value9 = self.countTrendlineValue(trendline, 9);
+            var value10 = self.countTrendlineValue(trendline, 10);
 
-        //var invertedIndex = quotations.length - i;
+            var y2 = self.getY(value2);
 
-        var attr = {
-            'stroke': '#888',
-            'stroke-width': 1
-        };
-        
+            //var invertedIndex = quotations.length - i;
 
-        //Calculate coordinates.
-        var path = 'M' + x1 + ',' + y1 + 'L' + x2 + ',' + y2;
+            var attr = {
+                'stroke': '#888',
+                'stroke-width': 1
+            };
 
+
+            //Calculate coordinates.
+            var path = 'M' + x1 + ',' + y1 + 'L' + x2 + ',' + y2;
+        }
 
         //Save the coordinates of this item's candle 
         //(used later to display values on the chart and to scale charts).

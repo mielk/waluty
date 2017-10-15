@@ -24,7 +24,7 @@ namespace Stock.Domain.Entities
         public int? EndIndex { get; set; }
         public double Value { get; set; }
         public int LastUpdateIndex { get; set; }
-
+        public double Slope { get; set; }
 
 
         #region CONSTRUCTOR
@@ -40,6 +40,7 @@ namespace Stock.Domain.Entities
             this.FootholdLevel = secondPoint.Level;
             this.FootholdSlaveIndex = secondPoint.Group.GetLateIndexNumber();
             this.FootholdIsPeak = (secondPoint.Group.IsPeak ? 1 : 0);
+            calculateSlope();
         }
 
         public Trendline(int assetId, int timeframeId, int simulationId, int startIndex, double startLevel, int footholdIndex, double footholdLevel, int FootholdSlaveIndex, int FootholdIsPeak)
@@ -53,6 +54,12 @@ namespace Stock.Domain.Entities
             this.FootholdLevel = footholdLevel;
             this.FootholdSlaveIndex = FootholdSlaveIndex;
             this.FootholdIsPeak = FootholdIsPeak;
+            calculateSlope();
+        }
+
+        private void calculateSlope()
+        {
+            this.Slope = (this.FootholdLevel - this.StartLevel) / (this.FootholdIndex - this.StartIndex);
         }
 
 
@@ -150,7 +157,6 @@ namespace Stock.Domain.Entities
 
 
         #endregion DTO
-
 
 
     }
