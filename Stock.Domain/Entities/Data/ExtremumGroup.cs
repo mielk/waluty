@@ -23,30 +23,35 @@ namespace Stock.Domain.Entities
         {
             if (MasterExtremum != null)
             {
-                return MasterExtremum.IndexNumber;
+                return MasterExtremum.GetIndexNumber();
             }
             else if (SecondExtremum != null)
             {
-                return SecondExtremum.IndexNumber;
+                return SecondExtremum.GetIndexNumber();
             }
             return 0;
         }
 
         public int GetMasterIndex()
         {
-            return MasterExtremum.IndexNumber;
+            return MasterExtremum.GetIndexNumber();
         }
 
         public int GetSlaveIndex()
         {
-            return SecondExtremum.IndexNumber;
+            return SecondExtremum.GetIndexNumber();
         }
 
         public int GetLateIndexNumber()
         {
-            var masterIndex = (MasterExtremum != null ? MasterExtremum.IndexNumber : 0);
-            var secondIndex = (SecondExtremum != null ? SecondExtremum.IndexNumber : 0);
+            var masterIndex = (MasterExtremum != null ? MasterExtremum.GetIndexNumber() : 0);
+            var secondIndex = (SecondExtremum != null ? SecondExtremum.GetIndexNumber() : 0);
             return Math.Max(masterIndex, secondIndex);
+        }
+
+        public int GetIndexNumberForQuotation(double quotation)
+        {
+            return GetIndex();
         }
 
     }

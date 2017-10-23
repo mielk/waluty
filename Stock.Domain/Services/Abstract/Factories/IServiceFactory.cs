@@ -18,10 +18,6 @@ namespace Stock.Domain.Services
         IMarketService GetMarketService(IMarketService service);
         ITimeframeService GetTimeframeService();
         ITimeframeService GetTimeframeService(ITimeframeService service);
-        IQuotationService GetQuotationService();
-        IQuotationService GetQuotationService(IQuotationService service);
-        IPriceService GetPriceService();
-        IPriceService GetPriceService(IPriceService service);
         IDataSetService GetDataSetService();
         IDataSetService GetDataSetService(IDataSetService service);
         ISimulationService GetSimulationService();

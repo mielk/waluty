@@ -28,7 +28,7 @@
 //            {
 
 //                this.items = UnitTestInitializer.GetData();
-//                this.extrema = items.Where(i => i.Price.IsExtremum()).ToArray();
+//                this.extrema = items.Where(indexNumber => indexNumber.Price.IsExtremum()).ToArray();
 
 //                analyzer = new TrendlineAnalyzer(asset, timeframe);
 //                analyzer.Items = this.items;

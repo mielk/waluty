@@ -19,12 +19,14 @@ namespace Stock.DAL.TransferObjects
         public int SimulationId { get; set; }
         public int StartIndex { get; set; }
         public double StartLevel { get; set; }
+        public bool InitialIsPeak { get; set; }
         public int FootholdIndex { get; set; }
         public double FootholdLevel { get; set; }
         public int FootholdSlaveIndex { get; set; }
         public int FootholdIsPeak { get; set; }
         public int? EndIndex { get; set; }
         public double Value { get; set; }
+        public bool CurrentIsPeak { get; set; }
         public int LastUpdateIndex { get; set; }
 
 
@@ -37,6 +39,7 @@ namespace Stock.DAL.TransferObjects
             SimulationId = dto.SimulationId;
             StartIndex = dto.StartIndex;
             StartLevel = dto.StartLevel;
+            InitialIsPeak = dto.InitialIsPeak;
             EndIndex = dto.EndIndex;
             FootholdIndex = dto.FootholdIndex;
             FootholdLevel = dto.FootholdLevel;
@@ -44,6 +47,7 @@ namespace Stock.DAL.TransferObjects
             FootholdIsPeak = dto.FootholdIsPeak;
             Value = dto.Value;
             LastUpdateIndex = dto.LastUpdateIndex;
+            CurrentIsPeak = dto.CurrentIsPeak;
         }
 
         public override bool Equals(object obj)
@@ -57,11 +61,13 @@ namespace Stock.DAL.TransferObjects
             if (compared.SimulationId != SimulationId) return false;
             if (compared.StartIndex != StartIndex) return false;
             if (compared.StartLevel != StartLevel) return false;
+            if (compared.InitialIsPeak != InitialIsPeak) return false;
             if (!compared.EndIndex.IsEqual(EndIndex)) return false;
             if (compared.FootholdIndex != FootholdIndex) return false;
             if (compared.FootholdLevel != FootholdLevel) return false;
             if (compared.FootholdSlaveIndex != FootholdSlaveIndex) return false;
             if (compared.FootholdIsPeak != FootholdIsPeak) return false;
+            if (compared.CurrentIsPeak != CurrentIsPeak) return false;
             return true;
         }
 

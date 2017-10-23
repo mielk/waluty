@@ -5,16 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stock.Core;
+using Stock.DAL.Repositories;
 
 namespace Stock.Domain.Services
 {
-    public interface IDataSetService : IDataAccessService
+    
+    public interface IDataSetService
     {
-        void InjectQuotationService(IQuotationService service);
-        void InjectPriceService(IPriceService service);
+        
+        //[Injecting services & repositories]
+        void InjectQuotationRepository(IQuotationRepository repository);
+        void InjectPriceRepository(IPriceRepository repository);
+
+        //[Access to data]
         AnalysisInfo GetAnalysisInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType);
         IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef);
-        DataSet[] AppendAndReturnAsArray(IEnumerable<DataSet> sets, AnalysisDataQueryDefinition queryDef);
+        IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef, IEnumerable<DataSet> initialSets);
+
+        //[Updating data]
         void UpdateDataSets(IEnumerable<DataSet> dataSets);
+
     }
+
 }

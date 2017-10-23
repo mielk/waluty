@@ -12,216 +12,209 @@ namespace Stock.Domain.Services
     public class DataSetsContainer
     {
 
-        private IQuotationService quotationService;
-        private IPriceService priceService;
-        private Dictionary<int, AssetItemsContainer> dataSetsByAssets = new Dictionary<int, AssetItemsContainer>();
+        public int AssetId { get; set; }
+        public int TimeframeId { get; set; }
+        public int SimulationId { get; set; }
+        private IEnumerable<DataSet> items;
+
+        //private IQuotationService quotationService;
+        //private IPriceService priceService;
+        //private Dictionary<int, AssetItemsContainer> dataSetsByAssets = new Dictionary<int, AssetItemsContainer>();
 
 
         #region CONSTRUCTOR
 
-        public DataSetsContainer()
+        public DataSetsContainer(int assetId, int timeframeId, int simulationId)
         {
-            this.quotationService = ServiceFactory.Instance().GetQuotationService();
-            this.priceService = ServiceFactory.Instance().GetPriceService();
+            this.AssetId = assetId;
+            this.TimeframeId = timeframeId;
+            this.SimulationId = simulationId;
         }
 
         #endregion CONSTRUCTOR
 
 
-        #region SETTERS
+        //#region SETTERS
 
-        public void SetQuotationService(IQuotationService service)
-        {
-            this.quotationService = service;
-        }
+        //public void SetQuotationService(IQuotationService service)
+        //{
+        //    this.quotationService = service;
+        //}
 
-        public void SetPriceService(IPriceService service)
-        {
-            this.priceService = service;
-        }
+        //public void SetPriceService(IPriceService service)
+        //{
+        //    this.priceService = service;
+        //}
 
-        #endregion SETTERS
+        //#endregion SETTERS
 
 
         #region API
 
-        public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef)
+        public IEnumerable<DataSet> GetDataSets()
         {
-            AssetItemsContainer assetsContainer = getOrCreateAssetContainer(queryDef.AssetId);
-            TimeframeItemsContainer timeframeContainer = assetsContainer.GetOrCreateTimeframeContainer(queryDef.TimeframeId);
-            return timeframeContainer.GetDataSets(queryDef, getServices());
+            return items.ToList();
         }
 
-        private AssetItemsContainer getOrCreateAssetContainer(int assetId)
+        public IEnumerable<DataSet> GetDataSetsLaterThan(int startIndex)
         {
-            AssetItemsContainer assetContainer = null;
-            try
-            {
-                dataSetsByAssets.TryGetValue(assetId, out assetContainer);
-            }
-            catch (Exception ex) { }
+            return items.Where(ds => ds.IndexNumber >= startIndex).ToList();
+        }
 
-            if (assetContainer == null)
-            {
-                assetContainer = new AssetItemsContainer(assetId);
-                dataSetsByAssets.Add(assetId, assetContainer);
-            }
-            return assetContainer;
+        public IEnumerable<DataSet> GetDataSetsEarlierThan(int endIndex)
+        {
+            return items.Where(ds => ds.IndexNumber <= endIndex).ToList();
+        }
+
+        public IEnumerable<DataSet> GetDataSetsBetween(int startIndex, int endIndex)
+        {
+            return items.Where(ds => ds.IndexNumber >= startIndex && ds.IndexNumber <= endIndex).ToList();
         }
 
         #endregion API
 
 
-        private Dictionary<AnalysisType, IDataAccessService> getServices()
-        {
-            Dictionary<AnalysisType, IDataAccessService> dict = new Dictionary<AnalysisType, IDataAccessService>();
-            dict.Add(AnalysisType.Quotations, quotationService);
-            dict.Add(AnalysisType.Prices, priceService);
-            return dict;
-        }
+        //private class AssetItemsContainer
+        //{
+        //    private int assetId;
+        //    private Dictionary<int, TimeframeItemsContainer> dataSetsByTimeframes;
+
+        //    public AssetItemsContainer(int assetId)
+        //    {
+        //        this.assetId = assetId;
+        //        this.dataSetsByTimeframes = new Dictionary<int, TimeframeItemsContainer>();
+        //    }
+
+        //    public int GetId()
+        //    {
+        //        return assetId;
+        //    }
+
+        //    public TimeframeItemsContainer GetOrCreateTimeframeContainer(int timeframeId)
+        //    {
+        //        TimeframeItemsContainer timeframeContainer = null;
+        //        try
+        //        {
+        //            dataSetsByTimeframes.TryGetValue(timeframeId, out timeframeContainer);
+        //        }
+        //        catch (Exception ex) { }
+
+        //        if (timeframeContainer == null)
+        //        {
+        //            timeframeContainer = new TimeframeItemsContainer(timeframeId);
+        //            dataSetsByTimeframes.Add(timeframeId, timeframeContainer);
+        //        }
+        //        return timeframeContainer;
+        //    }
+
+        //}
 
 
-        private class AssetItemsContainer
-        {
-            private int assetId;
-            private Dictionary<int, TimeframeItemsContainer> dataSetsByTimeframes;
+        //private class TimeframeItemsContainer
+        //{
+        //    private int timeframeId;
+        //    private List<DataSet> items;
 
-            public AssetItemsContainer(int assetId)
-            {
-                this.assetId = assetId;
-                this.dataSetsByTimeframes = new Dictionary<int, TimeframeItemsContainer>();
-            }
+        //    public TimeframeItemsContainer(int timeframeId)
+        //    {
+        //        this.timeframeId = timeframeId;
+        //        this.items = new List<DataSet>();
+        //    }
 
-            public int GetId()
-            {
-                return assetId;
-            }
+        //    public int GetId()
+        //    {
+        //        return timeframeId;
+        //    }
 
-            public TimeframeItemsContainer GetOrCreateTimeframeContainer(int timeframeId)
-            {
-                TimeframeItemsContainer timeframeContainer = null;
-                try
-                {
-                    dataSetsByTimeframes.TryGetValue(timeframeId, out timeframeContainer);
-                }
-                catch (Exception ex) { }
+        //    private IEnumerable<AnalysisType> getDefaultAnalysisTypesCollection()
+        //    {
+        //        return new AnalysisType[] { AnalysisType.Quotations };
+        //    }
 
-                if (timeframeContainer == null)
-                {
-                    timeframeContainer = new TimeframeItemsContainer(timeframeId);
-                    dataSetsByTimeframes.Add(timeframeId, timeframeContainer);
-                }
-                return timeframeContainer;
-            }
+        //    private IEnumerable<AnalysisType> getGivenCollectionIfNotEmptyOrDefaultCollectionOtherwise(IEnumerable<AnalysisType> types)
+        //    {
+        //        if (types == null || types.Count() == 0)
+        //        {
+        //            types = getDefaultAnalysisTypesCollection();
+        //        }
+        //        return types;
+        //    }
 
-        }
-
-
-        private class TimeframeItemsContainer
-        {
-            private int timeframeId;
-            private List<DataSet> items;
-
-            public TimeframeItemsContainer(int timeframeId)
-            {
-                this.timeframeId = timeframeId;
-                this.items = new List<DataSet>();
-            }
-
-            public int GetId()
-            {
-                return timeframeId;
-            }
-
-            private IEnumerable<AnalysisType> getDefaultAnalysisTypesCollection()
-            {
-                return new AnalysisType[] { AnalysisType.Quotations };
-            }
-
-            private IEnumerable<AnalysisType> getGivenCollectionIfNotEmptyOrDefaultCollectionOtherwise(IEnumerable<AnalysisType> types)
-            {
-                if (types == null || types.Count() == 0)
-                {
-                    types = getDefaultAnalysisTypesCollection();
-                }
-                return types;
-            }
-
-            public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef, Dictionary<AnalysisType, IDataAccessService> services)
-            {
-                List<DataSet> result = new List<DataSet>();
-                IEnumerable<AnalysisType> analysisTypes = getGivenCollectionIfNotEmptyOrDefaultCollectionOtherwise(queryDef.AnalysisTypes);
+        //    public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef, Dictionary<AnalysisType, IDataAccessService> services)
+        //    {
+        //        List<DataSet> result = new List<DataSet>();
+        //        IEnumerable<AnalysisType> analysisTypes = getGivenCollectionIfNotEmptyOrDefaultCollectionOtherwise(queryDef.AnalysisTypes);
                 
-                //Quotations.
-                IDataAccessService quotationService = getDataAccessService(services, AnalysisType.Quotations);
-                IEnumerable<Quotation> quotations = quotationService.GetUnits(queryDef).Select(q => (Quotation)q).ToList();
+        //        //Quotations.
+        //        IDataAccessService quotationService = getDataAccessService(services, AnalysisType.Quotations);
+        //        IEnumerable<Quotation> quotations = quotationService.GetUnits(queryDef).Select(q => (Quotation)q).ToList();
 
-                foreach (var quotation in quotations)
-                {
-                    DataSet dataSet = items.SingleOrDefault(ds => ds.IndexNumber == quotation.IndexNumber);
-                    if (dataSet == null)
-                    {
-                        dataSet = new DataSet(quotation);
-                        items.Add(dataSet);
-                    }
-                    else
-                    {
-                        dataSet.SetQuotation(quotation);
-                    }
+        //        foreach (var quotation in quotations)
+        //        {
+        //            DataSet dataSet = items.SingleOrDefault(price => price.IndexNumber == quotation.IndexNumber);
+        //            if (dataSet == null)
+        //            {
+        //                dataSet = new DataSet(quotation);
+        //                items.Add(dataSet);
+        //            }
+        //            else
+        //            {
+        //                dataSet.SetQuotation(quotation);
+        //            }
 
-                    result.Add(dataSet);
+        //            result.Add(dataSet);
 
-                }
+        //        }
 
 
-                foreach (var analysisType in analysisTypes)
-                {
-                    if (analysisType != AnalysisType.Quotations)
-                    {
-                        IDataAccessService service = getDataAccessService(services, analysisType);
-                        appendDataForSpecificAnalysisType(result, service, analysisType, queryDef);
-                    }
-                }
+        //        foreach (var analysisType in analysisTypes)
+        //        {
+        //            if (analysisType != AnalysisType.Quotations)
+        //            {
+        //                IDataAccessService service = getDataAccessService(services, analysisType);
+        //                appendDataForSpecificAnalysisType(result, service, analysisType, queryDef);
+        //            }
+        //        }
 
-                return result;
+        //        return result;
             
-            }
+        //    }
 
-            private void appendDataForSpecificAnalysisType(IEnumerable<DataSet> dataSets, IDataAccessService service, AnalysisType analysisType, AnalysisDataQueryDefinition queryDef)
-            {
-                if (service == null)
-                {
-                    //Niektóre serwisy nie mają danych wg notowań. np. TrendlineService.
-                    return;
-                    //throw new Exception(string.Format("Service for analysis type {0} not found", analysisType));
-                }
+        //    private void appendDataForSpecificAnalysisType(IEnumerable<DataSet> dataSets, IDataAccessService service, AnalysisType analysisType, AnalysisDataQueryDefinition queryDef)
+        //    {
+        //        if (service == null)
+        //        {
+        //            //Niektóre serwisy nie mają danych wg notowań. np. TrendlineService.
+        //            return;
+        //            //throw new Exception(string.Format("Service for analysis type {0} not found", analysisType));
+        //        }
 
-                IEnumerable<IDataUnit> units = service.GetUnits(queryDef).ToList();
-                foreach (var unit in units)
-                {
-                    DataSet dataSet = dataSets.SingleOrDefault(ds => ds.IndexNumber == unit.GetIndexNumber());
-                    if (dataSet != null)
-                    {
-                        dataSet.SetObject(analysisType, unit);
-                    }
-                }
-            }
+        //        IEnumerable<IDataUnit> units = service.GetUnits(queryDef).ToList();
+        //        foreach (var unit in units)
+        //        {
+        //            DataSet dataSet = dataSets.SingleOrDefault(price => price.IndexNumber == unit.GetIndexNumber());
+        //            if (dataSet != null)
+        //            {
+        //                dataSet.SetObject(analysisType, unit);
+        //            }
+        //        }
+        //    }
 
-            private IDataAccessService getDataAccessService(Dictionary<AnalysisType, IDataAccessService> dict, AnalysisType type)
-            {
-                IDataAccessService service;
-                try
-                {
-                    dict.TryGetValue(type, out service);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Missing service for analysis type: " + type.ToString());
-                }
-                return service;
-            }
+        //    private IDataAccessService getDataAccessService(Dictionary<AnalysisType, IDataAccessService> dict, AnalysisType type)
+        //    {
+        //        IDataAccessService service;
+        //        try
+        //        {
+        //            dict.TryGetValue(type, out service);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new Exception("Missing service for analysis type: " + type.ToString());
+        //        }
+        //        return service;
+        //    }
 
-        }
+        //}
 
 
     }

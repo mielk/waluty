@@ -14,13 +14,11 @@ namespace Stock.Domain.Entities
     public class Extremum : IDataUnit
     {
         private const AnalysisType analysisType = AnalysisType.Prices;
+        public Price Price { get; set; }
+        public ExtremumType Type { get; set; }
         public int ExtremumId { get; set; }
         public int SimulationId { get; set; }
-        public int AssetId { get; set; }
-        public int TimeframeId { get; set; }
-        public ExtremumType Type { get; set; }
-        public DateTime Date { get; set; }
-        public int IndexNumber { get; set; }
+        //Evaluation.
         public double Value { get; set; }
         public DateTime LastCheckedDateTime { get; set; }
         public int EarlierCounter { get; set; }
@@ -38,28 +36,19 @@ namespace Stock.Domain.Entities
         public double LaterChange5 { get; set; }
         public double LaterChange10 { get; set; }
         public double Volatility { get; set; }
-        public bool IsOpen { get; set; }
-        public bool IsUpdated { get; set; }
+        public bool Open { get; set; }
+        public bool New { get; set; }
+        public bool Updated { get; set; }
         public bool ToBeDeleted { get; set; }
 
 
         #region CONSTRUCTORS
 
-        public Extremum(int assetId, int timeframeId, ExtremumType type, int indexNumber)
+        public Extremum(Price price, ExtremumType type)
         {
-            this.AssetId = assetId;
-            this.TimeframeId = timeframeId;
+            this.Price = price;
             this.Type = type;
-            this.IndexNumber = indexNumber;
-        }
-
-        public Extremum(AtsSettings settings, ExtremumType type, int indexNumber)
-        {
-            this.AssetId = settings.AssetId;
-            this.TimeframeId = settings.TimeframeId;
-            this.SimulationId = settings.SimulationId;
-            this.Type = type;
-            this.IndexNumber = indexNumber;
+            price.SetExtremum(this);
         }
 
         #endregion CONSTRUCTORS
@@ -69,27 +58,37 @@ namespace Stock.Domain.Entities
 
         public DateTime GetDate()
         {
-            return Date;
+            return Price.GetDate();
         }
 
         public int GetIndexNumber()
         {
-            return IndexNumber;
+            return Price.GetIndexNumber();
         }
 
         public int GetAssetId()
         {
-            return AssetId;
+            return Price.GetAssetId();
         }
 
         public int GetTimeframeId()
         {
-            return TimeframeId;
+            return Price.GetTimeframeId();
         }
 
         public AnalysisType GetAnalysisType()
         {
-            return AnalysisType.DataSet;
+            return analysisType;
+        }
+
+        public bool IsNew()
+        {
+            return New;
+        }
+
+        public bool IsUpdated()
+        {
+            return Updated;
         }
 
         #endregion GETTERS
@@ -97,11 +96,10 @@ namespace Stock.Domain.Entities
 
         #region FROM/TO DTO
 
-        public static Extremum FromDto(ExtremumDto dto)
+        public static Extremum FromDto(Price price, ExtremumDto dto)
         {
-            var extremum = new Extremum(dto.AssetId, dto.TimeframeId, (ExtremumType)dto.ExtremumType, dto.IndexNumber);
+            var extremum = new Extremum(price, (ExtremumType)dto.ExtremumType);
             extremum.SimulationId = dto.SimulationId;
-            extremum.Date = dto.Date;
             extremum.ExtremumId = dto.Id;
             extremum.EarlierCounter = dto.EarlierCounter;
             extremum.EarlierAmplitude = dto.EarlierAmplitude;
@@ -118,7 +116,7 @@ namespace Stock.Domain.Entities
             extremum.LaterChange5 = dto.LaterChange5;
             extremum.LaterChange10 = dto.LaterChange10;
             extremum.Volatility = dto.Volatility;
-            extremum.IsOpen = dto.IsOpen;
+            extremum.Open = dto.IsOpen;
             extremum.Value = dto.Value;
             extremum.LastCheckedDateTime = dto.LastCheckedDateTime;
             return extremum;
@@ -129,13 +127,13 @@ namespace Stock.Domain.Entities
             var dto = new ExtremumDto()
             {
                 Id = this.ExtremumId,
-                AssetId = this.AssetId,
-                TimeframeId = this.TimeframeId,
-                SimulationId = this.SimulationId,
-                Date = this.Date,
-                Value = this.Value,
                 ExtremumType = (int)this.Type,
-                IndexNumber = this.IndexNumber,
+                AssetId = this.GetAssetId(),
+                TimeframeId = this.GetTimeframeId(),
+                SimulationId = this.SimulationId,
+                Date = this.GetDate(),
+                IndexNumber = this.GetIndexNumber(),
+                Value = this.Value,
                 EarlierCounter = this.EarlierCounter,
                 EarlierAmplitude = this.EarlierAmplitude,
                 EarlierChange1 = this.EarlierChange1,
@@ -151,7 +149,7 @@ namespace Stock.Domain.Entities
                 LaterChange5 = this.LaterChange5,
                 LaterChange10 = this.LaterChange10,
                 Volatility = this.Volatility,
-                IsOpen = this.IsOpen
+                IsOpen = this.Open
             };
 
             return dto;
@@ -223,16 +221,15 @@ namespace Stock.Domain.Entities
 
         public override bool Equals(object obj)
         {
-            const double MAX_VALUE_DIFFERENCE = 0.0001d;
             if (obj == null) return false;
             if (obj.GetType() != typeof(Extremum)) return false;
 
             Extremum compared = (Extremum)obj;
             if ((compared.SimulationId) != SimulationId) return false;
-            if ((compared.IndexNumber) != IndexNumber) return false;
-            if (compared.Date.CompareTo(Date) != 0) return false;
-            if ((compared.AssetId) != AssetId) return false;
-            if ((compared.TimeframeId) != TimeframeId) return false;
+            if ((compared.GetIndexNumber()) != GetIndexNumber()) return false;
+            if (compared.GetDate().CompareTo(GetDate()) != 0) return false;
+            if ((compared.GetAssetId()) != GetAssetId()) return false;
+            if ((compared.GetTimeframeId()) != GetTimeframeId()) return false;
             if ((compared.Type) != this.Type) return false;
             if (!compared.Volatility.IsEqual(Volatility)) return false;
             if ((compared.EarlierCounter) != EarlierCounter) return false;
@@ -250,7 +247,7 @@ namespace Stock.Domain.Entities
             if (!compared.LaterChange5.IsEqual(LaterChange5)) return false;
             if (!compared.LaterChange10.IsEqual(LaterChange10)) return false;
             if (!compared.Value.IsEqual(Value)) return false;
-            if ((compared.IsOpen) != IsOpen) return false;
+            if ((compared.Open) != Open) return false;
             return true;
 
         }
@@ -262,7 +259,7 @@ namespace Stock.Domain.Entities
 
         public override string ToString()
         {
-            return Date.ToString() + " | " + TimeframeId + " | " + AssetId;
+            return GetDate().ToString() + " | " + GetTimeframeId() + " | " + GetAssetId();
         }
 
         #endregion SYSTEM.OBJECT

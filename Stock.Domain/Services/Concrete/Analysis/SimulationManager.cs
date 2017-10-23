@@ -65,7 +65,7 @@ namespace Stock.Domain.Services
         private void loadLimitedDataSets(int startIndex, int endIndex)
         {
             AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId) { SimulationId = simulation.Id, StartIndex = startIndex, EndIndex = endIndex };
-            this.dataSetsArray = dataSetService.AppendAndReturnAsArray(this.dataSetsArray, queryDef);
+            this.dataSetsArray = dataSetService.GetDataSets(queryDef, this.dataSetsArray).ToArray();
         }
 
         #endregion UPDATING DATA SETS

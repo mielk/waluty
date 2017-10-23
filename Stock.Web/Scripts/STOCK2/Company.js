@@ -213,8 +213,10 @@ function DataSetCollection(params) {
                 if (dataItem) {
                     var quotation = new Quotation(item);
                     dataItem.quotation = quotation;
+                    dataItem.index = quotation.quotation.IndexNumber;
                     quotationsArray[dataItem.index] = quotation;
                 }
+
             }
         });
 

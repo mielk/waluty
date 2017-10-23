@@ -30,8 +30,6 @@ namespace Stock.Web
             kernel.Bind<ITimeframeRepository>().To<EFTimeframeRepository>();
 
             kernel.Bind<ISimulationService>().To<SimulationService>();
-            kernel.Bind<IQuotationService>().To<QuotationService>();
-            kernel.Bind<IPriceService>().To<PriceService>();
             kernel.Bind<IDataSetService>().To<DataSetService>();
 
             kernel.Bind<IProcessManager>().To<ProcessManager>();

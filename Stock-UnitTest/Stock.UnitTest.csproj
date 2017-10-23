@@ -101,6 +101,7 @@
     <Compile Include="Stock.DAL\TransferObjects\DataDto\PriceDtoUnitTests.cs" />
     <Compile Include="Stock.DAL\TransferObjects\DataDto\QuotationDtoUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Analysis\AnalysisTimestampUnitTests.cs" />
+    <Compile Include="Stock.Domain\Entities\Analysis\ExtremumGroupUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Analysis\TrendRangeUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Analysis\TrendBreakUnitTests.cs" />
     <Compile Include="Stock.Domain\Entities\Analysis\TrendHitUnitTests.cs" />
@@ -137,8 +138,6 @@
     <Compile Include="Stock.Domain\Services\Analysis\ProcessManagerUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Analysis\SimulationServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Data\DataSetServiceUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\Data\PriceServiceUnitTests.cs" />
-    <Compile Include="Stock.Domain\Services\Data\QuotationServiceUnitTests.cs" />
     <Compile Include="Stock.Domain\Services\Market\AssetServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\Market\TimeframeServiceUnitTest.cs" />
     <Compile Include="Stock.Domain\Services\Market\MarketServiceUnitTest.cs" />

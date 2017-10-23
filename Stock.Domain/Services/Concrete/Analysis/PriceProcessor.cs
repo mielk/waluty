@@ -60,13 +60,9 @@ namespace Stock.Domain.Services
         {
             if (dataSet != null && dataSet.GetPrice() == null)
             {
-                Price price = new Price()
+                Price price = new Price(dataSet)
                 {
-                    AssetId = dataSet.AssetId,
-                    TimeframeId = dataSet.TimeframeId,
-                    Date = dataSet.Date,
-                    IndexNumber = dataSet.IndexNumber,
-                    IsNew = true,
+                    New = true,
                     SimulationId = manager.GetSimulationId()
                 };
                 dataSet.SetPrice(price);
@@ -100,12 +96,12 @@ namespace Stock.Domain.Services
         //    if (previousItem.Quotation.High < nextItem.Quotation.Low)
         //    {
         //        item.Price.PriceGap = 100 * ((nextItem.Quotation.Low - previousItem.Quotation.High) / item.Quotation.Close);
-        //        item.Price.IsUpdated = true;
+        //        item.Price.Updated = true;
         //    }
         //    else if (previousItem.Quotation.Low > nextItem.Quotation.High)
         //    {
         //        item.Price.PriceGap = 100 * ((nextItem.Quotation.High - previousItem.Quotation.Low) / item.Quotation.Close);
-        //        item.Price.IsUpdated = true;
+        //        item.Price.Updated = true;
         //    }
 
         //}
@@ -192,12 +188,11 @@ namespace Stock.Domain.Services
 
             Extremum extremum = price.GetExtremum(type);
             IExtremumProcessor processor = getExtremumProcessor();
-            if (extremum == null && price.IsNew)
+            if (extremum == null && price.New)
             {
                 if (processor.IsExtremum(dataSet, type))
                 {
-                    extremum = new Extremum(dataSet.GetAssetId(), dataSet.GetTimeframeId(), type, dataSet.GetIndexNumber()) { Date = dataSet.Date };
-                    price.SetExtremum(extremum);
+                    extremum = new Extremum(price, type);
                 }
             }
 
@@ -218,7 +213,7 @@ namespace Stock.Domain.Services
                 extremum.LaterChange5 = processor.CalculateLaterChange(extremum, 5);
                 extremum.LaterChange10 = processor.CalculateLaterChange(extremum, 10);
                 extremum.Value = processor.CalculateValue(extremum);
-                extremum.IsUpdated = true;
+                extremum.Updated = true;
             }
 
         }

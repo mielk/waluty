@@ -9,11 +9,10 @@ using Stock.Core;
 
 namespace Stock.Domain.Services
 {
-    public interface IQuotationService : IBasicAnalysisService, IDataAccessService
+    public interface IQuotationService : IBasicAnalysisService
     {
         void InjectRepository(IQuotationRepository repository);
         IEnumerable<Quotation> GetQuotations(AnalysisDataQueryDefinition queryDef);
         void UpdateQuotations(IEnumerable<Quotation> quotations);
-
     }
 }

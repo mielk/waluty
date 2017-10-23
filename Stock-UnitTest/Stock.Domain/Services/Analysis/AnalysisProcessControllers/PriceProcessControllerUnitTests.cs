@@ -19,24 +19,69 @@ namespace Stock_UnitTest.Stock.Domain.Services
     public class PriceProcessControllerUnitTests
     {
 
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const int DEFAULT_SIMULATION_ID = 1;
+        private DateTime DEFAULT_BASE_DATE = new DateTime(2016, 1, 15, 22, 25, 0);
+
+
+
+        #region INFRASTRUCTURE
+
+        private DataSet getDataSetWithQuotation(int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            return getDataSetWithQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
+        }
+
+        private DataSet getDataSetWithQuotation(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
+            return ds;
+
+        }
+
+
+        private DataSet getDataSetWithQuotationAndPrice(int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            return getDataSetWithQuotationAndPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
+        }
+
+        private DataSet getDataSetWithQuotationAndPrice(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
+            Price p = new Price(ds);
+            return ds;
+
+        }
+
+
+        #endregion INFRASTRUCTURE
+
+
         [TestMethod]
         public void Run_AllItemsFromLastUpdatedMinusFixedNumberOfQuotationsAreChecked_IfThereIsNotEnoughItems()
         {
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             DataSet[] dataSets = new DataSet[13];
-            dataSets[1] = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1411, IndexNumber = 1 });
-            dataSets[2] = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09193, High = 1.09256, Low = 1.09165, Close = 1.09177, Volume = 1819, IndexNumber = 2 });
-            dataSets[3] = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09176, High = 1.09182, Low = 1.09142, Close = 1.09151, Volume = 1359, IndexNumber = 3 });
-            dataSets[4] = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
-            dataSets[5] = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 });
-            dataSets[6] = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 });
-            dataSets[7] = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 });
-            dataSets[8] = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 });
-            dataSets[9] = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09189, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 });
-            dataSets[10] = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 });
-            dataSets[11] = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 });
-            dataSets[12] = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 });
+            dataSets[1] = getDataSetWithQuotation(1, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
+            dataSets[2] = getDataSetWithQuotation(2, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
+            dataSets[3] = getDataSetWithQuotation(3, 1.09176, 1.09182, 1.09142, 1.09151, 1359);
+            dataSets[4] = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            dataSets[5] = getDataSetWithQuotation(5, 1.09111, 1.09124, 1.09091, 1.091, 1154);
+            dataSets[6] = getDataSetWithQuotation(6, 1.09101, 1.09132, 1.09097, 1.09131, 933);
+            dataSets[7] = getDataSetWithQuotation(7, 1.09131, 1.09167, 1.09114, 1.09165, 1079);
+            dataSets[8] = getDataSetWithQuotation(8, 1.09164, 1.09183, 1.0915, 1.09177, 1009);
+            dataSets[9] = getDataSetWithQuotation(9, 1.09178, 1.09189, 1.09143, 1.09149, 657);
+            dataSets[10] = getDataSetWithQuotation(10, 1.0915, 1.09164, 1.09144, 1.09148, 414);
+            dataSets[11] = getDataSetWithQuotation(11, 1.09149, 1.09156, 1.09095, 1.091, 419);
+            dataSets[12] = getDataSetWithQuotation(12, 1.09098, 1.09118, 1.09091, 1.09108, 341);
             for (int i = 1; i <= 12; i++)
             {
                 mockedManager.Setup(m => m.GetDataSet(i)).Returns(dataSets[i]);
@@ -71,18 +116,18 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             DataSet[] dataSets = new DataSet[13];
-            dataSets[1] = new DataSet(new Quotation() { Id = 1, Date = new DateTime(2016, 1, 15, 22, 25, 0), AssetId = 1, TimeframeId = 1, Open = 1.09191, High = 1.09218, Low = 1.09186, Close = 1.09194, Volume = 1411, IndexNumber = 1 });
-            dataSets[2] = new DataSet(new Quotation() { Id = 2, Date = new DateTime(2016, 1, 15, 22, 30, 0), AssetId = 1, TimeframeId = 1, Open = 1.09193, High = 1.09256, Low = 1.09165, Close = 1.09177, Volume = 1819, IndexNumber = 2 });
-            dataSets[3] = new DataSet(new Quotation() { Id = 3, Date = new DateTime(2016, 1, 15, 22, 35, 0), AssetId = 1, TimeframeId = 1, Open = 1.09176, High = 1.09182, Low = 1.09142, Close = 1.09151, Volume = 1359, IndexNumber = 3 });
-            dataSets[4] = new DataSet(new Quotation() { Id = 4, Date = new DateTime(2016, 1, 15, 22, 40, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.0916, Low = 1.09111, Close = 1.09112, Volume = 1392, IndexNumber = 4 });
-            dataSets[5] = new DataSet(new Quotation() { Id = 5, Date = new DateTime(2016, 1, 15, 22, 45, 0), AssetId = 1, TimeframeId = 1, Open = 1.09111, High = 1.09124, Low = 1.09091, Close = 1.091, Volume = 1154, IndexNumber = 5 });
-            dataSets[6] = new DataSet(new Quotation() { Id = 6, Date = new DateTime(2016, 1, 15, 22, 50, 0), AssetId = 1, TimeframeId = 1, Open = 1.09101, High = 1.09132, Low = 1.09097, Close = 1.09131, Volume = 933, IndexNumber = 6 });
-            dataSets[7] = new DataSet(new Quotation() { Id = 7, Date = new DateTime(2016, 1, 15, 22, 55, 0), AssetId = 1, TimeframeId = 1, Open = 1.09131, High = 1.09167, Low = 1.09114, Close = 1.09165, Volume = 1079, IndexNumber = 7 });
-            dataSets[8] = new DataSet(new Quotation() { Id = 8, Date = new DateTime(2016, 1, 15, 23, 0, 0), AssetId = 1, TimeframeId = 1, Open = 1.09164, High = 1.09183, Low = 1.0915, Close = 1.09177, Volume = 1009, IndexNumber = 8 });
-            dataSets[9] = new DataSet(new Quotation() { Id = 9, Date = new DateTime(2016, 1, 15, 23, 5, 0), AssetId = 1, TimeframeId = 1, Open = 1.09178, High = 1.09189, Low = 1.09143, Close = 1.09149, Volume = 657, IndexNumber = 9 });
-            dataSets[10] = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 });
-            dataSets[11] = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 });
-            dataSets[12] = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 });
+            dataSets[1] = getDataSetWithQuotation(1, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
+            dataSets[2] = getDataSetWithQuotation(2, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
+            dataSets[3] = getDataSetWithQuotation(3, 1.09176, 1.09182, 1.09142, 1.09151, 1359);
+            dataSets[4] = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            dataSets[5] = getDataSetWithQuotation(5, 1.09111, 1.09124, 1.09091, 1.091, 1154);
+            dataSets[6] = getDataSetWithQuotation(6, 1.09101, 1.09132, 1.09097, 1.09131, 933);
+            dataSets[7] = getDataSetWithQuotation(7, 1.09131, 1.09167, 1.09114, 1.09165, 1079);
+            dataSets[8] = getDataSetWithQuotation(8, 1.09164, 1.09183, 1.0915, 1.09177, 1009);
+            dataSets[9] = getDataSetWithQuotation(9, 1.09178, 1.09189, 1.09143, 1.09149, 657);
+            dataSets[10] = getDataSetWithQuotation(10, 1.0915, 1.09164, 1.09144, 1.09148, 414);
+            dataSets[11] = getDataSetWithQuotation(11, 1.09149, 1.09156, 1.09095, 1.091, 419);
+            dataSets[12] = getDataSetWithQuotation(12, 1.09098, 1.09118, 1.09091, 1.09108, 341);
             for (int i = 1; i <= 12; i++)
             {
                 mockedManager.Setup(m => m.GetDataSet(i)).Returns(dataSets[i]);

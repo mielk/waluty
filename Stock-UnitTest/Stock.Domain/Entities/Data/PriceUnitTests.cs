@@ -10,6 +10,170 @@ namespace Stock_UnitTest.Stock.Domain
     public class PriceUnitTests
     {
 
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const int DEFAULT_SIMULATION_ID = 1;
+        private const int DEFAULT_INDEX_NUMBER = 1;
+        private DateTime DEFAULT_BASE_DATE = new DateTime(2017, 5, 2, 12, 15, 0);
+
+
+
+        #region INFRASTRUCTURE
+
+        private DataSet getDataSet(int indexNumber)
+        {
+            return getDataSet(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private DataSet getDataSet(int assetId, int timeframeId, int indexNumber)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            return ds;
+        }
+
+
+        private Quotation getQuotation(DataSet ds)
+        {
+            return new Quotation(ds)
+            {
+                Id = ds.IndexNumber,
+                Open = 1.09191,
+                High = 1.09218,
+                Low = 1.09186,
+                Close = 1.09194,
+                Volume = 1411
+            };
+        }
+
+        private Quotation getQuotation(int indexNumber)
+        {
+            return getQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private Quotation getQuotation(int assetId, int timeframeId, int indexNumber)
+        {
+            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
+            return new Quotation(ds)
+            {
+                Id = indexNumber,
+                Open = 1.09191,
+                High = 1.09218,
+                Low = 1.09186,
+                Close = 1.09194,
+                Volume = 1411
+            };
+        }
+
+        private QuotationDto getQuotationDto(int indexNumber)
+        {
+            return getQuotationDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private QuotationDto getQuotationDto(int assetId, int timeframeId, int indexNumber)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            return new QuotationDto()
+            {
+                PriceDate = date,
+                AssetId = assetId,
+                TimeframeId = timeframeId,
+                OpenPrice = 1.09191,
+                HighPrice = 1.09218,
+                LowPrice = 1.09186,
+                ClosePrice = 1.09194,
+                Volume = 1411
+            };
+        }
+
+
+
+        private Price getPrice(DataSet ds)
+        {
+            return getPrice(ds);
+        }
+
+        private Price getPrice(int indexNumber)
+        {
+            return getPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private Price getPrice(int assetId, int timeframeId, int indexNumber)
+        {
+            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
+            return new Price(ds)
+            {
+                Id = indexNumber,
+                CloseDelta = 1.05,
+                Direction2D = 1,
+                Direction3D = 0,
+                PriceGap = 1.23,
+                CloseRatio = 1.23,
+                ExtremumRatio = 2.34
+            };
+        }
+
+        private PriceDto getPriceDto(int indexNumber)
+        {
+            return getPriceDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private PriceDto getPriceDto(int assetId, int timeframeId, int indexNumber)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            return new PriceDto()
+            {
+                Id = indexNumber,
+                PriceDate = date,
+                AssetId = assetId,
+                TimeframeId = timeframeId,
+                IndexNumber = indexNumber,
+                DeltaClosePrice = 1.04,
+                PriceDirection2D = 1,
+                PriceDirection3D = 1,
+                PriceGap = 0.05,
+                CloseRatio = 0.23,
+                ExtremumRatio = 1
+            };
+        }
+
+        private DataSet getDataSetWithQuotation(int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            return getDataSetWithQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
+        }
+
+        private DataSet getDataSetWithQuotation(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
+            return ds;
+
+        }
+
+        private DataSet getDataSetWithQuotationAndPrice(int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            return getDataSetWithQuotationAndPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
+        }
+
+        private DataSet getDataSetWithQuotationAndPrice(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
+            Price p = new Price(ds);
+            return ds;
+
+        }
+
+        #endregion INFRASTRUCTURE
+
+
 
         #region FROM_DTO
 
@@ -21,10 +185,10 @@ namespace Stock_UnitTest.Stock.Domain
             PriceDto dto = new PriceDto()
             {
                 Id = 1,
-                PriceDate = new DateTime(2017, 5, 2, 12, 15, 0),
-                IndexNumber = 1,
-                AssetId = 1,
-                TimeframeId = 1,
+                PriceDate = DEFAULT_BASE_DATE,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                AssetId = DEFAULT_ASSET_ID,
+                TimeframeId = DEFAULT_TIMEFRAME_ID,
                 DeltaClosePrice = 1.15,
                 PriceDirection2D = 1,
                 PriceDirection3D = 0,
@@ -34,16 +198,13 @@ namespace Stock_UnitTest.Stock.Domain
             };
 
             //Act
-            Price actualPrice = Price.FromDto(dto);
+            DataSet ds = getDataSet(DEFAULT_INDEX_NUMBER);
+            Price actualPrice = Price.FromDto(ds, dto);
 
             //Assert
-            Price expectedPrice = new Price()
+            Price expectedPrice = new Price(ds)
             {
                 Id = 1,
-                Date = new DateTime(2017, 5, 2, 12, 15, 0),
-                IndexNumber = 1,
-                AssetId = 1,
-                TimeframeId = 1,
                 CloseDelta = 1.15,
                 Direction2D = 1,
                 Direction3D = 0,
@@ -64,22 +225,19 @@ namespace Stock_UnitTest.Stock.Domain
         public void ToDto_ReturnsProperPriceDtoObject()
         {
 
-            //Arrange
-            Price price = new Price()
+            //Act
+            DataSet ds = getDataSet(DEFAULT_INDEX_NUMBER);
+            Price price = new Price(ds)
             {
                 Id = 1,
-                Date = new DateTime(2017, 5, 2, 12, 15, 0),
-                IndexNumber = 1,
-                AssetId = 1,
-                TimeframeId = 1,
                 CloseDelta = 1.15,
                 Direction2D = 1,
                 Direction3D = 0,
                 PriceGap = 0,
                 CloseRatio = 1.45,
-                ExtremumRatio = 2.12,
-                PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 1)
+                ExtremumRatio = 2.12
             };
+            Extremum peakByClose = new Extremum(price, ExtremumType.PeakByClose);
 
             //Act
             PriceDto actualDto = price.ToDto();
@@ -88,10 +246,10 @@ namespace Stock_UnitTest.Stock.Domain
             PriceDto expectedDto = new PriceDto()
             {
                 Id = 1,
-                PriceDate = new DateTime(2017, 5, 2, 12, 15, 0),
-                IndexNumber = 1,
-                AssetId = 1,
-                TimeframeId = 1,
+                PriceDate = DEFAULT_BASE_DATE,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                AssetId = DEFAULT_ASSET_ID,
+                TimeframeId = DEFAULT_TIMEFRAME_ID,
                 DeltaClosePrice = 1.15,
                 PriceDirection2D = 1,
                 PriceDirection3D = 0,
@@ -109,30 +267,12 @@ namespace Stock_UnitTest.Stock.Domain
 
         #region EQUALS
 
-        private Price getDefaultPrice()
-        {
-            return new Price()
-            {
-                Id = 1,
-                Date = new DateTime(2017, 3, 4, 21, 10, 0),
-                AssetId = 1,
-                TimeframeId = 1,
-                CloseDelta = 1.04,
-                Direction2D = 1,
-                Direction3D = 1,
-                PriceGap = 0.05,
-                CloseRatio = 0.23,
-                ExtremumRatio = 1,
-                IndexNumber = 51
-            };
-        }
-
         [TestMethod]
         public void Equals_ReturnsFalse_IfComparedToObjectOfOtherType()
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
+            var baseItem = getPrice(1);
             var comparedItem = new { Id = 1 };
 
             //Act
@@ -148,8 +288,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             var areEqual = baseItem.Equals(comparedItem);
@@ -164,8 +304,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.Id++;
@@ -181,8 +321,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.SimulationId++;
@@ -198,11 +338,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.Date = comparedItem.Date.AddMinutes(5);
+            comparedItem.DataSet.Date = comparedItem.DataSet.Date.AddMinutes(5);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -215,11 +355,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.AssetId++;
+            comparedItem.DataSet.AssetId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -232,11 +372,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.TimeframeId++;
+            comparedItem.DataSet.TimeframeId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -249,11 +389,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.IndexNumber++;
+            comparedItem.DataSet.IndexNumber++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -266,8 +406,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.CloseDelta += 0.015;
@@ -283,8 +423,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.Direction2D *= -1;
@@ -300,8 +440,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.Direction3D *= -1;
@@ -317,8 +457,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.PriceGap += 0.015;
@@ -334,12 +474,15 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
-            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            baseItem.PeakByClose = new Extremum(baseItem, ExtremumType.PeakByClose);
+            comparedItem.PeakByClose = new Extremum(comparedItem, ExtremumType.PeakByClose);
+            baseItem.PeakByClose.Value = 2;
+            comparedItem.PeakByClose.Value = 1;
+
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -352,11 +495,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10);
+            comparedItem.PeakByClose = new Extremum(comparedItem, ExtremumType.PeakByClose);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -369,11 +512,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10);
+            baseItem.PeakByClose = new Extremum(baseItem, ExtremumType.PeakByClose);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -386,12 +529,12 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
-            comparedItem.PeakByClose = new Extremum(1, 1, ExtremumType.PeakByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) }; 
+            baseItem.PeakByClose = new Extremum(baseItem, ExtremumType.PeakByClose);
+            comparedItem.PeakByClose = new Extremum(comparedItem, ExtremumType.PeakByClose); 
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -404,12 +547,14 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
-            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            baseItem.PeakByHigh = new Extremum(baseItem, ExtremumType.PeakByHigh);
+            comparedItem.PeakByHigh = new Extremum(comparedItem, ExtremumType.PeakByHigh);
+            baseItem.PeakByHigh.Value = 2;
+            comparedItem.PeakByHigh.Value = 1;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -422,11 +567,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            comparedItem.PeakByHigh = new Extremum(comparedItem, ExtremumType.PeakByHigh);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -439,11 +584,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10);
+            baseItem.PeakByHigh = new Extremum(baseItem, ExtremumType.PeakByHigh);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -456,12 +601,12 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
-            comparedItem.PeakByHigh = new Extremum(1, 1, ExtremumType.PeakByHigh, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            baseItem.PeakByHigh = new Extremum(baseItem, ExtremumType.PeakByHigh);
+            comparedItem.PeakByHigh = new Extremum(comparedItem, ExtremumType.PeakByHigh); 
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -474,12 +619,14 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
-            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            baseItem.TroughByClose = new Extremum(baseItem, ExtremumType.TroughByClose);
+            comparedItem.TroughByClose = new Extremum(comparedItem, ExtremumType.TroughByClose);
+            baseItem.TroughByClose.Value = 1;
+            comparedItem.TroughByClose.Value = 1;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -492,11 +639,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
+            comparedItem.TroughByClose = new Extremum(comparedItem, ExtremumType.TroughByClose);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -509,11 +656,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
+            baseItem.TroughByClose = new Extremum(baseItem, ExtremumType.TroughByClose);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -526,12 +673,12 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
-            comparedItem.TroughByClose = new Extremum(1, 1, ExtremumType.TroughByClose, 10);
+            baseItem.TroughByClose = new Extremum(baseItem, ExtremumType.TroughByClose);
+            comparedItem.TroughByClose = new Extremum(comparedItem, ExtremumType.TroughByClose);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -544,12 +691,14 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 11) { Date = new DateTime(2017, 5, 2, 12, 5, 0) };
-            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            baseItem.TroughByLow = new Extremum(baseItem, ExtremumType.TroughByLow);
+            comparedItem.TroughByLow = new Extremum(comparedItem, ExtremumType.TroughByLow);
+            baseItem.TroughByLow.Value = 1;
+            comparedItem.TroughByLow.Value = 1;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -562,11 +711,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            comparedItem.TroughByLow = new Extremum(comparedItem, ExtremumType.TroughByLow);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -579,11 +728,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            baseItem.TroughByLow = new Extremum(baseItem, ExtremumType.TroughByLow);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -596,12 +745,12 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
-            baseItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
-            comparedItem.TroughByLow = new Extremum(1, 1, ExtremumType.TroughByLow, 10) { Date = new DateTime(2017, 5, 2, 12, 0, 0) };
+            baseItem.TroughByLow = new Extremum(baseItem, ExtremumType.TroughByLow);
+            comparedItem.TroughByLow = new Extremum(comparedItem, ExtremumType.TroughByLow);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -614,8 +763,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.CloseRatio += 0.15;
@@ -631,8 +780,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultPrice();
-            var comparedItem = getDefaultPrice();
+            var baseItem = getPrice(1);
+            var comparedItem = getPrice(1);
 
             //Act
             comparedItem.ExtremumRatio += 0.15;
@@ -653,10 +802,10 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            Price price = getDefaultPrice();
+            Price price = getPrice(1);
 
             //Act
-            Extremum peakByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByClose, price.GetIndexNumber());
+            Extremum peakByClose = new Extremum(price, ExtremumType.PeakByClose);
             price.SetExtremum(peakByClose);
 
             //Assert
@@ -669,10 +818,10 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            Price price = getDefaultPrice();
+            Price price = getPrice(1);
 
             //Act
-            Extremum peakByHigh = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.PeakByHigh, price.GetIndexNumber());
+            Extremum peakByHigh = new Extremum(price, ExtremumType.PeakByHigh);
             price.SetExtremum(peakByHigh);
 
             //Assert
@@ -685,10 +834,10 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            Price price = getDefaultPrice();
+            Price price = getPrice(1);
 
             //Act
-            Extremum troughByClose = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByClose, price.GetIndexNumber());
+            Extremum troughByClose = new Extremum(price, ExtremumType.TroughByClose);
             price.SetExtremum(troughByClose);
 
             //Assert
@@ -701,10 +850,10 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            Price price = getDefaultPrice();
+            Price price = getPrice(1);
 
             //Act
-            Extremum troughByLow = new Extremum(price.GetAssetId(), price.GetTimeframeId(), ExtremumType.TroughByLow, price.GetIndexNumber());
+            Extremum troughByLow = new Extremum(price, ExtremumType.TroughByLow);
             price.SetExtremum(troughByLow);
 
             //Assert

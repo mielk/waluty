@@ -58,7 +58,7 @@ namespace Stock.Domain.Services
                 Trendline trendline = trendlines.SingleOrDefault(s => s.Id == dto.Id);
                 if (trendline == null)
                 {
-                    trendline = Trendline.FromDto(dto);
+                    trendline = new Trendline(dto);
                     appendTrendline(trendline);
                 }
                 result.Add(trendline);
@@ -73,7 +73,7 @@ namespace Stock.Domain.Services
                 var dto = _repository.GetTrendlineById(id);
                 if (dto != null)
                 {
-                    trendline = Trendline.FromDto(dto);
+                    trendline = new Trendline(dto);
                     appendTrendline(trendline);
                 }
             }

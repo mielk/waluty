@@ -16,9 +16,9 @@ namespace Stock.Domain.Services
     public class DataSetService : IDataSetService
     {
         private IAnalysisRepository analysisRepository;
-        private IQuotationService quotationService;
-        private IPriceService priceService;
-        private DataSetsContainer container;
+        private IQuotationRepository quotationRepository;
+        private IPriceRepository priceRepository;
+        private IEnumerable<DataSetsContainer> containers = new List<DataSetsContainer>();
 
 
         #region INFRASTRUCTURE
@@ -26,68 +26,53 @@ namespace Stock.Domain.Services
         public DataSetService()
         {
             this.analysisRepository = RepositoryFactory.GetAnalysisRepository();
-            this.quotationService = ServiceFactory.Instance().GetQuotationService();
-            this.priceService = ServiceFactory.Instance().GetPriceService();
-            setContainer(new DataSetsContainer());
+            this.quotationRepository = RepositoryFactory.GetQuotationRepository();
+            this.priceRepository = RepositoryFactory.GetPriceRepository();
         }
 
-        public void injectAnalysisRepository(IAnalysisRepository repository)
+        public void InjectAnalysisRepository(IAnalysisRepository repository)
         {
             this.analysisRepository = repository;
         }
 
-        public void InjectQuotationService(IQuotationService service)
+        public void InjectQuotationRepository(IQuotationRepository repository)
         {
-            this.quotationService = service;
-            container.SetQuotationService(service);
+            this.quotationRepository = repository;
         }
 
-        public void InjectPriceService(IPriceService service)
+        public void InjectPriceRepository(IPriceRepository repository)
         {
-            this.priceService = service;
-            this.container.SetPriceService(service);
+            this.priceRepository = repository;
         }
 
-        private void setContainer(DataSetsContainer container)
-        {
-            this.container = container;
-            this.container.SetPriceService(priceService);
-            this.container.SetQuotationService(quotationService);
-        }
 
         #endregion INFRASTRUCTURE
+
 
 
         #region API
 
         public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef)
         {
-            return container.GetDataSets(queryDef);
+            DataSetsContainer dsc = containers.SingleOrDefault(c => c.AssetId == queryDef.AssetId && c.TimeframeId == queryDef.TimeframeId && c.SimulationId == queryDef.SimulationId);
+            if (dsc == null)
+            {
+
+            }
+            return null;
         }
 
-        public AnalysisInfo GetAnalysisInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType)
+        public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef, IEnumerable<DataSet> initialSets)
         {
-            AnalysisInfoDto dto = analysisRepository.GetAnalysisInfoDto(queryDef, analysisType);
-            return AnalysisInfo.FromDto(dto);
-        }
-
-        public IEnumerable<IDataUnit> GetUnits(AnalysisDataQueryDefinition queryDef)
-        {
-            return GetDataSets(queryDef);
-        }
-
-        public DataSet[] AppendAndReturnAsArray(IEnumerable<DataSet> sets, AnalysisDataQueryDefinition queryDef)
-        {
-
-            IEnumerable<DataSet> currentSet = GetDataSets(queryDef);
-            int maxIndexOriginal = (currentSet == null ? 0 : (currentSet.Count() > 0 ? currentSet.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0));
-            int maxIndexAppended = (sets == null ? 0 : (sets.Count() > 0 ? sets.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0));
+            IEnumerable<DataSet> currentSets = GetDataSets(queryDef);
+            int maxIndexOriginal = (currentSets == null ? 0 : (currentSets.Count() > 0 ? currentSets.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0));
+            int maxIndexAppended = (initialSets == null ? 0 : (initialSets.Count() > 0 ? initialSets.Max(ds => (ds == null ? 0 : ds.IndexNumber)) : 0));
             int maxIndex = Math.Max(maxIndexOriginal, maxIndexAppended);
             DataSet[] array = new DataSet[maxIndex + 1];
 
-            if (sets != null)
+            if (initialSets != null)
             {
-                foreach (var ds in sets)
+                foreach (var ds in initialSets)
                 {
                     if (ds != null)
                     {
@@ -97,9 +82,9 @@ namespace Stock.Domain.Services
                 }
             }
 
-            if (currentSet != null)
+            if (currentSets != null)
             {
-                foreach (var ds in currentSet)
+                foreach (var ds in currentSets)
                 {
                     if (ds != null)
                     {
@@ -112,29 +97,34 @@ namespace Stock.Domain.Services
             return array;
 
         }
-        
+
+        public AnalysisInfo GetAnalysisInfo(AnalysisDataQueryDefinition queryDef, AnalysisType analysisType)
+        {
+            AnalysisInfoDto dto = analysisRepository.GetAnalysisInfoDto(queryDef, analysisType);
+            return AnalysisInfo.FromDto(dto);
+        }
+
         public void UpdateDataSets(IEnumerable<DataSet> dataSets)
         {
 
             //Quotations
-            if (quotationService != null)
+            if (quotationRepository != null)
             {
-                IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
-                quotationService.UpdateQuotations(quotations);
+                IEnumerable<QuotationDto> quotationDtos = dataSets.Select(ds => ds.GetQuotation()).Where(q => q.IsUpdated() || q.IsNew()).Select(q => q.ToDto());
+                quotationRepository.UpdateQuotations(quotationDtos);
             }
 
             //Prices
-            if (priceService != null)
+            if (priceRepository != null)
             {
-                IEnumerable<Price> prices = dataSets.Select(ds => ds.GetPrice());
-                priceService.UpdatePrices(prices);
+                IEnumerable<PriceDto> priceDtos = dataSets.Select(ds => ds.GetPrice()).Where(p => p.IsUpdated() || p.IsNew()).Select(p => p.ToDto());
+                priceRepository.UpdatePrices(priceDtos);
             }
 
         }
 
 
         #endregion API
-
 
 
     }

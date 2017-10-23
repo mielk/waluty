@@ -15,22 +15,20 @@ namespace Stock_UnitTest.Stock.Domain
         private const int DEFAULT_TIMEFRAME_ID = 1;
         private const int DEFAULT_INDEX_NUMBER = 1;
 
-        #region EQUALS
+
+
+        #region INFRASTRUCTURE
 
         private DataSet getDefaultDataSet()
         {
             return new DataSet(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_DATETIME, DEFAULT_INDEX_NUMBER);
         }
 
-        private Quotation getDefaultQuotation()
+        private Quotation getDefaultQuotation(DataSet ds)
         {
-            return new Quotation()
+            return new Quotation(ds)
             {
                 Id = 1,
-                Date = DEFAULT_DATETIME,
-                AssetId = DEFAULT_ASSET_ID,
-                TimeframeId = DEFAULT_TIMEFRAME_ID,
-                IndexNumber = DEFAULT_INDEX_NUMBER,
                 Open = 1.234,
                 High = 1.45,
                 Low = 1.11,
@@ -39,15 +37,11 @@ namespace Stock_UnitTest.Stock.Domain
             };
         }
 
-        private Price getDefaultPrice()
+        private Price getDefaultPrice(DataSet ds)
         {
-            return new Price()
+            return new Price(ds)
             {
                 Id = 1,
-                Date = DEFAULT_DATETIME,
-                AssetId = DEFAULT_ASSET_ID,
-                TimeframeId = DEFAULT_TIMEFRAME_ID,
-                IndexNumber = DEFAULT_INDEX_NUMBER,
                 CloseDelta = 1.04,
                 Direction2D = 1,
                 Direction3D = 1,
@@ -56,6 +50,12 @@ namespace Stock_UnitTest.Stock.Domain
                 ExtremumRatio = 1,
             };
         }
+
+        #endregion INFRASTRUCTURE
+
+
+
+        #region EQUALS
 
         [TestMethod]
         public void Equals_ReturnsFalse_IfComparedToObjectOfOtherType()
@@ -166,8 +166,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            baseItem.SetQuotation(getDefaultQuotation());
-            comparedItem.SetQuotation(getDefaultQuotation());
+            baseItem.SetQuotation(getDefaultQuotation(baseItem));
+            comparedItem.SetQuotation(getDefaultQuotation(comparedItem));
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -184,9 +184,9 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            Quotation baseQuotation = getDefaultQuotation();
-            Quotation comparedQuotation = getDefaultQuotation();
-            comparedQuotation.AssetId++;
+            Quotation baseQuotation = getDefaultQuotation(baseItem);
+            Quotation comparedQuotation = getDefaultQuotation(comparedItem);
+            comparedQuotation.Open += 1;
             baseItem.SetQuotation(baseQuotation);
             comparedItem.SetQuotation(comparedQuotation);
             var areEqual = baseItem.Equals(comparedItem);
@@ -205,7 +205,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            comparedItem.SetQuotation(getDefaultQuotation());
+            comparedItem.SetQuotation(getDefaultQuotation(comparedItem));
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -222,7 +222,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            baseItem.SetQuotation(getDefaultQuotation());
+            baseItem.SetQuotation(getDefaultQuotation(baseItem));
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -239,8 +239,8 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            baseItem.SetPrice(getDefaultPrice());
-            comparedItem.SetPrice(getDefaultPrice());
+            baseItem.SetPrice(getDefaultPrice(baseItem));
+            comparedItem.SetPrice(getDefaultPrice(comparedItem));
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -257,9 +257,10 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            Price basePrice = getDefaultPrice();
-            Price comparedPrice = getDefaultPrice();
-            comparedPrice.AssetId++;
+            Price basePrice = getDefaultPrice(baseItem);
+            Price comparedPrice = getDefaultPrice(comparedItem);
+            basePrice.CloseDelta = 1;
+            comparedPrice.CloseDelta = 2;
             baseItem.SetPrice(basePrice);
             comparedItem.SetPrice(comparedPrice);
             var areEqual = baseItem.Equals(comparedItem);
@@ -278,7 +279,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            comparedItem.SetPrice(getDefaultPrice());
+            comparedItem.SetPrice(getDefaultPrice(comparedItem));
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -295,7 +296,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultDataSet();
 
             //Act
-            baseItem.SetPrice(getDefaultPrice());
+            baseItem.SetPrice(getDefaultPrice(baseItem));
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -305,6 +306,41 @@ namespace Stock_UnitTest.Stock.Domain
 
         #endregion EQUALS
 
+
+        #region SETTING_SUBOBJECTS
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "It is not allowed to set getQuotation with different DataSet to a given DataSet")]
+        public void SetQuotation_IfTryToSetQuotationWithDifferentDataSet_RaiseException()
+        {
+
+            //Arrange.
+            DataSet ds = getDefaultDataSet();
+            DataSet ds2 = new DataSet(DEFAULT_ASSET_ID + 1, DEFAULT_TIMEFRAME_ID + 1, DEFAULT_DATETIME, DEFAULT_TIMEFRAME_ID + 1);
+
+            //Act.
+            Quotation quotation = new Quotation(ds2);
+            ds.SetQuotation(quotation);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "It is not allowed to set getPrice with different DataSet to a given DataSet")]
+        public void SetPrice_IfTryToSetPriceWithDifferentDataSet_RaiseException()
+        {
+
+            //Arrange.
+            DataSet ds = getDefaultDataSet();
+            DataSet ds2 = new DataSet(DEFAULT_ASSET_ID + 1, DEFAULT_TIMEFRAME_ID + 1, DEFAULT_DATETIME, DEFAULT_TIMEFRAME_ID + 1);
+
+            //Act.
+            Price price = new Price(ds2);
+            ds.SetPrice(price);
+
+        }
+
+
+        #endregion SETTING_SUBOBJECTS
 
     }
 }

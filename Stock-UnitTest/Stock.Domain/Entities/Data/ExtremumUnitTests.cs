@@ -11,6 +11,169 @@ namespace Stock_UnitTest.Stock.Domain
     public class ExtremumUnitTests
     {
 
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const int DEFAULT_SIMULATION_ID = 1;
+        private const int DEFAULT_INDEX_NUMBER = 1;
+        private DateTime DEFAULT_BASE_DATE = new DateTime(2017, 5, 2, 12, 15, 0);
+
+
+
+        #region INFRASTRUCTURE
+
+        private DataSet getDataSet(int indexNumber)
+        {
+            return getDataSet(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private DataSet getDataSet(int assetId, int timeframeId, int indexNumber)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            return ds;
+        }
+
+
+        private Quotation getQuotation(DataSet ds)
+        {
+            return new Quotation(ds)
+            {
+                Id = ds.IndexNumber,
+                Open = 1.09191,
+                High = 1.09218,
+                Low = 1.09186,
+                Close = 1.09194,
+                Volume = 1411
+            };
+        }
+
+        private Quotation getQuotation(int indexNumber)
+        {
+            return getQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private Quotation getQuotation(int assetId, int timeframeId, int indexNumber)
+        {
+            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
+            return new Quotation(ds)
+            {
+                Id = indexNumber,
+                Open = 1.09191,
+                High = 1.09218,
+                Low = 1.09186,
+                Close = 1.09194,
+                Volume = 1411
+            };
+        }
+
+        private QuotationDto getQuotationDto(int indexNumber)
+        {
+            return getQuotationDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private QuotationDto getQuotationDto(int assetId, int timeframeId, int indexNumber)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            return new QuotationDto()
+            {
+                PriceDate = date,
+                AssetId = assetId,
+                TimeframeId = timeframeId,
+                OpenPrice = 1.09191,
+                HighPrice = 1.09218,
+                LowPrice = 1.09186,
+                ClosePrice = 1.09194,
+                Volume = 1411
+            };
+        }
+
+
+
+        private Price getPrice(DataSet ds)
+        {
+            return getPrice(ds);
+        }
+
+        private Price getPrice(int indexNumber)
+        {
+            return getPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private Price getPrice(int assetId, int timeframeId, int indexNumber)
+        {
+            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
+            return new Price(ds)
+            {
+                Id = indexNumber,
+                CloseDelta = 1.05,
+                Direction2D = 1,
+                Direction3D = 0,
+                PriceGap = 1.23,
+                CloseRatio = 1.23,
+                ExtremumRatio = 2.34
+            };
+        }
+
+        private PriceDto getPriceDto(int indexNumber)
+        {
+            return getPriceDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
+        }
+
+        private PriceDto getPriceDto(int assetId, int timeframeId, int indexNumber)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            return new PriceDto()
+            {
+                Id = indexNumber,
+                PriceDate = date,
+                AssetId = assetId,
+                TimeframeId = timeframeId,
+                IndexNumber = indexNumber,
+                DeltaClosePrice = 1.04,
+                PriceDirection2D = 1,
+                PriceDirection3D = 1,
+                PriceGap = 0.05,
+                CloseRatio = 0.23,
+                ExtremumRatio = 1
+            };
+        }
+
+        private DataSet getDataSetWithQuotation(int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            return getDataSetWithQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
+        }
+
+        private DataSet getDataSetWithQuotation(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
+            return ds;
+
+        }
+
+        private DataSet getDataSetWithQuotationAndPrice(int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            return getDataSetWithQuotationAndPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
+        }
+
+        private DataSet getDataSetWithQuotationAndPrice(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
+        {
+            var timeframe = Timeframe.ById(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
+            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
+            Price p = new Price(ds);
+            return ds;
+
+        }
+
+        #endregion INFRASTRUCTURE
+
 
         #region FROM_DTO
 
@@ -21,12 +184,12 @@ namespace Stock_UnitTest.Stock.Domain
             //Arrange
 
             ExtremumDto dto = new ExtremumDto() { 
-                Id = 1, 
-                SimulationId = 1,
-                Date = new DateTime(2017, 5, 2, 12, 15, 0), 
-                IndexNumber = 1, 
-                AssetId = 1, 
-                TimeframeId = 1, 
+                Id = 1,
+                SimulationId = DEFAULT_SIMULATION_ID,
+                Date = DEFAULT_BASE_DATE,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                AssetId = DEFAULT_ASSET_ID,
+                TimeframeId = DEFAULT_TIMEFRAME_ID, 
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0), 
                 ExtremumType = 1, 
                 Volatility = 1.23, 
@@ -51,14 +214,14 @@ namespace Stock_UnitTest.Stock.Domain
 
 
             //Act
-            Extremum actualExtremum = Extremum.FromDto(dto);
+            Price price = getPrice(DEFAULT_INDEX_NUMBER);
+            Extremum actualExtremum = Extremum.FromDto(price, dto);
 
             //Assert
-            Extremum expectedExtremum = new Extremum(1, 1, (ExtremumType)1, 1)
+            Extremum expectedExtremum = new Extremum(price, ExtremumType.PeakByClose)
             {
                 ExtremumId = 1,
-                SimulationId = 1,
-                Date = new DateTime(2017, 5, 2, 12, 15, 0),
+                SimulationId = DEFAULT_SIMULATION_ID,
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0),
                 Volatility = 1.23,
                 EarlierCounter = 15,
@@ -75,7 +238,7 @@ namespace Stock_UnitTest.Stock.Domain
                 LaterChange3 = 1.57,
                 LaterChange5 = 2.41,
                 LaterChange10 = 3.15,
-                IsOpen = true,
+                Open = true,
                 Value = 123.42 
             };
             Assert.AreEqual(expectedExtremum, actualExtremum);
@@ -92,11 +255,11 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            Extremum extremum = new Extremum(1, 1, (ExtremumType)1, 1)
+            Price price = getPrice(DEFAULT_INDEX_NUMBER);
+            Extremum extremum = new Extremum(price, ExtremumType.PeakByClose)
             {
                 ExtremumId = 1,
-                SimulationId = 1,
-                Date = new DateTime(2017, 5, 2, 12, 15, 0),
+                SimulationId = DEFAULT_SIMULATION_ID,
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0),
                 Volatility = 1.23,
                 EarlierCounter = 15,
@@ -113,7 +276,7 @@ namespace Stock_UnitTest.Stock.Domain
                 LaterChange3 = 1.57,
                 LaterChange5 = 2.41,
                 LaterChange10 = 3.15,
-                IsOpen = true,
+                Open = true,
                 Value = 123.42
             };
 
@@ -124,11 +287,11 @@ namespace Stock_UnitTest.Stock.Domain
             ExtremumDto expectedDto = new ExtremumDto()
             {
                 Id = 1,
-                SimulationId = 1,
-                Date = new DateTime(2017, 5, 2, 12, 15, 0),
-                IndexNumber = 1,
-                AssetId = 1,
-                TimeframeId = 1,
+                SimulationId = DEFAULT_SIMULATION_ID,
+                Date = DEFAULT_BASE_DATE,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
+                AssetId = DEFAULT_ASSET_ID,
+                TimeframeId = DEFAULT_TIMEFRAME_ID,
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0),
                 ExtremumType = 1,
                 Volatility = 1.23,
@@ -161,10 +324,10 @@ namespace Stock_UnitTest.Stock.Domain
 
         private Extremum getDefaultExtremum()
         {
-            return new Extremum(1, 1, (ExtremumType)1, 1)
+            Price price = getPrice(DEFAULT_INDEX_NUMBER);
+            Extremum extremum = new Extremum(price, ExtremumType.PeakByClose)
             {
                 ExtremumId = 1,
-                Date = new DateTime(2017, 5, 2, 12, 15, 0),
                 LastCheckedDateTime = new DateTime(2017, 3, 5, 12, 0, 0),
                 Volatility = 1.23,
                 EarlierCounter = 15,
@@ -181,9 +344,10 @@ namespace Stock_UnitTest.Stock.Domain
                 LaterChange3 = 1.57,
                 LaterChange5 = 2.41,
                 LaterChange10 = 3.15,
-                IsOpen = true,
+                Open = true,
                 Value = 123.42 
             };
+            return extremum;
         }
 
         [TestMethod]
@@ -244,7 +408,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultExtremum();
 
             //Act
-            comparedItem.Date = comparedItem.Date.AddMinutes(5);
+            comparedItem.Price.DataSet.Date = comparedItem.Price.DataSet.Date.AddMinutes(5);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -261,7 +425,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultExtremum();
 
             //Act
-            comparedItem.AssetId++;
+            comparedItem.Price.DataSet.AssetId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -278,7 +442,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultExtremum();
 
             //Act
-            comparedItem.TimeframeId++;
+            comparedItem.Price.DataSet.TimeframeId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -295,7 +459,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultExtremum();
 
             //Act
-            comparedItem.IndexNumber++;
+            comparedItem.Price.DataSet.IndexNumber++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -588,7 +752,7 @@ namespace Stock_UnitTest.Stock.Domain
             var comparedItem = getDefaultExtremum();
 
             //Act
-            comparedItem.IsOpen = !comparedItem.IsOpen;
+            comparedItem.Open = !comparedItem.Open;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert

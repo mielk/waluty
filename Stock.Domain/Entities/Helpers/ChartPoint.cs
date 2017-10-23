@@ -14,7 +14,7 @@ namespace Stock.Domain.Entities
 
         public ChartPoint(int indexNumber, double level)
         {
-            this.IndexNumber = IndexNumber;
+            this.IndexNumber = indexNumber;
             this.Level = level;
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stock.Domain.Entities;
 using Stock.Domain.Enums;
+using Stock.Core;
 
 namespace Stock.Domain.Services
 {
@@ -21,6 +22,9 @@ namespace Stock.Domain.Services
         public int MinDistanceBetweenExtrema { get; set; }
         public int MaxChartPointsForExtremumGroup { get; set; }
         public double MinDistanceBetweenChartPoints { get; set; }
+        //Single processing ------------------------------------------------------------------------------------------------
+        private int index;
+
         //------------------------------------------------------------------------------------------------------------------
 
 
@@ -87,15 +91,8 @@ namespace Stock.Domain.Services
         public IEnumerable<ChartPoint> GetChartPoints(ExtremumGroup group)
         {
 
-            if (true)
-            {
-                DataSet _masterDataSet = manager.GetDataSet(group.MasterExtremum.IndexNumber);
-                ChartPoint _chartPoint = new ChartPoint(group.GetIndex(), _masterDataSet.quotation.Close);
-                return new ChartPoint[] { _chartPoint };
-            }
-
-            DataSet masterDataSet = manager.GetDataSet(group.MasterExtremum.IndexNumber);
-            DataSet slaveDataSet = manager.GetDataSet(group.SecondExtremum.IndexNumber);
+            DataSet masterDataSet = manager.GetDataSet(group.MasterExtremum.GetIndexNumber());
+            DataSet slaveDataSet = manager.GetDataSet(group.SecondExtremum.GetIndexNumber());
             List<ChartPoint> chartPoints = new List<ChartPoint>();
             bool isPeak = group.IsPeak;
             double distance = (isPeak ? slaveDataSet.quotation.High : slaveDataSet.quotation.Low) - masterDataSet.quotation.Close;
@@ -105,17 +102,18 @@ namespace Stock.Domain.Services
             var upLevel = isPeak ? slaveDataSet.quotation.High : masterDataSet.quotation.Close;
             var downLevel = isPeak ? masterDataSet.quotation.Close : slaveDataSet.quotation.Low;
 
-            chartPoints.Add(new ChartPoint(getIndexNumberForChartPoint(group, upLevel), upLevel));
-            chartPoints.Add(new ChartPoint(getIndexNumberForChartPoint(group, downLevel), downLevel));
+            chartPoints.Add(new ChartPoint(group.GetIndexNumberForQuotation(upLevel), upLevel));
+            chartPoints.Add(new ChartPoint(group.GetIndexNumberForQuotation(downLevel), downLevel));
 
-            while (upLevel >= downLevel) 
+            while (upLevel > downLevel) 
             {
                 upLevel = upLevel - singleStep;
-                downLevel = downLevel + singleStep;
-                var upChartPoint = new ChartPoint(getIndexNumberForChartPoint(group, upLevel), upLevel);
-                var downChartPoint = new ChartPoint(getIndexNumberForChartPoint(group, upLevel), downLevel);
-                chartPoints.Add(upChartPoint);
-                if (upLevel < downLevel){
+                if (upLevel > downLevel)
+                {
+                    downLevel = downLevel + singleStep;
+                    var upChartPoint = new ChartPoint(group.GetIndexNumberForQuotation(upLevel), upLevel);
+                    chartPoints.Add(upChartPoint);
+                    var downChartPoint = new ChartPoint(group.GetIndexNumberForQuotation(upLevel), downLevel);
                     chartPoints.Add(downChartPoint);
                 }
             }
@@ -123,12 +121,23 @@ namespace Stock.Domain.Services
             return chartPoints;
         }
 
-        private int getIndexNumberForChartPoint(ExtremumGroup group, double level)
+
+        public void Process(Trendline trendline, IEnumerable<ExtremumGroup> extremumGroups)
         {
-            return group.GetIndex();
+
+            var lastQuotationIndex = manager.GetAnalysisLastUpdatedIndex(AnalysisType.Quotations);
+            if (lastQuotationIndex > trendline.LastUpdateIndex)
+            {
+                var range = trendline.CurrentIsPeak;
+            }
+
+            //trendline.LastUpdateIndex = this.lastQuotationIndex;
+            var x = 1;
+
         }
 
         
+
     }
 
 }

@@ -277,22 +277,17 @@ function AbstractSvgRenderer(params) {
         var INITIAL_OFFSET = 2;
         var AFTER_OFFSET = 20;
         var bodyWidth = params.width - params.space;
-        var initialIndex = Math.max(0, trendline.StartIndex - INITIAL_OFFSET - 1);
+        var initialIndex = Math.max(0, trendline.StartIndex - INITIAL_OFFSET);
         if (self.quotations[initialIndex].coordinates) {
             var x1 = self.quotations[initialIndex].coordinates.middle;
-            var value1 = self.countTrendlineValue(trendline, initialIndex + 1);  //trendline.StartLevel;
-            var value3 = self.countTrendlineValue(trendline, 3);
+            var value1 = self.countTrendlineValue(trendline, initialIndex);
+            var value1Ex = self.countTrendlineValue(trendline, trendline.StartIndex);
             var y1 = self.getY(value1);
             var boundIndex = Math.min(trendline.FootholdIndex + AFTER_OFFSET, self.quotations.length - 1);
             //var x2 = (self.offset + self.size.width - (boundIndex * params.width) + (params.space / 2));
-            var x2 = self.quotations[boundIndex].coordinates.middle + (AFTER_OFFSET * params.width);
-            var value2 = self.countTrendlineValue(trendline, boundIndex + 1);
-            var value2calculated = self.countTrendlineValue(trendline, boundIndex);
-            var value7 = self.countTrendlineValue(trendline, 7);
-            var value8 = self.countTrendlineValue(trendline, 8);
-            var value9 = self.countTrendlineValue(trendline, 9);
-            var value10 = self.countTrendlineValue(trendline, 10);
-
+            var x2 = self.quotations[boundIndex].coordinates.middle;// + (AFTER_OFFSET * params.width);
+            var value2 = self.countTrendlineValue(trendline, boundIndex);
+            var value2Ex = self.countTrendlineValue(trendline, trendline.FootholdIndex);
             var y2 = self.getY(value2);
 
             //var invertedIndex = quotations.length - i;

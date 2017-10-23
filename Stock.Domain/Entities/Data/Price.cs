@@ -14,11 +14,8 @@ namespace Stock.Domain.Entities
     {
         private const AnalysisType analysisType = AnalysisType.Prices;
         public int Id { get; set; }
+        public DataSet DataSet { get; set; }
         public int SimulationId { get; set; }
-        public int TimeframeId { get; set; }
-        public int AssetId { get; set; }
-        public DateTime Date { get; set; }
-        public int IndexNumber { get; set; }
         public double CloseDelta { get; set; }
         public int Direction2D { get; set; }
         public int Direction3D { get; set; }
@@ -29,21 +26,24 @@ namespace Stock.Domain.Entities
         public Extremum TroughByLow { get; set; }
         public double CloseRatio { get; set; }
         public double ExtremumRatio { get; set; }
-        public bool IsUpdated { get; set; }
-        public bool IsNew { get; set; }
-        public bool IsComplete { get; set; }
+        public bool Updated { get; set; }
+        public bool New { get; set; }
+        public bool Complete { get; set; }
+
 
 
         #region CONSTRUCTORS
 
-        public static Price FromDto(PriceDto dto)
+        public Price(DataSet ds)
         {
-            var price = new Price();
+            this.DataSet = ds;
+            ds.SetPrice(this);
+        }
+
+        public static Price FromDto(DataSet ds, PriceDto dto)
+        {
+            var price = new Price(ds);
             price.Id = dto.Id;
-            price.Date = dto.PriceDate;
-            price.AssetId = dto.AssetId;
-            price.TimeframeId = dto.TimeframeId;
-            price.IndexNumber = dto.IndexNumber;
             price.CloseDelta = dto.DeltaClosePrice;
             price.Direction2D = dto.PriceDirection2D;
             price.Direction3D = dto.PriceDirection3D;
@@ -53,43 +53,25 @@ namespace Stock.Domain.Entities
             return price;
         }
 
-        public PriceDto ToDto()
-        {
-            var dto = new PriceDto
-            {
-                AssetId = this.AssetId, 
-                DeltaClosePrice = this.CloseDelta, 
-                Id = this.Id, 
-                IndexNumber = this.IndexNumber, 
-                PriceDate = this.Date, 
-                PriceGap = this.PriceGap, 
-                PriceDirection2D = this.Direction2D, 
-                PriceDirection3D = this.Direction3D, 
-                TimeframeId = this.TimeframeId, 
-                CloseRatio = this.CloseRatio, 
-                ExtremumRatio = this.ExtremumRatio
-            };
-            return dto;
-        }
-
         #endregion CONSTRUCTORS
+
 
 
         #region SYSTEM.OBJECT
 
         public override bool Equals(object obj)
         {
-            //const double MAX_VALUE_DIFFERENCE = 0.000000001d;
+            
             if (obj == null) return false;
             if (obj.GetType() != typeof(Price)) return false;
 
             Price compared = (Price)obj;
             if ((compared.Id) != Id) return false;
             if ((compared.SimulationId) != SimulationId) return false;
-            if ((compared.IndexNumber) != IndexNumber) return false;
-            if (compared.Date.CompareTo(Date) != 0) return false;
-            if ((compared.AssetId) != AssetId) return false;
-            if ((compared.TimeframeId) != TimeframeId) return false;
+            if ((compared.GetIndexNumber()) != GetIndexNumber()) return false;
+            if (compared.GetDate().CompareTo(GetDate()) != 0) return false;
+            if ((compared.GetAssetId()) != GetAssetId()) return false;
+            if ((compared.GetTimeframeId()) != GetTimeframeId()) return false;
             if (!compared.CloseDelta.IsEqual(CloseDelta)) return false;
             if ((compared.Direction2D) != Direction2D) return false;
             if ((compared.Direction3D) != Direction3D) return false;
@@ -104,8 +86,8 @@ namespace Stock.Domain.Entities
             if (TroughByLow != null && !TroughByLow.Equals(compared.TroughByLow)) return false;
             if (!compared.CloseRatio.IsEqual(CloseRatio)) return false;
             if (!compared.ExtremumRatio.IsEqual(ExtremumRatio)) return false;
-            if (compared.IsUpdated != IsUpdated) return false;
-            if (compared.IsNew != IsNew) return false;
+            if (compared.Updated != Updated) return false;
+            if (compared.New != New) return false;
             return true;
 
         }
@@ -117,32 +99,43 @@ namespace Stock.Domain.Entities
 
         public override string ToString()
         {
-            return Date.ToString() + " | " + TimeframeId + " | " + AssetId;
+            return GetDate().ToString() + " | " + GetTimeframeId() + " | " + GetAssetId();
         }
 
         #endregion SYSTEM.OBJECT
 
 
+
         #region GETTERS
+
+        public bool IsUpdated()
+        {
+            return Updated;
+        }
+
+        public bool IsNew()
+        {
+            return New;
+        }
 
         public DateTime GetDate()
         {
-            return Date;
+            return DataSet.Date;
         }
 
         public int GetIndexNumber()
         {
-            return IndexNumber;
+            return DataSet.IndexNumber;
         }
 
         public int GetAssetId()
         {
-            return AssetId;
+            return DataSet.AssetId;
         }
 
         public int GetTimeframeId()
         {
-            return TimeframeId;
+            return DataSet.TimeframeId;
         }
 
         public AnalysisType GetAnalysisType()
@@ -179,10 +172,10 @@ namespace Stock.Domain.Entities
                 analysisType = (int)analysisType,
                 id = Id,
                 simulationId = SimulationId,
-                assetId = AssetId,
-                timeframeId = TimeframeId,
-                date = Date,
-                indexNumber = IndexNumber,
+                assetId = GetAssetId(),
+                timeframeId = GetTimeframeId(),
+                date = GetDate(),
+                indexNumber = GetIndexNumber(),
                 closeDelta = CloseDelta,
                 direction2D = Direction2D,
                 direction3D = Direction3D,
@@ -193,14 +186,15 @@ namespace Stock.Domain.Entities
                 troughByLow = TroughByLow,
                 closeRatio = CloseRatio,
                 extremumRatio = ExtremumRatio,
-                isUpdated = IsUpdated,
-                isNew = IsNew,
-                isComplete = IsComplete
+                isUpdated = Updated,
+                isNew = New,
+                isComplete = Complete
             };
         }
 
 
         #endregion GETTERS
+
 
 
         #region SETTERS
@@ -220,6 +214,28 @@ namespace Stock.Domain.Entities
 
 
 
+        #region DTO
+
+        public PriceDto ToDto()
+        {
+            var dto = new PriceDto
+            {
+                AssetId = this.GetAssetId(),
+                DeltaClosePrice = this.CloseDelta,
+                Id = this.Id,
+                IndexNumber = this.GetIndexNumber(),
+                PriceDate = this.GetDate(),
+                PriceGap = this.PriceGap,
+                PriceDirection2D = this.Direction2D,
+                PriceDirection3D = this.Direction3D,
+                TimeframeId = this.GetTimeframeId(),
+                CloseRatio = this.CloseRatio,
+                ExtremumRatio = this.ExtremumRatio
+            };
+            return dto;
+        }
+
+        #endregion DTO
 
 
 
@@ -227,7 +243,7 @@ namespace Stock.Domain.Entities
 
 
 
-
+        #region OLD_CODE
 
 
         public bool IsExtremumByClosePrice()
@@ -240,16 +256,16 @@ namespace Stock.Domain.Entities
         {
             //switch (type)
             //{
-                //case ExtremumType.PeakByClose:
-                //    return PeakByCloseExtremum;
-                //case ExtremumType.PeakByHigh:
-                //    return PeakByHighExtremum;
-                //case ExtremumType.TroughByClose:
-                //    return TroughByCloseExtremum;
-                //case ExtremumType.TroughByLow:
-                //    return TroughByLowExtremum;
-                //default:
-                //    return null;
+            //case ExtremumType.PeakByClose:
+            //    return PeakByCloseExtremum;
+            //case ExtremumType.PeakByHigh:
+            //    return PeakByHighExtremum;
+            //case ExtremumType.TroughByClose:
+            //    return TroughByCloseExtremum;
+            //case ExtremumType.TroughByLow:
+            //    return TroughByLowExtremum;
+            //default:
+            //    return null;
             //}
             return null;
         }
@@ -276,7 +292,7 @@ namespace Stock.Domain.Entities
             return type == TrendlineType.Resistance ? IsPeak() : IsTrough();
         }
 
-        
+
 
         public bool IsPeak()
         {
@@ -374,6 +390,10 @@ namespace Stock.Domain.Entities
         //    return null;
 
         //}
+
+
+
+        #endregion OLD_CODE
 
 
 

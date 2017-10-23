@@ -14,35 +14,43 @@ namespace Stock.Domain.Entities
     {
         private const AnalysisType analysisType = AnalysisType.Quotations;
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public int AssetId { get; set; }
-        public int TimeframeId { get; set; }
+        public DataSet DataSet { get; set; }
+        // [Data]
         public double Open { get; set; }
         public double High { get; set; }
         public double Low { get; set; }
         public double Close { get; set; }
         public double Volume { get; set; }
-        public int IndexNumber { get; set; }
-        public bool IsUpdated { get; set; }
-        public bool IsNew { get; set; }
+        // [Status]
+        public bool Updated { get; set; }
+        public bool New { get; set; }
+
+
+
+        #region CONSTRUCTOR
+
+        public Quotation(DataSet ds)
+        {
+            this.DataSet = ds;
+            ds.SetQuotation(this);
+        }
+
+        #endregion CONSTRUCTOR
 
 
 
         #region DTO
-        public static Quotation FromDto(QuotationDto dto)
+
+        public static Quotation FromDto(DataSet ds, QuotationDto dto)
         {
 
-            var quotation = new Quotation();
+            var quotation = new Quotation(ds);
             quotation.Id = dto.QuotationId;
-            quotation.Date = dto.PriceDate;
-            quotation.AssetId = dto.AssetId;
-            quotation.TimeframeId = dto.TimeframeId;
             quotation.Open = dto.OpenPrice;
             quotation.High = dto.HighPrice;
             quotation.Low = dto.LowPrice;
             quotation.Close = dto.ClosePrice;
             quotation.Volume = dto.Volume ?? 0;
-            quotation.IndexNumber = dto.IndexNumber;
             return quotation;
         }
 
@@ -51,43 +59,55 @@ namespace Stock.Domain.Entities
             var dto = new QuotationDto
             {
                 QuotationId = this.Id,
-                AssetId = this.AssetId,
-                IndexNumber = this.IndexNumber,
-                PriceDate = this.Date,
+                AssetId = DataSet.AssetId,
+                IndexNumber = DataSet.IndexNumber,
+                TimeframeId = DataSet.TimeframeId,
+                PriceDate = DataSet.Date,
                 OpenPrice = this.Open,
                 HighPrice = this.High,
                 LowPrice = this.Low,
                 ClosePrice = this.Close,
-                Volume = this.Volume,
-                TimeframeId = this.TimeframeId
+                Volume = this.Volume
             };
 
             return dto;
 
         }
+
         #endregion DTO
+
 
 
         #region GETTERS
 
+        public bool IsUpdated()
+        {
+            return Updated;
+        }
+
+        public bool IsNew()
+        {
+            return New;
+        }
+
         public DateTime GetDate()
         {
-            return Date;
+            return DataSet.Date;
         }
 
         public int GetIndexNumber()
         {
-            return IndexNumber;
+            return DataSet.IndexNumber;
         }
 
         public int GetAssetId()
         {
-            return AssetId;
+            return DataSet.AssetId;
         }
 
         public int GetTimeframeId()
         {
-            return TimeframeId;
+            return DataSet.TimeframeId;
         }
 
         public AnalysisType GetAnalysisType()
@@ -100,24 +120,24 @@ namespace Stock.Domain.Entities
             return new
             {
                 id = Id,
-                assetId = AssetId,
-                timeframeId = TimeframeId,
-                date = Date,
+                assetId = GetAssetId(),
+                timeframeId = GetTimeframeId(),
+                date = GetDate(),
+                indexNumber = GetIndexNumber(),
                 analysisType = (int)analysisType,
                 open = Open,
                 high = High,
                 low = Low,
                 close = Close,
                 volume = Volume,
-                indexNumber = IndexNumber,
-                isUpdated = IsUpdated,
-                isNew = IsNew
+                isUpdated = Updated,
+                isNew = New
             };
         }
 
-
         #endregion GETTERS
 
+        
 
         #region EXTREMA
 
@@ -158,6 +178,9 @@ namespace Stock.Domain.Entities
         #endregion EXTREMA
 
 
+
+        #region CALCULATIONS
+
         public double GetProperValue(TrendlineType type)
         {
             if (type == TrendlineType.Resistance)
@@ -175,21 +198,23 @@ namespace Stock.Domain.Entities
             return (High - Low) / Open;
         }
 
+        #endregion CALCULATIONS
+
+
 
         #region OBJECT METHODS
 
         public override bool Equals(object obj)
         {
-            const double MAX_VALUE_DIFFERENCE = 0.000000001d;
             if (obj == null) return false;
             if (obj.GetType() != typeof(Quotation)) return false;
 
             Quotation compared = (Quotation)obj;
             if ((compared.Id) != Id) return false;
-            if ((compared.IndexNumber) != IndexNumber) return false;
-            if (compared.Date.CompareTo(Date) != 0) return false;
-            if ((compared.AssetId) != AssetId) return false;
-            if ((compared.TimeframeId) != TimeframeId) return false;
+            if ((compared.GetIndexNumber()) != GetIndexNumber()) return false;
+            if (compared.GetDate().CompareTo(GetDate()) != 0) return false;
+            if ((compared.GetAssetId()) != GetAssetId()) return false;
+            if ((compared.GetTimeframeId()) != GetTimeframeId()) return false;
             if (!compared.Open.IsEqual(Open)) return false;
             if (!compared.High.IsEqual(High)) return false;
             if (!compared.Low.IsEqual(Low)) return false;
@@ -206,7 +231,7 @@ namespace Stock.Domain.Entities
 
         public override string ToString()
         {
-            return Date.ToString() + " | " + TimeframeId + " | " + AssetId;
+            return GetDate().ToString() + " | " + GetTimeframeId() + " | " + GetAssetId();
         }
 
         #endregion OBJECT METHODS

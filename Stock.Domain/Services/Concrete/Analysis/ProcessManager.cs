@@ -110,7 +110,7 @@ namespace Stock.Domain.Services
         protected void loadDataSets(AnalysisDataQueryDefinition queryDef)
         {
             queryDef.AnalysisTypes = analysisTypes;
-            this.dataSetsArray = dataSetService.AppendAndReturnAsArray(this.dataSetsArray, queryDef);
+            this.dataSetsArray = dataSetService.GetDataSets(queryDef, this.dataSetsArray).ToArray();
         }
 
         protected void loadDataSets(int initialIndex)

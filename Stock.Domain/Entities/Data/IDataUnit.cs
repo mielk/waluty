@@ -11,5 +11,7 @@ namespace Stock.Domain.Entities
         int GetAssetId();
         int GetTimeframeId();
         AnalysisType GetAnalysisType();
+        bool IsUpdated();
+        bool IsNew();
     }
 }

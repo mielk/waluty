@@ -292,7 +292,9 @@ C:\tm\aplikacje\FX3\Stock.Web\bin\Stock.Utils.pdb
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.dll
 C:\tm\aplikacje\FX3\Stock.Web\obj\Debug\Stock.Web.pdb
-C:\Tomek\aplikacje\FX\Stock.Web\bin\Ninject.dll
+C:\Tomek\aplikacje\FX\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
+C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Web.dll
+C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Web.pdb
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Antlr3.Runtime.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\EntityFramework.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\EntityFramework.SqlServer.dll
@@ -300,6 +302,7 @@ C:\Tomek\aplikacje\FX\Stock.Web\bin\Microsoft.Web.Infrastructure.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\MySql.Data.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\MySql.Data.Entity.EF6.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Newtonsoft.Json.dll
+C:\Tomek\aplikacje\FX\Stock.Web\bin\Ninject.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Ninject.Web.Common.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Ninject.Web.Mvc.dll
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Core.dll
@@ -339,6 +342,5 @@ C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.WebPages.xml
 C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.WebPages.Deployment.xml
 C:\Tomek\aplikacje\FX\Stock.Web\bin\System.Web.WebPages.Razor.xml
 C:\Tomek\aplikacje\FX\Stock.Web\bin\Stock.Utils.pdb
-C:\Tomek\aplikacje\FX\Stock.Web\obj\Debug\Stock.Web.csprojResolveAssemblyReference.cache
 C:\Tomek\aplikacje\FX\Stock.Web\obj\Debug\Stock.Web.dll
 C:\Tomek\aplikacje\FX\Stock.Web\obj\Debug\Stock.Web.pdb

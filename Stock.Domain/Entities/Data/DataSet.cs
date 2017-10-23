@@ -10,11 +10,14 @@ namespace Stock.Domain.Entities
 {
     public class DataSet : IDataUnit, IJsonable
     {
+        
         private const AnalysisType analysisType = AnalysisType.DataSet;
         public int TimeframeId { get; set; }
         public int AssetId { get; set; }
         public DateTime Date { get; set; }
         public int IndexNumber { get; set; }
+
+        //Subitems.
         public Quotation quotation { get; set; }
         public Price price { get; set; }
 
@@ -29,31 +32,10 @@ namespace Stock.Domain.Entities
             this.IndexNumber = indexNumber;
         }
 
-        public DataSet(Quotation quotation)
-        {
-            this.AssetId = quotation.AssetId;
-            this.TimeframeId = quotation.TimeframeId;
-            this.Date = quotation.Date;
-            this.IndexNumber = quotation.IndexNumber;
-            this.quotation = quotation;
-        }
-
         #endregion CONSTRUCTORS
 
 
         #region GETTERS
-
-        public IDataUnit GetProperDataUnit(AnalysisType type)
-        {
-            switch (type)
-            {
-                case AnalysisType.Quotations:   return quotation;
-                case AnalysisType.Prices: return price;
-            }
-
-            return null;
-
-        }
 
         public Quotation GetQuotation()
         {
@@ -103,6 +85,16 @@ namespace Stock.Domain.Entities
             };
         }
 
+        public bool IsNew()
+        {
+            return false;
+        }
+
+        public bool IsUpdated()
+        {
+            return false;
+        }
+
         #endregion GETTERS
 
 
@@ -120,12 +112,20 @@ namespace Stock.Domain.Entities
 
         public DataSet SetQuotation(Quotation quotation)
         {
+            if (quotation.DataSet != this)
+            {
+                throw new ArgumentException("It is not allowed to set quotation with different DataSet to a given DataSet");
+            }
             this.quotation = quotation;
             return this;
         }
 
         public DataSet SetPrice(Price price)
         {
+            if (price.DataSet != this)
+            {
+                throw new ArgumentException("It is not allowed to set price with different DataSet to a given DataSet");
+            }
             this.price = price;
             return this;
         }

@@ -13,35 +13,67 @@ namespace Stock_UnitTest.Stock.Domain.Entities.AnalysisObjects
     public class QuotationUnitTests
     {
 
+        private DateTime DEFAULT_DATETIME = new DateTime(2017, 3, 4, 21, 10, 0);
+        private const int DEFAULT_ASSET_ID = 1;
+        private const int DEFAULT_TIMEFRAME_ID = 1;
+        private const int DEFAULT_INDEX_NUMBER = 1;
 
-        #region FROM_DTO
+
+
+        #region INFRASTRUCTURE
+
+        private Quotation getDefaultQuotation()
+        {
+            DataSet ds = getDefaultDataSet();
+            return new Quotation(ds)
+            {
+                Id = 1,
+                Open = 1.03,
+                High = 1.04,
+                Low = 1.02,
+                Close = 1.04,
+                Volume = 100,
+            };
+        }
+
+        private DataSet getDefaultDataSet()
+        {
+            return new DataSet(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_DATETIME, DEFAULT_INDEX_NUMBER);
+        }
 
         private QuotationDto getDefaultQuotationDto()
         {
             return new QuotationDto()
             {
                 QuotationId = 1,
-                PriceDate = new DateTime(2017, 3, 4, 21, 10, 0),
-                AssetId = 1,
-                TimeframeId = 1,
+                PriceDate = DEFAULT_DATETIME,
+                AssetId = DEFAULT_ASSET_ID,
+                TimeframeId = DEFAULT_TIMEFRAME_ID,
+                IndexNumber = DEFAULT_INDEX_NUMBER,
                 OpenPrice = 1.03,
                 HighPrice = 1.04,
                 LowPrice = 1.02,
                 ClosePrice = 1.04,
-                Volume = 100,
-                IndexNumber = 51
+                Volume = 100
             };
         }
 
+        #endregion INFRASTRUCTURE
+
+
+
+        #region FROM_DTO
+
         [TestMethod]
-        public void FromDto_ReturnsProperObjecct()
+        public void FromDto_ReturnsProperObject()
         {
 
             //Arrange
             QuotationDto dto = getDefaultQuotationDto();
 
             //Act
-            Quotation quotation = Quotation.FromDto(dto);
+            DataSet ds = getDefaultDataSet();
+            Quotation quotation = Quotation.FromDto(ds, dto);
             Quotation expectedQuotation = getDefaultQuotation();
 
             //Assert
@@ -51,6 +83,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.AnalysisObjects
         }
 
         #endregion FROM_DTO
+
 
 
         #region TO_DTO
@@ -75,24 +108,8 @@ namespace Stock_UnitTest.Stock.Domain.Entities.AnalysisObjects
         #endregion TO_DTO
 
 
-        #region EQUALS
 
-        private Quotation getDefaultQuotation()
-        {
-            return new Quotation()
-            {
-                Id = 1,
-                Date = new DateTime(2017, 3, 4, 21, 10, 0),
-                AssetId = 1,
-                TimeframeId = 1,
-                Open = 1.03,
-                High = 1.04,
-                Low = 1.02,
-                Close = 1.04,
-                Volume = 100,
-                IndexNumber = 51
-            };
-        }
+        #region EQUALS
 
         [TestMethod]
         public void Equals_ReturnsFalse_IfComparedToObjectOfOtherType()
@@ -152,7 +169,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.AnalysisObjects
             var comparedItem = getDefaultQuotation();
 
             //Act
-            comparedItem.Date = comparedItem.Date.AddMinutes(5);
+            comparedItem.DataSet.Date = comparedItem.DataSet.Date.AddMinutes(5);
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -169,7 +186,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.AnalysisObjects
             var comparedItem = getDefaultQuotation();
 
             //Act
-            comparedItem.AssetId++;
+            comparedItem.DataSet.AssetId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -186,7 +203,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.AnalysisObjects
             var comparedItem = getDefaultQuotation();
 
             //Act
-            comparedItem.TimeframeId++;
+            comparedItem.DataSet.TimeframeId++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert
@@ -203,7 +220,7 @@ namespace Stock_UnitTest.Stock.Domain.Entities.AnalysisObjects
             var comparedItem = getDefaultQuotation();
 
             //Act
-            comparedItem.IndexNumber++;
+            comparedItem.DataSet.IndexNumber++;
             var areEqual = baseItem.Equals(comparedItem);
 
             //Assert

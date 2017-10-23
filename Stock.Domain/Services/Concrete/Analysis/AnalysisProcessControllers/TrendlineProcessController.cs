@@ -83,14 +83,14 @@ namespace Stock.Domain.Services
             sortTrendlines();
         }
 
-        private void loadTrendlines()
+        public void loadTrendlines()
         {
             this.lastQuotationIndex = manager.GetAnalysisLastUpdatedIndex(AnalysisType.Quotations) ?? 0;
             if (trendlines == null)
             {
                 loadExistingTrendlines();
             }
-            
+
             this.lastTrendlineIndex = getLastUpdateIndex();
             if (lastQuotationIndex > lastTrendlineIndex)
             {
@@ -123,25 +123,17 @@ namespace Stock.Domain.Services
                     trendlines = trendlines.Where(t => t.Id != trendline.Id).ToList();
                     var x = 1;
                 }
-                
             }
-
-
-
-            
-//            var trendlinesToRemove = trendlines.Where(t => t.FootholdIndex >= footholdIndex).ToList();
-            //foreach (var trendline in trendlinesToRemove)
-            //{
-            //}
         }
 
         private int getRequiredSlaveIndex(int footholdIndex, bool footholdIsPeak)
         {
             var item = extremumGroups.SingleOrDefault(e => e.GetIndex() == footholdIndex && e.IsPeak == footholdIsPeak);
-            if (item == null){
+            if (item == null)
+            {
                 return -1;
-            } 
-            else 
+            }
+            else
             {
                 return item.GetLateIndexNumber();
             }
@@ -150,7 +142,7 @@ namespace Stock.Domain.Services
         private void createNewTrendlines()
         {
             this.lastExtremumIndex = getLastFootholdIndex();
-            
+
             var newExtremumGroups = this.extremumGroups.Where(e => e.GetLateIndexNumber() > lastExtremumIndex).ToList();
             if (newExtremumGroups.Count() > 0)
             {
@@ -192,11 +184,14 @@ namespace Stock.Domain.Services
         }
 
 
+
+
+
         private void processTrendlines()
         {
             foreach (var trendline in trendlines)
             {
-                trendline.LastUpdateIndex = this.lastQuotationIndex;
+                processor.Process(trendline, extremumGroups);
             }
         }
 

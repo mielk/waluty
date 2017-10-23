@@ -12,5 +12,7 @@ namespace Stock.Domain.Services
         bool CanCreateTrendline(ExtremumGroup baseGroup, ExtremumGroup footholdGroup);
         IEnumerable<Trendline> GetTrendlines(ExtremumGroup baseGroup, ExtremumGroup footholdGroup);
         IEnumerable<ChartPoint> GetChartPoints(ExtremumGroup group);
+
+        void Process(Trendline trendline, IEnumerable<ExtremumGroup> extremumGroups);
     }
 }

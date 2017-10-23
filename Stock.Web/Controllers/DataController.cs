@@ -87,7 +87,7 @@ namespace Stock.Web.Controllers
         //{
         //    //AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(AssetId, TimeframeId) { Limit = count };
         //    //IEnumerable<DataSet> dataSets = dataService.GetDataSets(queryDef);
-        //    //IEnumerable<Quotation> quotations = dataSets.Select(ds => ds.GetQuotation());
+        //    //IEnumerable<Quotation> quotations = dataSets.Select(price => price.GetQuotation());
         //    //IEnumerable<Trendline> trendRanges = null;
         //    //var result = new { quotations = dataSets, trendRanges = trendRanges };
         //    //return Json(result, JsonRequestBehavior.AllowGet);

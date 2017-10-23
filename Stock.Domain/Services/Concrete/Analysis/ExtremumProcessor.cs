@@ -94,7 +94,7 @@ namespace Stock.Domain.Services
         public double CalculateEarlierAmplitude(Extremum extremum)
         {
             double maxDifference = 0d;
-            int index = extremum.IndexNumber;
+            int index = extremum.GetIndexNumber();
             int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
             DataSet currentDataSet = manager.GetDataSet(index);
             Quotation quotation = currentDataSet.GetQuotation();
@@ -126,7 +126,7 @@ namespace Stock.Domain.Services
 
         public int CalculateEarlierCounter(Extremum extremum)
         {
-            int index = extremum.IndexNumber;
+            int index = extremum.GetIndexNumber();
             int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
             DataSet currentDataSet = manager.GetDataSet(index);
             Quotation quotation = currentDataSet.GetQuotation();
@@ -155,7 +155,7 @@ namespace Stock.Domain.Services
 
         public double CalculateEarlierChange(Extremum extremum, int units)
         {
-            int index = extremum.IndexNumber;
+            int index = extremum.GetIndexNumber();
             int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
             DataSet currentDataSet = manager.GetDataSet(index);
             Quotation quotation = currentDataSet.GetQuotation();
@@ -177,7 +177,7 @@ namespace Stock.Domain.Services
 
         public double CalculateLaterAmplitude(Extremum extremum) {
             double maxDifference = 0d;
-            int index = extremum.IndexNumber;
+            int index = extremum.GetIndexNumber();
             int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
             DataSet currentDataSet = manager.GetDataSet(index);
             Quotation quotation = currentDataSet.GetQuotation();
@@ -187,7 +187,7 @@ namespace Stock.Domain.Services
             bool exit = false;
             while (!exit)
             {
-                if (++index > extremum.IndexNumber + MaxSerieCount) break;
+                if (++index > extremum.GetIndexNumber() + MaxSerieCount) break;
                 Quotation comparedQuotation = getQuotation(index);
                 if (comparedQuotation == null) break;
 
@@ -212,7 +212,7 @@ namespace Stock.Domain.Services
 
         public int CalculateLaterCounter(Extremum extremum)
         {
-            int index = extremum.IndexNumber;
+            int index = extremum.GetIndexNumber();
             int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
             DataSet currentDataSet = manager.GetDataSet(index);
             Quotation quotation = currentDataSet.GetQuotation();
@@ -245,7 +245,7 @@ namespace Stock.Domain.Services
 
         public double CalculateLaterChange(Extremum extremum, int units)
         {
-            int index = extremum.IndexNumber;
+            int index = extremum.GetIndexNumber();
             int coefficient = (extremum.Type.IsPeak() ? 1 : -1);
             DataSet currentDataSet = manager.GetDataSet(index);
             Quotation quotation = currentDataSet.GetQuotation();

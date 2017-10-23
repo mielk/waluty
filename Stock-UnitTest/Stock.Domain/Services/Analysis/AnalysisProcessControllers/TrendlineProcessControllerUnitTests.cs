@@ -61,9 +61,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
         //    dataSets[10] = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 });
         //    dataSets[11] = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 });
         //    dataSets[12] = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 });
-        //    for (int i = 1; i <= 12; i++)
+        //    for (int indexNumber = 1; indexNumber <= 12; indexNumber++)
         //    {
-        //        mockedManager.Setup(m => m.GetDataSet(i)).Returns(dataSets[i]);
+        //        mockedManager.Setup(m => m.GetDataSet(indexNumber)).Returns(dataSets[indexNumber]);
         //    }
 
         //    mockedManager.Setup(m => m.GetAnalysisLastUpdatedIndex(AnalysisType.Prices)).Returns(4);
@@ -80,10 +80,10 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         //    //Assert
         //    mockedProcessor.Verify(m => m.Process(It.IsAny<DataSet>()), Times.Exactly(12));
-        //    for (var i = 1; i <= 12; i++)
+        //    for (var indexNumber = 1; indexNumber <= 12; indexNumber++)
         //    {
-        //        DataSet ds = dataSets[i];
-        //        mockedProcessor.Verify(m => m.Process(ds), Times.Once());
+        //        DataSet getPrice = dataSets[indexNumber];
+        //        mockedProcessor.Verify(m => m.Process(getPrice), Times.Once());
         //    }
 
         //}
@@ -107,9 +107,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
         //    dataSets[10] = new DataSet(new Quotation() { Id = 10, Date = new DateTime(2016, 1, 15, 23, 10, 0), AssetId = 1, TimeframeId = 1, Open = 1.0915, High = 1.09164, Low = 1.09144, Close = 1.09148, Volume = 414, IndexNumber = 10 });
         //    dataSets[11] = new DataSet(new Quotation() { Id = 11, Date = new DateTime(2016, 1, 15, 23, 15, 0), AssetId = 1, TimeframeId = 1, Open = 1.09149, High = 1.09156, Low = 1.09095, Close = 1.091, Volume = 419, IndexNumber = 11 });
         //    dataSets[12] = new DataSet(new Quotation() { Id = 12, Date = new DateTime(2016, 1, 15, 23, 20, 0), AssetId = 1, TimeframeId = 1, Open = 1.09098, High = 1.09118, Low = 1.09091, Close = 1.09108, Volume = 341, IndexNumber = 12 });
-        //    for (int i = 1; i <= 12; i++)
+        //    for (int indexNumber = 1; indexNumber <= 12; indexNumber++)
         //    {
-        //        mockedManager.Setup(m => m.GetDataSet(i)).Returns(dataSets[i]);
+        //        mockedManager.Setup(m => m.GetDataSet(indexNumber)).Returns(dataSets[indexNumber]);
         //    }
 
 
@@ -127,16 +127,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         //    //Assert
         //    mockedProcessor.Verify(m => m.Process(It.IsAny<DataSet>()), Times.Exactly(8));
-        //    for (var i = 0; i <= 4; i++)
+        //    for (var indexNumber = 0; indexNumber <= 4; indexNumber++)
         //    {
-        //        DataSet ds = dataSets[i];
-        //        mockedProcessor.Verify(m => m.Process(ds), Times.Never());
+        //        DataSet getPrice = dataSets[indexNumber];
+        //        mockedProcessor.Verify(m => m.Process(getPrice), Times.Never());
         //    }
 
-        //    for (var i = 5; i <= 12; i++)
+        //    for (var indexNumber = 5; indexNumber <= 12; indexNumber++)
         //    {
-        //        DataSet ds = dataSets[i];
-        //        mockedProcessor.Verify(m => m.Process(ds), Times.Once());
+        //        DataSet getPrice = dataSets[indexNumber];
+        //        mockedProcessor.Verify(m => m.Process(getPrice), Times.Once());
         //    }
 
         //}
