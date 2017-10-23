@@ -12,6 +12,7 @@ using Stock.Domain.Services;
 using Stock.Domain.Enums;
 using Stock.Utils;
 using Stock.Core;
+using Stock_UnitTest.Helpers;
 
 namespace Stock_UnitTest.Stock.Domain.Services
 {
@@ -19,163 +20,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
     public class DataSetServiceUnitTests
     {
 
-        private const int DEFAULT_ASSET_ID = 1;
-        private const int DEFAULT_TIMEFRAME_ID = 1;
-        private DateTime DEFAULT_BASE_DATE = new DateTime(2016, 1, 15, 22, 25, 0);
-        private Timeframe timeframe = new Timeframe(1, "M5", TimeframeUnit.Minutes, 5);
-
-
-        #region INFRASTRUCTURE
-
-
-        private DataSet getDataSet(int indexNumber)
-        {
-            return getDataSet(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private DataSet getDataSet(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
-            return ds;
-        }
-
-
-
-        private Quotation getQuotation(DataSet ds)
-        {
-            return new Quotation(ds)
-            {
-                Id = ds.IndexNumber,
-                Open = 1.09191,
-                High = 1.09218,
-                Low = 1.09186,
-                Close = 1.09194,
-                Volume = 1411
-            };
-        }
-
-        private Quotation getQuotation(int indexNumber)
-        {
-            return getQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private Quotation getQuotation(int assetId, int timeframeId, int indexNumber)
-        {
-            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
-            return new Quotation(ds)
-            {
-                Id = indexNumber,
-                Open = 1.09191,
-                High = 1.09218,
-                Low = 1.09186,
-                Close = 1.09194,
-                Volume = 1411
-            };
-        }
-
-        private QuotationDto getQuotationDto(int indexNumber)
-        {
-            return getQuotationDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private QuotationDto getQuotationDto(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);            
-            return new QuotationDto()
-            {
-                PriceDate = date,
-                AssetId = assetId,
-                TimeframeId = timeframeId,
-                OpenPrice = 1.09191,
-                HighPrice = 1.09218,
-                LowPrice = 1.09186,
-                ClosePrice = 1.09194,
-                Volume = 1411
-            };
-        }
-
-
-
-        private Price getPrice(DataSet ds)
-        {
-            return getPrice(ds);
-        }
-
-        private Price getPrice(int indexNumber)
-        {
-            return getPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private Price getPrice(int assetId, int timeframeId, int indexNumber)
-        {
-            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
-            return new Price(ds)
-            {
-                Id = indexNumber,
-                CloseDelta = 1.05,
-                Direction2D = 1,
-                Direction3D = 0,
-                PriceGap = 1.23,
-                CloseRatio = 1.23,
-                ExtremumRatio = 2.34
-            };
-        }
-
-        private PriceDto getPriceDto(int indexNumber)
-        {
-            return getPriceDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private PriceDto getPriceDto(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            return new PriceDto()
-            {
-                Id = indexNumber,
-                PriceDate = date,
-                AssetId = assetId,
-                TimeframeId = timeframeId,
-                IndexNumber = indexNumber,
-                DeltaClosePrice = 1.04,
-                PriceDirection2D = 1,
-                PriceDirection3D = 1,
-                PriceGap = 0.05,
-                CloseRatio = 0.23,
-                ExtremumRatio = 1
-            };
-        }
-
-
-
-        private IEnumerable<Quotation> getDefaultQuotationsCollection()
-        {
-            return new Quotation[] { getQuotation(1), getQuotation(2), getQuotation(3), getQuotation(4) };
-        }
-
-        private IEnumerable<QuotationDto> getDefaultQuotationDtosCollection()
-        {
-            return new QuotationDto[] { getQuotationDto(1), getQuotationDto(2), getQuotationDto(3), getQuotationDto(4) };
-        }
-
-
-
-        private IEnumerable<Price> getDefaultPricesCollection(){
-            return new Price[] { getPrice(1), getPrice(2), getPrice(3), getPrice(4) };
-        }
-
-        private IEnumerable<PriceDto> getDefaultPriceDtosCollection()
-        {
-            return new PriceDto[] { getPriceDto(1), getPriceDto(2), getPriceDto(3), getPriceDto(4) };
-        }
-
-
-
-        #endregion INFRASTRUCTURE
-
+        private UTFactory utf = new UTFactory();
 
 
         #region GET_DATA_SETS
@@ -186,10 +31,10 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = getDefaultPriceDtosCollection();
+            IEnumerable<PriceDto> priceDtos = utf.getDefaultPriceDtosCollection();
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(new List<QuotationDto>());
             priceRepository.Setup(q => q.GetPrices(queryDef)).Returns(priceDtos);
             
@@ -211,16 +56,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange:QueryDef
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
 
             //Arrange:Quotations
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
-            IEnumerable<QuotationDto> quotationDtos = getDefaultQuotationDtosCollection();
+            IEnumerable<QuotationDto> quotationDtos = utf.getDefaultQuotationDtosCollection();
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             //Arrange:Prices
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = getDefaultPriceDtosCollection();
+            IEnumerable<PriceDto> priceDtos = utf.getDefaultPriceDtosCollection();
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
@@ -230,7 +75,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
             var dataSets = service.GetDataSets(queryDef);
 
             //Assert
-            IEnumerable<DataSet> expectedDataSets = null;// quotations.Select(q => new DataSet(q));
+            DataSet ds1 = utf.getDataSet(1);
+            ds1.SetQuotation(utf.getQuotation(ds1));
+            DataSet ds2 = utf.getDataSet(2);
+            ds2.SetQuotation(utf.getQuotation(ds2));
+            DataSet ds3 = utf.getDataSet(3);
+            ds3.SetQuotation(utf.getQuotation(ds3));
+            DataSet ds4 = utf.getDataSet(4);
+            ds4.SetQuotation(utf.getQuotation(ds4));
+
+            IEnumerable<DataSet> expectedDataSets = new DataSet[] { ds1, ds2, ds3, ds4 };
             var areEqual = expectedDataSets.HasEqualItems(dataSets);
             Assert.IsTrue(areEqual);
 
@@ -242,16 +96,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange:QueryDef
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
             
             //Arrange:Quotations
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
-            IEnumerable<QuotationDto> quotationDtos = getDefaultQuotationDtosCollection();
+            IEnumerable<QuotationDto> quotationDtos = utf.getDefaultQuotationDtosCollection();
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             //Arrange:Prices
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = new PriceDto[] { getPriceDto(1), getPriceDto(2), getPriceDto(3), getPriceDto(4) }; 
+            IEnumerable<PriceDto> priceDtos = new PriceDto[] { utf.getPriceDto(1), utf.getPriceDto(2), utf.getPriceDto(3), utf.getPriceDto(4) }; 
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
@@ -261,8 +115,15 @@ namespace Stock_UnitTest.Stock.Domain.Services
             var dataSets = service.GetDataSets(queryDef);
 
             //Assert
-            IEnumerable<DataSet> expectedDataSets = null; // new DataSet[] { new DataSet(getQuotation(1)).SetPrice(getPrice(1)), new DataSet(getQuotation(2)).SetPrice(getPrice(2)),
-                                                          //          new DataSet(getQuotation(3)).SetPrice(getPrice(3)), new DataSet(getQuotation(4)).SetPrice(getPrice(4)) };
+            DataSet ds1 = utf.getDataSet(1);
+            ds1.SetQuotation(utf.getQuotation(ds1)).SetPrice(utf.getPrice(ds1));
+            DataSet ds2 = utf.getDataSet(2);
+            ds2.SetQuotation(utf.getQuotation(ds2)).SetPrice(utf.getPrice(ds2));
+            DataSet ds3 = utf.getDataSet(3);
+            ds3.SetQuotation(utf.getQuotation(ds3)).SetPrice(utf.getPrice(ds3));
+            DataSet ds4 = utf.getDataSet(4);
+            ds4.SetQuotation(utf.getQuotation(ds4)).SetPrice(utf.getPrice(ds4));
+            IEnumerable<DataSet> expectedDataSets = new DataSet[] { ds1, ds2, ds3, ds4 };
             var areEqual = expectedDataSets.HasEqualItems(dataSets);
             Assert.IsTrue(areEqual);
 
@@ -274,16 +135,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange:QueryDef
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
 
             //Arrange:Quotations
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
-            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { getQuotationDto(2), getQuotationDto(3), getQuotationDto(4) };
+            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { utf.getQuotationDto(2), utf.getQuotationDto(3), utf.getQuotationDto(4) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             //Arrange:Prices
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = new PriceDto[] { getPriceDto(3), getPriceDto(4), getPriceDto(5), getPriceDto(6) }; 
+            IEnumerable<PriceDto> priceDtos = new PriceDto[] { utf.getPriceDto(3), utf.getPriceDto(4), utf.getPriceDto(5), utf.getPriceDto(6) }; 
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
@@ -293,7 +154,13 @@ namespace Stock_UnitTest.Stock.Domain.Services
             var dataSets = service.GetDataSets(queryDef);
 
             //Assert
-            IEnumerable<DataSet> expectedDataSets = null; // new DataSet[] { new DataSet(getQuotation(2)), new DataSet(getQuotation(3)).SetPrice(getPrice(3)), new DataSet(getQuotation(4)).SetPrice(getPrice(4)) };
+            DataSet ds2 = utf.getDataSet(2);
+            ds2.SetQuotation(utf.getQuotation(ds2));
+            DataSet ds3 = utf.getDataSet(3);
+            ds3.SetQuotation(utf.getQuotation(ds3)).SetPrice(utf.getPrice(ds3));
+            DataSet ds4 = utf.getDataSet(4);
+            ds4.SetQuotation(utf.getQuotation(ds4)).SetPrice(utf.getPrice(ds4));
+            IEnumerable<DataSet> expectedDataSets = new DataSet[] { ds2, ds3, ds4 };
             var areEqual = expectedDataSets.HasEqualItems(dataSets);
             Assert.IsTrue(areEqual);
 
@@ -311,12 +178,12 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange:Quotations
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
-            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { getQuotationDto(1), getQuotationDto(2), getQuotationDto(3), getQuotationDto(4) };
+            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { utf.getQuotationDto(1), utf.getQuotationDto(2), utf.getQuotationDto(3), utf.getQuotationDto(4) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             //Arrange:Prices
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = new PriceDto[] { getPriceDto(1), getPriceDto(2), getPriceDto(3), getPriceDto(4) };
+            IEnumerable<PriceDto> priceDtos = new PriceDto[] { utf.getPriceDto(1), utf.getPriceDto(2), utf.getPriceDto(3), utf.getPriceDto(4) };
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
@@ -337,23 +204,21 @@ namespace Stock_UnitTest.Stock.Domain.Services
         }
 
         [TestMethod]
-        public void GetDataSets_UseNewInstancesOfAnalysisObjects_IfTheyAreInSpecificRepositories()
+        public void GetDataSets_UseAlwaysExistingInstancesOfObjects_EvenIfThereIsAnotherOneInRepository()
         {
 
             //Arrange:QueryDef
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
-            DateTime startDate = new DateTime(2016, 1, 15, 22, 30, 0);
-            DateTime endDate = new DateTime(2016, 1, 15, 22, 50, 0);
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1) { AnalysisTypes = analysisTypes, StartDate = startDate, EndDate = endDate };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(1, 1) { AnalysisTypes = analysisTypes };
 
             //Arrange:Quotations
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
-            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { getQuotationDto(1), getQuotationDto(2), getQuotationDto(3), getQuotationDto(4) };
+            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { utf.getQuotationDto(1), utf.getQuotationDto(2), utf.getQuotationDto(3), utf.getQuotationDto(4) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             //Arrange:Prices
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = new PriceDto[] { getPriceDto(1), getPriceDto(2), getPriceDto(3), getPriceDto(4) };
+            IEnumerable<PriceDto> priceDtos = new PriceDto[] { utf.getPriceDto(1), utf.getPriceDto(2), utf.getPriceDto(3), utf.getPriceDto(4) };
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
@@ -363,9 +228,9 @@ namespace Stock_UnitTest.Stock.Domain.Services
             var dataSets = service.GetDataSets(queryDef);
             DataSet baseDataSet = dataSets.SingleOrDefault(ds => ds.IndexNumber == 2);
 
-            Quotation stubQuotation = getQuotation(2);
+            Quotation stubQuotation = utf.getQuotation(2);
             stubQuotation.Open = stubQuotation.Open + 3;
-            IEnumerable<Quotation> quotations = new Quotation[] { getQuotation(1), stubQuotation, getQuotation(3), getQuotation(4) };
+            IEnumerable<Quotation> quotations = new Quotation[] { utf.getQuotation(1), stubQuotation, utf.getQuotation(3), utf.getQuotation(4) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             service.InjectQuotationRepository(quotationRepository.Object);
@@ -373,7 +238,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet comparedDataSet = dataSets.SingleOrDefault(ds => ds.IndexNumber == 2);
 
             //Assert
-            var areTheSameObject = (stubQuotation == comparedDataSet.GetQuotation());
+            var areTheSameObject = (baseDataSet.GetQuotation() == comparedDataSet.GetQuotation());
             Assert.IsTrue(areTheSameObject);
 
         }
@@ -384,16 +249,16 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange:QueryDef
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
 
             //Arrange:Quotations
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
-            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { getQuotationDto(1), getQuotationDto(2), getQuotationDto(3), getQuotationDto(4) };
+            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { utf.getQuotationDto(1), utf.getQuotationDto(2), utf.getQuotationDto(3), utf.getQuotationDto(4) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             //Arrange:Prices
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = new PriceDto[] { getPriceDto(1), getPriceDto(2), getPriceDto(3), getPriceDto(4) };
+            IEnumerable<PriceDto> priceDtos = new PriceDto[] { utf.getPriceDto(1), utf.getPriceDto(2), utf.getPriceDto(3), utf.getPriceDto(4) };
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
@@ -401,8 +266,14 @@ namespace Stock_UnitTest.Stock.Domain.Services
             service.InjectQuotationRepository(quotationRepository.Object);
             service.InjectPriceRepository(priceRepository.Object);
             var dataSets = service.GetDataSets(queryDef);
+            if (dataSets == null) throw new Exception("Collection should not be null");
+
             DataSet baseDataSet = dataSets.SingleOrDefault(ds => ds.IndexNumber == 2);
+            if (baseDataSet == null) throw new Exception("Base data set shouldn't be null");
+
             Price basePrice = (baseDataSet == null ? null : baseDataSet.GetPrice());
+            if (basePrice == null) throw new Exception("Base price shouldn't be null");
+            
 
             priceRepository.Setup(q => q.GetPrices(queryDef)).Returns(new PriceDto[] { });
             service.InjectPriceRepository(priceRepository.Object);
@@ -428,10 +299,10 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = getDefaultPriceDtosCollection();
+            IEnumerable<PriceDto> priceDtos = utf.getDefaultPriceDtosCollection();
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(new List<QuotationDto>());
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
@@ -454,19 +325,19 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = getDefaultPriceDtosCollection();
+            IEnumerable<PriceDto> priceDtos = utf.getDefaultPriceDtosCollection();
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(new List<QuotationDto>());
             priceRepository.Setup(p => p.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
             DataSet[] baseDataSets = new DataSet[11];
-            baseDataSets[7] = getDataSet(7);
-            baseDataSets[8] = getDataSet(8);
-            baseDataSets[9] = getDataSet(9);
-            baseDataSets[10] = getDataSet(10);
+            baseDataSets[7] = utf.getDataSet(7);
+            baseDataSets[8] = utf.getDataSet(8);
+            baseDataSets[9] = utf.getDataSet(9);
+            baseDataSets[10] = utf.getDataSet(10);
             IDataSetService service = new DataSetService();
             service.InjectQuotationRepository(quotationRepository.Object);
             service.InjectPriceRepository(priceRepository.Object);
@@ -484,15 +355,15 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
 
             //Act
             IDataSetService service = new DataSetService();
-            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { getQuotationDto(101), getQuotationDto(102), getQuotationDto(103) };
+            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { utf.getQuotationDto(101), utf.getQuotationDto(102), utf.getQuotationDto(103) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
-            IEnumerable<PriceDto> priceDtos = new PriceDto[] { getPriceDto(101), getPriceDto(102), getPriceDto(103) };
+            IEnumerable<PriceDto> priceDtos = new PriceDto[] { utf.getPriceDto(101), utf.getPriceDto(102), utf.getPriceDto(103) };
             priceRepository.Setup(q => q.GetPrices(queryDef)).Returns(priceDtos);
             service.InjectQuotationRepository(quotationRepository.Object);
             service.InjectPriceRepository(priceRepository.Object);
@@ -500,30 +371,36 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Assert
             DataSet[] expectedDataSets = new DataSet[104];
-            expectedDataSets[101] = getDataSet(101);
-            expectedDataSets[102] = getDataSet(102);
-            expectedDataSets[103] = getDataSet(103);
+            DataSet ds101 = utf.getDataSet(101);
+            ds101.SetQuotation(utf.getQuotation(ds101)).SetPrice(utf.getPrice(ds101));
+            DataSet ds102 = utf.getDataSet(102);
+            ds102.SetQuotation(utf.getQuotation(ds102)).SetPrice(utf.getPrice(ds102));
+            DataSet ds103 = utf.getDataSet(103);
+            ds103.SetQuotation(utf.getQuotation(ds103)).SetPrice(utf.getPrice(ds103));
+            expectedDataSets[101] = ds101;
+            expectedDataSets[102] = ds102;
+            expectedDataSets[103] = ds103;
             var areEqual = expectedDataSets.HasEqualItemsInTheSameOrder(result);
             Assert.IsTrue(areEqual);
 
         }
 
         [TestMethod]
-        public void GetDataSetsWithInitialCollection_ReturnsProperlyFilled_IfNonEmptyArrayWasPassedAndSomeDataWereAppended()
+        public void GetDataSetsWithInitialCollection_ReturnsProperlyFilledArray_IfNonEmptyArrayWasPassedAndSomeDataWereAppended()
         {
 
             //Arrange.
             IEnumerable<AnalysisType> analysisTypes = new AnalysisType[] { AnalysisType.Quotations, AnalysisType.Prices };
-            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
+            AnalysisDataQueryDefinition queryDef = new AnalysisDataQueryDefinition(UTDefaulter.DEFAULT_ASSET_ID, UTDefaulter.DEFAULT_TIMEFRAME_ID) { AnalysisTypes = analysisTypes };
 
             //Quotation repository.
             Mock<IQuotationRepository> quotationRepository = new Mock<IQuotationRepository>();
-            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { getQuotationDto(1), getQuotationDto(2), getQuotationDto(3) };
+            IEnumerable<QuotationDto> quotationDtos = new QuotationDto[] { utf.getQuotationDto(1), utf.getQuotationDto(2), utf.getQuotationDto(3) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos);
 
             //Price repository.
             Mock<IPriceRepository> priceRepository = new Mock<IPriceRepository>();
-            IEnumerable<PriceDto> priceDtos = new PriceDto[] { getPriceDto(1), getPriceDto(2), getPriceDto(3) };
+            IEnumerable<PriceDto> priceDtos = new PriceDto[] { utf.getPriceDto(1), utf.getPriceDto(2), utf.getPriceDto(3) };
             priceRepository.Setup(q => q.GetPrices(queryDef)).Returns(priceDtos);
 
             //Act
@@ -532,10 +409,10 @@ namespace Stock_UnitTest.Stock.Domain.Services
             service.InjectPriceRepository(priceRepository.Object);
             var dataSets = service.GetDataSets(queryDef);
 
-            IEnumerable<QuotationDto> quotationDtos2 = new QuotationDto[] { getQuotationDto(101), getQuotationDto(102), getQuotationDto(103) };
+            IEnumerable<QuotationDto> quotationDtos2 = new QuotationDto[] { utf.getQuotationDto(101), utf.getQuotationDto(102), utf.getQuotationDto(103) };
             quotationRepository.Setup(q => q.GetQuotations(queryDef)).Returns(quotationDtos2);
 
-            IEnumerable<PriceDto> priceDtos2 = new PriceDto[] { getPriceDto(101), getPriceDto(102), getPriceDto(103) };
+            IEnumerable<PriceDto> priceDtos2 = new PriceDto[] { utf.getPriceDto(101), utf.getPriceDto(102), utf.getPriceDto(103) };
             priceRepository.Setup(q => q.GetPrices(queryDef)).Returns(priceDtos2);
             service.InjectQuotationRepository(quotationRepository.Object);
             service.InjectPriceRepository(priceRepository.Object);
@@ -543,12 +420,26 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Assert
             DataSet[] expectedDataSets = new DataSet[104];
-            expectedDataSets[1] = getDataSet(1);
-            expectedDataSets[2] = getDataSet(2);
-            expectedDataSets[3] = getDataSet(3);
-            expectedDataSets[101] = getDataSet(101);
-            expectedDataSets[102] = getDataSet(102);
-            expectedDataSets[103] = getDataSet(103);
+
+            DataSet ds1 = utf.getDataSet(1);
+            ds1.SetQuotation(utf.getQuotation(ds1)).SetPrice(utf.getPrice(ds1));
+            DataSet ds2 = utf.getDataSet(2);
+            ds2.SetQuotation(utf.getQuotation(ds2)).SetPrice(utf.getPrice(ds2)); ;
+            DataSet ds3 = utf.getDataSet(3);
+            ds3.SetQuotation(utf.getQuotation(ds3)).SetPrice(utf.getPrice(ds3));
+            DataSet ds101 = utf.getDataSet(101);
+            ds101.SetQuotation(utf.getQuotation(ds101)).SetPrice(utf.getPrice(ds101));
+            DataSet ds102 = utf.getDataSet(102);
+            ds102.SetQuotation(utf.getQuotation(ds102)).SetPrice(utf.getPrice(ds102));
+            DataSet ds103 = utf.getDataSet(103);
+            ds103.SetQuotation(utf.getQuotation(ds103)).SetPrice(utf.getPrice(ds103));
+
+            expectedDataSets[1] = ds1;
+            expectedDataSets[2] = ds2;
+            expectedDataSets[3] = ds3;
+            expectedDataSets[101] = ds101;
+            expectedDataSets[102] = ds102;
+            expectedDataSets[103] = ds103;
             var areEqual = expectedDataSets.HasEqualItemsInTheSameOrder(result);
             Assert.IsTrue(areEqual);
 

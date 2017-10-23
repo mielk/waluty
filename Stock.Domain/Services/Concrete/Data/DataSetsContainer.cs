@@ -15,11 +15,7 @@ namespace Stock.Domain.Services
         public int AssetId { get; set; }
         public int TimeframeId { get; set; }
         public int SimulationId { get; set; }
-        private IEnumerable<DataSet> items;
-
-        //private IQuotationService quotationService;
-        //private IPriceService priceService;
-        //private Dictionary<int, AssetItemsContainer> dataSetsByAssets = new Dictionary<int, AssetItemsContainer>();
+        private List<DataSet> items = new List<DataSet>();
 
 
         #region CONSTRUCTOR
@@ -34,20 +30,6 @@ namespace Stock.Domain.Services
         #endregion CONSTRUCTOR
 
 
-        //#region SETTERS
-
-        //public void SetQuotationService(IQuotationService service)
-        //{
-        //    this.quotationService = service;
-        //}
-
-        //public void SetPriceService(IPriceService service)
-        //{
-        //    this.priceService = service;
-        //}
-
-        //#endregion SETTERS
-
 
         #region API
 
@@ -56,22 +38,91 @@ namespace Stock.Domain.Services
             return items.ToList();
         }
 
-        public IEnumerable<DataSet> GetDataSetsLaterThan(int startIndex)
+        public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef)
+        {
+            if (queryDef.StartIndex != null)
+            {
+                if (queryDef.EndIndex != null)
+                {
+                    return GetDataSetsBetween((int)queryDef.StartIndex, (int)queryDef.EndIndex);
+                }
+                else
+                {
+                    return GetDataSetsLaterThan((int)queryDef.StartIndex);
+                }
+            }
+            else
+            {
+                if (queryDef.EndIndex != null)
+                {
+                    return GetDataSetsEarlierThan((int)queryDef.EndIndex);
+                }
+                else
+                {
+                    return GetDataSets();
+                }
+            }
+        }
+
+        private IEnumerable<DataSet> GetDataSetsLaterThan(int startIndex)
         {
             return items.Where(ds => ds.IndexNumber >= startIndex).ToList();
         }
 
-        public IEnumerable<DataSet> GetDataSetsEarlierThan(int endIndex)
+        private IEnumerable<DataSet> GetDataSetsEarlierThan(int endIndex)
         {
             return items.Where(ds => ds.IndexNumber <= endIndex).ToList();
         }
 
-        public IEnumerable<DataSet> GetDataSetsBetween(int startIndex, int endIndex)
+        private IEnumerable<DataSet> GetDataSetsBetween(int startIndex, int endIndex)
         {
             return items.Where(ds => ds.IndexNumber >= startIndex && ds.IndexNumber <= endIndex).ToList();
         }
 
         #endregion API
+
+
+
+        #region LOADING DATA
+
+        public void LoadQuotations(IEnumerable<QuotationDto> dtos)
+        {
+            foreach(var dto in dtos)
+            {
+                DataSet ds = getOrCreateDataSet(dto.IndexNumber, dto.PriceDate);
+                if (ds.quotation == null)
+                {
+                    Quotation q = Quotation.FromDto(ds, dto);
+                    ds.SetQuotation(q);
+                }
+            }
+        }
+
+        private DataSet getOrCreateDataSet(int indexNumber, DateTime datetime)
+        {
+            DataSet ds = items.SingleOrDefault(i => i.IndexNumber == indexNumber);
+            if (ds == null)
+            {
+                ds = new DataSet(AssetId, TimeframeId, datetime, indexNumber);
+                items.Add(ds);
+            }
+            return ds;
+        }
+
+        public void LoadPrices(IEnumerable<PriceDto> dtos)
+        {
+            foreach (var dto in dtos)
+            {
+                DataSet ds = items.SingleOrDefault(i => i.IndexNumber == dto.IndexNumber);
+                if (ds != null && ds.price == null)
+                {
+                    Price p = Price.FromDto(ds, dto);
+                    ds.SetPrice(p);
+                }
+            }
+        }
+
+        #endregion LOADING DATA
 
 
         //private class AssetItemsContainer

@@ -12,6 +12,7 @@ using Stock.Domain.Enums;
 using Stock.Domain.Services;
 using Stock.Utils;
 using Stock.Core;
+using Stock_UnitTest.Helpers;
 
 namespace Stock_UnitTest.Stock.Domain.Services
 {
@@ -20,169 +21,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
     {
 
         private double MAX_DOUBLE_COMPARISON_DIFFERENCE = 0.00000000001;
-        private const int DEFAULT_ASSET_ID = 1;
-        private const int DEFAULT_TIMEFRAME_ID = 1;
-        private const int DEFAULT_SIMULATION_ID = 1;
-        private DateTime DEFAULT_BASE_DATE = new DateTime(2017, 5, 1, 12, 0, 0);
-
-
-
-        #region INFRASTRUCTURE
-
-        private DataSet getDataSetWithQuotation(int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            return getDataSetWithQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
-        }
-
-        private DataSet getDataSetWithQuotation(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
-            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
-            return ds;
-
-        }
-
-        private DataSet getDataSetWithQuotationAndPrice(int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            return getDataSetWithQuotationAndPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
-        }
-
-        private DataSet getDataSetWithQuotationAndPrice(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
-            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
-            Price p = new Price(ds);
-            return ds;
-        }
-
-
-        private DataSet getDataSet(int indexNumber)
-        {
-            return getDataSet(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private DataSet getDataSet(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
-            return ds;
-        }
-
-
-        private Quotation getQuotation(DataSet ds)
-        {
-            return new Quotation(ds)
-            {
-                Id = ds.IndexNumber,
-                Open = 1.09191,
-                High = 1.09218,
-                Low = 1.09186,
-                Close = 1.09194,
-                Volume = 1411
-            };
-        }
-
-        private Quotation getQuotation(int indexNumber)
-        {
-            return getQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private Quotation getQuotation(int assetId, int timeframeId, int indexNumber)
-        {
-            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
-            return new Quotation(ds)
-            {
-                Id = indexNumber,
-                Open = 1.09191,
-                High = 1.09218,
-                Low = 1.09186,
-                Close = 1.09194,
-                Volume = 1411
-            };
-        }
-
-        private QuotationDto getQuotationDto(int indexNumber)
-        {
-            return getQuotationDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private QuotationDto getQuotationDto(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            return new QuotationDto()
-            {
-                PriceDate = date,
-                AssetId = assetId,
-                TimeframeId = timeframeId,
-                OpenPrice = 1.09191,
-                HighPrice = 1.09218,
-                LowPrice = 1.09186,
-                ClosePrice = 1.09194,
-                Volume = 1411
-            };
-        }
-
-
-
-        private Price getPrice(DataSet ds)
-        {
-            return getPrice(ds);
-        }
-
-        private Price getPrice(int indexNumber)
-        {
-            return getPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private Price getPrice(int assetId, int timeframeId, int indexNumber)
-        {
-            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
-            return new Price(ds)
-            {
-                Id = indexNumber,
-                CloseDelta = 1.05,
-                Direction2D = 1,
-                Direction3D = 0,
-                PriceGap = 1.23,
-                CloseRatio = 1.23,
-                ExtremumRatio = 2.34
-            };
-        }
-
-        private PriceDto getPriceDto(int indexNumber)
-        {
-            return getPriceDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private PriceDto getPriceDto(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            return new PriceDto()
-            {
-                Id = indexNumber,
-                PriceDate = date,
-                AssetId = assetId,
-                TimeframeId = timeframeId,
-                IndexNumber = indexNumber,
-                DeltaClosePrice = 1.04,
-                PriceDirection2D = 1,
-                PriceDirection3D = 1,
-                PriceGap = 0.05,
-                CloseRatio = 0.23,
-                ExtremumRatio = 1
-            };
-        }
-
-        #endregion INFRASTRUCTURE
-
-
+        private UTFactory utf = new UTFactory();
 
 
         #region SETTING_NEW_PRICE_OBJECT
@@ -194,8 +33,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
 
-            DataSet dataSet1 = getDataSet(1);
-            DataSet dataSet2 = getDataSet(2);
+            DataSet dataSet1 = utf.getDataSet(1);
+            DataSet dataSet2 = utf.getDataSet(2);
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
 
@@ -213,8 +52,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
         {
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-            DataSet dataSet1 = getDataSet(1);
-            DataSet dataSet2 = getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
+            DataSet dataSet1 = utf.getDataSet(1);
+            DataSet dataSet2 = utf.getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
 
@@ -238,8 +77,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-            DataSet dataSet2 = getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
-            DataSet dataSet3 = getDataSetWithQuotation(3, 1.09193, 1.09256, 1.09165, 1.09194, 1819);
+            DataSet dataSet2 = utf.getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
+            DataSet dataSet3 = utf.getDataSetWithQuotation(3, 1.09193, 1.09256, 1.09165, 1.09194, 1819);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
             mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
 
@@ -260,8 +99,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-            DataSet dataSet1 = getDataSetWithQuotation(1, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
-            DataSet dataSet2 = getDataSetWithQuotation(2, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
+            DataSet dataSet1 = utf.getDataSetWithQuotation(1, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
+            DataSet dataSet2 = utf.getDataSetWithQuotation(2, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
 
@@ -282,8 +121,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-            DataSet dataSet1 = getDataSet(1);
-            DataSet dataSet2 = getDataSetWithQuotation(2, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
+            DataSet dataSet1 = utf.getDataSet(1);
+            DataSet dataSet2 = utf.getDataSetWithQuotation(2, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
 
@@ -304,8 +143,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-            DataSet dataSet2 = getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
-            DataSet dataSet3 = getDataSetWithQuotation(3, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
+            DataSet dataSet2 = utf.getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
+            DataSet dataSet3 = utf.getDataSetWithQuotation(3, 1.09193, 1.09256, 1.09165, 1.09177, 1819);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
             mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
 
@@ -327,8 +166,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
-            DataSet dataSet2 = getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
-            DataSet dataSet3 = getDataSetWithQuotation(3, 1.09193, 1.09256, 1.09165, 1.09213, 1819);
+            DataSet dataSet2 = utf.getDataSetWithQuotation(2, 1.09191, 1.09218, 1.09186, 1.09194, 1411);
+            DataSet dataSet3 = utf.getDataSetWithQuotation(3, 1.09193, 1.09256, 1.09165, 1.09213, 1819);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
             mockedManager.Setup(m => m.GetDataSet(3)).Returns(dataSet3);
 
@@ -376,7 +215,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
 
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.PeakByClose)).Returns(false);
 
@@ -397,7 +236,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.PeakByClose)).Returns(true);
 
@@ -418,7 +257,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.PeakByHigh)).Returns(false);
 
@@ -439,7 +278,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.PeakByHigh)).Returns(true);
 
@@ -460,7 +299,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByClose)).Returns(false);
 
@@ -481,7 +320,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByClose)).Returns(true);
 
@@ -502,7 +341,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(false);
 
@@ -523,7 +362,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
 
@@ -544,7 +383,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.PeakByClose)).Returns(true);
 
@@ -570,7 +409,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateEarlierCounter(It.IsAny<Extremum>())).Returns(4);
@@ -594,7 +433,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateEarlierAmplitude(It.IsAny<Extremum>())).Returns(1.23);
@@ -619,7 +458,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 1)).Returns(1.23);
@@ -644,7 +483,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 2)).Returns(1.23);
@@ -669,7 +508,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 3)).Returns(1.23);
@@ -694,7 +533,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 5)).Returns(1.23);
@@ -719,7 +558,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateEarlierChange(It.IsAny<Extremum>(), 10)).Returns(1.23);
@@ -747,7 +586,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateLaterCounter(It.IsAny<Extremum>())).Returns(4);
@@ -771,7 +610,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateLaterAmplitude(It.IsAny<Extremum>())).Returns(1.23);
@@ -796,7 +635,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateLaterChange(It.IsAny<Extremum>(), 1)).Returns(1.23);
@@ -821,7 +660,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateLaterChange(It.IsAny<Extremum>(), 2)).Returns(1.23);
@@ -846,7 +685,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateLaterChange(It.IsAny<Extremum>(), 3)).Returns(1.23);
@@ -871,7 +710,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateLaterChange(It.IsAny<Extremum>(), 5)).Returns(1.23);
@@ -896,7 +735,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             //Arrange
             Mock<IProcessManager> mockedManager = new Mock<IProcessManager>();
             Mock<IExtremumProcessor> mockedProcessor = new Mock<IExtremumProcessor>();
-            DataSet dataSet4 = getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
+            DataSet dataSet4 = utf.getDataSetWithQuotation(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
             mockedManager.Setup(m => m.GetDataSet(4)).Returns(dataSet4);
             mockedProcessor.Setup(p => p.IsExtremum(dataSet4, ExtremumType.TroughByLow)).Returns(true);
             mockedProcessor.Setup(p => p.CalculateLaterChange(It.IsAny<Extremum>(), 10)).Returns(1.23);

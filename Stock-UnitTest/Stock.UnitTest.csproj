@@ -152,6 +152,8 @@
     <Compile Include="Stock.Utils\HelperMethods\StringHelperMethodsUnitTest.cs" />
     <Compile Include="Stock.Utils\HelperMethods\DateTimeHelperMethodsUnitTest.cs" />
     <Compile Include="Stock.Utils\HelperMethods\NumericHelperMethodsUnitTest.cs" />
+    <Compile Include="UnitTests.Helpers\UTDefaulter.cs" />
+    <Compile Include="UnitTests.Helpers\UTFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Stock.DAL\TransferObjects\MarketObjectsDto\" />

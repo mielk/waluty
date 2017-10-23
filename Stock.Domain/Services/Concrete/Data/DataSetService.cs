@@ -45,7 +45,6 @@ namespace Stock.Domain.Services
             this.priceRepository = repository;
         }
 
-
         #endregion INFRASTRUCTURE
 
 
@@ -54,12 +53,27 @@ namespace Stock.Domain.Services
 
         public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef)
         {
+            
             DataSetsContainer dsc = containers.SingleOrDefault(c => c.AssetId == queryDef.AssetId && c.TimeframeId == queryDef.TimeframeId && c.SimulationId == queryDef.SimulationId);
             if (dsc == null)
             {
-
+                dsc = new DataSetsContainer(queryDef.AssetId, queryDef.TimeframeId, queryDef.SimulationId);
+                containers = containers.Concat(new DataSetsContainer[] { dsc } );
             }
-            return null;
+
+            //Quotations.
+            IEnumerable<QuotationDto> quotationDtos = quotationRepository.GetQuotations(queryDef);
+            dsc.LoadQuotations(quotationDtos);
+
+            //Prices.
+            if (queryDef.AnalysisTypes.Contains(AnalysisType.Prices))
+            {
+                IEnumerable<PriceDto> priceDtos = priceRepository.GetPrices(queryDef);
+                dsc.LoadPrices(priceDtos);
+            }
+
+            return dsc.GetDataSets(queryDef);
+
         }
 
         public IEnumerable<DataSet> GetDataSets(AnalysisDataQueryDefinition queryDef, IEnumerable<DataSet> initialSets)

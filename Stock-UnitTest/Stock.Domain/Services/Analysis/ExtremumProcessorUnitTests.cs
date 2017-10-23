@@ -37,14 +37,18 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         private DataSet getDataSetWithQuotation(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
         {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            var timeframe = getTimeframe(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber - 1);
             DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
             Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
             return ds;
 
         }
 
+        private Timeframe getTimeframe(int timeframeId)
+        {
+            return new Timeframe(timeframeId, "5M", TimeframeUnit.Minutes, 5);
+        }
 
         private DataSet getDataSetWithQuotationAndPrice(int indexNumber, double open, double high, double low, double close, double volume)
         {
@@ -53,8 +57,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         private DataSet getDataSetWithQuotationAndPrice(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
         {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            var timeframe = getTimeframe(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber - 1);
             DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
             Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
             Price p = new Price(ds);
@@ -4240,8 +4244,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet3 = getDataSetWithQuotationAndPrice(3, 1.09191, 1.09218, 1.09186, 1.09194, 1359);
             DataSet dataSet4 = getDataSetWithQuotationAndPrice(4, 1.0915, 1.0916, 1.09111, 1.09112, 1392);
 
-            Extremum peakByClose = new Extremum(dataSet2.price, ExtremumType.PeakByHigh);
-            Extremum peakByHigh = new Extremum(dataSet3.price, ExtremumType.PeakByClose);
+            Extremum peakByHigh = new Extremum(dataSet2.price, ExtremumType.PeakByHigh);
+            Extremum peakByClose = new Extremum(dataSet3.price, ExtremumType.PeakByClose);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
@@ -4277,8 +4281,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet3 = getDataSetWithQuotationAndPrice(3, 1.09191, 1.09218, 1.09186, 1.09194, 1359);
             DataSet dataSet4 = getDataSetWithQuotationAndPrice(4, 1.0915, 1.0922, 1.09111, 1.09112, 1392);
 
-            Extremum peakByHigh = new Extremum(dataSet3.price, ExtremumType.PeakByClose);
-            Extremum peakByClose = new Extremum(dataSet4.price, ExtremumType.PeakByHigh);
+            Extremum peakByClose = new Extremum(dataSet3.price, ExtremumType.PeakByClose);
+            Extremum peakByHigh = new Extremum(dataSet4.price, ExtremumType.PeakByHigh);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);
@@ -4428,7 +4432,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             DataSet dataSet6 = getDataSetWithQuotationAndPrice(6, 1.0916, 1.0917, 1.09151, 1.09172, 1392);
 
             Extremum peakByHigh = new Extremum(dataSet3.price, ExtremumType.PeakByHigh);
-            Extremum peakByClose = new Extremum(dataSet4.price, ExtremumType.PeakByClose);
+            Extremum peakByClose = new Extremum(dataSet5.price, ExtremumType.PeakByClose);
 
             mockedManager.Setup(m => m.GetDataSet(1)).Returns(dataSet1);
             mockedManager.Setup(m => m.GetDataSet(2)).Returns(dataSet2);

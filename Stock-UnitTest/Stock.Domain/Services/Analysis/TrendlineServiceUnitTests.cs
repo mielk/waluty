@@ -60,8 +60,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         private DataSet getDataSetWithQuotation(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
         {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            var timeframe = getTimeframe(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber - 1);
             DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
             Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
             return ds;
@@ -75,8 +75,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         private DataSet getDataSetWithQuotationAndPrice(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
         {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            var timeframe = getTimeframe(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber - 1);
             DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
             Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
             Price p = new Price(ds);
@@ -91,8 +91,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         private DataSet getDataSet(int assetId, int timeframeId, int indexNumber)
         {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            var timeframe = getTimeframe(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber - 1);
             DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
             return ds;
         }
@@ -137,8 +137,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         private QuotationDto getQuotationDto(int assetId, int timeframeId, int indexNumber)
         {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            var timeframe = getTimeframe(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber - 1);
             return new QuotationDto()
             {
                 PriceDate = date,
@@ -186,8 +186,8 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
         private PriceDto getPriceDto(int assetId, int timeframeId, int indexNumber)
         {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
+            var timeframe = getTimeframe(timeframeId);
+            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber - 1);
             return new PriceDto()
             {
                 Id = indexNumber,
@@ -204,6 +204,10 @@ namespace Stock_UnitTest.Stock.Domain.Services
             };
         }
 
+        private Timeframe getTimeframe(int timeframeId)
+        {
+            return new Timeframe(timeframeId, "5M", TimeframeUnit.Minutes, 5);
+        }
 
         private Trendline getDefaultTrendline()
         {

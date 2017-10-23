@@ -106,10 +106,7 @@
     <Compile Include="Services\Abstract\Analysis\IPriceProcessor.cs" />
     <Compile Include="Services\Abstract\Analysis\IDataProcessor.cs" />
     <Compile Include="Services\Abstract\Analysis\ISimulationService.cs" />
-    <Compile Include="Services\Abstract\Data\IBasicAnalysisService.cs" />
     <Compile Include="Services\Abstract\Data\IDataSetService.cs" />
-    <Compile Include="Services\Abstract\Data\IPriceService.cs" />
-    <Compile Include="Services\Abstract\Data\IQuotationService.cs" />
     <Compile Include="Services\Abstract\Market\ITimeframeService.cs" />
     <Compile Include="Services\Abstract\Market\IAssetService.cs" />
     <Compile Include="Services\Abstract\Market\ICurrencyService.cs" />

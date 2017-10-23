@@ -7,233 +7,15 @@ using Stock.Core;
 using Stock.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using Stock_UnitTest.Helpers;
 
 namespace Stock_UnitTest.Stock.Domain
 {
     [TestClass]
     public class TrendlineUnitTests
     {
-        private const int DEFAULT_ID = 1;
-        private const int DEFAULT_ASSET_ID = 1;
-        private const int DEFAULT_TIMEFRAME_ID = 1;
-        private const int DEFAULT_SIMULATION_ID = 1;
-        private DateTime DEFAULT_BASE_DATE = new DateTime(2017, 5, 1, 12, 0, 0);
-        private const int DEFAULT_START_INDEX = 84;
-        private const double DEFAULT_START_LEVEL = 1.1654;
-        private const int DEFAULT_FOOTHOLD_INDEX = 134;
-        private const double DEFAULT_FOOTHOLD_LEVEL = 1.1754;
-        private const double DEFAULT_VALUE = 1.234;
-        private const int DEFAULT_LAST_UPDATE_INDEX = 154;
-        private const int DEFAULT_FOOTHOLD_SLAVE_INDEX = 135;
-        private const int DEFAULT_FOOTHOLD_IS_PEAK = 1;
-        private const int DEFAULT_FOOTHOLD_TYPE = 1;
-        private const bool DEFAULT_INITIAL_IS_PEAK = true;
-        private const bool DEFAULT_CURRENT_IS_PEAK = false;
 
-
-
-        #region INFRASTRUCTURE
-
-        private DataSet getDataSetWithQuotation(int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            return getDataSetWithQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
-        }
-
-        private DataSet getDataSetWithQuotation(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
-            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
-            return ds;
-
-        }
-
-        private DataSet getDataSetWithQuotationAndPrice(int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            return getDataSetWithQuotationAndPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber, open, high, low, close, volume);
-        }
-
-        private DataSet getDataSetWithQuotationAndPrice(int assetId, int timeframeId, int indexNumber, double open, double high, double low, double close, double volume)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
-            Quotation q = new Quotation(ds) { Open = open, High = high, Low = low, Close = close, Volume = volume };
-            Price p = new Price(ds);
-            return ds;
-        }
-
-
-        private DataSet getDataSet(int indexNumber)
-        {
-            return getDataSet(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private DataSet getDataSet(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            DataSet ds = new DataSet(assetId, timeframeId, date, indexNumber);
-            return ds;
-        }
-
-
-        private Quotation getQuotation(DataSet ds)
-        {
-            return new Quotation(ds)
-            {
-                Id = ds.IndexNumber,
-                Open = 1.09191,
-                High = 1.09218,
-                Low = 1.09186,
-                Close = 1.09194,
-                Volume = 1411
-            };
-        }
-
-        private Quotation getQuotation(int indexNumber)
-        {
-            return getQuotation(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private Quotation getQuotation(int assetId, int timeframeId, int indexNumber)
-        {
-            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
-            return new Quotation(ds)
-            {
-                Id = indexNumber,
-                Open = 1.09191,
-                High = 1.09218,
-                Low = 1.09186,
-                Close = 1.09194,
-                Volume = 1411
-            };
-        }
-
-        private QuotationDto getQuotationDto(int indexNumber)
-        {
-            return getQuotationDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private QuotationDto getQuotationDto(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            return new QuotationDto()
-            {
-                PriceDate = date,
-                AssetId = assetId,
-                TimeframeId = timeframeId,
-                OpenPrice = 1.09191,
-                HighPrice = 1.09218,
-                LowPrice = 1.09186,
-                ClosePrice = 1.09194,
-                Volume = 1411
-            };
-        }
-
-
-
-        private Price getPrice(DataSet ds)
-        {
-            return getPrice(ds);
-        }
-
-        private Price getPrice(int indexNumber)
-        {
-            return getPrice(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private Price getPrice(int assetId, int timeframeId, int indexNumber)
-        {
-            DataSet ds = getDataSet(assetId, timeframeId, indexNumber);
-            return new Price(ds)
-            {
-                Id = indexNumber,
-                CloseDelta = 1.05,
-                Direction2D = 1,
-                Direction3D = 0,
-                PriceGap = 1.23,
-                CloseRatio = 1.23,
-                ExtremumRatio = 2.34
-            };
-        }
-
-        private PriceDto getPriceDto(int indexNumber)
-        {
-            return getPriceDto(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, indexNumber);
-        }
-
-        private PriceDto getPriceDto(int assetId, int timeframeId, int indexNumber)
-        {
-            var timeframe = Timeframe.ById(timeframeId);
-            DateTime date = timeframe.AddTimeUnits(DEFAULT_BASE_DATE, indexNumber);
-            return new PriceDto()
-            {
-                Id = indexNumber,
-                PriceDate = date,
-                AssetId = assetId,
-                TimeframeId = timeframeId,
-                IndexNumber = indexNumber,
-                DeltaClosePrice = 1.04,
-                PriceDirection2D = 1,
-                PriceDirection3D = 1,
-                PriceGap = 0.05,
-                CloseRatio = 0.23,
-                ExtremumRatio = 1
-            };
-        }
-
-
-
-        private Trendline getDefaultTrendline()
-        {
-            AtsSettings settings = new AtsSettings(DEFAULT_ASSET_ID, DEFAULT_TIMEFRAME_ID, DEFAULT_SIMULATION_ID);
-
-            Price basePrice = getPrice(DEFAULT_START_INDEX);
-            Extremum baseMaster = new Extremum(basePrice, ExtremumType.PeakByClose);
-            ExtremumGroup baseGroup = new ExtremumGroup(baseMaster, null, DEFAULT_INITIAL_IS_PEAK);
-            TrendlinePoint basePoint = new TrendlinePoint(baseGroup, DEFAULT_START_LEVEL);
-
-            Price secondPrice = getPrice(DEFAULT_FOOTHOLD_INDEX);
-            Extremum secondMaster = new Extremum(secondPrice, ExtremumType.PeakByClose);
-            ExtremumGroup secondGroup = new ExtremumGroup(secondMaster, null, DEFAULT_INITIAL_IS_PEAK);
-            TrendlinePoint footholdPoint = new TrendlinePoint(secondGroup, DEFAULT_FOOTHOLD_LEVEL);
-
-            Trendline trendline = new Trendline(settings, basePoint, footholdPoint);
-            trendline.Id = DEFAULT_ID;
-            trendline.Value = DEFAULT_VALUE;
-            trendline.LastUpdateIndex = DEFAULT_LAST_UPDATE_INDEX;
-            trendline.FootholdSlaveIndex = DEFAULT_FOOTHOLD_SLAVE_INDEX;
-            trendline.CurrentIsPeak = DEFAULT_CURRENT_IS_PEAK;
-
-            return trendline;
-
-        }
-
-
-        private TrendlineDto getDefaultTrendlineDto()
-        {
-            return new TrendlineDto()
-            {
-                Id = 1,
-                AssetId = DEFAULT_ASSET_ID,
-                TimeframeId = DEFAULT_TIMEFRAME_ID,
-                SimulationId = DEFAULT_SIMULATION_ID,
-                StartIndex = DEFAULT_START_INDEX,
-                StartLevel = DEFAULT_START_LEVEL,
-                FootholdIndex = DEFAULT_FOOTHOLD_INDEX,
-                FootholdLevel = DEFAULT_FOOTHOLD_LEVEL,
-                FootholdSlaveIndex = DEFAULT_FOOTHOLD_SLAVE_INDEX,
-                FootholdIsPeak = DEFAULT_FOOTHOLD_TYPE,
-                Value = 1.2345,
-                LastUpdateIndex = 51
-            };
-        }
-
-        #endregion INFRASTRUCTURE
-
+        private UTFactory utf = new UTFactory();
 
 
         #region CONSTRUCTOR
@@ -243,22 +25,22 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Act.
-            var trendline = getDefaultTrendline();
+            var trendline = utf.getDefaultTrendline();
 
             //Assert.
-            Assert.AreEqual(DEFAULT_ID, trendline.Id);
-            Assert.AreEqual(DEFAULT_ASSET_ID, trendline.AssetId);
-            Assert.AreEqual(DEFAULT_TIMEFRAME_ID, trendline.TimeframeId);
-            Assert.AreEqual(DEFAULT_SIMULATION_ID, trendline.SimulationId);
-            Assert.AreEqual(DEFAULT_START_INDEX, trendline.StartIndex);
-            Assert.AreEqual(DEFAULT_START_LEVEL, trendline.StartLevel);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_INDEX, trendline.FootholdIndex);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_LEVEL, trendline.FootholdLevel);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_SLAVE_INDEX, trendline.FootholdSlaveIndex);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_IS_PEAK, trendline.FootholdIsPeak);
-            Assert.AreEqual(DEFAULT_VALUE, trendline.Value);
-            Assert.AreEqual(DEFAULT_INITIAL_IS_PEAK, trendline.InitialIsPeak);
-            Assert.AreEqual(DEFAULT_LAST_UPDATE_INDEX, trendline.LastUpdateIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_ID, trendline.Id);
+            Assert.AreEqual(UTDefaulter.DEFAULT_ASSET_ID, trendline.AssetId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_TIMEFRAME_ID, trendline.TimeframeId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_SIMULATION_ID, trendline.SimulationId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_START_INDEX, trendline.StartIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_START_LEVEL, trendline.StartLevel);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_INDEX, trendline.FootholdIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_LEVEL, trendline.FootholdLevel);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_SLAVE_INDEX, trendline.FootholdSlaveIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_IS_PEAK, trendline.FootholdIsPeak);
+            Assert.AreEqual(UTDefaulter.DEFAULT_VALUE, trendline.Value);
+            Assert.AreEqual(UTDefaulter.DEFAULT_INITIAL_IS_PEAK, trendline.InitialIsPeak);
+            Assert.AreEqual(UTDefaulter.DEFAULT_LAST_UPDATE_INDEX, trendline.LastUpdateIndex);
 
         }
 
@@ -268,37 +50,37 @@ namespace Stock_UnitTest.Stock.Domain
 
             //Act.
             var trendlineDto = new TrendlineDto() { 
-                Id = DEFAULT_ID, 
-                AssetId = DEFAULT_ASSET_ID, 
-                TimeframeId = DEFAULT_TIMEFRAME_ID, 
-                SimulationId = DEFAULT_SIMULATION_ID, 
-                StartIndex = DEFAULT_START_INDEX, 
-                StartLevel = DEFAULT_START_LEVEL, 
-                FootholdIndex = DEFAULT_FOOTHOLD_INDEX, 
-                FootholdLevel = DEFAULT_FOOTHOLD_LEVEL,
-                FootholdSlaveIndex = DEFAULT_FOOTHOLD_SLAVE_INDEX,
-                FootholdIsPeak = DEFAULT_FOOTHOLD_IS_PEAK,
+                Id = UTDefaulter.DEFAULT_ID, 
+                AssetId = UTDefaulter.DEFAULT_ASSET_ID, 
+                TimeframeId = UTDefaulter.DEFAULT_TIMEFRAME_ID, 
+                SimulationId = UTDefaulter.DEFAULT_SIMULATION_ID, 
+                StartIndex = UTDefaulter.DEFAULT_START_INDEX, 
+                StartLevel = UTDefaulter.DEFAULT_START_LEVEL, 
+                FootholdIndex = UTDefaulter.DEFAULT_FOOTHOLD_INDEX, 
+                FootholdLevel = UTDefaulter.DEFAULT_FOOTHOLD_LEVEL,
+                FootholdSlaveIndex = UTDefaulter.DEFAULT_FOOTHOLD_SLAVE_INDEX,
+                FootholdIsPeak = UTDefaulter.DEFAULT_FOOTHOLD_IS_PEAK,
                 EndIndex = null,
-                Value = DEFAULT_VALUE,
-                LastUpdateIndex = DEFAULT_LAST_UPDATE_INDEX
+                Value = UTDefaulter.DEFAULT_VALUE,
+                LastUpdateIndex = UTDefaulter.DEFAULT_LAST_UPDATE_INDEX
             };
 
             var trendline = new Trendline(trendlineDto);
 
             //Assert.
-            Assert.AreEqual(DEFAULT_ID, trendline.Id);
-            Assert.AreEqual(DEFAULT_ASSET_ID, trendline.AssetId);
-            Assert.AreEqual(DEFAULT_TIMEFRAME_ID, trendline.TimeframeId);
-            Assert.AreEqual(DEFAULT_SIMULATION_ID, trendline.SimulationId);
-            Assert.AreEqual(DEFAULT_START_INDEX, trendline.StartIndex);
-            Assert.AreEqual(DEFAULT_START_LEVEL, trendline.StartLevel);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_INDEX, trendline.FootholdIndex);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_LEVEL, trendline.FootholdLevel);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_SLAVE_INDEX, trendlineDto.FootholdSlaveIndex);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_IS_PEAK, trendlineDto.FootholdIsPeak);
-            Assert.AreEqual(DEFAULT_VALUE, trendline.Value);
+            Assert.AreEqual(UTDefaulter.DEFAULT_ID, trendline.Id);
+            Assert.AreEqual(UTDefaulter.DEFAULT_ASSET_ID, trendline.AssetId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_TIMEFRAME_ID, trendline.TimeframeId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_SIMULATION_ID, trendline.SimulationId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_START_INDEX, trendline.StartIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_START_LEVEL, trendline.StartLevel);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_INDEX, trendline.FootholdIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_LEVEL, trendline.FootholdLevel);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_SLAVE_INDEX, trendlineDto.FootholdSlaveIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_IS_PEAK, trendlineDto.FootholdIsPeak);
+            Assert.AreEqual(UTDefaulter.DEFAULT_VALUE, trendline.Value);
             Assert.IsNull(trendline.EndIndex);
-            Assert.AreEqual(DEFAULT_LAST_UPDATE_INDEX, trendline.LastUpdateIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_LAST_UPDATE_INDEX, trendline.LastUpdateIndex);
 
         }
 
@@ -315,23 +97,23 @@ namespace Stock_UnitTest.Stock.Domain
 
             //Act
 
-            var trendline = getDefaultTrendline();
+            var trendline = utf.getDefaultTrendline();
             var trendlineDto = trendline.ToDto();
 
             //Assert.
-            Assert.AreEqual(DEFAULT_ID, trendlineDto.Id);
-            Assert.AreEqual(DEFAULT_ASSET_ID, trendlineDto.AssetId);
-            Assert.AreEqual(DEFAULT_TIMEFRAME_ID, trendlineDto.TimeframeId);
-            Assert.AreEqual(DEFAULT_SIMULATION_ID, trendlineDto.SimulationId);
-            Assert.AreEqual(DEFAULT_START_INDEX, trendlineDto.StartIndex);
-            Assert.AreEqual(DEFAULT_START_LEVEL, trendlineDto.StartLevel);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_INDEX, trendlineDto.FootholdIndex);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_LEVEL, trendlineDto.FootholdLevel);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_SLAVE_INDEX, trendlineDto.FootholdSlaveIndex);
-            Assert.AreEqual(DEFAULT_FOOTHOLD_IS_PEAK, trendlineDto.FootholdIsPeak);
-            Assert.AreEqual(DEFAULT_VALUE, trendlineDto.Value);
+            Assert.AreEqual(UTDefaulter.DEFAULT_ID, trendlineDto.Id);
+            Assert.AreEqual(UTDefaulter.DEFAULT_ASSET_ID, trendlineDto.AssetId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_TIMEFRAME_ID, trendlineDto.TimeframeId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_SIMULATION_ID, trendlineDto.SimulationId);
+            Assert.AreEqual(UTDefaulter.DEFAULT_START_INDEX, trendlineDto.StartIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_START_LEVEL, trendlineDto.StartLevel);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_INDEX, trendlineDto.FootholdIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_LEVEL, trendlineDto.FootholdLevel);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_SLAVE_INDEX, trendlineDto.FootholdSlaveIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_FOOTHOLD_IS_PEAK, trendlineDto.FootholdIsPeak);
+            Assert.AreEqual(UTDefaulter.DEFAULT_VALUE, trendlineDto.Value);
             Assert.IsNull(trendlineDto.EndIndex);
-            Assert.AreEqual(DEFAULT_LAST_UPDATE_INDEX, trendlineDto.LastUpdateIndex);
+            Assert.AreEqual(UTDefaulter.DEFAULT_LAST_UPDATE_INDEX, trendlineDto.LastUpdateIndex);
 
         }
 
@@ -348,7 +130,7 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
             var comparedItem = new { Id = 1 };
 
             //Act
@@ -364,8 +146,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             var areEqual = baseItem.Equals(comparedItem);
@@ -380,8 +162,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.Id++;
@@ -397,8 +179,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.AssetId += 1;
@@ -414,8 +196,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.TimeframeId += 1;
@@ -431,8 +213,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.SimulationId += 1;
@@ -448,8 +230,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.StartIndex = comparedItem.StartIndex + 2;
@@ -464,8 +246,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.StartLevel += 0.1;
@@ -480,8 +262,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.FootholdIndex = comparedItem.FootholdIndex++;
@@ -496,8 +278,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.FootholdLevel += 1;
@@ -513,8 +295,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.Value += 1;
@@ -529,8 +311,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.LastUpdateIndex = comparedItem.LastUpdateIndex + 5;
@@ -550,8 +332,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             baseItem.EndIndex = 100;
@@ -568,8 +350,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             baseItem.EndIndex = 50;
@@ -586,8 +368,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             baseItem.EndIndex = null;
@@ -604,8 +386,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             baseItem.EndIndex = 100;
@@ -622,8 +404,8 @@ namespace Stock_UnitTest.Stock.Domain
         {
 
             //Arrange
-            var baseItem = getDefaultTrendline();
-            var comparedItem = getDefaultTrendline();
+            var baseItem = utf.getDefaultTrendline();
+            var comparedItem = utf.getDefaultTrendline();
 
             //Act
             comparedItem.EndIndex = null;
