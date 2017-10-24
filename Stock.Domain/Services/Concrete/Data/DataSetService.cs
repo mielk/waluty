@@ -66,7 +66,7 @@ namespace Stock.Domain.Services
             dsc.LoadQuotations(quotationDtos);
 
             //Prices.
-            if (queryDef.AnalysisTypes.Contains(AnalysisType.Prices))
+            if (queryDef.ContainsAnalysisType(AnalysisType.Prices))
             {
                 IEnumerable<PriceDto> priceDtos = priceRepository.GetPrices(queryDef);
                 dsc.LoadPrices(priceDtos);

@@ -72,8 +72,8 @@ namespace Stock.Web.Controllers
         [AllowAnonymous]
         public ActionResult GetDataSets()
         {
-            IEnumerable<DataSet> dataSets = manager.GetDataSets();
-            IEnumerable<Trendline> trendlines = manager.GetTrendlines();
+            IEnumerable<object> dataSets = manager.GetDataSets().Where(ds => ds != null).Select(ds => ds.GetJson());
+            IEnumerable<Trendline> trendlines = null;// manager.GetTrendlines();
             var json = new { quotations = dataSets, trendlines = trendlines };
             return Json(json, JsonRequestBehavior.AllowGet);
         }

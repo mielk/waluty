@@ -47,6 +47,15 @@ namespace Stock.Core
             };
         }
 
+        public bool ContainsAnalysisType(AnalysisType type)
+        {
+            if (AnalysisTypes != null)
+            {
+                return AnalysisTypes.Contains(type);
+            }
+            return false;
+        }
+
     }
 
 }

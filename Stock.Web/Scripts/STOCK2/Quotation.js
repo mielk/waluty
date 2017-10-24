@@ -10,11 +10,11 @@
     self.volume = params.quotation.Volume;
     self.quotation = params.quotation;
     self.price = params.price;
-    self.priceGap = params.price ? params.price.PriceGap : 0;
-    self.peakByClose = params.price ? params.price.PeakByClose : 0;
-    self.peakByHigh = params.price ? params.price.PeakByHigh : 0;
-    self.troughByClose = params.price ? params.price.TroughByClose : 0;
-    self.troughByLow = params.price ? params.price.TroughByLow : 0;
+    self.priceGap = params.price ? params.price.priceGap : 0;
+    self.peakByClose = params.price ? params.price.peakByClose : 0;
+    self.peakByHigh = params.price ? params.price.peakByHigh : 0;
+    self.troughByClose = params.price ? params.price.troughByClose : 0;
+    self.troughByLow = params.price ? params.price.troughByLow : 0;
     self.macd = (params.Macd ? new Macd(params.Macd) : null);
     
 }

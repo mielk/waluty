@@ -119,19 +119,19 @@ namespace Stock.Domain.Entities
         {
             return new
             {
-                id = Id,
-                assetId = GetAssetId(),
-                timeframeId = GetTimeframeId(),
-                date = GetDate(),
-                indexNumber = GetIndexNumber(),
-                analysisType = (int)analysisType,
-                open = Open,
-                high = High,
-                low = Low,
-                close = Close,
-                volume = Volume,
-                isUpdated = Updated,
-                isNew = New
+                Id = Id,
+                AssetId = GetAssetId(),
+                TimeframeId = GetTimeframeId(),
+                Date = GetDate(),
+                IndexNumber = GetIndexNumber(),
+                AnalysisType = (int)analysisType,
+                Open = Open,
+                High = High,
+                Low = Low,
+                Close = Close,
+                Volume = Volume,
+                IsUpdated = Updated,
+                IsNew = New
             };
         }
 

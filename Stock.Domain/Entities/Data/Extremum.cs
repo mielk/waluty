@@ -91,6 +91,37 @@ namespace Stock.Domain.Entities
             return Updated;
         }
 
+        public object GetJson()
+        {
+            return new
+            {
+                AssetId = GetAssetId(),
+                TimeframeId = GetTimeframeId(),
+                IndexNumber = GetIndexNumber(),
+                Date = GetDate(),
+                Type = Type,
+                Id = ExtremumId,
+                SimulationId = SimulationId,
+                Value = Value,
+                LastCheckedDateTime = LastCheckedDateTime,
+                EarlierCounter = EarlierCounter,
+                EarlierAmplitude = EarlierAmplitude,
+                EarlierChange1 = EarlierChange1,
+                EarlierChange2 = EarlierChange2,
+                EarlierChange3 = EarlierChange3,
+                EarlierChange5 = EarlierChange5,
+                EarlierChange10 = EarlierChange10,
+                LaterCounter = LaterCounter,
+                LaterAmplitude = LaterAmplitude,
+                LaterChange1 = LaterChange1,
+                LaterChange2 = LaterChange2,
+                LaterChange3 = LaterChange3,
+                LaterChange5 = LaterChange5,
+                LaterChange10 = LaterChange10,
+                Volatility = Volatility
+            };
+        }
+
         #endregion GETTERS
 
 

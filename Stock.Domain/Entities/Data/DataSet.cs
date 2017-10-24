@@ -76,12 +76,12 @@ namespace Stock.Domain.Entities
         {
             return new
             {
-                timeframeId = TimeframeId,
-                assetId = AssetId,
-                date = Date,
-                indexNumber = IndexNumber,
-                quotation = this.quotation.GetJson(),
-                price = this.price.GetJson()
+                TimeframeId = TimeframeId,
+                AssetId = AssetId,
+                Date = Date,
+                IndexNumber = IndexNumber,
+                quotation = (this.quotation == null ? null : this.quotation.GetJson()),
+                price = (this.price == null ? null : this.price.GetJson())
             };
         }
 

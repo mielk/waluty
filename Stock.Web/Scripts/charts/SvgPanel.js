@@ -86,7 +86,7 @@
 
             if (self.parent.showTrendlines()) {
                 var trendlineObjects = self.renderer.getDrawTrendlines(self.quotations.trendlines);
-                drawTrendlines(trendlineObjects);
+                //drawTrendlines(trendlineObjects);
             }
 
         }
@@ -281,25 +281,20 @@ function AbstractSvgRenderer(params) {
         if (self.quotations[initialIndex].coordinates) {
             var x1 = self.quotations[initialIndex].coordinates.middle;
             var value1 = self.countTrendlineValue(trendline, initialIndex);
-            var value1Ex = self.countTrendlineValue(trendline, trendline.StartIndex);
             var y1 = self.getY(value1);
             var boundIndex = Math.min(trendline.FootholdIndex + AFTER_OFFSET, self.quotations.length - 1);
-            //var x2 = (self.offset + self.size.width - (boundIndex * params.width) + (params.space / 2));
             var x2 = self.quotations[boundIndex].coordinates.middle;// + (AFTER_OFFSET * params.width);
             var value2 = self.countTrendlineValue(trendline, boundIndex);
-            var value2Ex = self.countTrendlineValue(trendline, trendline.FootholdIndex);
             var y2 = self.getY(value2);
-
-            //var invertedIndex = quotations.length - i;
 
             var attr = {
                 'stroke': '#888',
                 'stroke-width': 1
             };
 
-
             //Calculate coordinates.
             var path = 'M' + x1 + ',' + y1 + 'L' + x2 + ',' + y2;
+
         }
 
         //Save the coordinates of this item's candle 
