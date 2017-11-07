@@ -34,11 +34,11 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             Price basePrice = utf.getPrice(100);
             Extremum baseMaster = new Extremum(basePrice, ExtremumType.PeakByClose);
-            ExtremumGroup baseExtremumGroup = new ExtremumGroup(baseMaster, null, true);
+            ExtremumGroup baseExtremumGroup = new ExtremumGroup(baseMaster, null);
 
             Price footholdPrice = utf.getPrice(500);
             Extremum footholdMaster = new Extremum(footholdPrice, ExtremumType.PeakByClose);
-            ExtremumGroup footholdExtremumGroup = new ExtremumGroup(footholdMaster, null, true);
+            ExtremumGroup footholdExtremumGroup = new ExtremumGroup(footholdMaster, null);
 
             //Act
             TrendlineProcessor processor = new TrendlineProcessor(mockManager.Object);
@@ -58,11 +58,11 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
             Price basePrice = utf.getPrice(100);
             Extremum baseMaster = new Extremum(basePrice, ExtremumType.PeakByClose);
-            ExtremumGroup baseExtremumGroup = new ExtremumGroup(baseMaster, null, true);
+            ExtremumGroup baseExtremumGroup = new ExtremumGroup(baseMaster, null);
 
             Price footholdPrice = utf.getPrice(102);
             Extremum footholdMaster = new Extremum(footholdPrice, ExtremumType.PeakByClose);
-            ExtremumGroup footholdExtremumGroup = new ExtremumGroup(footholdMaster, null, true);
+            ExtremumGroup footholdExtremumGroup = new ExtremumGroup(footholdMaster, null);
 
             //Act
             TrendlineProcessor processor = new TrendlineProcessor(mockManager.Object);
@@ -81,11 +81,11 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
             Price basePrice = utf.getPrice(100);
             Extremum baseMaster = new Extremum(basePrice, ExtremumType.PeakByClose);
-            ExtremumGroup baseExtremumGroup = new ExtremumGroup(baseMaster, null, true);
+            ExtremumGroup baseExtremumGroup = new ExtremumGroup(baseMaster, null);
 
             Price footholdPrice = utf.getPrice(200);
             Extremum footholdMaster = new Extremum(footholdPrice, ExtremumType.PeakByClose);
-            ExtremumGroup footholdExtremumGroup = new ExtremumGroup(footholdMaster, null, true);
+            ExtremumGroup footholdExtremumGroup = new ExtremumGroup(footholdMaster, null);
 
             //Act
             TrendlineProcessor processor = new TrendlineProcessor(mockManager.Object);
@@ -111,7 +111,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Price basePrice = utf.getPrice(ds5);
             Extremum master = new Extremum(basePrice, ExtremumType.PeakByClose);
             Quotation quotation5 = new Quotation(ds5) { Id = 5, Open = 1.09193, High = 1.09307, Low = 1.09165, Close = 1.09207, Volume = 1819 };
-            ExtremumGroup extremumGroup = new ExtremumGroup(master, null, true);
+            ExtremumGroup extremumGroup = new ExtremumGroup(master, null);
             Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
             mockManager.Setup(m => m.GetDataSet(5)).Returns(ds5);
 
@@ -143,7 +143,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Price price5 = utf.getPrice(ds5);
             Quotation quotation5 = new Quotation(ds5) { Id = 5, Open = 1.09193, High = 1.09209, Low = 1.09165, Close = 1.09207, Volume = 1819 };
             Extremum master = new Extremum(price5, ExtremumType.PeakByClose);
-            ExtremumGroup extremumGroup = new ExtremumGroup(master, null, true);
+            ExtremumGroup extremumGroup = new ExtremumGroup(master, null);
             Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
             mockManager.Setup(m => m.GetDataSet(5)).Returns(ds5);
 
@@ -172,7 +172,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Price price5 = utf.getPrice(ds5);
             Quotation quotation5 = new Quotation(ds5) { Id = 5, Open = 1.09193, High = 1.0927, Low = 1.09165, Close = 1.09207, Volume = 1819 };
             Extremum slave = new Extremum(price5, ExtremumType.PeakByHigh);
-            ExtremumGroup extremumGroup = new ExtremumGroup(null, slave, true);
+            ExtremumGroup extremumGroup = new ExtremumGroup(null, slave);
             Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
             mockManager.Setup(m => m.GetDataSet(5)).Returns(ds5);
 
@@ -205,7 +205,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Price price5 = utf.getPrice(ds5);
             Quotation quotation5 = new Quotation(ds5) { Id = 5, Open = 1.09193, High = 1.09209, Low = 1.09165, Close = 1.09207, Volume = 1819 };
             Extremum slave = new Extremum(price5, ExtremumType.PeakByHigh);
-            ExtremumGroup extremumGroup = new ExtremumGroup(null, slave, true);
+            ExtremumGroup extremumGroup = new ExtremumGroup(null, slave);
             Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
             mockManager.Setup(m => m.GetDataSet(5)).Returns(ds5);
 
@@ -234,7 +234,7 @@ namespace Stock_UnitTest.Stock.Domain.Services
             Price price5 = utf.getPrice(ds5);
             Quotation quotation5 = new Quotation(ds5) { Id = 5, Open = 1.09193, High = 1.09307, Low = 1.09165, Close = 1.09207, Volume = 1819 };
             Extremum master = new Extremum(price5, ExtremumType.PeakByClose);
-            ExtremumGroup extremumGroup = new ExtremumGroup(master, null, true);
+            ExtremumGroup extremumGroup = new ExtremumGroup(master, null);
             Mock<IProcessManager> mockManager = new Mock<IProcessManager>();
             mockManager.Setup(m => m.GetDataSet(5)).Returns(ds5);
 

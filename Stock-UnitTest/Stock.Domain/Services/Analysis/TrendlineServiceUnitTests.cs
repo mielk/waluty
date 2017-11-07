@@ -215,12 +215,12 @@ namespace Stock_UnitTest.Stock.Domain.Services
 
             Price basePrice = getPrice(DEFAULT_START_INDEX);
             Extremum baseMaster = new Extremum(basePrice, ExtremumType.PeakByClose);
-            ExtremumGroup baseGroup = new ExtremumGroup(baseMaster, null, DEFAULT_INITIAL_IS_PEAK);
+            ExtremumGroup baseGroup = new ExtremumGroup(baseMaster, null);
             TrendlinePoint basePoint = new TrendlinePoint(baseGroup, DEFAULT_START_LEVEL);
 
             Price secondPrice = getPrice(DEFAULT_FOOTHOLD_INDEX);
             Extremum secondMaster = new Extremum(secondPrice, ExtremumType.PeakByClose);
-            ExtremumGroup secondGroup = new ExtremumGroup(secondMaster, null, DEFAULT_INITIAL_IS_PEAK);
+            ExtremumGroup secondGroup = new ExtremumGroup(secondMaster, null);
             TrendlinePoint footholdPoint = new TrendlinePoint(secondGroup, DEFAULT_FOOTHOLD_LEVEL);
 
             Trendline trendline = new Trendline(settings, basePoint, footholdPoint);

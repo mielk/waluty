@@ -12,9 +12,22 @@ namespace Stock.Domain.Entities
         public Extremum SecondExtremum { get; set; }
         public bool IsPeak { get; set; }
 
-        public ExtremumGroup(Extremum master, Extremum second, bool isPeak)
+        public ExtremumGroup(Extremum master, Extremum second)
         {
-            this.IsPeak = isPeak;
+
+            if (master == null && second == null)
+            {
+                throw new ArgumentNullException("Both extrema cannot be Null");
+            }
+
+            if (master != null && second != null && master.IsPeak() != second.IsPeak())
+            {
+                throw new ArgumentException("Extremum group cannot contain extrema of different types");
+            }
+
+
+
+            this.IsPeak = (master != null ? master.IsPeak() : second.IsPeak());
             this.MasterExtremum = (master != null ? master : second);
             this.SecondExtremum = (second != null ? second : master);
         }

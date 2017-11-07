@@ -315,18 +315,18 @@ namespace Stock.Domain.Services
                     Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.PeakByHigh);
                     if (previous != null)
                     {
-                        return new ExtremumGroup(peakByClose, previous, true);
+                        return new ExtremumGroup(peakByClose, previous);
                     }
                     else
                     {
                         Extremum next = getExtremum(dataSetsByDate, index + 1, ExtremumType.PeakByHigh);
                         if (next != null)
                         {
-                            return new ExtremumGroup(peakByClose, next, true);
+                            return new ExtremumGroup(peakByClose, next);
                         }
                     }
                 }
-                return new ExtremumGroup(peakByClose, null, true);
+                return new ExtremumGroup(peakByClose, null);
             }
             else
             {
@@ -339,7 +339,7 @@ namespace Stock.Domain.Services
                         Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.PeakByClose);
                         if (previous == null)
                         {
-                            return new ExtremumGroup(null, peakByHigh, true);
+                            return new ExtremumGroup(null, peakByHigh);
                         }
                     }
                 }
@@ -360,18 +360,18 @@ namespace Stock.Domain.Services
                     Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.TroughByLow);
                     if (previous != null)
                     {
-                        return new ExtremumGroup(troughByClose, previous, false);
+                        return new ExtremumGroup(troughByClose, previous);
                     }
                     else
                     {
                         Extremum next = getExtremum(dataSetsByDate, index + 1, ExtremumType.TroughByLow);
                         if (next != null)
                         {
-                            return new ExtremumGroup(troughByClose, next, false);
+                            return new ExtremumGroup(troughByClose, next);
                         }
                     }
                 }
-                return new ExtremumGroup(troughByClose, null, false);
+                return new ExtremumGroup(troughByClose, null);
             }
             else
             {
@@ -384,7 +384,7 @@ namespace Stock.Domain.Services
                         Extremum previous = getExtremum(dataSetsByDate, index - 1, ExtremumType.TroughByClose);
                         if (previous == null)
                         {
-                            return new ExtremumGroup(null, troughByLow, false);
+                            return new ExtremumGroup(null, troughByLow);
                         }
                     }
                 }

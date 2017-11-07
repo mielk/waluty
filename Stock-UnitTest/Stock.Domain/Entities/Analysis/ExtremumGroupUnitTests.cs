@@ -20,6 +20,146 @@ namespace Stock_UnitTest.Stock.Domain
 
 
 
+        #region CONSTRUCTOR
+
+        [TestMethod]
+        public void ExtremumGroup_Constructor_IfOnlyMasterPassed_ProperObjectIsCreated()
+        {
+
+            //Arrange
+            Price p = utf.getPrice(10);
+            Extremum ex = new Extremum(p, ExtremumType.PeakByClose);
+
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(ex, null);
+
+            //Assert
+            Assert.IsNotNull(eg);
+            Assert.AreEqual(ex, eg.MasterExtremum);
+            Assert.AreEqual(ex, eg.SecondExtremum);
+
+        }
+
+        [TestMethod]
+        public void ExtremumGroup_Constructor_IfOnlySlavePassed_ProperObjectIsCreated()
+        {
+
+            //Arrange
+            Price p = utf.getPrice(10);
+            Extremum ex = new Extremum(p, ExtremumType.PeakByHigh);
+
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(null, ex);
+
+            //Assert
+            Assert.IsNotNull(eg);
+            Assert.AreEqual(ex, eg.MasterExtremum);
+            Assert.AreEqual(ex, eg.SecondExtremum);
+
+        }
+
+        [TestMethod]
+        public void ExtremumGroup_Constructor_IfMasterAndSlavedPassed_ProperObjectIsCreated()
+        {
+
+            //Arrange
+            Price p = utf.getPrice(10);
+            Extremum ex1 = new Extremum(p, ExtremumType.PeakByClose);
+            Extremum ex2 = new Extremum(p, ExtremumType.PeakByHigh);
+
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(ex1, ex2);
+
+            //Assert
+            Assert.IsNotNull(eg);
+            Assert.AreEqual(ex1, eg.MasterExtremum);
+            Assert.AreEqual(ex2, eg.SecondExtremum);
+
+        }
+
+        [TestMethod]
+        public void ExtremumGroup_Constructor_ForPeakExtremum_IsPeakPropertyIsCorrectlySet()
+        {
+
+            //Arrange
+            Price p = utf.getPrice(10);
+            Extremum ex1 = new Extremum(p, ExtremumType.PeakByClose);
+            Extremum ex2 = new Extremum(p, ExtremumType.PeakByHigh);
+
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(ex1, ex2);
+
+            //Assert
+            Assert.AreEqual(true, eg.IsPeak);
+
+        }
+
+        [TestMethod]
+        public void ExtremumGroup_Constructor_ForTroughExtremum_IsPeakPropertyIsCorrectlySet()
+        {
+
+            //Arrange
+            Price p = utf.getPrice(10);
+            Extremum ex1 = new Extremum(p, ExtremumType.TroughByClose);
+            Extremum ex2 = new Extremum(p, ExtremumType.TroughByLow);
+
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(ex1, ex2);
+
+            //Assert
+            Assert.AreEqual(false, eg.IsPeak);
+
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ExtremumGroup_Constructor_IfPeakMasterAndTroughSlaveIsGiven_ExceptionIsThrown()
+        {
+
+            //Arrange
+            Price p = utf.getPrice(10);
+            Extremum ex1 = new Extremum(p, ExtremumType.PeakByClose);
+            Extremum ex2 = new Extremum(p, ExtremumType.TroughByLow);
+
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(ex1, ex2);
+
+            //Assert
+            Assert.AreEqual(false, eg.IsPeak);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ExtremumGroup_Constructor_IfTroughMasterAndPeakSlaveIsGiven_ExceptionIsThrown()
+        {
+
+            //Arrange
+            Price p = utf.getPrice(10);
+            Extremum ex1 = new Extremum(p, ExtremumType.TroughByClose);
+            Extremum ex2 = new Extremum(p, ExtremumType.PeakByHigh);
+
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(ex1, ex2);
+
+        }
+        
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException), "Both extrema cannot be Null")]
+        public void ExtremumGroup_Constructor_IfNoneExtremumIsGiven_ExceptionIsThrown()
+        {
+           
+            //Act
+            ExtremumGroup eg = new ExtremumGroup(null, null);
+
+        }
+
+
+        #endregion CONSTRUCTOR
+
+
+
 
         #region GET_LATE_INDEX_NUMBER
 
@@ -32,7 +172,7 @@ namespace Stock_UnitTest.Stock.Domain
             Price price = utf.getPrice(ds);
             Quotation quotation = new Quotation(ds);
             Extremum master = new Extremum(price, ExtremumType.PeakByClose);
-            ExtremumGroup group = new ExtremumGroup(master, null, true);
+            ExtremumGroup group = new ExtremumGroup(master, null);
 
             //Assert
             int lateIndexNumber = group.GetLateIndexNumber();
@@ -52,7 +192,7 @@ namespace Stock_UnitTest.Stock.Domain
             Price price = utf.getPrice(ds);
             Quotation quotation = new Quotation(ds);
             Extremum slave = new Extremum(price, ExtremumType.PeakByHigh);
-            ExtremumGroup group = new ExtremumGroup(null, slave, true);
+            ExtremumGroup group = new ExtremumGroup(null, slave);
 
             //Assert
             int lateIndexNumber = group.GetLateIndexNumber();
@@ -73,7 +213,7 @@ namespace Stock_UnitTest.Stock.Domain
 
             Extremum slave = new Extremum(price50, ExtremumType.PeakByHigh);
             Extremum master = new Extremum(price51, ExtremumType.PeakByClose);
-            ExtremumGroup group = new ExtremumGroup(master, slave, true);
+            ExtremumGroup group = new ExtremumGroup(master, slave);
 
             //Assert
             int lateIndexNumber = group.GetLateIndexNumber();
@@ -94,7 +234,7 @@ namespace Stock_UnitTest.Stock.Domain
 
             Extremum master = new Extremum(price50, ExtremumType.PeakByClose);
             Extremum slave = new Extremum(price51, ExtremumType.PeakByHigh);
-            ExtremumGroup group = new ExtremumGroup(master, slave, true);
+            ExtremumGroup group = new ExtremumGroup(master, slave);
             
             //Assert
             int lateIndexNumber = group.GetLateIndexNumber();

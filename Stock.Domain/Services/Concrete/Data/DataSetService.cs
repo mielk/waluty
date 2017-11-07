@@ -131,8 +131,19 @@ namespace Stock.Domain.Services
             //Prices
             if (priceRepository != null)
             {
-                IEnumerable<PriceDto> priceDtos = dataSets.Select(ds => ds.GetPrice()).Where(p => p.IsUpdated() || p.IsNew()).Select(p => p.ToDto());
+                IEnumerable<Price> prices = dataSets.Select(ds => ds.GetPrice()).Where(p => p.IsUpdated() || p.IsNew());
+                IEnumerable<PriceDto> priceDtos = prices.Select(p => p.ToDto());
+
+                List<ExtremumDto> extremumDtos = new List<ExtremumDto>();
+                foreach (Price p in prices)
+                {
+                    IEnumerable<ExtremumDto> singlePriceExtremumDtos = p.GetExtrema().Where(e => e !=  null).Where(e => e.IsUpdated() || e.IsNew()).Select(e => e.ToDto());
+                    extremumDtos.AddRange(singlePriceExtremumDtos);
+                }
+
                 priceRepository.UpdatePrices(priceDtos);
+                priceRepository.UpdateExtrema(extremumDtos);
+
             }
 
         }

@@ -91,6 +91,18 @@ namespace Stock.Domain.Entities
             return Updated;
         }
 
+        public bool IsPeak()
+        {
+            if (Type == ExtremumType.PeakByClose || Type == ExtremumType.PeakByHigh)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public object GetJson()
         {
             return new
